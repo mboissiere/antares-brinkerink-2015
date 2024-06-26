@@ -1,0 +1,259 @@
+﻿Node;Continent;Country;Geographical region
+AF-​​​​​​AGO;Africa;Angola;Angola
+AF-​​​​​​BDI;Africa;Burundi;Burundi
+AF-​​​​​​BEN;Africa;Benin;Benin
+AF-​​​​​​BFA;Africa;Burkina Faso;Burkina Faso
+AF-​​​​​​BWA;Africa;Botswana;Botswana
+AF-​​​​​​CAF;Africa;Central African Republic;Central African Republic
+AF-​​​​​​CIV;Africa;Cote DIvoire;Cote DIvoire
+AF-​​​​​​CMR;Africa;Cameroon;Cameroon
+AF-​​​​​​COD;Africa;Congo (Kinshasa);Congo (Kinshasa)
+AF-​​​​​​COG;Africa;Congo (Brazzaville);Congo (Brazzaville)
+AF-​​​​​​CPV;Africa;Cape Verde;Cape Verde
+AF-​​​​​​DJI;Africa;Djibouti;Djibouti
+AF-​​​​​​DZA;Africa;Algeria;Algeria
+AF-​​​​​​EGY;Africa;Egypt;Egypt
+AF-​​​​​​ERI;Africa;Eritrea;Eritrea
+AF-​​​​​​ESH;Africa;Western Sahara;Western Sahara
+AF-​​​​​​ETH;Africa;Ethiopia;Ethiopia
+AF-​​​​​​GAB;Africa;Gabon;Gabon
+AF-​​​​​​GHA;Africa;Ghana;Ghana
+AF-​​​​​​GIN;Africa;Guinea;Guinea
+AF-​​​​​​GMB;Africa;Gambia;Gambia
+AF-​​​​​​GNB;Africa;Guinea-​​​​​​Bissau;Guinea-​​​​​​Bissau
+AF-​​​​​​GNQ;Africa;Equatorial Guinea;Equatorial Guinea
+AF-​​​​​​KEN;Africa;Kenya;Kenya
+AF-​​​​​​LBR;Africa;Liberia;Liberia
+AF-​​​​​​LBY;Africa;Libya;Libya
+AF-​​​​​​LSO;Africa;Lesotho;Lesotho
+AF-​​​​​​MAR;Africa;Morocco;Morocco
+AF-​​​​​​MDG;Africa;Madagascar;Madagascar
+AF-​​​​​​MLI;Africa;Mali;Mali
+AF-​​​​​​MOZ;Africa;Mozambique;Mozambique
+AF-​​​​​​MRT;Africa;Mauritania;Mauritania
+AF-​​​​​​MUS;Africa;Mauritius;Mauritius
+AF-​​​​​​MWI;Africa;Malawi;Malawi
+AF-​​​​​​NAM;Africa;Namibia;Namibia
+AF-​​​​​​NER;Africa;Niger;Niger
+AF-​​​​​​NGA;Africa;Nigeria;Nigeria
+AF-​​​​​​RWA;Africa;Rwanda;Rwanda
+AF-​​​​​​SDN;Africa;Sudan;Sudan
+AF-​​​​​​SEN;Africa;Senegal;Senegal
+AF-​​​​​​SLE;Africa;Sierra Leone;Sierra Leone
+AF-​​​​​​SWZ;Africa;Swaziland;Swaziland
+AF-​​​​​​TGO;Africa;Togo;Togo
+AF-​​​​​​TUN;Africa;Tunisia;Tunisia
+AF-​​​​​​TZA;Africa;Tanzania;Tanzania
+AF-​​​​​​UGA;Africa;Uganda;Uganda
+AF-​​​​​​ZAF;Africa;South Africa;South Africa
+AF-​​​​​​ZMB;Africa;Zambia;Zambia
+AF-​​​​​​ZWE;Africa;Zimbabwe;Zimbabwe
+AS-​​​​​​AFG;Asia;Afghanistan;Afghanistan
+AS-​​​​​​ARE;Asia;United Arab Emirates;United Arab Emirates
+AS-​​​​​​BGD;Asia;Bangladesh;Bangladesh
+AS-​​​​​​BHR;Asia;Bahrain;Bahrain
+AS-​​​​​​BRN;Asia;Brunei;Brunei
+AS-​​​​​​BTN;Asia;Bhutan;Bhutan
+AS-​​​​​​CHN-​​​​​​AN;Asia;China;Anhui
+AS-​​​​​​CHN-​​​​​​BE;Asia;China;Beijing
+AS-​​​​​​CHN-​​​​​​CH;Asia;China;Chongqing
+AS-​​​​​​CHN-​​​​​​EM;Asia;China;Inner Mongolia (East)
+AS-​​​​​​CHN-​​​​​​FU;Asia;China;Fujian
+AS-​​​​​​CHN-​​​​​​GA;Asia;China;Gansu
+AS-​​​​​​CHN-​​​​​​GD;Asia;China;Guangdong
+AS-​​​​​​CHN-​​​​​​GU;Asia;China;Guizhou
+AS-​​​​​​CHN-​​​​​​GX;Asia;China;Guangxi
+AS-​​​​​​CHN-​​​​​​HA;Asia;China;Hainan
+AS-​​​​​​CHN-​​​​​​HB;Asia;China;Hebei
+AS-​​​​​​CHN-​​​​​​HE;Asia;China;Henan
+AS-​​​​​​CHN-​​​​​​HJ;Asia;China;Heilongjiang
+AS-​​​​​​CHN-​​​​​​HK;Asia;China;Hong Kong
+AS-​​​​​​CHN-​​​​​​HN;Asia;China;Hunan
+AS-​​​​​​CHN-​​​​​​HU;Asia;China;Hubei
+AS-​​​​​​CHN-​​​​​​JI;Asia;China;Jilin
+AS-​​​​​​CHN-​​​​​​JS;Asia;China;Jiangsu
+AS-​​​​​​CHN-​​​​​​JX;Asia;China;Jiangxi
+AS-​​​​​​CHN-​​​​​​LI;Asia;China;Liaoning
+AS-​​​​​​CHN-​​​​​​MA;Asia;China;Macau
+AS-​​​​​​CHN-​​​​​​NI;Asia;China;Ningxia
+AS-​​​​​​CHN-​​​​​​QI;Asia;China;Qinghai
+AS-​​​​​​CHN-​​​​​​SC;Asia;China;Sichuan
+AS-​​​​​​CHN-​​​​​​SD;Asia;China;Shandong
+AS-​​​​​​CHN-​​​​​​SH;Asia;China;Shanghai
+AS-​​​​​​CHN-​​​​​​SI;Asia;China;Shaanxi
+AS-​​​​​​CHN-​​​​​​SX;Asia;China;Shanxi
+AS-​​​​​​CHN-​​​​​​TI;Asia;China;Tibet
+AS-​​​​​​CHN-​​​​​​TJ;Asia;China;Tianjin
+AS-​​​​​​CHN-​​​​​​WM;Asia;China;Inner Mongolia (West)
+AS-​​​​​​CHN-​​​​​​XI;Asia;China;Xinjiang
+AS-​​​​​​CHN-​​​​​​YU;Asia;China;Yunnan
+AS-​​​​​​CHN-​​​​​​ZH;Asia;China;Zhejiang
+AS-​​​​​​IDN;Asia;Indonesia;Indonesia
+AS-​​​​​​IND-​​​​​​EA;Asia;India;Eastern Region
+AS-​​​​​​IND-​​​​​​NE;Asia;India;North-​​​​​​Eastern Region
+AS-​​​​​​IND-​​​​​​NO;Asia;India;Northern Region
+AS-​​​​​​IND-​​​​​​SO;Asia;India;Southern Region
+AS-​​​​​​IND-​​​​​​WE;Asia;India;Western Region
+AS-​​​​​​IRN;Asia;Iran;Iran
+AS-​​​​​​IRQ;Asia;Iraq;Iraq
+AS-​​​​​​ISR;Asia;Israel &​​ Palestina;Israel &​​ Palestina
+AS-​​​​​​JOR;Asia;Jordan;Jordan
+AS-​​​​​​JPN-​​​​​​CE;Asia;Japan;Main 60Hz system (Central)
+AS-​​​​​​JPN-​​​​​​HO;Asia;Japan;Hokkaido
+AS-​​​​​​JPN-​​​​​​KY;Asia;Japan;Kyushu
+AS-​​​​​​JPN-​​​​​​OK;Asia;Japan;Okinawa
+AS-​​​​​​JPN-​​​​​​SH;Asia;Japan;Shikoku
+AS-​​​​​​JPN-​​​​​​TO;Asia;Japan;Main 50Hz system (Tohoku &​​ Tokyo)
+AS-​​​​​​KAZ;Asia;Kazakhstan;Kazakhstan
+AS-​​​​​​KGZ;Asia;Kyrgyzstan;Kyrgyzstan
+AS-​​​​​​KHM;Asia;Cambodia;Cambodia
+AS-​​​​​​KOR;Asia;South Korea;South Korea
+AS-​​​​​​KWT;Asia;Kuwait;Kuwait
+AS-​​​​​​LAO;Asia;Laos;Laos
+AS-​​​​​​LBN;Asia;Lebanon;Lebanon
+AS-​​​​​​LKA;Asia;Sri Lanka;Sri Lanka
+AS-​​​​​​MMR;Asia;Myanmar;Myanmar
+AS-​​​​​​MNG;Asia;Mongolia;Mongolia
+AS-​​​​​​MYS;Asia;Malaysia;Malaysia
+AS-​​​​​​NPL;Asia;Nepal;Nepal
+AS-​​​​​​OMN;Asia;Oman;Oman
+AS-​​​​​​PAK;Asia;Pakistan;Pakistan
+AS-​​​​​​PHL;Asia;Philippines;Philippines
+AS-​​​​​​PRK;Asia;North Korea;North Korea
+AS-​​​​​​QAT;Asia;Qatar;Qatar
+AS-​​​​​​RUS-​​​​​​CE;Asia;Russia;UES Center
+AS-​​​​​​RUS-​​​​​​FE;Asia;Russia;UES Far East
+AS-​​​​​​RUS-​​​​​​MV;Asia;Russia;UES Middle Volga
+AS-​​​​​​RUS-​​​​​​NW;Asia;Russia;UES Northwest
+AS-​​​​​​RUS-​​​​​​SI;Asia;Russia;UES Siberia
+AS-​​​​​​RUS-​​​​​​SO;Asia;Russia;UES South
+AS-​​​​​​RUS-​​​​​​UR;Asia;Russia;UES Ural
+AS-​​​​​​SAU;Asia;Saudi Arabia;Saudi Arabia
+AS-​​​​​​SGP;Asia;Singapore;Singapore
+AS-​​​​​​SYR;Asia;Syria;Syria
+AS-​​​​​​THA;Asia;Thailand;Thailand
+AS-​​​​​​TJK;Asia;Tajikistan;Tajikistan
+AS-​​​​​​TKM;Asia;Turkmenistan;Turkmenistan
+AS-​​​​​​TUR;Asia;Turkey;Turkey
+AS-​​​​​​TWN;Asia;Taiwan;Taiwan
+AS-​​​​​​UZB;Asia;Uzbekistan;Uzbekistan
+AS-​​​​​​VNM;Asia;Vietnam;Vietnam
+AS-​​​​​​YEM;Asia;Yemen;Yemen
+EU-​​​​​​ALB;Europe;Albania;Albania
+EU-​​​​​​ARM;Europe;Armenia;Armenia
+EU-​​​​​​AUT;Europe;Austria;Austria
+EU-​​​​​​AZE;Europe;Azerbaijan;Azerbaijan
+EU-​​​​​​BEL;Europe;Belgium;Belgium
+EU-​​​​​​BGR;Europe;Bulgaria;Bulgaria
+EU-​​​​​​BIH;Europe;Bosnia and Herzegovina;Bosnia and Herzegovina
+EU-​​​​​​BLR;Europe;Belarus;Belarus
+EU-​​​​​​CHE;Europe;Switzerland;Switzerland
+EU-​​​​​​CYP;Europe;Cyprus;Cyprus
+EU-​​​​​​CZE;Europe;Czech Republic;Czech Republic
+EU-​​​​​​DEU;Europe;Germany;Germany
+EU-​​​​​​DNK;Europe;Denmark;Denmark
+EU-​​​​​​ESP;Europe;Spain;Spain
+EU-​​​​​​EST;Europe;Estonia;Estonia
+EU-​​​​​​FIN;Europe;Finland;Finland
+EU-​​​​​​FRA;Europe;France;France
+EU-​​​​​​GBR;Europe;United Kingdom;United Kingdom
+EU-​​​​​​GEO;Europe;Georgia;Georgia
+EU-​​​​​​GRC;Europe;Greece;Greece
+EU-​​​​​​HRV;Europe;Croatia;Croatia
+EU-​​​​​​HUN;Europe;Hungary;Hungary
+EU-​​​​​​IRL;Europe;Ireland;Ireland
+EU-​​​​​​ISL;Europe;Iceland;Iceland
+EU-​​​​​​ITA;Europe;Italy;Italy
+EU-​​​​​​KOS;Europe;Kosovo;Kosovo
+EU-​​​​​​LTU;Europe;Lithuania;Lithuania
+EU-​​​​​​LUX;Europe;Luxembourg;Luxembourg
+EU-​​​​​​LVA;Europe;Latvia;Latvia
+EU-​​​​​​MDA;Europe;Moldova;Moldova
+EU-​​​​​​MKD;Europe;Macedonia;Macedonia
+EU-​​​​​​MNE;Europe;Montenegro;Montenegro
+EU-​​​​​​NLD;Europe;Netherlands;Netherlands
+EU-​​​​​​NOR;Europe;Norway;Norway
+EU-​​​​​​POL;Europe;Poland;Poland
+EU-​​​​​​PRT;Europe;Portugal;Portugal
+EU-​​​​​​ROU;Europe;Romania;Romania
+EU-​​​​​​SRB;Europe;Serbia;Serbia
+EU-​​​​​​SVK;Europe;Slovakia;Slovakia
+EU-​​​​​​SVN;Europe;Slovenia;Slovenia
+EU-​​​​​​SWE;Europe;Sweden;Sweden
+EU-​​​​​​UKR;Europe;Ukraine;Ukraine
+NA-​​​​​​CAN-​​​​​​AB;North America;Canada;Alberta
+NA-​​​​​​CAN-​​​​​​AR;North America;Canada;Atlantic region
+NA-​​​​​​CAN-​​​​​​BC;North America;Canada;British Columbia
+NA-​​​​​​CAN-​​​​​​MB;North America;Canada;Manitoba
+NA-​​​​​​CAN-​​​​​​NL;North America;Canada;Newfoundland &​​ Labrador
+NA-​​​​​​CAN-​​​​​​NO;North America;Canada;Northern Provinces
+NA-​​​​​​CAN-​​​​​​ON;North America;Canada;Ontario
+NA-​​​​​​CAN-​​​​​​QC;North America;Canada;Quebec
+NA-​​​​​​CAN-​​​​​​SK;North America;Canada;Saskatchewan
+NA-​​​​​​CRI;North America;Costa Rica;Costa Rica
+NA-​​​​​​CUB;North America;Cuba;Cuba
+NA-​​​​​​DOM;North America;Dominican Republic;Dominican Republic
+NA-​​​​​​GTM;North America;Guatemala;Guatemala
+NA-​​​​​​HND;North America;Honduras;Honduras
+NA-​​​​​​JAM;North America;Jamaica;Jamaica
+NA-​​​​​​MEX;North America;Mexico;Mexico
+NA-​​​​​​NIC;North America;Nicaragua;Nicaragua
+NA-​​​​​​PAN;North America;Panama;Panama
+NA-​​​​​​SLV;North America;El Salvador;El Salvador
+NA-​​​​​​TTO;North America;Trinidad and Tobago;Trinidad and Tobago
+NA-​​​​​​USA-​​​​​​AK;North America;United States;Alaska
+NA-​​​​​​USA-​​​​​​AZ;North America;United States;EIA NEMS Region AZNM
+NA-​​​​​​USA-​​​​​​CA;North America;United States;EIA NEMS Region CAMX
+NA-​​​​​​USA-​​​​​​ER;North America;United States;EIA NEMS Region ERCT
+NA-​​​​​​USA-​​​​​​FR;North America;United States;EIA NEMS Region FRCC
+NA-​​​​​​USA-​​​​​​GU;North America;United States;Guam
+NA-​​​​​​USA-​​​​​​HA;North America;United States;Hawaii
+NA-​​​​​​USA-​​​​​​ME;North America;United States;EIA NEMS Region MROE
+NA-​​​​​​USA-​​​​​​MW;North America;United States;EIA NEMS Region MROW
+NA-​​​​​​USA-​​​​​​NE;North America;United States;EIA NEMS Region NEWE
+NA-​​​​​​USA-​​​​​​NW;North America;United States;EIA NEMS Region NWPP
+NA-​​​​​​USA-​​​​​​NY;North America;United States;EIA NEMS Regions NYCW, NYLI &​​ NYUP
+NA-​​​​​​USA-​​​​​​PR;North America;United States;Puerto Rico
+NA-​​​​​​USA-​​​​​​RA;North America;United States;EIA NEMS Region RMPA
+NA-​​​​​​USA-​​​​​​RE;North America;United States;EIA NEMS Region RFCE
+NA-​​​​​​USA-​​​​​​RM;North America;United States;EIA NEMS Region RFCM
+NA-​​​​​​USA-​​​​​​RW;North America;United States;EIA NEMS Region RFCW
+NA-​​​​​​USA-​​​​​​SA;North America;United States;EIA NEMS Region SRDA
+NA-​​​​​​USA-​​​​​​SC;North America;United States;EIA NEMS Region SRCE
+NA-​​​​​​USA-​​​​​​SE;North America;United States;EIA NEMS Region SRSE
+NA-​​​​​​USA-​​​​​​SN;North America;United States;EIA NEMS Region SPNO
+NA-​​​​​​USA-​​​​​​SS;North America;United States;EIA NEMS Region SPSO
+NA-​​​​​​USA-​​​​​​SV;North America;United States;EIA NEMS Region SRVC
+NA-​​​​​​USA-​​​​​​SW;North America;United States;EIA NEMS Region SRGW
+OC-​​​​​​ATA;Oceania;Antarctica;Antarctica
+OC-​​​​​​AUS-​​​​​​NT;Oceania;Australia;Northern Territory
+OC-​​​​​​AUS-​​​​​​QL;Oceania;Australia;Queensland
+OC-​​​​​​AUS-​​​​​​SA;Oceania;Australia;South Australia
+OC-​​​​​​AUS-​​​​​​SW;Oceania;Australia;New South Wales
+OC-​​​​​​AUS-​​​​​​TA;Oceania;Australia;Tasmania
+OC-​​​​​​AUS-​​​​​​VI;Oceania;Australia;Victoria
+OC-​​​​​​AUS-​​​​​​WA;Oceania;Australia;Western Australia
+OC-​​​​​​FJI;Oceania;Fiji;Fiji
+OC-​​​​​​NZL;Oceania;New Zealand;New Zealand
+OC-​​​​​​PNG;Oceania;Papua New Guinea;Papua New Guinea
+SA-​​​​​​ARG;South America;Argentina;Argentina
+SA-​​​​​​BOL;South America;Bolivia;Bolivia
+SA-​​​​​​BRA-​​​​​​CN;South America;Brazil;Center-​​​​​​Northern Region
+SA-​​​​​​BRA-​​​​​​CW;South America;Brazil;Center-​​​​​​Western Region
+SA-​​​​​​BRA-​​​​​​J1;South America;Brazil;Transmission Junction J1
+SA-​​​​​​BRA-​​​​​​J2;South America;Brazil;Transmission Junction J2
+SA-​​​​​​BRA-​​​​​​J3;South America;Brazil;Transmission Junction J3
+SA-​​​​​​BRA-​​​​​​NE;South America;Brazil;North-​​​​​​Eastern Region
+SA-​​​​​​BRA-​​​​​​NW;South America;Brazil;North-​​​​​​Western Region
+SA-​​​​​​BRA-​​​​​​SE;South America;Brazil;South-​​​​​​Eastern Region
+SA-​​​​​​BRA-​​​​​​SO;South America;Brazil;Southern Region
+SA-​​​​​​BRA-​​​​​​WE;South America;Brazil;Western Region
+SA-​​​​​​CHL;South America;Chile;Chile
+SA-​​​​​​COL;South America;Colombia;Colombia
+SA-​​​​​​ECU;South America;Ecuador;Ecuador
+SA-​​​​​​GUF;South America;French Guiana;French Guiana
+SA-​​​​​​GUY;South America;Guyana;Guyana
+SA-​​​​​​PER;South America;Peru;Peru
+SA-​​​​​​PRY;South America;Paraguay;Paraguay
+SA-​​​​​​URY;South America;Uruguay;Uruguay
+SA-​​​​​​VEN;South America;Venezuela;Venezuela
