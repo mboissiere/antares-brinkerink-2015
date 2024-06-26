@@ -27,6 +27,18 @@ createStudy(
 
 updateAllSettings()
 
+deane_nodes_path = ".\\input\\list_of_nodes.txt"
+deane_nodes_df <- read.csv(
+  file = deane_nodes_path,
+  header = TRUE,
+  sep = ";",
+  encoding = "UTF-8"
+  )
+
+print(deane_nodes_df)
+
+zones = deane_nodes_df$Node
+
 for (zone in zones) {
   # Il faudrait mettre ce truc dans le try, sinon ça met "adding" meme avant un fail, non ?
   # eh en vrai si isok

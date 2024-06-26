@@ -13,9 +13,9 @@ generateName <- function(prefix) {
   }
 
 # Exemple d'utilisation dans runSimulation
-study_name <- generateName("Etude_sur_R")
+study_name <- generateName("Etude_sur_R_Trois_Points")
 
-print(study_name)
+#print(study_name)
 
 # Chemin complet vers l'étude
 study_path <- file.path(base_path, study_name)

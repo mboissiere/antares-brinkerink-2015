@@ -15,8 +15,8 @@ renewable_generation_modelling = "clusters" # "aggregated" ou "clusters"
   #c("FRA", "GBR", "DEU", "ITA", "ESP")
 
 
-zones = deane_nodes_df$Node
-print(zones)
-print(zones[1])
-print(getISOfromDeane(zones[1]))
-print(getAntaresCoordsFromCountry(getISOfromDeane(zones[1])))
+#zones = deane_nodes_df$Node
+#print(zones)
+#print(zones[1])
+#print(getISOfromDeane(zones[1]))
+#print(getAntaresCoordsFromCountry(getISOfromDeane(zones[1])))
