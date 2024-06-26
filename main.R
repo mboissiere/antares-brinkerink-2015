@@ -10,7 +10,7 @@ library(antaresEditObject)
 # et qqfois passe de Documents, à Documents/RStudio/AntaresDeane2015...
 # Edit : en fait il faut préciser (dans le README ptet) d'ouvrir le .rproj
 # et c'est bon
-source(".\\src\\featuresTest.R")
+#source(".\\src\\featuresTest.R")
 source(".\\src\\antaresFunctions.R")
 #source("parameters.R")
 
@@ -27,23 +27,24 @@ createStudy(
 
 updateAllSettings()
 
-deane_nodes_path = ".\\input\\geo_list_of_nodes.csv"
+deane_nodes_path = ".\\input\\geo_list_of_nodes.txt"
 deane_nodes_df <- read.csv(
   file = deane_nodes_path,
   header = TRUE,
-  sep = ",",
-  encoding = "UTF-8"
+  sep = ";",
+  encoding = "UTF-8",
   )
+# De manière générale, les .txt en utf-8 c'est bien pour pas avoir d'erreur.
 
-print(deane_nodes_df)
-print(colnames(deane_nodes_df))
+#print(deane_nodes_df)
+#print(colnames(deane_nodes_df))
 
 zones = deane_nodes_df$Node
-print(zones)
-print(deane_nodes_df$Node[1])
+#print(zones)
+#print(deane_nodes_df$Node[1])
 #print(deane_nodes_df[1])
-print(deane_nodes_df$lat)
-print(deane_nodes_df$lon)
+#print(deane_nodes_df$lat)
+#print(deane_nodes_df$lon)
 
 scaling_factor = 20
 
@@ -52,11 +53,15 @@ for (row in 1:nrow(deane_nodes_df)) {
   # Il faudrait mettre ce truc dans le try, sinon ça met "adding" meme avant un fail, non ?
   # eh en vrai si isok
   zone = zones[row]
-  x = deane_nodes_df$lat[row] * scaling_factor
+  #print(zone)
+  x = deane_nodes_df$lon[row] * scaling_factor
+  #print(x)
   y = deane_nodes_df$lat[row] * scaling_factor
+  #print(y)
   
   cat(paste("Adding", zone, "node...\n"))
-  country_code = getISOfromDeane(zone)
+  #country_code = getISOfromDeane(zone)
+  #print(country_code)
   # Use tryCatch to handle exceptions
   tryCatch({
     # Function that may throw an error
@@ -102,20 +107,18 @@ for (row in 1:nrow(ntc_df)) {
   to_node = ntc_df$To[row]
   ntc_direct = ntc_df$Max.Flow..MW.[row]
   ntc_indirect = -ntc_df$Min.Flow..MW.[row]
-  #if (ntc_direct == 0 & ntc_indirect == 0){
+  if (ntc_direct == 0 & ntc_indirect == 0){
+    # Peut etre jouer avec l'évaluation paresseuse ?
     #cat(paste("Skipping ", from_node, " to ", to_node, " link (zero capacity)\n"))
-    # nb : c'est bad long
-  #} else {
-    ts_link <- data.frame(
-      rep(ntc_direct, 8760), 
-      rep(ntc_indirect, 8760)
-    )
+    # nb : c'est bad long ces prints
+  } else {
+    #ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
     tryCatch({
       # Function that may throw an error
       createLink(
         from = from_node,
         to = to_node,
-        tsLink = ts_link
+        #tsLink = ts_link
       )
       # Point d'attention qu'il faudra vérifier : est-ce que si mauvais ordre
       # (eg from EU-AUT to AS-CHN, pas alphabétique), les capacités directe/indirecte

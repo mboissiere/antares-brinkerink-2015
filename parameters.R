@@ -1,4 +1,4 @@
-source(".\\src\\featuresTest2.R")
+# source(".\\src\\featuresTest2.R")
 
 # Nom servant de base pour la classification de l'étude
 study_basename <- "Etude_sur_R_Monde"

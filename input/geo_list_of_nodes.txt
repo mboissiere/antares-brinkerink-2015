@@ -1,4 +1,4 @@
-﻿Node;Continent;Country;Geographical region;lat;lon;coordinates_source
+Node;Continent;Country;Geographical region;lat;lon;coordinates_source
 AF-AGO;Africa;Angola;Angola;-12.2922888126;17.53697914;ILO
 AF-BDI;Africa;Burundi;Burundi;-3.356943638;29.87532495;ILO
 AF-BEN;Africa;Benin;Benin;9.64190633253;2.32921274202;ILO

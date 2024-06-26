@@ -19,6 +19,3 @@ deane_ntc_df <- read.csv(
 
 
 
-getISOfromDeane <- function(input_string) {
-  substr(input_string, 4, 6)
-}
