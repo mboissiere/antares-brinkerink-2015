@@ -31,7 +31,7 @@ deane_nodes_path = ".\\input\\geo_list_of_nodes.csv"
 deane_nodes_df <- read.csv(
   file = deane_nodes_path,
   header = TRUE,
-  sep = ";",
+  sep = ",",
   encoding = "UTF-8"
   )
 
@@ -39,20 +39,31 @@ print(deane_nodes_df)
 print(colnames(deane_nodes_df))
 
 zones = deane_nodes_df$Node
+print(zones)
+print(deane_nodes_df$Node[1])
+#print(deane_nodes_df[1])
+print(deane_nodes_df$lat)
+print(deane_nodes_df$lon)
+
+scaling_factor = 20
 
 
-for (zone in zones) {
+for (row in 1:nrow(deane_nodes_df)) {
   # Il faudrait mettre ce truc dans le try, sinon ça met "adding" meme avant un fail, non ?
   # eh en vrai si isok
+  zone = zones[row]
+  x = deane_nodes_df$lat[row] * scaling_factor
+  y = deane_nodes_df$lat[row] * scaling_factor
+  
   cat(paste("Adding", zone, "node...\n"))
   country_code = getISOfromDeane(zone)
   # Use tryCatch to handle exceptions
   tryCatch({
     # Function that may throw an error
     # get_country_coordinates(country_code)
-    coords = 
-    x <- getAntaresCoordsFromCountry(country_code)$x
-    y <- getAntaresCoordsFromCountry(country_code)$y
+    #coords = 
+    #x <- getAntaresCoordsFromCountry(country_code)$x
+    #y <- getAntaresCoordsFromCountry(country_code)$y
     createArea(
       name = zone,
       color = getColor(zone),
@@ -117,15 +128,8 @@ for (row in 1:nrow(ntc_df)) {
     }
     )
     
-    
-    # Ajouter prints pour dire "skipping machin zero capacity"
-  
-  
   # TODO : faire un paramètre "include Deane null links" TRUE ou FALSE
-  
   #}
-  # Erreur : 'eu-kos' is not a valid area name,
-  # Pareil faut une exception de Area pas trouvée
 }
 
 cat("Done adding links !")

@@ -1,6 +1,7 @@
 # Charger les packages nécessaires
 library(readr)
 library(dplyr)
+library(tidyr)
 
 # Lire le premier fichier CSV avec des identifiants de pays
 countries_df <- read.csv(
@@ -39,8 +40,14 @@ print(updated_countries_df)
 updated_countries_df <- updated_countries_df %>%
   mutate(coordinates_source = "ILO")
 
+# Séparer geo_point_2d en lat et lon
+updated_countries_df <- updated_countries_df %>%
+  separate(geo_point_2d, into = c("lat", "lon"), sep = ", ", convert = TRUE)
+print(updated_countries_df)
+print(updated_countries_df$lat)
+
 print(updated_countries_df)
 print(colnames(updated_countries_df))
 
 # Écrire le résultat dans un nouveau fichier CSV
-write_csv(updated_countries_df, ".\\input\\updated_list_of_nodes.csv")
+write_csv(updated_countries_df, ".\\input\\geo_list_of_nodes.csv")
