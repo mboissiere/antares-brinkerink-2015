@@ -17,22 +17,30 @@ coordinates_df <- read.csv(
 
 #print(coordinates_df)
 print(colnames(coordinates_df))
-print(coordinates_df[1])
 
 
 # Renommer la colonne "LABEL EN" dans coordinates_df en "Country" pour correspondre à countries_df
-coordinates_df <- coordinates_df %>% rename(Country = 'LABEL EN')
+coordinates_df <- coordinates_df %>% rename(Country = LABEL.EN)
+
+print(colnames(coordinates_df))
 
 # Sélectionner uniquement les colonnes nécessaires
 coordinates_df <- coordinates_df %>% select(Country, geo_point_2d)
+
+print(coordinates_df)
 
 # Associer les coordonnées aux pays
 updated_countries_df <- countries_df %>%
   left_join(coordinates_df, by = "Country")
 
+print(updated_countries_df)
+
 # Ajouter la colonne "coordinates_source" avec la valeur "ILO"
 updated_countries_df <- updated_countries_df %>%
   mutate(coordinates_source = "ILO")
+
+print(updated_countries_df)
+print(colnames(updated_countries_df))
 
 # Écrire le résultat dans un nouveau fichier CSV
 write_csv(updated_countries_df, ".\\input\\updated_list_of_nodes.csv")

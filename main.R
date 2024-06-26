@@ -27,7 +27,7 @@ createStudy(
 
 updateAllSettings()
 
-deane_nodes_path = ".\\input\\list_of_nodes.txt"
+deane_nodes_path = ".\\input\\geo_list_of_nodes.csv"
 deane_nodes_df <- read.csv(
   file = deane_nodes_path,
   header = TRUE,
@@ -36,8 +36,10 @@ deane_nodes_df <- read.csv(
   )
 
 print(deane_nodes_df)
+print(colnames(deane_nodes_df))
 
 zones = deane_nodes_df$Node
+
 
 for (zone in zones) {
   # Il faudrait mettre ce truc dans le try, sinon ça met "adding" meme avant un fail, non ?
@@ -47,7 +49,8 @@ for (zone in zones) {
   # Use tryCatch to handle exceptions
   tryCatch({
     # Function that may throw an error
-    get_country_coordinates(country_code)
+    # get_country_coordinates(country_code)
+    coords = 
     x <- getAntaresCoordsFromCountry(country_code)$x
     y <- getAntaresCoordsFromCountry(country_code)$y
     createArea(

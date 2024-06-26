@@ -39,7 +39,20 @@ is_leap_year <- function(year) {
   }
 }
 
+linear_transform_coordinates <- function(coords, lat_scale = 20, lon_scale = 20) {
+  
+  x <- coords$lon * lon_scale 
+  y <- coords$lat * lat_scale
+  return(list(x = x, y = y))
+  
+  
+}
 
+# print(linear_transform_coordinates(coords))
+
+getAntaresCoordsFromCountry <- function(country_code) {
+  return(linear_transform_coordinates(get_country_coordinates(country_code)))
+}
 
 
 # Faire une fonction : preprocess data en enlevant espaces, en mettant _
