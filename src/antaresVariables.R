@@ -7,9 +7,6 @@
 # Chemin racine des études
 base_path <- ".\\antares\\examples\\studies"
 
-# Nom servant de base pour la classification de l'étude
-study_basename <- "Etude_sur_R"
-
 # Version d'Antares utilisée
 antares_version = "8.6.0"
 

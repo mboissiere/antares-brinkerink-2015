@@ -6,7 +6,7 @@ deane_txt_df <- read.csv(
   sep = ";"
 )
 
-print(deane_txt_df)
+#print(deane_txt_df)
 
 deane_ntc_csv = ".\\input\\cross_border_transmission_capacities.txt"
 
@@ -17,8 +17,8 @@ deane_ntc_df <- read.csv(
   encoding = "UTF-8"
 )
 
-print(deane_ntc_df)
-print(colnames(deane_ntc_df))
+#print(deane_ntc_df)
+#print(colnames(deane_ntc_df))
 
 # Read the file into a vector of lines
 lines <- readLines(deane_nodes_csv, encoding = "UTF-8")

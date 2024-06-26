@@ -28,6 +28,8 @@ createStudy(
 updateAllSettings()
 
 for (zone in zones) {
+  # Il faudrait mettre ce truc dans le try, sinon ça met "adding" meme avant un fail, non ?
+  # eh en vrai si isok
   cat(paste("Adding", zone, "node...\n"))
   country_code = getISOfromDeane(zone)
   # Use tryCatch to handle exceptions
@@ -38,6 +40,7 @@ for (zone in zones) {
     y <- getAntaresCoordsFromCountry(country_code)$y
     createArea(
       name = zone,
+      color = getColor(zone),
       localization = c(x, y)
     )
   }, error = function(e) {
@@ -53,4 +56,63 @@ for (zone in zones) {
   
 }
 
-cat("Done !")
+cat("Done adding nodes !\n")
+
+deane_ntc_csv = ".\\input\\cross_border_transmission_capacities.txt"
+
+ntc_df <- read.csv(
+  deane_ntc_csv,
+  header = TRUE,
+  sep = ";",
+  encoding = "UTF-8"
+)
+
+#print(ntc_df)
+#print(colnames(ntc_df))
+#print(ntc_df$From[10])
+
+for (row in 1:nrow(ntc_df)) {
+  from_node = ntc_df$From[row]
+  to_node = ntc_df$To[row]
+  ntc_direct = ntc_df$Max.Flow..MW.[row]
+  ntc_indirect = -ntc_df$Min.Flow..MW.[row]
+  #if (ntc_direct == 0 & ntc_indirect == 0){
+    #cat(paste("Skipping ", from_node, " to ", to_node, " link (zero capacity)\n"))
+    # nb : c'est bad long
+  #} else {
+    ts_link <- data.frame(
+      rep(ntc_direct, 8760), 
+      rep(ntc_indirect, 8760)
+    )
+    tryCatch({
+      # Function that may throw an error
+      createLink(
+        from = from_node,
+        to = to_node,
+        tsLink = ts_link
+      )
+      # Point d'attention qu'il faudra vérifier : est-ce que si mauvais ordre
+      # (eg from EU-AUT to AS-CHN, pas alphabétique), les capacités directe/indirecte
+      # sont bien dans le bon ordre ? Surtout si différentes
+      cat(paste("Linking ", from_node, " to ", to_node, "...\n"))
+    }, 
+    error = function(e) {
+      # What happens if an error is thrown
+      cat(paste("Skipping ", from_node, " to ", to_node, " link (one of the nodes may not exist)\n"))
+    }
+    )
+    
+    
+    # Ajouter prints pour dire "skipping machin zero capacity"
+  
+  
+  # TODO : faire un paramètre "include Deane null links" TRUE ou FALSE
+  
+  #}
+  # Erreur : 'eu-kos' is not a valid area name,
+  # Pareil faut une exception de Area pas trouvée
+}
+
+cat("Done adding links !")
+
+# A ajouter : fonction qui chronometrent et l'affichent

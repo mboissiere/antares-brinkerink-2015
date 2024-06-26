@@ -71,16 +71,24 @@ createArea(
   localization = c(2.2137, 46.6034)
 )
 
+# Step 2: Prepare the tsLink data
+# Assume the simulation runs for 8760 hours (1 year with hourly data)
+# Create a data frame with 8760 rows and 2 columns for the transmission capacities
+ntc_direct <- rep(4700, 8760)  # 3600 MW in the upstream-to-downstream direction
+ntc_indirect <- rep(3286, 8760)  # 3300 MW in the downstream-to-upstream direction
+ts_link <- data.frame(ntc_direct, ntc_indirect)
+
 # Ajouter une liaison entre les zones
 createLink(
   from = "che", 
   to = "deu", 
+  tsLink = ts_link
   #propertiesLink = propertiesLinkOptions()
 )
 
 createLink(
   from = "che", 
-  to = "fra", 
+  to = "fra",
   #propertiesLink = propertiesLinkOptions()
 )
 

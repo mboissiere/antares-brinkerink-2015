@@ -30,6 +30,28 @@ updateAllSettings <- function() {
   )
 }
 
+antaresRed = grDevices::rgb(208, 2, 27, max = 255)
+antaresOrange = grDevices::rgb(230, 108, 44, max = 255)
+antaresYellow = grDevices::rgb(248, 231, 28, max = 255)
+antaresGreen = grDevices::rgb(126, 211, 33, max = 255)
+antaresDarkGreen = grDevices::rgb(65, 117, 5, max = 255)
+antaresBlue = grDevices::rgb(74, 144, 226, max = 255)
+antaresFuchsia = grDevices::rgb(189, 16, 224, max = 255)
+
+color_dict <- c("EU" = antaresBlue,
+                "AF" = antaresOrange,
+                "AS" = antaresRed,
+                "NA" = antaresGreen,
+                "SA" = antaresYellow,
+                "OC" = antaresFuchsia)
+
+getColor <- function(nodeName) {
+  continentCode = substr(nodeName, 1, 2)
+  color <- color_dict[continentCode]
+  return(color)
+}
+
+#print(getColor("EU-AUT"))
 
 
 
