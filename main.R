@@ -8,6 +8,8 @@ library(antaresEditObject)
 # Importer des fonctions et variables auxilliaires créées dans d'autres scripts
 # Clairement set le path une bonne fois pour toute parce que ça bug
 # et qqfois passe de Documents, à Documents/RStudio/AntaresDeane2015...
+# Edit : en fait il faut préciser (dans le README ptet) d'ouvrir le .rproj
+# et c'est bon
 source(".\\src\\featuresTest.R")
 source(".\\src\\antaresFunctions.R")
 #source("parameters.R")
@@ -52,10 +54,3 @@ for (zone in zones) {
 }
 
 cat("Done !")
-# Malheureusmeent mon try catch ne marche pas...
-
-# Par la suite : faire un système d'exception à rattraper parce que sinon :
-# Error in get_country_coordinates(country_code) : 
-# Invalid country code or country not found in the dataset
-# le fait s'interrompre...
-# Dans l'idéal il faudrait que j'ai vraiment un bon jeu de données géo sur pays.
