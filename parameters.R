@@ -15,6 +15,9 @@ renewable_generation_modelling = "clusters" # "aggregated" ou "clusters"
   #c("FRA", "GBR", "DEU", "ITA", "ESP")
 
 
+# pour l'environnement r : faire plutot dossier "study" de sorte à pouvoir en fait faire des presets
+# qui pourraient etre activés avec un machin dans parameters, téléchargées, etc
+
 #zones = deane_nodes_df$Node
 #print(zones)
 #print(zones[1])

@@ -54,56 +54,56 @@ AS-BGD;Asia;Bangladesh;Bangladesh;23.8455777203;90.2419424062;ILO
 AS-BHR;Asia;Bahrain;Bahrain;26.0514166973;50.5459565371;ILO
 AS-BRN;Asia;Brunei;Brunei;4.516799538;114.7272381;ILO
 AS-BTN;Asia;Bhutan;Bhutan;27.4216088934;90.4047032909;ILO
-AS-CHN-AN;Asia;China;Anhui;36.5602062669;103.831751251;ILO
-AS-CHN-BE;Asia;China;Beijing;36.5602062669;103.831751251;ILO
-AS-CHN-CH;Asia;China;Chongqing;36.5602062669;103.831751251;ILO
-AS-CHN-EM;Asia;China;Inner Mongolia (East);36.5602062669;103.831751251;ILO
-AS-CHN-FU;Asia;China;Fujian;36.5602062669;103.831751251;ILO
-AS-CHN-GA;Asia;China;Gansu;36.5602062669;103.831751251;ILO
-AS-CHN-GD;Asia;China;Guangdong;36.5602062669;103.831751251;ILO
-AS-CHN-GU;Asia;China;Guizhou;36.5602062669;103.831751251;ILO
-AS-CHN-GX;Asia;China;Guangxi;36.5602062669;103.831751251;ILO
-AS-CHN-HA;Asia;China;Hainan;36.5602062669;103.831751251;ILO
-AS-CHN-HB;Asia;China;Hebei;36.5602062669;103.831751251;ILO
-AS-CHN-HE;Asia;China;Henan;36.5602062669;103.831751251;ILO
-AS-CHN-HJ;Asia;China;Heilongjiang;36.5602062669;103.831751251;ILO
-AS-CHN-HK;Asia;China;Hong Kong;36.5602062669;103.831751251;ILO
-AS-CHN-HN;Asia;China;Hunan;36.5602062669;103.831751251;ILO
-AS-CHN-HU;Asia;China;Hubei;36.5602062669;103.831751251;ILO
-AS-CHN-JI;Asia;China;Jilin;36.5602062669;103.831751251;ILO
-AS-CHN-JS;Asia;China;Jiangsu;36.5602062669;103.831751251;ILO
-AS-CHN-JX;Asia;China;Jiangxi;36.5602062669;103.831751251;ILO
-AS-CHN-LI;Asia;China;Liaoning;36.5602062669;103.831751251;ILO
-AS-CHN-MA;Asia;China;Macau;36.5602062669;103.831751251;ILO
-AS-CHN-NI;Asia;China;Ningxia;36.5602062669;103.831751251;ILO
-AS-CHN-QI;Asia;China;Qinghai;36.5602062669;103.831751251;ILO
-AS-CHN-SC;Asia;China;Sichuan;36.5602062669;103.831751251;ILO
-AS-CHN-SD;Asia;China;Shandong;36.5602062669;103.831751251;ILO
-AS-CHN-SH;Asia;China;Shanghai;36.5602062669;103.831751251;ILO
-AS-CHN-SI;Asia;China;Shaanxi;36.5602062669;103.831751251;ILO
-AS-CHN-SX;Asia;China;Shanxi;36.5602062669;103.831751251;ILO
-AS-CHN-TI;Asia;China;Tibet;36.5602062669;103.831751251;ILO
-AS-CHN-TJ;Asia;China;Tianjin;36.5602062669;103.831751251;ILO
-AS-CHN-WM;Asia;China;Inner Mongolia (West);36.5602062669;103.831751251;ILO
-AS-CHN-XI;Asia;China;Xinjiang;36.5602062669;103.831751251;ILO
-AS-CHN-YU;Asia;China;Yunnan;36.5602062669;103.831751251;ILO
-AS-CHN-ZH;Asia;China;Zhejiang;36.5602062669;103.831751251;ILO
+AS-CHN-AN;Asia;China;Anhui;32;117;OSM (Nominatim)
+AS-CHN-BE;Asia;China;Beijing;40.190632;116.412144;OSM (Nominatim)
+AS-CHN-CH;Asia;China;Chongqing;30.05518;107.8748712;OSM (Nominatim)
+AS-CHN-EM;Asia;China;Inner Mongolia (East);49.2125235;119.7370167;"OSM ""Hulunbuir"""
+AS-CHN-FU;Asia;China;Fujian;26.193218;118.2208721;OSM (Nominatim)
+AS-CHN-GA;Asia;China;Gansu;38.0000001;101.9999999;OSM (Nominatim)
+AS-CHN-GD;Asia;China;Guangdong;23.1357694;113.1982688;OSM (Nominatim)
+AS-CHN-GU;Asia;China;Guizhou;27;107;OSM (Nominatim)
+AS-CHN-GX;Asia;China;Guangxi;24;109;OSM (Nominatim)
+AS-CHN-HA;Asia;China;Hainan;19.2000001;109.5999999;OSM (Nominatim)
+AS-CHN-HB;Asia;China;Hebei;39.0000001;116;OSM (Nominatim)
+AS-CHN-HE;Asia;China;Henan;34.0000001;113.9999999;OSM (Nominatim)
+AS-CHN-HJ;Asia;China;Heilongjiang;48.0000047;127.999992;OSM (Nominatim)
+AS-CHN-HK;Asia;China;Hong Kong;22.2793278;114.1628131;OSM (Nominatim)
+AS-CHN-HN;Asia;China;Hunan;27.6662087;111.7487063;OSM (Nominatim)
+AS-CHN-HU;Asia;China;Hubei;31.1530504;112.8806423;OSM (Nominatim)
+AS-CHN-JI;Asia;China;Jilin;43.7289674;126.1997366;OSM (Nominatim)
+AS-CHN-JS;Asia;China;Jiangsu;33.0000001;119.9999999;OSM (Nominatim)
+AS-CHN-JX;Asia;China;Jiangxi;28;116;OSM (Nominatim)
+AS-CHN-LI;Asia;China;Liaoning;41.2374106;122.9955469;OSM (Nominatim)
+AS-CHN-MA;Asia;China;Macau;22.1757605;113.5514142;OSM (Nominatim)
+AS-CHN-NI;Asia;China;Ningxia;37.0000001;105.9999999;OSM (Nominatim)
+AS-CHN-QI;Asia;China;Qinghai;35.4070953;95.9521157;OSM (Nominatim)
+AS-CHN-SC;Asia;China;Sichuan;30.5000001;102.4999999;OSM (Nominatim)
+AS-CHN-SD;Asia;China;Shandong;36.398987;118.5055691;OSM (Nominatim)
+AS-CHN-SH;Asia;China;Shanghai;31.2323437;121.4691024;OSM (Nominatim)
+AS-CHN-SI;Asia;China;Shaanxi;35.5895959;109.3013107;OSM (Nominatim)
+AS-CHN-SX;Asia;China;Shanxi;37;112;OSM (Nominatim)
+AS-CHN-TI;Asia;China;Tibet;29.8556443;90.8749807;OSM (Nominatim)
+AS-CHN-TJ;Asia;China;Tianjin;39.3032619;117.4163641;OSM (Nominatim)
+AS-CHN-WM;Asia;China;Inner Mongolia (West);39.4602947;108.8134284;"OSM ""Ordos City"""
+AS-CHN-XI;Asia;China;Xinjiang;42.4804953;85.4633464;OSM (Nominatim)
+AS-CHN-YU;Asia;China;Yunnan;25;102;OSM (Nominatim)
+AS-CHN-ZH;Asia;China;Zhejiang;29.0000001;119.9999999;OSM (Nominatim)
 AS-IDN;Asia;Indonesia;Indonesia;-2.22275260271;117.268941687;ILO
-AS-IND-EA;Asia;India;Eastern Region;22.8881002778;79.6158935763;ILO
-AS-IND-NE;Asia;India;North-Eastern Region;22.8881002778;79.6158935763;ILO
-AS-IND-NO;Asia;India;Northern Region;22.8881002778;79.6158935763;ILO
-AS-IND-SO;Asia;India;Southern Region;22.8881002778;79.6158935763;ILO
-AS-IND-WE;Asia;India;Western Region;22.8881002778;79.6158935763;ILO
+AS-IND-EA;Asia;India;Eastern Region;22.5726459;88.3638953;"OSM ""Calcutta"""
+AS-IND-NE;Asia;India;North-Eastern Region;25.661823;92.40172782;"OSM ""North Eastern Council, India"""
+AS-IND-NO;Asia;India;Northern Region;29.36794425;75.14325458;"OSM ""Northern Zonal Council, India"""
+AS-IND-SO;Asia;India;Southern Region;17.360589;78.4740613;"OSM ""Hyderabad"""
+AS-IND-WE;Asia;India;Western Region;19.8061514;75.51904442;"OSM ""Western Zonal Council, India"""
 AS-IRN;Asia;Iran;Iran;32.57053259;54.27711085;ILO
 AS-IRQ;Asia;Iraq;Iraq;33.0397448476;43.7446739676;ILO
 AS-ISR;Asia;Israel & Palestina;Israel & Palestina;31.44486066;34.99642345;ILO
 AS-JOR;Asia;Jordan;Jordan;31.2455331501;36.771219291;ILO
-AS-JPN-CE;Asia;Japan;Main 60Hz system (Central);37.5526225906;137.979959508;ILO
-AS-JPN-HO;Asia;Japan;Hokkaido;37.5526225906;137.979959508;ILO
-AS-JPN-KY;Asia;Japan;Kyushu;37.5526225906;137.979959508;ILO
-AS-JPN-OK;Asia;Japan;Okinawa;37.5526225906;137.979959508;ILO
-AS-JPN-SH;Asia;Japan;Shikoku;37.5526225906;137.979959508;ILO
-AS-JPN-TO;Asia;Japan;Main 50Hz system (Tohoku & Tokyo);37.5526225906;137.979959508;ILO
+AS-JPN-CE;Asia;Japan;Main 60Hz system (Central);35.021041;135.7556075;"OSM ""Kyoto"""
+AS-JPN-HO;Asia;Japan;Hokkaido;43.4519831;142.8197834;OSM (Nominatim)
+AS-JPN-KY;Asia;Japan;Kyushu;32.48214205;131.1008966;OSM (Nominatim)
+AS-JPN-OK;Asia;Japan;Okinawa;26.5707754;128.0255901;OSM (Nominatim)
+AS-JPN-SH;Asia;Japan;Shikoku;33.560875;133.3718857;OSM (Nominatim)
+AS-JPN-TO;Asia;Japan;Main 50Hz system (Tohoku & Tokyo);35.6821936;139.762221;"OSM ""Tokyo"""
 AS-KAZ;Asia;Kazakhstan;Kazakhstan;48.1604671091;67.2955171321;ILO
 AS-KGZ;Asia;Kyrgyzstan;Kyrgyzstan;41.4618305412;74.5411364681;ILO
 AS-KHM;Asia;Cambodia;Cambodia;12.7158741325;104.902961879;ILO
@@ -121,13 +121,13 @@ AS-PAK;Asia;Pakistan;Pakistan;29.9485239896;69.3410760793;ILO
 AS-PHL;Asia;Philippines;Philippines;11.7639871446;122.874831814;ILO
 AS-PRK;Asia;North Korea;North Korea;40.15080795;127.1843503;ILO
 AS-QAT;Asia;Qatar;Qatar;25.3131884548;51.1865307757;ILO
-AS-RUS-CE;Asia;Russia;UES Center;NA;NA;ILO
-AS-RUS-FE;Asia;Russia;UES Far East;NA;NA;ILO
-AS-RUS-MV;Asia;Russia;UES Middle Volga;NA;NA;ILO
-AS-RUS-NW;Asia;Russia;UES Northwest;NA;NA;ILO
-AS-RUS-SI;Asia;Russia;UES Siberia;NA;NA;ILO
-AS-RUS-SO;Asia;Russia;UES South;NA;NA;ILO
-AS-RUS-UR;Asia;Russia;UES Ural;NA;NA;ILO
+AS-RUS-CE;Asia;Russia;UES Center;55.625578;37.6063916;"OSM ""Moscow"""
+AS-RUS-FE;Asia;Russia;UES Far East;66.941626;129.642371;"OSM ""Sakha"""
+AS-RUS-MV;Asia;Russia;UES Middle Volga;55.7359267;50.77496358;"OSM ""Volga Federal District"""
+AS-RUS-NW;Asia;Russia;UES Northwest;59.938732;30.316229;"OSM ""Saint-Petersburg"""
+AS-RUS-SI;Asia;Russia;UES Siberia;60;100;"OSM ""Siberia"""
+AS-RUS-SO;Asia;Russia;UES South;45.0351532;38.9772396;"OSM ""Krasnodar"""
+AS-RUS-UR;Asia;Russia;UES Ural;65.0331721;60.115404;"OSM ""Ural"""
 AS-SAU;Asia;Saudi Arabia;Saudi Arabia;24.1219726043;44.5372436892;ILO
 AS-SGP;Asia;Singapore;Singapore;1.35861228265;103.812245192;ILO
 AS-SYR;Asia;Syria;Syria;35.02275815;38.50443231;ILO
@@ -201,30 +201,30 @@ NA-NIC;North America;Nicaragua;Nicaragua;12.8454113402;-85.0334031776;ILO
 NA-PAN;North America;Panama;Panama;8.51447641709;-80.1212207136;ILO
 NA-SLV;North America;El Salvador;El Salvador;13.7358746054;-88.871140054;ILO
 NA-TTO;North America;Trinidad and Tobago;Trinidad and Tobago;10.4682272722;-61.2588799175;ILO
-NA-USA-AK;North America;United States;Alaska;45.6875333395;-112.494333916;ILO
-NA-USA-AZ;North America;United States;EIA NEMS Region AZNM;45.6875333395;-112.494333916;ILO
-NA-USA-CA;North America;United States;EIA NEMS Region CAMX;45.6875333395;-112.494333916;ILO
-NA-USA-ER;North America;United States;EIA NEMS Region ERCT;45.6875333395;-112.494333916;ILO
-NA-USA-FR;North America;United States;EIA NEMS Region FRCC;45.6875333395;-112.494333916;ILO
-NA-USA-GU;North America;United States;Guam;45.6875333395;-112.494333916;ILO
-NA-USA-HA;North America;United States;Hawaii;45.6875333395;-112.494333916;ILO
-NA-USA-ME;North America;United States;EIA NEMS Region MROE;45.6875333395;-112.494333916;ILO
-NA-USA-MW;North America;United States;EIA NEMS Region MROW;45.6875333395;-112.494333916;ILO
-NA-USA-NE;North America;United States;EIA NEMS Region NEWE;45.6875333395;-112.494333916;ILO
-NA-USA-NW;North America;United States;EIA NEMS Region NWPP;45.6875333395;-112.494333916;ILO
-NA-USA-NY;North America;United States;EIA NEMS Regions NYCW, NYLI & NYUP;45.6875333395;-112.494333916;ILO
-NA-USA-PR;North America;United States;Puerto Rico;45.6875333395;-112.494333916;ILO
-NA-USA-RA;North America;United States;EIA NEMS Region RMPA;45.6875333395;-112.494333916;ILO
-NA-USA-RE;North America;United States;EIA NEMS Region RFCE;45.6875333395;-112.494333916;ILO
-NA-USA-RM;North America;United States;EIA NEMS Region RFCM;45.6875333395;-112.494333916;ILO
-NA-USA-RW;North America;United States;EIA NEMS Region RFCW;45.6875333395;-112.494333916;ILO
-NA-USA-SA;North America;United States;EIA NEMS Region SRDA;45.6875333395;-112.494333916;ILO
-NA-USA-SC;North America;United States;EIA NEMS Region SRCE;45.6875333395;-112.494333916;ILO
-NA-USA-SE;North America;United States;EIA NEMS Region SRSE;45.6875333395;-112.494333916;ILO
-NA-USA-SN;North America;United States;EIA NEMS Region SPNO;45.6875333395;-112.494333916;ILO
-NA-USA-SS;North America;United States;EIA NEMS Region SPSO;45.6875333395;-112.494333916;ILO
-NA-USA-SV;North America;United States;EIA NEMS Region SRVC;45.6875333395;-112.494333916;ILO
-NA-USA-SW;North America;United States;EIA NEMS Region SRGW;45.6875333395;-112.494333916;ILO
+NA-USA-AK;North America;United States;Alaska;64.4459613;-149.680909;OSM (Nominatim)
+NA-USA-AZ;North America;United States;EIA NEMS Region AZNM;34.395342;-111.763275;"OSM ""Arizona"""
+NA-USA-CA;North America;United States;EIA NEMS Region CAMX;36.7014631;-118.755997;"OSM ""California"""
+NA-USA-ER;North America;United States;EIA NEMS Region ERCT;31.2638905;-98.5456116;"OSM ""Texas"""
+NA-USA-FR;North America;United States;EIA NEMS Region FRCC;27.7567667;-81.4639835;"OSM ""Florida"""
+NA-USA-GU;North America;United States;Guam;13.45011745;144.757708776583;OSM (Nominatim)
+NA-USA-HA;North America;United States;Hawaii;19.5938015;-155.428370097169;OSM (Nominatim)
+NA-USA-ME;North America;United States;EIA NEMS Region MROE;44.4308975;-89.6884637;"OSM ""Wisconsin"""
+NA-USA-MW;North America;United States;EIA NEMS Region MROW;47.6201461;-100.540737;"OSM ""North Dakota"""
+NA-USA-NE;North America;United States;EIA NEMS Region NEWE;43.4849133;-71.6553992;"OSM ""New Hampshire"""
+NA-USA-NW;North America;United States;EIA NEMS Region NWPP;43.6447642;-114.015407;"OSM ""Idaho"""
+NA-USA-NY;North America;United States;EIA NEMS Regions NYCW, NYLI & NYUP;43.1561681;-75.8449946;"OSM ""New York State"""
+NA-USA-PR;North America;United States;Puerto Rico;18.2247706;-66.4858295;OSM (Nominatim)
+NA-USA-RA;North America;United States;EIA NEMS Region RMPA;38.7251776;-105.607716;"OSM ""Colorado"""
+NA-USA-RE;North America;United States;EIA NEMS Region RFCE;40.9699889;-77.7278831;"OSM ""Pennsylvania"""
+NA-USA-RM;North America;United States;EIA NEMS Region RFCM;43.6211955;-84.6824346;"OSM ""Michigan"""
+NA-USA-RW;North America;United States;EIA NEMS Region RFCW;40.2253569;-82.6881395;"OSM ""Ohio"""
+NA-USA-SA;North America;United States;EIA NEMS Region SRDA;35.2048883;-92.4479108;"OSM ""Arkansas"""
+NA-USA-SC;North America;United States;EIA NEMS Region SRCE;35.7730076;-86.2820081;"OSM ""Tennessee"""
+NA-USA-SE;North America;United States;EIA NEMS Region SRSE;33.2588817;-86.8295337;"OSM ""Alabama"""
+NA-USA-SN;North America;United States;EIA NEMS Region SPNO;38.27312;-98.5821872;"OSM ""Kansas"""
+NA-USA-SS;North America;United States;EIA NEMS Region SPSO;34.9550817;-97.2684063;"OSM ""Oklahoma"""
+NA-USA-SV;North America;United States;EIA NEMS Region SRVC;35.6729639;-79.0392919;"OSM ""North Carolina"""
+NA-USA-SW;North America;United States;EIA NEMS Region SRGW;38.7604815;-92.5617875;"OSM ""Missouri"""
 OC-ATA;Oceania;Antarctica;Antarctica;-79.4063075;0.3149312;OSM (Nominatim)
 OC-AUS-NT;Oceania;Australia;Northern Territory;-19.8516101;133.2303375;OSM (Nominatim)
 OC-AUS-QL;Oceania;Australia;Queensland;-22.1646782;144.5844903;OSM (Nominatim)

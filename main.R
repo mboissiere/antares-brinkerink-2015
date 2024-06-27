@@ -89,6 +89,38 @@ for (row in 1:nrow(deane_nodes_df)) {
 
 cat("Done adding nodes !\n")
 
+####################################################
+
+# Définir le chemin menant aux données 2015
+data_path <- ".\\input\\dataverse_files"
+
+load_csv = "All Demand UTC 2015.csv"
+load_path <- file.path(data_path, load_csv)
+
+# Lire les données en spécifiant que toutes les colonnes sont numériques
+load_data_matrix <- read.table(
+  load_path,
+  header = TRUE,
+  sep = ",",
+  row.names = 1,
+  check.names = FALSE,
+  stringsAsFactors = FALSE)
+
+print(load_data_matrix)
+print(colnames(load_data_matrix))
+print(zones)
+# plutot appeler areas ou nodes mais bref
+
+writeInputTS(
+  data = load_data_matrix$EU.CHE,
+  type = "load",
+  area = "che"
+)
+
+
+####################################################
+
+
 deane_ntc_csv = ".\\input\\cross_border_transmission_capacities.txt"
 
 ntc_df <- read.csv(
@@ -107,11 +139,11 @@ for (row in 1:nrow(ntc_df)) {
   to_node = ntc_df$To[row]
   ntc_direct = ntc_df$Max.Flow..MW.[row]
   ntc_indirect = -ntc_df$Min.Flow..MW.[row]
-  if (ntc_direct == 0 & ntc_indirect == 0){
+  #if (ntc_direct == 0 & ntc_indirect == 0){
     # Peut etre jouer avec l'évaluation paresseuse ?
     #cat(paste("Skipping ", from_node, " to ", to_node, " link (zero capacity)\n"))
     # nb : c'est bad long ces prints
-  } else {
+  #} else {
     #ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
     tryCatch({
       # Function that may throw an error
