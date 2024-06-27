@@ -9,7 +9,7 @@ simulation_mode = "Economy" # "Adequacy", "Economy" ou "Draft"
 horizon = 2015 # entier, année d'étude
 nb_MCyears = 1 # entier, nombre d'années Monte-Carlo
 
-renewable_generation_modelling = "clusters" # "aggregated" ou "clusters"
+renewable_generation_modelling = "aggregated" # "aggregated" ou "clusters"
 
 # zones = c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA")
   #c("FRA", "GBR", "DEU", "ITA", "ESP")
