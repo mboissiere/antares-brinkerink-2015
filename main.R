@@ -97,26 +97,29 @@ data_path <- ".\\input\\dataverse_files"
 load_csv = "All Demand UTC 2015.csv"
 load_path <- file.path(data_path, load_csv)
 
-# Lire les données en spécifiant que toutes les colonnes sont numériques
+# Read data with check.names = FALSE
 load_data_matrix <- read.table(
   load_path,
   header = TRUE,
   sep = ",",
   row.names = 1,
-  check.names = FALSE,
-  stringsAsFactors = FALSE)
+  stringsAsFactors = FALSE,
+  check.names = FALSE)
 
-print(load_data_matrix)
-print(colnames(load_data_matrix))
-print(zones)
-# plutot appeler areas ou nodes mais bref
+# Iterate over the column names
+for (zone in colnames(load_data_matrix)) {
+  # Extract the time series for the current column
+  load_ts <- load_data_matrix[[zone]]
+  
+  writeInputTS(
+    data = load_ts,
+    type = "load",
+    area = zone
+  )
+  cat(paste("Adding", zone, "load data...\n"))
+}
 
-writeInputTS(
-  data = load_data_matrix$EU.CHE,
-  type = "load",
-  area = "che"
-)
-
+cat("Done adding load data!\n")
 
 ####################################################
 
