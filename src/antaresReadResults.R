@@ -3,19 +3,34 @@
 library(antaresProcessing)
 library(antaresViz)
 
-# Ca marche pas trop mal (NB : rendre ça toggleable, faire appel à partie externe
-# ptet comme pour le Viz)
-
-# et corriger le fait que les centrales s'activent pas (year by year, thermal TS
-# generation..)
+# Ouais faut vraiment rendre ça plus propre
+if (!LAUNCH_SIMULATION) {
+  study_name = IMPORT_STUDY_NAME
+  study_path = file.path("input", "antares_presets", study_name,
+                     fsep = .Platform$file.sep)
+  msg = paste("[MAIN] - Reading simulations of pre-existing", study_name, "study...")
+  logMain(msg)
+  
+  simulation_name = IMPORT_SIMULATION_NAME
+  setSimulationPath(study_path, simulation_name)
+  if (simulation_name == -1) {
+    msg = "[MAIN] - Opening latest simulation..."
+    logMain(msg)
+  } else {
+    msg = paste("[MAIN] - Opening", simulation_name, "simulation...")
+    logMain(msg)
+  }
+}
+# A cleaner thing to do would be to pass the study name as argument of a function
+# and to do the LAUNCH_SIMULATION check in main.
 
 # Définir le chemin vers le dossier de l'étude Antares
-chemin_etude <- file.path("antares", "examples", "studies", study_name,
-                          fsep = .Platform$file.sep)
-
-simulation <- -1
-
-setSimulationPath(chemin_etude, simulation)
+# chemin_etude <- file.path("antares", "examples", "studies", study_name,
+#                           fsep = .Platform$file.sep)
+# 
+# simulation <- -1
+# 
+# setSimulationPath(chemin_etude, simulation)
 
 # Définir la plage de dates
 start_date <- "2015-01-01"
@@ -61,6 +76,8 @@ prodStack(
   #main = "Production horaire par mode de production",
   unit = "MWh"
 )
+
+# savePlotAsPng(plot, file = "Rplot.png", width = 600, height = 480, ...)
 
 # # Lire les résultats de la simulation
 # sim_results <- readAntares(

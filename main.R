@@ -28,6 +28,20 @@ source(logging_module)
 
 source("parameters.R")
 
+if (EXPORT_TO_OUTPUT_FOLDER) {
+  output_dir <- paste0("./output/", generateName("run"))
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir)
+  }
+}
+# apparemment le format h5 sert à compresser tout ça ?
+# # Convert your study in h5 format
+# writeAntaresH5(path = mynewpath)
+# 
+# # Redefine sim path with h5 file
+# opts <- setSimulationPath(path = mynewpath)
+# prodStack(x = opts)
+
 ################################################################################
 ################################# CREATE STUDY #################################
 

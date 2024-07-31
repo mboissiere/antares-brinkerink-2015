@@ -1,6 +1,6 @@
 # Ok, let's test how it's like to import a study
 if (!CREATE_STUDY) {
-  preset_name = "threePoints_minimal",
+  preset_name = IMPORT_STUDY_NAME
   preset = file.path("input", "antares_presets", preset_name,
                      fsep = .Platform$file.sep)
   msg = paste("[MAIN] - Reading pre-existing", preset_name, "study...")
@@ -36,7 +36,7 @@ antares_solver_path <- ".\\antares\\AntaresWeb\\antares_solver\\antares-8.8-solv
 # Lancer la simulation
 runSimulation(
   name = simulation_name,
-  mode = "economy",
+  mode = "economy", # ah, et ça aussi c'est un paramètre, mais bon...
   path_solver = antares_solver_path,
   wait = TRUE,
   show_output_on_console = TRUE,

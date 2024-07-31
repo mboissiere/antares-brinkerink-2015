@@ -3,9 +3,18 @@
 # Objets en snake_case, fonctions en camelCase
 
 CREATE_STUDY = FALSE
-IMPORT_STUDY_NAME = "blabla" # quand je ferai des presets
-LAUNCH_SIMULATION = TRUE
-READ_RESULTS = FALSE
+IMPORT_STUDY_NAME = "threePoints_minimal" # quand je ferai des presets
+LAUNCH_SIMULATION = FALSE
+IMPORT_SIMULATION_NAME = -1 # for latest
+# IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
+READ_RESULTS = TRUE
+
+# if (EXPORT_TO_OUTPUT_FOLDER) {
+#   réfléchir à quelque chose pour faciliter la sauvegarde de captures d'écran
+#   et éventuellement une duplication de presets & logs (de toute façon output est
+#   dans le gitignore)
+# }
+EXPORT_TO_OUTPUT_FOLDER = TRUE
 
 # Nom servant de base pour la classification de l'étude
 study_basename <- "Etude_sur_R_Monde"
