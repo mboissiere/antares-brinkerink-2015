@@ -61,21 +61,27 @@ if (GENERATE_LOAD) {
 ################################################################################
 ################################ GENERATOR IMPORT ##############################
 
-msg = "[MAIN] - Gathering generator data from PLEXOS..."
-logMain(msg)
-start_time <- Sys.time()
-preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R",
-                                        fsep = .Platform$file.sep)
-source(preprocessPlexosData_module)
+# Nota bene : remember that this is how we did it.
+# Else, only relying on txtToRDS is opaque
 
-generators_tbl <- getGeneratorsFromNodes(NODES)
-generators_tbl <- filterFor2015(generators_tbl)
-generators_tbl <- addGeneralFuelInfo(generators_tbl)
+# msg = "[MAIN] - Gathering generator data from PLEXOS..."
+# logMain(msg)
+# start_time <- Sys.time()
+# preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R",
+#                                         fsep = .Platform$file.sep)
+# source(preprocessPlexosData_module)
+# 
+# generators_tbl <- getGeneratorsFromNodes(NODES)
+# generators_tbl <- filterFor2015(generators_tbl)
+# generators_tbl <- addGeneralFuelInfo(generators_tbl)
+# 
+# end_time <- Sys.time()
+# duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+# msg = paste0("[MAIN] - Done gathering generator data! (run time : ", duration,"s).\n")
+# logMain(msg)
 
-end_time <- Sys.time()
-duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-msg = paste0("[MAIN] - Done gathering generator data! (run time : ", duration,"s).\n")
-logMain(msg)
+generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
+generators_tbl <- readRDS(generators_file)
 
 ################################################################################
 ################################## WIND IMPORT #################################
@@ -99,10 +105,10 @@ if (GENERATE_WIND) {
 }
 
 ################################################################################
-################################ SOLAR PV IMPORT ###############################
+################################## SOLAR IMPORT ################################
 
 if (GENERATE_SOLAR_PV) {
-  msg = "[MAIN] - Fetching solar PV data...\n"
+  msg = "[MAIN] - Fetching solar data...\n"
   logMain(msg)
   start_time <- Sys.time()
   
@@ -115,7 +121,7 @@ if (GENERATE_SOLAR_PV) {
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste0("[MAIN] - Done adding solar PV data! (run time : ", duration,"s).\n")
+  msg = paste0("[MAIN] - Done adding solar data! (run time : ", duration,"s).\n")
   logMain(msg)
 }
 

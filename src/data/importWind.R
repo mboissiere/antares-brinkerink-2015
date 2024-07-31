@@ -55,28 +55,33 @@ getWindPropertiesTable <- function(generators_tbl) {
 # print(wind_generators_tbl)
 
 
+
 addAggregatedWind <- function(nodes,
                               generators_tbl # Avoir une valeur par défaut ? Pas important ?
                               ) {
   tryCatch({
-    wind_generators_tbl <- getWindPropertiesTable(generators_tbl)
-    # print(wind_generators_tbl)
-    # wind_timeseries_tbl <- getTableFromNinja(WIND_DATA_PATH)
-    # print(wind_timeseries_tbl)
-    # Ah ! Aucun filtrage sur les pays (en vrai c'est normal, du moment qu'en suite 
-    #ça se fait zigouiller dans la mémoire)
-    #gc()
-    # genre comme ça
-    # ou alors, repasser par l'approche où le PATH est en argument
-    # et on ne calcule que wind_timeseries_tbl au sein de aggregateGeneratorTimeSeries
-    wind_aggregated_TS <- aggregateGeneratorTimeSeries(wind_generators_tbl, WIND_DATA_PATH)
-    # print(wind_aggregated_TS)
-    # Une fois qu'on a wind_aggregated_TS bye bye le reste
-    #gc()
-    # Redundant (we could just go through generators_tbl because it's well processed)
-    # but still simplest that comes to mind.
-    # Could probably be refactored with a cool lapply function that would go super fast or something.
-    #nodes = c("EU-CHE", "EU-DEU", "EU-FRA")
+    # wind_generators_tbl <- getWindPropertiesTable(generators_tbl)
+    # # print(wind_generators_tbl)
+    # # wind_timeseries_tbl <- getTableFromNinja(WIND_DATA_PATH)
+    # # print(wind_timeseries_tbl)
+    # # Ah ! Aucun filtrage sur les pays (en vrai c'est normal, du moment qu'en suite 
+    # #ça se fait zigouiller dans la mémoire)
+    # #gc()
+    # # genre comme ça
+    # # ou alors, repasser par l'approche où le PATH est en argument
+    # # et on ne calcule que wind_timeseries_tbl au sein de aggregateGeneratorTimeSeries
+    # wind_aggregated_TS <- aggregateGeneratorTimeSeries(wind_generators_tbl, WIND_DATA_PATH)
+    # # print(wind_aggregated_TS)
+    # # Une fois qu'on a wind_aggregated_TS bye bye le reste
+    # #gc()
+    # # Redundant (we could just go through generators_tbl because it's well processed)
+    # # but still simplest that comes to mind.
+    # # Could probably be refactored with a cool lapply function that would go super fast or something.
+    # #nodes = c("EU-CHE", "EU-DEU", "EU-FRA")
+    
+    
+    wind_aggregated_file <- ".\\src\\objects\\wind_aggregated_ninja_tbl.rds"
+    wind_aggregated_TS <- readRDS(wind_aggregated_file)
     for (node in nodes) {
       wind_ts <- wind_aggregated_TS[[node]]
       tryCatch({

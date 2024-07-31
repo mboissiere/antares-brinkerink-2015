@@ -34,22 +34,24 @@ addAggregatedSolarPV <- function(nodes,
                                 generators_tbl
                                 ) {
   tryCatch({
+    # solar_pv_generators_tbl <- getSolarPVPropertiesTable(generators_tbl)
+    # solar_pv_aggregated_TS <- aggregateGeneratorTimeSeries(solar_pv_generators_tbl, PV_DATA_PATH)
     
-    solar_pv_generators_tbl <- getSolarPVPropertiesTable(generators_tbl)
-    solar_pv_aggregated_TS <- aggregateGeneratorTimeSeries(solar_pv_generators_tbl, PV_DATA_PATH)
+    solar_aggregated_file <- ".\\src\\objects\\solar_aggregated_ninja_tbl.rds"
+    solar_aggregated_TS <- readRDS(solar_aggregated_file)
     
     for (node in nodes) {
-      solar_pv_ts <- solar_pv_aggregated_TS[[node]]
+      solar_ts <- solar_aggregated_TS[[node]]
       tryCatch({
         writeInputTS(
-          data = solar_pv_ts,
+          data = solar_ts,
           type = "solar",
           area = node
         )
-        msg = paste("[SOLAR] - Adding", node, "aggregated solar PV data...")
+        msg = paste("[SOLAR] - Adding", node, "aggregated solar data...")
         logFull(msg)
       }, error = function(e) {
-        msg = paste("[WARN] - Skipped adding solar PV data for", node, "(no generators found in PLEXOS).")
+        msg = paste("[WARN] - Skipped adding solar data for", node, "(no generators found in PLEXOS).")
         logError(msg)
       }
       
