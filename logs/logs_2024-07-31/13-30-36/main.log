@@ -1,0 +1,36 @@
+INFO [2024-07-31 13:30:36] [MAIN] - Creating Etude_sur_R_Monde__2024_07_31_13_30_35 study...
+
+INFO [2024-07-31 13:30:36] [MAIN] - Adding nodes...
+
+INFO [2024-07-31 13:30:38] [MAIN] - Done adding nodes! (run time : 1.65s).
+
+INFO [2024-07-31 13:30:38] [MAIN] - Adding load data...
+
+INFO [2024-07-31 13:30:41] [MAIN] - Done adding load data! (run time : 2.61s).
+
+INFO [2024-07-31 13:30:41] [MAIN] - Gathering generator data from PLEXOS...
+INFO [2024-07-31 13:30:46] [MAIN] - Done gathering generator data! (run time : 4.96s).
+
+INFO [2024-07-31 13:30:46] [MAIN] - Fetching wind data...
+
+INFO [2024-07-31 13:31:36] [MAIN] - Done adding wind data! (run time : 50.66s).
+
+INFO [2024-07-31 13:31:36] [MAIN] - Fetching solar PV data...
+
+INFO [2024-07-31 13:32:38] [MAIN] - Done adding solar PV data! (run time : 61.55s).
+
+INFO [2024-07-31 13:32:38] [MAIN] - Fetching thermal data...
+
+INFO [2024-07-31 13:34:22] [MAIN] - Done adding thermal data! (run time : 1.74min).
+
+INFO [2024-07-31 13:34:22] [MAIN] - Adding lines between areas...
+
+INFO [2024-07-31 13:34:24] [MAIN] - Finished setting up Antares study! (run time : 3.82min).
+
+
+INFO [2024-07-31 13:34:24] [MAIN] - Finished setting up Antares study! (run time : 3.82min).
+
+
+INFO [2024-07-31 13:38:25] [MAIN] - Antares simulation finished! (run time : 4.01min).
+
+

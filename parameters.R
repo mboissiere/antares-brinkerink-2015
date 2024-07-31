@@ -20,7 +20,8 @@ GENERATE_SOLAR_PV = TRUE
 GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
-THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
+# THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
+THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear")
 ADD_VOLL = FALSE
 INCLUDE_ZERO_NTC_LINES = FALSE
 
@@ -101,7 +102,15 @@ DEANE_NODES_EUROPE = c('EU-ALB', 'EU-ARM', 'EU-AUT', 'EU-AZE', 'EU-BEL', 'EU-BGR
 # et un truc de paramètres que l'utilisateur peut être amené à bouger souvent
 # (Comme je le dis depuis qq temps oups)
 
-NODES = DEANE_NODES_EUROPE
+# NODES = DEANE_NODES_EUROPE
+NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+# plutôt avoir des variables qui peuvent bcp changer en "nodes"
+# et des variables vrmt statiques (comme horizon plus bas, en attendant le preset...)
+# en "NODES"
+# ce serait bien que preset change aussi le NOM DE L'ETUDE
+# c'est tellement ridicule d'avoir écrit "Monde" quand je fais un test sur trois points
+
+
 # NODES = getNodesFromContinents(c("Europe"))
 # NODES = c("EU-MDA", "EU-MKD", "EU-MNE") # test on 3 problematic countries
 # NODES = "EU-MDA"
@@ -131,6 +140,11 @@ NODES = DEANE_NODES_EUROPE
 simulation_mode = "Economy" # "Adequacy", "Economy" ou "Draft"
 horizon = 2015 # entier, année d'étude
 nb_MCyears = 10 # entier, nombre d'années Monte-Carlo
+# A noter que nb_MCyears est probablement une variable qui peut changer
+# et, qui affecte temps de la partie LaunchSimulation
+
+# ajouter la partie configuration, qui contient notamment TS management,
+# dans le grand excel qui résume les variables Antares
 
 RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 

@@ -24,6 +24,8 @@ source(logging_file)
 
 source("parameters.R")
 
+################################################################################
+################################# PARTIE ETUDE #################################
 
 ## Création d'une nouvelle étude
 study_name <- generateName(study_basename)
@@ -58,6 +60,7 @@ logMain(msg)
 # avant on avait du Clusters, hop ça zappe les TS aggregated.
 # En fait si AHAH ça le sauvegarde mais ça le cache. Marrant.
 updateAllSettings()
+# En vrai là je pourrais mettre des petits prints genre "added machin"
 # Au vu des messages d'erreur ça a l'air d'être "thermal" le problème
 
 ################################################################################
@@ -66,7 +69,9 @@ msg = "[MAIN] - Adding nodes...\n"
 logMain(msg)
 start_time <- Sys.time()
 
-addNodesToAntares(NODES)
+# Ah oui et le addVoLL aussi....
+# Probablement modifier la fonction addNodes pour qu'il y ait un add_VoLL en entrée aussi
+addNodesToAntares(NODES, ADD_VOLL)
 
 end_time <- Sys.time()
 # peut-être faire un "time" function dans utils
@@ -167,8 +172,8 @@ if (GENERATE_THERMAL) {
   addThermalToAntares(thermal_generators_tbl)
   
   end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste0("[MAIN] - Done adding thermal data! (run time : ", duration,"s).\n")
+  duration <- round(difftime(end_time, start_time, units = "mins"), 2)
+  msg = paste0("[MAIN] - Done adding thermal data! (run time : ", duration,"min).\n")
   logMain(msg)
 }
 
@@ -182,8 +187,6 @@ if (GENERATE_LINES) {
   addLines_file = file.path("src", "data", "addLines.R")
   source(addLines_file)
   addLinesToAntares(NODES, INCLUDE_ZERO_NTC_LINES)
-  message = paste(Sys.time(), "- [MAIN] Done adding lines !")
-  log_message(message, fullLog_file, console_verbose)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -196,8 +199,80 @@ total_end_time <- Sys.time()
 # ça permettra de dire genre "Europe : approx time 5 mins, World : approx time 30 min"
 # ou sur l'aggregated, les clusters etc
 duration <- round(difftime(total_end_time, total_start_time, units = "mins"), 2)
-msg = paste0("[MAIN] - Finished setting up Antares study! (run time : ", duration,"s).\n")
+# Dans un refactor, on pourrait avoir des thermal_units machin pour que ce soit adapté
+# à la taille du truc. Eg Lines peut etre des secondes en europe mais des minutes dans monde.
+# Tout est des secondes si peu de noeuds. D'où faire des presets.
+msg = paste0("[MAIN] - Finished setting up Antares study! (run time : ", duration,"min).\n\n")
 logMain(msg)
+
+################################################################################
+############################### PARTIE SIMULATION ##############################
+
+simulation_name <- generateName("simulation")
+msg = paste("[MAIN] - Starting", simulation_name, "simulation...")
+logMain(msg)
+simulation_start_time <- Sys.time()
+
+#simulation_path <- file.path(study_path, "output", simulation_name)
+
+antares_solver_path <- ".\\antares\\AntaresWeb\\antares_solver\\antares-8.8-solver.exe"
+
+# Lancer la simulation
+runSimulation(
+  name = simulation_name,
+  mode = "economy",
+  path_solver = antares_solver_path,
+  wait = TRUE,
+  show_output_on_console = TRUE,
+  parallel = TRUE,
+  #opts = antaresRead::setSimulationPath(simulation_path)
+)
+
+simulation_end_time <- Sys.time()
+duration <- round(difftime(simulation_end_time, simulation_start_time, units = "mins"), 2)
+msg = paste0("[MAIN] - Antares simulation finished! (run time : ", duration,"min).\n\n")
+logMain(msg)
+
+################################################################################
+################################# PARTIE LECTURE ###############################
+
+
+# Ca marche pas trop mal (NB : rendre ça toggleable, faire appel à partie externe
+# ptet comme pour le Viz)
+
+# et corriger le fait que les centrales s'activent pas (year by year, thermal TS
+# generation..)
+
+# Lire les résultats de la simulation
+sim_results <- readAntares(
+  areas = "all",
+  links = "all",
+  clusters = "all",
+  mcYears = "all"
+)
+
+# Afficher les résultats
+print(sim_results)
+
+# Todo : AntaresViz
+
+################################################################################
+# Commentaires variés
+
+# Ca existe de stocker des objets R qqpart ?
+# Ca peut diminuer le temps de fetch renewables.ninja, surtout quand on a peu de points.
+# Mais, c'est peut-être plus risqué en un sens, je sais pas.
+# Dans input un dossier "Robjects" ou quoi ça pourrait le faire.
+
+# D'après stackoverflow :
+#   You can use saveRDS and readRDS functions:
+#     
+#     library(tibble)
+#   test <- tibble(a= list(c(1,2), c(3,4)))
+#   saveRDS(test, "c:/test.rds")
+#   test_2 <- readRDS("c:/test.rds"))
+# identical(test, test_2)
+# In the readr package there are read_rds and write_rds functions, which even allow compression to be set.
 
 
 # if (ADD_VOLL) {

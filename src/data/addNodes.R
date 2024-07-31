@@ -90,19 +90,39 @@ addAntaresColorToNodes <- function(nodes_tbl) {
     return(nodes_tbl)
 }
 
+addVoLLToNodes <- function(nodes_tbl) {
+  voll_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+    filter(collection == "Regions" & property == "VoLL") %>%
+    rename(
+      continent = child_object,
+      voll = value
+    ) %>%
+    select(continent, voll)
+  
+  nodes_tbl <- nodes_tbl %>%
+    left_join(voll_tbl, by = "continent")
+    return(nodes_tbl)
+}
 
-addNodesToAntares <- function(nodes = DEANE_NODES_ALL, 
+addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
+                              add_voll = TRUE,
                               scaling_factor = DEFAULT_SCALING_FACTOR
                               ) {
   nodes_tbl <- getNodesTable(nodes)
   nodes_tbl <- addLatLonToNodes(nodes_tbl)
   nodes_tbl <- addAntaresColorToNodes(nodes_tbl)
   # encore une fois, il y a probablement une méthode "apply" plus rapide
+  if (add_voll) {
+    nodes_tbl <- addVoLLToNodes(nodes_tbl)
+  }
   for (row in 1:nrow(nodes_tbl)) {
     area_name = nodes_tbl$node[row]
     area_lat = nodes_tbl$lat[row]
     area_lon = nodes_tbl$lon[row]
     area_color = nodes_tbl$antares_color[row]
+    if (add_voll) {
+      area_voll = nodes_tbl$voll[row]
+    }
     
     x = area_lon * scaling_factor
     y = area_lat * scaling_factor
@@ -110,12 +130,20 @@ addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
     tryCatch({
       msg = paste("[NODES] - Adding", area_name, "node...")
       logFull(msg)
-      
-      createArea(
-        name = area_name,
-        color = area_color,
-        localization = c(x, y)
-      )
+      if (add_voll) {
+        createArea(
+          name = area_name,
+          color = area_color,
+          localization = c(x, y),
+          nodalOptimization = nodalOptimizationOptions(average_unsupplied_energy_cost = area_voll)
+        )
+      } else {
+        createArea(
+          name = area_name,
+          color = area_color,
+          localization = c(x, y)
+        )
+      }
     }, error = function(e) {
       msg = paste("[WARN] - Could not create node", area_name, "- skipping and continuing...")
       logError(msg)

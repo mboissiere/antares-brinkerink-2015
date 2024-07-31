@@ -1,0 +1,26 @@
+ERROR [2024-07-31 11:21:58] [WARN] - Skipped adding wind data for EU-ALB (no generators found in PLEXOS).
+ERROR [2024-07-31 11:21:58] [WARN] - Skipped adding wind data for EU-ARM (no generators found in PLEXOS).
+ERROR [2024-07-31 11:21:58] [WARN] - Skipped adding wind data for EU-AZE (no generators found in PLEXOS).
+ERROR [2024-07-31 11:21:59] [WARN] - Skipped adding wind data for EU-BIH (no generators found in PLEXOS).
+ERROR [2024-07-31 11:21:59] [WARN] - Skipped adding wind data for EU-BLR (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:02] [WARN] - Skipped adding wind data for EU-GEO (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:03] [WARN] - Skipped adding wind data for EU-ISL (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:03] [WARN] - Skipped adding wind data for EU-KOS (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:04] [WARN] - Skipped adding wind data for EU-MDA (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:04] [WARN] - Skipped adding wind data for EU-MKD (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:04] [WARN] - Skipped adding wind data for EU-MNE (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:06] [WARN] - Skipped adding wind data for EU-SRB (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:06] [WARN] - Skipped adding wind data for EU-SVK (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:06] [WARN] - Skipped adding wind data for EU-SVN (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:56] [WARN] - Skipped adding solar PV data for EU-ALB (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:56] [WARN] - Skipped adding solar PV data for EU-ARM (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:57] [WARN] - Skipped adding solar PV data for EU-BIH (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:57] [WARN] - Skipped adding solar PV data for EU-BLR (no generators found in PLEXOS).
+ERROR [2024-07-31 11:22:59] [WARN] - Skipped adding solar PV data for EU-EST (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:00] [WARN] - Skipped adding solar PV data for EU-GEO (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:01] [WARN] - Skipped adding solar PV data for EU-IRL (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:01] [WARN] - Skipped adding solar PV data for EU-ISL (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:01] [WARN] - Skipped adding solar PV data for EU-KOS (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:02] [WARN] - Skipped adding solar PV data for EU-LVA (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:02] [WARN] - Skipped adding solar PV data for EU-MDA (no generators found in PLEXOS).
+ERROR [2024-07-31 11:23:02] [WARN] - Skipped adding solar PV data for EU-MNE (no generators found in PLEXOS).

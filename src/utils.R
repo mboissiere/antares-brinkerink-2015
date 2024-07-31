@@ -25,8 +25,7 @@ find_january_1st_day <- function(year) {
   # Get the corresponding weekday name from the vector
   day_of_week <- weekday_names[day_of_week_index]
   
-  # Print and return day of the week
-  print(day_of_week)
+  # Return day of the week
   return(day_of_week)
 }
 
