@@ -2,10 +2,10 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = TRUE
+CREATE_STUDY = FALSE
 IMPORT_STUDY_NAME = "blabla" # quand je ferai des presets
 LAUNCH_SIMULATION = TRUE
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 
 # Nom servant de base pour la classification de l'étude
 study_basename <- "Etude_sur_R_Monde"

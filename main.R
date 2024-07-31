@@ -4,6 +4,10 @@
 # Charger les packages
 library(antaresRead)
 library(antaresEditObject)
+# Limite ça le EditObject pourrait être limité au CreateStudy
+# Bon AntaresRead je vois pas comment faire sans mdr
+# Penser à faire comme un requirements.txt genre le truc comme dans logging
+# si pas packages alors les installer, et dire dans le README "au pire localement"
 
 # Demander d'ailleurs si on peut virer "antares" du Gitignore
 # pour démocratiser AntaresWeb (mais vu que c'est Nicolas qui me l'a filé...)
@@ -18,9 +22,9 @@ addNodes_file = file.path("src", "data", "addNodes.R",
                           fsep = .Platform$file.sep)
 source(addNodes_file)
 
-logging_file = file.path("src", "logging.R",
+logging_module = file.path("src", "logging.R",
                          fsep = .Platform$file.sep)
-source(logging_file)
+source(logging_module)
 
 source("parameters.R")
 
@@ -28,27 +32,30 @@ source("parameters.R")
 ################################# CREATE STUDY #################################
 
 if (CREATE_STUDY) {
-  antaresCreateStudy_file = file.path("src", "antaresCreateStudy.R",
+  antaresCreateStudy_module = file.path("src", "antaresCreateStudy.R",
                                       fsep = .Platform$file.sep)
-  source(antaresCreateStudy_file)
+  source(antaresCreateStudy_module)
 }
 
 ################################################################################
 ############################### LAUNCH SIMULATION ##############################
 
 if (LAUNCH_SIMULATION) {
-  antaresLaunchSimulation_file = file.path("src", "antaresLaunchSimulation.R",
+  # Peut-être ici mettre les logs globaux ce qui permettrait de mettre genre
+  # starting simulation..
+  # ou skipped simulation... skipped reading results... done !
+  antaresLaunchSimulation_module = file.path("src", "antaresLaunchSimulation.R",
                                       fsep = .Platform$file.sep)
-  source(antaresLaunchSimulation_file)
+  source(antaresLaunchSimulation_module)
 }
 
 ################################################################################
 ################################## READ RESULTS ################################
 
 if (READ_RESULTS) {
-  antaresReadResults_file = file.path("src", "antaresReadResults.R",
+  antaresReadResults_module = file.path("src", "antaresReadResults.R",
                                            fsep = .Platform$file.sep)
-  source(antaresReadResults_file)
+  source(antaresReadResults_module)
 }
 
 ################################################################################

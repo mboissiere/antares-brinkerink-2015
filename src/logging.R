@@ -6,6 +6,16 @@ library(futile.logger)
 
 source("parameters.R")
 
+# NB : Initially thought logs could be in a "output" package of the function
+# that would return Antares studies, but I feel like it creates them in 
+# "antares/studies" automatically and there might not be an easy fix.
+# Apart from a script copying the files ?
+# anyway, a workaround for the moment could be giving the log folder the same
+# name as the study
+# hm, theres file.copy. Why not honestly.
+# If I start knowing how to screenshot AntaresViz / automatically analyse them,
+# that could be cool.
+
 # Function to create the day directory
 createDayDirectory <- function() {
   day_dir <- paste0("./logs/logs_", format(Sys.time(), "%Y-%m-%d"))

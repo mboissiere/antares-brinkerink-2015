@@ -1,3 +1,8 @@
+# Chargement des packages nécessaires
+# library(antaresRead)
+library(antaresProcessing)
+library(antaresViz)
+
 # Ca marche pas trop mal (NB : rendre ça toggleable, faire appel à partie externe
 # ptet comme pour le Viz)
 
@@ -24,6 +29,7 @@ mydata <- readAntares(areas = "all",
                       # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
                       select = c("SOLAR", "WIND", "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "LOAD"),
                       timeStep = "weekly"
+                      # Ah euh, les imports et les exports quand même !!
 )
 
 # Créer un alias pour la stack de production
@@ -40,7 +46,7 @@ setProdStackAlias(
   colors = c("yellow", "turquoise", "orange", "red", "brown", "darkgreen"),
   lines = alist(
     LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + GAS + COAL + `MIX. FUEL` # Curieux : j'ai un screen avec le bleu en bas
+    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + GAS + COAL + `MIX. FUEL`
   ),
   lineColors = c("black", "royalblue")
 )
