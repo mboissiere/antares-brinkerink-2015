@@ -144,12 +144,8 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #print(minStableLevelPercentages)
 
 # coalParameters = c("unitcount" = as)
-addThermalToAntares <- function(thermal_generators_tbl,
-                                log_verbose,
-                                console_verbose,
-                                fullLog_file,
-                                errorsLog_file
-) {
+addThermalToAntares <- function(thermal_generators_tbl) {
+  
   for (row in 1:nrow(thermal_generators_tbl)) {
     generator_name = thermal_generators_tbl$generator_name[row] # NB : vu que j'extrais puis fait l'index,
     # mieux vaut extraire arrays une fois au début et puis indicer après non ?
@@ -186,22 +182,16 @@ addThermalToAntares <- function(thermal_generators_tbl,
       # 140:         min-stable-power =
       #   ^
       ##### ???? what
-      
-      if (log_verbose) {
-        message = paste(Sys.time(),"- [THERMAL] Adding", generator_name, "generator to", node,"node...\n")
-        # Oh, ce serait bien d'avoir le vrai nom ici, en pas capitalisé..... mais ça impliquerait de...
-        # remove la capitalisation sur le thermique (ce qui serait logique) et de l'avoir que pour
-        # les renouvelables qui seront comparés à Ninja
-        # finalement faire une fonction genre .capitalise qu'on active ou non
-        # au lieu de l'avoir dans l'implémentation direct........ argh oh well
-        log_message(message, fullLog_file, console_verbose)
-      }
-    }, error = function(e) {
-      if (log_verbose) {
-        message = paste(Sys.time(),"- [WARN] Failed to add", generator_name, "generator to", node,"node, skipping...\n")
-        log_message(message, fullLog_file, console_verbose)
-        log_message(message, errorsLog_file, FALSE)
-      }
+      msg = paste("[THERMAL] - Adding", generator_name, "generator to", node,"node...")
+      logFull(msg)
+      # Oh, ce serait bien d'avoir le vrai nom ici, en pas capitalisé..... mais ça impliquerait de...
+      # remove la capitalisation sur le thermique (ce qui serait logique) et de l'avoir que pour
+      # les renouvelables qui seront comparés à Ninja
+      # finalement faire une fonction genre .capitalise qu'on active ou non
+      # au lieu de l'avoir dans l'implémentation direct........ argh oh well
+      }, error = function(e) {
+        msg = paste("[WARN] - Failed to add", generator_name, "generator to", node,"node, skipping...")
+        logError(msg)
       })
   }
 }

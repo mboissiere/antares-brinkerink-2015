@@ -20,6 +20,7 @@ GENERATE_SOLAR_PV = TRUE
 GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
+THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
 ADD_VOLL = FALSE
 INCLUDE_ZERO_NTC_LINES = FALSE
 
@@ -32,7 +33,7 @@ PRINT_FULL_LOG_TO_CONSOLE = TRUE
 #etc#
 DEFAULT_SCALING_FACTOR = 25
 
-NODES = DEANE_NODES_EUROPE
+
 
 # NODES = c("EU-FRA", "EU-DEU", "EU-CHE")
 #source(".\\src\\data\\addNodes.R") mdr le récursif là ouh là lààà
@@ -94,6 +95,13 @@ DEANE_NODES_EUROPE = c('EU-ALB', 'EU-ARM', 'EU-AUT', 'EU-AZE', 'EU-BEL', 'EU-BGR
                        'EU-ITA', 'EU-KOS', 'EU-LTU', 'EU-LUX', 'EU-LVA', 'EU-MDA', 
                        'EU-MKD', 'EU-MNE', 'EU-NLD', 'EU-NOR', 'EU-POL', 'EU-PRT', 
                        'EU-ROU', 'EU-SRB', 'EU-SVK', 'EU-SVN', 'EU-SWE', 'EU-UKR')
+
+# C'est clairement trop brouillon personne va scroll pour changer NODES
+# Il faudrait faire genre un "objects" et "variables" fin un truc qui ne change pas
+# et un truc de paramètres que l'utilisateur peut être amené à bouger souvent
+# (Comme je le dis depuis qq temps oups)
+
+NODES = DEANE_NODES_EUROPE
 # NODES = getNodesFromContinents(c("Europe"))
 # NODES = c("EU-MDA", "EU-MKD", "EU-MNE") # test on 3 problematic countries
 # NODES = "EU-MDA"

@@ -1,0 +1,21 @@
+INFO [2024-07-31 10:59:31] [MAIN] - Creating Etude_sur_R_Monde__2024_07_31_10_59_31 study...
+
+INFO [2024-07-31 10:59:31] [MAIN] - Adding nodes...
+
+INFO [2024-07-31 10:59:56] [MAIN] - Done adding nodes! (run time : 25.06s).
+
+INFO [2024-07-31 10:59:57] [MAIN] - Adding load data...
+
+INFO [2024-07-31 11:00:13] [MAIN] - Done adding load data! (run time : 16.52s).
+INFO [2024-07-31 11:00:13] [MAIN] - Gathering generator data from PLEXOS...
+
+INFO [2024-07-31 11:00:17] [MAIN] - Done gathering generator data! (run time : 4.22s).
+
+INFO [2024-07-31 11:00:17] [MAIN] - Adding wind data...
+
+INFO [2024-07-31 11:01:10] [MAIN] - Done adding wind data! (run time : 52.74s).
+
+INFO [2024-07-31 11:01:10] [MAIN] - Adding solar PV data...
+
+INFO [2024-07-31 11:02:09] [MAIN] - Done adding solar PV data! (run time : 58.77s).
+

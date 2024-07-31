@@ -31,12 +31,8 @@ getSolarPVPropertiesTable <- function(generators_tbl) {
 
 
 addAggregatedSolarPV <- function(nodes,
-                                generators_tbl,
-                                log_verbose,
-                                console_verbose,
-                                fullLog_file,
-                                errorsLog_file
-) {
+                                generators_tbl
+                                ) {
   tryCatch({
     
     solar_pv_generators_tbl <- getSolarPVPropertiesTable(generators_tbl)
@@ -45,29 +41,23 @@ addAggregatedSolarPV <- function(nodes,
     for (node in nodes) {
       solar_pv_ts <- solar_pv_aggregated_TS[[node]]
       tryCatch({
-        if (log_verbose) {
-          message = paste(Sys.time(),"- [SOLAR] Adding", node, "solar PV data...\n")
-          log_message(message, fullLog_file, console_verbose)
-        }
         writeInputTS(
           data = solar_pv_ts,
           type = "solar",
           area = node
         )
+        msg = paste("[SOLAR] - Adding", node, "aggregated solar PV data...")
+        logFull(msg)
       }, error = function(e) {
-        if (log_verbose) {
-          error_message = paste(Sys.time(), "- [WARNING] Failed to add solar PV data to", node, "(no generators found in PLEXOS dataset), skipping...\n")
-          log_message(error_message, fullLog_file, console_verbose)
-          log_message(error_message, errorsLog_file, FALSE)
-        }
+        msg = paste("[WARN] - Skipped adding solar PV data for", node, "(no generators found in PLEXOS).")
+        logError(msg)
       }
       
       )
     }
   }, error = function(e){
-    warn_message = paste(Sys.time(), "- [WARNING] Generation of all solar PV data failed (no generators found in PLEXOS dataset), skipping...\n")
-    log_message(warn_message, fullLog_file, console_verbose)
-    log_message(warn_message, errorsLog_file, FALSE)
+    msg = paste("[WARN] - Skipped adding solar PV data for all nodes (no generators found in PLEXOS).")
+    logError(msg)
   }
   )
 }

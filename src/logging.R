@@ -77,3 +77,9 @@ logMain <- function(msg) {
   flog.info(msg, name = "full")
 }
 
+# logNextStep <- function() {
+#   logMain("\n")
+#   logMain("--------------------------------------------------------------------------------")
+#   logMain("\n")
+# }
+

@@ -72,11 +72,7 @@ addNTCsToLines <- function(lines_tbl) {
 # je crois bien du coup que mathématiquement il reste que du bon...)
 
 addLinesToAntares <- function(nodes,
-                              include_zero_ntc,
-                              log_verbose,
-                              console_verbose,
-                              fullLog_file,
-                              errorsLog_file
+                              include_zero_ntc
                               ) {
   tryCatch({
     lines_tbl <- getLinesFromNodes(nodes)
@@ -87,11 +83,8 @@ addLinesToAntares <- function(nodes,
       ntc_direct = lines_tbl$direct_ntc[row]
       ntc_indirect = lines_tbl$indirect_ntc[row]
       if (!include_zero_ntc & ntc_direct == 0 & ntc_indirect == 0){
-        if (log_verbose) {
-          message = paste(Sys.time(), "- [LINES] Skipping", from_node, "to", to_node, "link (zero NTC)\n")
-          log_message(message, fullLog_file, console_verbose)
-        }
-        
+        msg = paste(Sys.time(), "- [LINES] Skipping", from_node, "to", to_node, "link (zero NTC)")
+        logFull(msg)
       } else {
         ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
         # d'après l'architecture TiTAN là je devrais faire un fichier avec genre NB_HRS_IN_YEAR = 8760 mdr
@@ -101,21 +94,17 @@ addLinesToAntares <- function(nodes,
             to = to_node,
             tsLink = ts_link
           )
-          if (log_verbose) {
-            message = paste(Sys.time(), "- [LINES] Adding", from_node, "to", to_node, "line...\n")
-            log_message(message, fullLog_file, console_verbose)
-          }
+          msg = paste("[LINES] - Adding", from_node, "to", to_node, "line...")
+          logFull(msg)
         }, error = function(e) {
-          error_message = paste(Sys.time(), "- [WARNING] Skipping", from_node, "to", to_node, "line (one of the nodes may not exist)\n")
-          log_message(error_message, fullLog_file, console_verbose)
-          log_message(error_message, errorsLog_file, FALSE)
+          msg = paste("[WARN] - Skipping", from_node, "to", to_node, "line (one of the nodes may not exist)")
+          logError(msg)
         })
       }
     }
   }, error = function(e) {
-    warn_message = paste(Sys.time(), "- [WARNING] Generation of all lines failed (perhaps there are no connections?), skipping...\n")
-    log_message(warn_message, fullLog_file, console_verbose)
-    log_message(warn_message, errorsLog_file, FALSE)
+    msg = paste("[WARN] - Generation of all lines failed (perhaps there are no connections?), skipping...")
+    logError(msg)
   }
   )
   
