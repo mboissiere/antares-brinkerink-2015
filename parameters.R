@@ -4,10 +4,10 @@
 
 CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "threePoints_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
 #   réfléchir à quelque chose pour faciliter la sauvegarde de captures d'écran

@@ -27,7 +27,9 @@ wind_aggregated_file = ".\\src\\objects\\wind_aggregated_ninja_tbl.rds"
 solar_aggregated_file = ".\\src\\objects\\solar_aggregated_ninja_tbl.rds"
 csp_aggregated_file = ".\\src\\objects\\csp_aggregated_ninja_tbl.rds"
 
-
+# Not the most time costly, but could also import Load data ?
+# How could thermal work ? Sadly I think what takes the time is creating
+# individual Antares clusters, there's no working around that...
 
 if (!file.exists(nodes_file)) {
   nodes <- getAllNodes()

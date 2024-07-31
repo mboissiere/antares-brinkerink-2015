@@ -83,6 +83,19 @@ if (GENERATE_LOAD) {
 generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
 generators_tbl <- readRDS(generators_file)
 
+## Oooh okay I see what's going on. We should filter it over countries now.
+# For example if we have three points, but then don't alter generators_tbl
+# until the thermal clusters, then it'll try to import stuff from all around the world.
+
+generators_tbl <- generators_tbl %>%
+  filter(node %in% NODES)
+
+# This might cause confusion over how we worked with wind_aggregated before.
+# Now we jsut import wind_aggregated and don't do anything over it
+# whereas bfeore we had left_joins with only appropriate nodes to save time ?
+# Perhaps we could go even further in filters ?
+# Perhaps this is, how you say, enculage de mouches ?
+
 ################################################################################
 ################################## WIND IMPORT #################################
 

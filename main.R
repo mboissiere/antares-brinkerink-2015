@@ -50,6 +50,34 @@ if (CREATE_STUDY) {
                                       fsep = .Platform$file.sep)
   source(antaresCreateStudy_module)
 }
+# Sah quel plaisir for it to run so smoothly now.
+# Still gotta implement hydro, however.
+
+# NEXT STEP FOR HYDRO :
+# (pendant que j'envoie des sommes de capacité à nicolas chef oui chef)
+
+# implémenter les objets Generator avec _Hyd_ en prenant les facteurs de charge mensuels
+# en en faisant des TS horaires
+# en faisant * max capacité * units
+# et en mettant tout ça dans Run of River
+# (not gonna lie, les autres propriétés, je sais pas ce qu'on en fait)
+
+# MDRR C'EST PAS INDIVIDUEL PAR CONTRE c'est juste on va aggregate tous les RoR ensemble
+# enfin j'ai l'impression
+# à redemander avant à Nicolas
+# génial
+
+# et, les objets Battery de type PHS
+# bah en vrai y a pas midi à 14h en terme de nombre de propriétés
+# ce qui est pas clair dans ma tête à la rigueur c'est diff entre
+# injection, soutirage, stock, efficacité
+# (et surtout c'est pas redondant ? genre injection = stock * efficacité nn ?)
+# AH NON SI OK J'AI je crois
+# capacité c'est énorme c'est la maxi taille du réservoir genre 34800
+# injection c'est oulah ça peut pas non plus fournir infini MW dans le réseau à un instant t
+# et du coup c'est le max power qui ici est à 182
+# il faut plutôt faire d'ailleurs un objet par units parce que y a pas de "unités"
+# dans antares batteries
 
 ################################################################################
 ############################### LAUNCH SIMULATION ##############################
