@@ -93,6 +93,12 @@ addAntaresColorToNodes <- function(nodes_tbl) {
 addVoLLToNodes <- function(nodes_tbl) {
   voll_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Regions" & property == "VoLL") %>%
+    # NOTA BENE :
+    # Je vais faire l'hypothèse que le value of lost load il faut faire x10
+    # parce que des valeurs comme "131" désolé mais je trouve ça tellement peu
+    # et c'est vraiment un truc à demander à Deane
+    # Quoique non c'est pas fidèle au fait de faire Comme Deane(TM) au début.
+    # ....mais bon.....
     rename(
       continent = child_object,
       voll = value

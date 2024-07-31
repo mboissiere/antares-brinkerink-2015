@@ -2,17 +2,17 @@
 
 # Objets en snake_case, fonctions en camelCase
 
+CREATE_STUDY = TRUE
+IMPORT_STUDY_NAME = "blabla" # quand je ferai des presets
+LAUNCH_SIMULATION = TRUE
+READ_RESULTS = TRUE
+
 # Nom servant de base pour la classification de l'étude
 study_basename <- "Etude_sur_R_Monde"
 # Dans l'idéal ce serait bien aussi d'avoir une sorte de generateName intelligent avec les nodes genre
 # ou un paramètre mais fin
 # si j'ai europe_nodes qu'il écrive europe, si j'ai all nodes qu'il écrive monde, sinon cas par cas etc
 
-# Ajouter un paramètre "verbose" pour avoir ou non les prints sur la console
-LOG_VERBOSE = TRUE
-CONSOLE_VERBOSE = TRUE
-
-import_nodes = FALSE # jsp comment on importe une étude sur antares editobject wsh !!! demander à nicolas ptet
 GENERATE_LOAD = TRUE
 GENERATE_REN = FALSE
 GENERATE_WIND = TRUE
@@ -22,7 +22,7 @@ GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear")
-ADD_VOLL = FALSE
+ADD_VOLL = TRUE
 INCLUDE_ZERO_NTC_LINES = FALSE
 
 PRINT_FULL_LOG_TO_CONSOLE = TRUE

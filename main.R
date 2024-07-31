@@ -25,236 +25,31 @@ source(logging_file)
 source("parameters.R")
 
 ################################################################################
-################################# PARTIE ETUDE #################################
+################################# CREATE STUDY #################################
 
-## Création d'une nouvelle étude
-study_name <- generateName(study_basename)
-
-# Pour faire une estimation de la durée totale
-total_start_time <- Sys.time()
-
-createStudy(
-  path = base_path,
-  study_name = study_name,
-  antares_version = antares_version
-)
-
-
-setupLogging()
-# Oh, est-ce que ça serait pas banger de faire un petit "package" comme à KTH
-# genre adieu le dossier logs et je fais un "output" avec à la fois les
-# résultats de l'étude produite, et les logs, et d'éventuelles simulation etc.
-# ça permet de ne plus avoir une désynchronisation entre étude et log
-# (qui peut rendre résultats difficiles à montrer pendant réunions...)
-
-study_path = file.path(base_path, study_name,
-                       fsep = .Platform$file.sep)
-
-msg = paste("[MAIN] - Creating", study_name, "study...\n")
-logMain(msg)
-
-
-# NB : pour l'instant ça MARCHE PAS.
-# et wtf il s'est remis en Clusters par défaut.
-# par défaut j'ai l'impression il prend le précédent réglage, mais du coup si jamais
-# avant on avait du Clusters, hop ça zappe les TS aggregated.
-# En fait si AHAH ça le sauvegarde mais ça le cache. Marrant.
-updateAllSettings()
-# En vrai là je pourrais mettre des petits prints genre "added machin"
-# Au vu des messages d'erreur ça a l'air d'être "thermal" le problème
-
-################################################################################
-
-msg = "[MAIN] - Adding nodes...\n"
-logMain(msg)
-start_time <- Sys.time()
-
-# Ah oui et le addVoLL aussi....
-# Probablement modifier la fonction addNodes pour qu'il y ait un add_VoLL en entrée aussi
-addNodesToAntares(NODES, ADD_VOLL)
-
-end_time <- Sys.time()
-# peut-être faire un "time" function dans utils
-duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-msg = paste0("[MAIN] - Done adding nodes! (run time : ", duration,"s).\n")
-logMain(msg)
-# Un peu funky les retours à la ligne, faire en sorte qu'ils rendent bien
-# à la fois dans full et dans main
-
-
-################################################################################
-
-if (GENERATE_LOAD) {
-  msg = "[MAIN] - Adding load data...\n"
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  importLoad_file = file.path("src", "data", "importLoad.R",
-                              fsep = .Platform$file.sep)
-  source(importLoad_file)
-  addLoadToNodes(NODES)
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste0("[MAIN] - Done adding load data! (run time : ", duration,"s).\n")
-  logMain(msg)
+if (CREATE_STUDY) {
+  antaresCreateStudy_file = file.path("src", "antaresCreateStudy.R",
+                                      fsep = .Platform$file.sep)
+  source(antaresCreateStudy_file)
 }
 
 ################################################################################
+############################### LAUNCH SIMULATION ##############################
 
-msg = "[MAIN] - Gathering generator data from PLEXOS..."
-logMain(msg)
-start_time <- Sys.time()
-preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R",
-                                        fsep = .Platform$file.sep)
-source(preprocessPlexosData_module)
-
-generators_tbl <- getGeneratorsFromNodes(NODES)
-generators_tbl <- filterFor2015(generators_tbl)
-generators_tbl <- addGeneralFuelInfo(generators_tbl)
-
-end_time <- Sys.time()
-duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-msg = paste0("[MAIN] - Done gathering generator data! (run time : ", duration,"s).\n")
-logMain(msg)
-
-################################################################################
-
-if (GENERATE_WIND) {
-  msg = "[MAIN] - Fetching wind data...\n"
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
-    importWind_file = file.path("src", "data", "importWind.R",
-                                fsep = .Platform$file.sep)
-    source(importWind_file)
-    addAggregatedWind(NODES, generators_tbl)
-  }
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste0("[MAIN] - Done adding wind data! (run time : ", duration,"s).\n")
-  logMain(msg)
+if (LAUNCH_SIMULATION) {
+  antaresLaunchSimulation_file = file.path("src", "antaresLaunchSimulation.R",
+                                      fsep = .Platform$file.sep)
+  source(antaresLaunchSimulation_file)
 }
 
 ################################################################################
+################################## READ RESULTS ################################
 
-if (GENERATE_SOLAR_PV) {
-  msg = "[MAIN] - Fetching solar PV data...\n"
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
-    importSolarPV_file = file.path("src", "data", "importSolarPV.R",
-                                     fsep = .Platform$file.sep)
-    source(importSolarPV_file)
-    addAggregatedSolarPV(NODES, generators_tbl)
-  }
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste0("[MAIN] - Done adding solar PV data! (run time : ", duration,"s).\n")
-  logMain(msg)
+if (READ_RESULTS) {
+  antaresReadResults_file = file.path("src", "antaresReadResults.R",
+                                           fsep = .Platform$file.sep)
+  source(antaresReadResults_file)
 }
-
-################################################################################
-
-if (GENERATE_THERMAL) {
-  msg = "[MAIN] - Fetching thermal data...\n"
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  importThermal_file = file.path("src", "data", "importThermal.R")
-  source(importThermal_file)
-  thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
-  thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
-  addThermalToAntares(thermal_generators_tbl)
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "mins"), 2)
-  msg = paste0("[MAIN] - Done adding thermal data! (run time : ", duration,"min).\n")
-  logMain(msg)
-}
-
-################################################################################
-
-if (GENERATE_LINES) {
-  msg = "[MAIN] - Adding lines between areas...\n"
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  addLines_file = file.path("src", "data", "addLines.R")
-  source(addLines_file)
-  addLinesToAntares(NODES, INCLUDE_ZERO_NTC_LINES)
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste0("[MAIN] - Done adding lines! (run time : ", duration,"s).\n")
-  logMain(msg)
-}
-
-total_end_time <- Sys.time()
-# plutot "study", "simulation" que total mais bon voilà
-# ça permettra de dire genre "Europe : approx time 5 mins, World : approx time 30 min"
-# ou sur l'aggregated, les clusters etc
-duration <- round(difftime(total_end_time, total_start_time, units = "mins"), 2)
-# Dans un refactor, on pourrait avoir des thermal_units machin pour que ce soit adapté
-# à la taille du truc. Eg Lines peut etre des secondes en europe mais des minutes dans monde.
-# Tout est des secondes si peu de noeuds. D'où faire des presets.
-msg = paste0("[MAIN] - Finished setting up Antares study! (run time : ", duration,"min).\n\n")
-logMain(msg)
-
-################################################################################
-############################### PARTIE SIMULATION ##############################
-
-simulation_name <- generateName("simulation")
-msg = paste("[MAIN] - Starting", simulation_name, "simulation...")
-logMain(msg)
-simulation_start_time <- Sys.time()
-
-#simulation_path <- file.path(study_path, "output", simulation_name)
-
-antares_solver_path <- ".\\antares\\AntaresWeb\\antares_solver\\antares-8.8-solver.exe"
-
-# Lancer la simulation
-runSimulation(
-  name = simulation_name,
-  mode = "economy",
-  path_solver = antares_solver_path,
-  wait = TRUE,
-  show_output_on_console = TRUE,
-  parallel = TRUE,
-  #opts = antaresRead::setSimulationPath(simulation_path)
-)
-
-simulation_end_time <- Sys.time()
-duration <- round(difftime(simulation_end_time, simulation_start_time, units = "mins"), 2)
-msg = paste0("[MAIN] - Antares simulation finished! (run time : ", duration,"min).\n\n")
-logMain(msg)
-
-################################################################################
-################################# PARTIE LECTURE ###############################
-
-
-# Ca marche pas trop mal (NB : rendre ça toggleable, faire appel à partie externe
-# ptet comme pour le Viz)
-
-# et corriger le fait que les centrales s'activent pas (year by year, thermal TS
-# generation..)
-
-# Lire les résultats de la simulation
-sim_results <- readAntares(
-  areas = "all",
-  links = "all",
-  clusters = "all",
-  mcYears = "all"
-)
-
-# Afficher les résultats
-print(sim_results)
-
-# Todo : AntaresViz
 
 ################################################################################
 # Commentaires variés
