@@ -118,6 +118,7 @@ apply2015NuclearFilter <- function(generators_tbl) {
 # et de même aec nodes : getNodesTable, filter, addAttributes
 
 
+
 getGeneratorsFromNodes <- function(nodes) {
   # Initialization of generators table with only generator names and continent of origin
   generators_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
