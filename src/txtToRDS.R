@@ -7,6 +7,13 @@ source(".\\src\\data\\addNodes.R")
 # puisque c'est toujours le même principe mdr oups
 # en vrai non ça vient de prepreprocessninja
 
+
+# On pourrait également sauvegarder ici les properties tables
+# au lieu de repasser à chaque fois par GetWindPropertiesTable etc
+# parce que pour l'aggregated ok mais pour les clusters ? ça peut aller plus vite
+# également par rapport à refaire le pivot_wider à chaque fois etc
+
+
 # ah c'est aggregated pas aggregated bref
 # bon le CSP je l'ai pas encore parce que c'est complique c'est des objets storage
 # > csp_clusters <- readRDS(csp_clusters_file)
