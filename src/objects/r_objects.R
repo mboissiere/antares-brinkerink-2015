@@ -1,6 +1,33 @@
 all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
 full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
 full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+
+
+# # Note : I might have to manually make categories for THE, CHE, PHS etc etc...
+# # Oh wait, there it is actually, since I want to filter by PHS
+# 
+# # Define a function to extract the middle string from the battery_name
+# extract_middle_string <- function(battery_name) {
+#   return(substr(battery_name, 5, 7))
+# }
+# 
+# # Add the battery_group column to the tibble
+# full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
+#   mutate(battery_group = case_when(
+#     extract_middle_string(battery_name) == "CHE" ~ "Chemical Battery",
+#     extract_middle_string(battery_name) == "THE" ~ "Thermal",
+#     extract_middle_string(battery_name) == "PHS" ~ "Pumped Hydro Storage",
+#     extract_middle_string(battery_name) == "HYD" ~ "Hydrogen",
+#     extract_middle_string(battery_name) == "CAE" ~ "Compressed Air Energy",
+#     TRUE ~ NA_character_ # In case there are other types not listed
+#   )) %>%
+#   select(battery_name, continent, node, battery_group, units, capacity, max_power, initial_state, efficiency)
+# 
+# # print(full_2015_batteries_tbl)
+# 
+# saveRDS(full_2015_batteries_tbl, file = ".\\src\\objects\\full_2015_batteries_tbl.rds")
+
+
 # print(full_2015_generators_tbl)
 
 # preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
