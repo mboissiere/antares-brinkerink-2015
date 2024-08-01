@@ -54,7 +54,7 @@ getTotalHydroGeneratorsCapacityPerCountry <- function() {
     filter(fuel_type == "Hydro") %>%
     select(generator_name, node)
   
-  # print(hydro_generators_tbl)
+  print(hydro_generators_tbl)
   
   hydro_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     #filter(collection == "Batteries")
@@ -64,7 +64,7 @@ getTotalHydroGeneratorsCapacityPerCountry <- function() {
     select(generator_name, property, value)
   # Et encore une fois, je me fais avoir par la capitalisation ! Bon Dieu !
   
-  # print(hydro_properties_tbl)
+  print(hydro_properties_tbl)
   
   hydro_generators_tbl <- hydro_generators_tbl %>%
     left_join(hydro_properties_tbl, by = "generator_name") %>%
@@ -72,15 +72,61 @@ getTotalHydroGeneratorsCapacityPerCountry <- function() {
     mutate(nominal_capacity = `Max Capacity` * Units) %>%
     select(generator_name, node, nominal_capacity, `Max Capacity`, Units)
   
-  # print(hydro_generators_tbl, n = 100) # To check if multiplication was done ok
+  print(hydro_generators_tbl, n = 100) # To check if multiplication was done ok
   
   hydro_generators_tbl <- hydro_generators_tbl %>%
     select(generator_name, node, nominal_capacity)
   
   # A ce stade du code, on a le nominal capacity. C'est déjà bien.
   # Dans ce qui suit on va perdre de l'info puisqu'on va agréger par pays.
+  
+  # Summarize total nominal capacity by node
+  hydro_generators_tbl <- hydro_generators_tbl %>%
+    group_by(node) %>%
+    summarize(total_nominal_capacity = sum(nominal_capacity))
     
   return(hydro_generators_tbl)
+  
+  
+}
+
+getTotalHydroBatteriesCapacityPerCountry <- function() {
+  hydro_generators_tbl <- full_2015_generators_tbl %>%
+    filter(fuel_type == "Hydro") %>%
+    select(generator_name, node)
+  
+  # print(hydro_generators_tbl)
+  # 
+  # hydro_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+  #   #filter(collection == "Batteries")
+  #   filter(collection == "Generators") %>%
+  #   mutate(generator_name = toupper(child_object)) %>%
+  #   #rename(generator_name = child_object) %>%
+  #   select(generator_name, property, value)
+  # # Et encore une fois, je me fais avoir par la capitalisation ! Bon Dieu !
+  # 
+  # print(hydro_properties_tbl)
+  # 
+  # hydro_generators_tbl <- hydro_generators_tbl %>%
+  #   left_join(hydro_properties_tbl, by = "generator_name") %>%
+  #   pivot_wider(names_from = property, values_from = value) %>%
+  #   mutate(nominal_capacity = `Max Capacity` * Units) %>%
+  #   select(generator_name, node, nominal_capacity, `Max Capacity`, Units)
+  # 
+  # print(hydro_generators_tbl, n = 100) # To check if multiplication was done ok
+  # 
+  # hydro_generators_tbl <- hydro_generators_tbl %>%
+  #   select(generator_name, node, nominal_capacity)
+  # 
+  # # A ce stade du code, on a le nominal capacity. C'est déjà bien.
+  # # Dans ce qui suit on va perdre de l'info puisqu'on va agréger par pays.
+  # 
+  # # Summarize total nominal capacity by node
+  # hydro_generators_tbl <- hydro_generators_tbl %>%
+  #   group_by(node) %>%
+  #   summarize(total_nominal_capacity = sum(nominal_capacity))
+  
+  return(hydro_batteries_tbl)
   
   
 }
@@ -88,12 +134,17 @@ getTotalHydroGeneratorsCapacityPerCountry <- function() {
 
 
 
-
-
-
-
-
-
-
 hydro_generators_tbl <- getTotalHydroGeneratorsCapacityPerCountry()
 print(hydro_generators_tbl)
+write.csv(hydro_generators_tbl, ".\\output\\hydro_csv\\generator_objects.csv", row.names = FALSE)
+
+
+hydro_batteries_tbl <- getTotalHydroBatteriesCapacityPerCountry()
+print(hydro_batteries_tbl)
+write.csv(hydro_batteries_tbl, ".\\output\\hydro_csv\\battery_objects.csv", row.names = FALSE)
+
+
+
+
+
+
