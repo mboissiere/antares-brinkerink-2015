@@ -32,8 +32,37 @@ getHydroGeneratorsProperties <- function() {
   return(hydro_generators_tbl)
 }
 
-hydro_generators_tbl <- getHydroGeneratorsProperties()
-print(hydro_generators_tbl)
+####################
+
+# hydro_countries_2015 <- readRDS(".\\src\\objects\\hydro_monthly_production_countries_2015_tbl.rds")
+# print(hydro_countries_2015)
+
+addHydroStorageToAntares <- function(nodes) {
+  hydro_countries_2015 <- readRDS(".\\src\\objects\\hydro_monthly_production_countries_2015_tbl.rds")
+  
+  hydro_countries_2015 <- hydro_countries_2015 %>%
+    filter(node %in% nodes)
+  }
+
+###################
+
+
+# hydro_generators_tbl <- getHydroGeneratorsProperties()
+# print(hydro_generators_tbl)
+# saveRDS(hydro_generators_tbl, file = ".\\src\\objects\\hydro_nominal_capacities_2015.rds")
+# 
+# ###################
+# 
+# hydro_tbl <- readRDS(file = ".\\src\\objects\\hydro_daily_capacity_factors_2015.rds")
+# print(hydro_tbl)
+
+##################
+
+# for (row in 1:nrow(hydro_generators_tbl)) {
+#   
+# }
+
+##################
 
 # Ah mais en vrai on va effectivement sommer par pays. 
 # Et puis lire les monthly de Ninja en en faisant de l'horaire.
