@@ -29,8 +29,9 @@ GENERATE_SOLAR_PV = TRUE
 GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
+GENERATE_HYDRO = TRUE
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
-THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear")
+THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
 ADD_VOLL = TRUE
 INCLUDE_ZERO_NTC_LINES = FALSE
 

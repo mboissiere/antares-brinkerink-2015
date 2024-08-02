@@ -158,16 +158,16 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 # Normalement y en a partout
 
 
-full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
-# J'espère que ça a filtré quand même...
-# full_2015_generators_tbl <- filterFor2015(full_2015_generators_tbl)
-# Faudrait que je fasse de ce path une variable globale
-thermal_types <- c("Hard Coal", "Gas", "Nuclear")
-thermal_clusters_tbl <- filterClusters(full_2015_generators_tbl, thermal_types)
-print(thermal_clusters_tbl)
-
-thermal_clusters_tbl <- getThermalPropertiesTable(thermal_clusters_tbl)
-print(thermal_clusters_tbl)
+# full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
+# # J'espère que ça a filtré quand même...
+# # full_2015_generators_tbl <- filterFor2015(full_2015_generators_tbl)
+# # Faudrait que je fasse de ce path une variable globale
+# thermal_types <- c("Hard Coal", "Gas", "Nuclear")
+# thermal_clusters_tbl <- filterClusters(full_2015_generators_tbl, thermal_types)
+# # print(thermal_clusters_tbl)
+# 
+# thermal_clusters_tbl <- getThermalPropertiesTable(thermal_clusters_tbl)
+# print(thermal_clusters_tbl)
 
 
 
@@ -184,6 +184,11 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     start_cost = thermal_generators_tbl$start_cost[row]
     nb_units = thermal_generators_tbl$nb_units[row]
     min_stable_power = thermal_generators_tbl$min_stable_power[row]
+    # J'ai quasiment tout des thermiques, mais ce serait bien que j'implémente les
+    # Maintenance Rate et Mean Time To Repair, qui sont dans les données Deane également....
+    
+    co2_emission = thermal_generators_tbl$co2_emission[row]
+    list_pollutants = list("co2"= co2_emission) # "nh3"= 0.25, "nox"= 0.45, "pm2_5"= 0.25, "pm5"= 0.25, "pm10"= 0.25, "nmvoc"= 0.25, "so2"= 0.25, "op1"= 0.25, "op2"= 0.25, "op3"= 0.25, "op4"= 0.25, "op5"= NULL)
     tryCatch({
       createCluster(
         area = node,
@@ -194,6 +199,7 @@ addThermalToAntares <- function(thermal_generators_tbl) {
         min_stable_power = min_stable_power, # Point d'attention : ça s'écrit avec des tirets dans le .ini
         # mais en fait c'est ... euh
         startup_cost = start_cost,
+        list_pollutants = list_pollutants,
         #...,
         #list_pollutants = NULL,
         #time_series = NULL,

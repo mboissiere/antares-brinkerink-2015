@@ -49,6 +49,29 @@ getNodesFromContinents <- function(continents) {
   return(nodes_lst)
 }
 
+# A noter aussi que je pourrais regrouper des districts
+# genre, les continents
+# ou même, la Chine / les US comme truc unique
+# Create a district
+# Description
+# Allows selecting a set of areas so as to bundle them together in a "district".
+# 
+# Usage
+# createDistrict(
+#   name,
+#   caption = NULL,
+#   comments = NULL,
+#   apply_filter = c("none", "add-all", "remove-all"),
+#   add_area = NULL,
+#   remove_area = NULL,
+#   output = FALSE,
+#   overwrite = FALSE,
+#   opts = antaresRead::simOptions()
+# )
+# Arguments
+
+
+
 # y a-t-il un format d'affectation sur place ? possiblement, à voir
 addLatLonToNodes <- function(nodes_tbl) {
   attributes_tbl <- getTableFromPlexos(ATTRIBUTES_PATH) %>%
@@ -109,6 +132,16 @@ addVoLLToNodes <- function(nodes_tbl) {
     left_join(voll_tbl, by = "continent")
     return(nodes_tbl)
 }
+
+# Eventuellement une facon de séparer les tâches si vraiment on veut :
+# # Write some economic options for areas a, b and c
+# writeEconomicOptions(data.frame(
+#   area = c("a", "b", "c"),
+#   dispatchable_hydro_power = c(TRUE, FALSE, FALSE),
+#   spread_unsupplied_energy_cost = c(0.03, 0.024, 0.01),
+#   average_spilled_energy_cost = c(10, 8, 8),
+#   stringsAsFactors = FALSE
+# ))
 
 addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
                               add_voll = TRUE,
