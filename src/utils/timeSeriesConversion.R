@@ -15,14 +15,14 @@ days_per_month <- function(year) {
 
 
 days_in_month <- days_per_month(2015)
-print(days_in_month)
+# print(days_in_month)
 
 monthly_to_daily <- function(monthly_timeseries, year) { # should do a : year = horizon by default parameter (importing it here)
   days_in_month <- days_per_month(year)
   daily_timeseries <- rep(monthly_timeseries, times = days_in_month)
   return(daily_timeseries)
 }
-daily_timeseries <- rep(monthly_values, times = days_in_month)
+# daily_timeseries <- rep(monthly_values, times = days_in_month)
 
 # for (days in days_in_month) {
 #   

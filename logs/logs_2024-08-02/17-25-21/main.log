@@ -1,0 +1,18 @@
+INFO [2024-08-02 17:25:21] [MAIN] - Creating Etude_sur_R_Monde__2024_08_02_17_25_21 study...
+
+INFO [2024-08-02 17:25:21] [MAIN] - Adding nodes...
+
+INFO [2024-08-02 17:25:23] [MAIN] - Done adding nodes! (run time : 2.07s).
+
+INFO [2024-08-02 17:25:23] [MAIN] - Adding load data...
+
+INFO [2024-08-02 17:25:24] [MAIN] - Done adding load data! (run time : 1.04s).
+
+INFO [2024-08-02 17:25:24] [MAIN] - Fetching wind data...
+
+INFO [2024-08-02 17:25:25] [MAIN] - Done adding wind data! (run time : 0.17s).
+
+INFO [2024-08-02 17:25:25] [MAIN] - Fetching solar data...
+
+INFO [2024-08-02 17:25:25] [MAIN] - Done adding solar data! (run time : 0.17s).
+
