@@ -19,7 +19,7 @@ days_in_month <- days_per_month(2015)
 
 monthly_to_daily <- function(monthly_timeseries, year) { # should do a : year = horizon by default parameter (importing it here)
   days_in_month <- days_per_month(year)
-  daily_timeseries <- rep(monthly_timeseries, times = days_in_month)
+  daily_timeseries <- rep(monthly_timeseries * 24, times = days_in_month) # and also apparently multiply by 24
   return(daily_timeseries)
 }
 # daily_timeseries <- rep(monthly_values, times = days_in_month)

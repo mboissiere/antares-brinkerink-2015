@@ -165,6 +165,7 @@ if (GENERATE_HYDRO) {
   importHydro_file = file.path("src", "data", "importHydro.R")
   source(importHydro_file)
   addHydroStorageToAntares(NODES)
+  # Oh dip, and should I start caring about these fast/accurate modes ?
 }
 
 ################################################################################

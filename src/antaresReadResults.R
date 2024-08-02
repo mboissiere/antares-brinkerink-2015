@@ -4,23 +4,52 @@ library(antaresProcessing)
 library(antaresViz)
 
 # Ouais faut vraiment rendre ça plus propre
-if (!LAUNCH_SIMULATION) {
+
+
+
+
+if (!CREATE_STUDY) {
   study_name = IMPORT_STUDY_NAME
   study_path = file.path("input", "antares_presets", study_name,
-                     fsep = .Platform$file.sep)
+                         fsep = .Platform$file.sep)
   msg = paste("[MAIN] - Reading simulations of pre-existing", study_name, "study...")
   logMain(msg)
-  
+}
+if (!LAUNCH_SIMULATION) {
   simulation_name = IMPORT_SIMULATION_NAME
-  setSimulationPath(study_path, simulation_name)
-  if (simulation_name == -1) {
-    msg = "[MAIN] - Opening latest simulation..."
-    logMain(msg)
+} else {
+  simulation_name = -1
+}
+setSimulationPath(study_path, simulation_name)
+
+if (simulation_name == -1) {
+  msg = "[MAIN] - Opening latest simulation..."
+  logMain(msg)
   } else {
     msg = paste("[MAIN] - Opening", simulation_name, "simulation...")
     logMain(msg)
   }
-}
+
+
+
+
+# if (!LAUNCH_SIMULATION) { # hm, même si on a launch la simulation il faut bien faire ça non ??
+#   study_name = IMPORT_STUDY_NAME
+#   study_path = file.path("input", "antares_presets", study_name,
+#                      fsep = .Platform$file.sep)
+#   msg = paste("[MAIN] - Reading simulations of pre-existing", study_name, "study...")
+#   logMain(msg)
+#   
+#   simulation_name = IMPORT_SIMULATION_NAME
+#   setSimulationPath(study_path, simulation_name)
+#   if (simulation_name == -1) {
+#     msg = "[MAIN] - Opening latest simulation..."
+#     logMain(msg)
+#   } else {
+#     msg = paste("[MAIN] - Opening", simulation_name, "simulation...")
+#     logMain(msg)
+#   }
+# }
 # A cleaner thing to do would be to pass the study name as argument of a function
 # and to do the LAUNCH_SIMULATION check in main.
 
