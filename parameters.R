@@ -4,10 +4,11 @@
 
 CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "threePoints_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = TRUE
+LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
+# Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
 #   réfléchir à quelque chose pour faciliter la sauvegarde de captures d'écran
@@ -28,7 +29,7 @@ GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
 GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = TRUE
+GENERATE_THERMAL = FALSE
 GENERATE_HYDRO = TRUE
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")

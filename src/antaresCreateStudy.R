@@ -159,6 +159,15 @@ if (GENERATE_THERMAL) {
 }
 
 ################################################################################
+################################-= HYDRO IMPORT =-##############################
+
+if (GENERATE_HYDRO) {
+  importHydro_file = file.path("src", "data", "importHydro.R")
+  source(importHydro_file)
+  addHydroStorageToAntares(NODES)
+}
+
+################################################################################
 ################################# LINKING AREAS ################################
 
 if (GENERATE_LINES) {

@@ -37,12 +37,88 @@ getHydroGeneratorsProperties <- function() {
 # hydro_countries_2015 <- readRDS(".\\src\\objects\\hydro_monthly_production_countries_2015_tbl.rds")
 # print(hydro_countries_2015)
 
+# initializeHydro <- function(nodes) {
+#   list_params = list("intra-daily-modulation" = 2) # Let's assume that by default the rest is ok
+#   #print(list_params)
+#   for (node in nodes) {
+#     writeIniHydro(area = node,
+#                   params = list_params
+#                   )
+#   }
+#   
+# }
+
+source(".\\src\\utils\\timeSeriesConversion.R")
+
 addHydroStorageToAntares <- function(nodes) {
+  msg = "[MAIN] - Beginning hydro implementation..."
+  logMain(msg)
   hydro_countries_2015 <- readRDS(".\\src\\objects\\hydro_monthly_production_countries_2015_tbl.rds")
   
   hydro_countries_2015 <- hydro_countries_2015 %>%
     filter(node %in% nodes)
+  
+  for (row in 1:nrow(hydro_countries_2015)) {
+    #row = 1
+    node_info <- hydro_countries_2015[row,]
+    
+    node <- node_info$node
+    #print(node)
+    
+    reservoir_capacity <- node_info$total_nominal_capacity
+    list_params = list("intra-daily-modulation" = 2, # Let's assume that by default the rest is ok
+                       "reservoir" = TRUE, # except I kinda need to toggle reservoir management if i have capacity
+                       "reservoir capacity" = reservoir_capacity) # Apparently needs to be an integer ? Will see if it's ok
+    # faire un trycatch en vrai etc etc
+    tryCatch({
+      writeIniHydro(area = node,
+                    params = list_params
+      )
+      msg = paste("[HYDRO] - Initializing", node, "hydro parameters...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[HYDRO] - Couldn't initialize", node, "hydro parameters, skipping...")
+      logError(msg)
+    })
+    
+    
+    #print(reservoir_capacity)
+    
+    monthly_tbl <- node_info %>%
+      select(starts_with("M"))
+    
+    #print(monthly_tbl)
+    # Extract the values into a simple vector
+    monthly_ts <- unlist(monthly_tbl, use.names = FALSE)
+    #print(monthly_ts)
+    
+    daily_ts <- monthly_to_daily(monthly_ts, 2015)
+    #print(daily_ts)
+    tryCatch({
+      writeInputTS(
+        daily_ts,
+        type = "hydroSTOR",
+        area = node
+      )
+      msg = paste("[HYDRO] - Adding", node, "hydro profiles...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[HYDRO] - Couldn't add", node, "hydro profiles, skipping...")
+      logError(msg)
+    })
+    
+    
   }
+  msg = "[MAIN] - Done adding hydro!"
+  logMain(msg)
+}
+
+
+# print(hydro_countries_2015)
+# 
+# test_2015 <- 
+# 
+# addHydroStorageToAntares("EU-FRA")
 
 ###################
 
