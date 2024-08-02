@@ -5,6 +5,12 @@
 # source(objectsPath)
 
 
+
+# TODO : add CO2 emission factors by importing the "Emissions" category in Properties
+# https://www.rte-france.com/en/eco2mix/co2-emissions#:~:text=standard%20plant%20efficiency.-,The%20contribution%20of%20each%20energy%20source%20to%20C02%20emissions%20is,MWh%20for%20gas%2Dturbine%20plants
+# ^ ordre de grandeur / valeur utilisée par RTE pour le tCO2eq/MWh
+
+
 # Mdr faut que j'arrête de changer d'avis sur mon implémentation toutes les 30 secondes
 
 preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
@@ -94,7 +100,13 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     left_join(thermal_properties_tbl, by = "generator_name")
 
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    pivot_wider(names_from = property, values_from = value) %>%
+    pivot_wider(names_from = property, values_from = value)
+  
+  # print(thermal_generators_tbl)
+  # # Y a de l'hydro là-dedans, c'est louche. J'ai fait le left_join pourtant.
+  # NN mais j'étais juste un abruti et j'ai mis le truc non filtré
+  
+  thermal_generators_tbl <- thermal_generators_tbl %>%
     rename(
       nominal_capacity = "Max Capacity",
       start_cost = "Start Cost",
@@ -109,7 +121,22 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   #   ! argument non numérique pour un opérateur binaire
     ########## Etonnamment, une valeur qui pop pas pour le jeu de test CHE-DEU-FRA
     # mais qui pop pour le NA-CAN-QC, AF-MAR...
-    select(generator_name, node, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power)
+    select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power)
+  
+  # Time to add CO2 emissions (basically why we kept fuel_type now)
+  emissions_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+    filter(parent_class == "Emission") %>%
+    pivot_wider(names_from = property, values_from = value) %>%
+    # select(child_object, "Production Rate")
+    mutate(fuel_group = child_object,
+           co2_emission = `Production Rate`/1000) %>% # it's in *tons*CO2/MWh in Antares
+    select(fuel_group, co2_emission)
+  
+  # print(emissions_tbl)
+  
+  thermal_generators_tbl <- thermal_generators_tbl %>%
+    left_join(emissions_tbl, by = "fuel_group") %>%
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, start_cost, co2_emission)
   
   # print(generators_tbl)
   # print(thermal_properties_tbl)
@@ -118,32 +145,33 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   return(thermal_generators_tbl)
 }
 
-# # nodes <- c("EU-CHE", "EU-DEU", "EU-FRA")
-# nodes <- c("EU-FRA", "AF-MAR", "AS-JPN-CE", "NA-CAN-QC", "OC-NZL", "SA-CHL")
-# generators_tbl <- getGeneratorsFromNodes(nodes)
-# generators_tbl <- filterFor2015(generators_tbl)
-# generators_tbl <- addGeneralFuelInfo(generators_tbl)
-# 
-# # print(generators_tbl)
-# 
-# thermal_types = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
-# thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
-# thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
-# print(thermal_generators_tbl)
 
-# Ah mais ces histoires d'opérateur binaire pour min_stable factor c'est ptet... Hm
+# Error in `mutate()`:
+#   i In argument: `min_stable_power = nominal_capacity * min_stable_factor/100`.
+# Caused by error in `nominal_capacity * min_stable_factor`:
+#   ! argument non numérique pour un opérateur binaire
+# Run `rlang::last_trace()` to see where the error occurred.
 
-# minStableLevelPercentages = c("Biomass" = 30,
-#                               "Coal" = 30,
-#                               "CCGT" = 40,
-#                               "OCGT" = 20, # A-ha, so that's what it was with different gas values !
-#                               # But wait, this means I should just..... extract the property directly lmao
-#                               "Nuclear" = 60,
-#                               "Oil" = 50
-#                               )
-#print(minStableLevelPercentages)
+## Possible que ce soit une histoire de : pas toutes les centrales ont des min stable factor
+# et donc sur certaines lignes après le pivot wider il y a du NA
+# (Sauf que... non. C'est pas maintenance rate, ni mean time to repair)
+# Normalement y en a partout
 
-# coalParameters = c("unitcount" = as)
+
+full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
+# J'espère que ça a filtré quand même...
+# full_2015_generators_tbl <- filterFor2015(full_2015_generators_tbl)
+# Faudrait que je fasse de ce path une variable globale
+thermal_types <- c("Hard Coal", "Gas", "Nuclear")
+thermal_clusters_tbl <- filterClusters(full_2015_generators_tbl, thermal_types)
+print(thermal_clusters_tbl)
+
+thermal_clusters_tbl <- getThermalPropertiesTable(thermal_clusters_tbl)
+print(thermal_clusters_tbl)
+
+
+
+
 addThermalToAntares <- function(thermal_generators_tbl) {
   
   for (row in 1:nrow(thermal_generators_tbl)) {
@@ -234,22 +262,3 @@ addThermalToAntares <- function(thermal_generators_tbl) {
 # op3 = 0.0
 # op4 = 0.0
 # op5 = 0.0
-# 
-
-
-
-# > print(generators_tbl)
-# # A tibble: 2,683 x 6
-# generator_name             continent     node      f1902uel_group        cluster_type fuel_type    
-# <chr>                      <chr>         <chr>     <chr>             <chr>        <chr>        
-#   1 CAN_BIO_BARNSAWMILL3582    North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 2 CAN_BIO_BROMPTONBIOMAS3568 North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 3 CAN_BIO_CHAPAIS3623        North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 4 CAN_BIO_DOLBEAU3712        North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 5 CAN_BIO_DOMTARWINDSO3713   North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 6 CAN_BIO_GATINEAUBOWAT3791  North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 7 CAN_BIO_HAUTEYAMASKAR3859  North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 8 CAN_BIO_LACHENAIELANDF3960 North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 9 CAN_BIO_LACHUTELFG3961     North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-# 10 CAN_BIO_SAINTFLICIEN4305   North America NA-CAN-QC North America_Bio Mixed Fuel   Bio and Waste
-
