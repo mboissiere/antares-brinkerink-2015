@@ -159,7 +159,7 @@ nb_MCyears = 10 # entier, nombre d'années Monte-Carlo
 # dans le grand excel qui résume les variables Antares
 
 RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
-UNIT_COMMITMENT_MODE = "fast" # "fast" or "accurate"
+UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 
 # zones = c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA")
 #c("FRA", "GBR", "DEU", "ITA", "ESP")

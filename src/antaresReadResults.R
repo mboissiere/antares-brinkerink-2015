@@ -71,7 +71,7 @@ mydata <- readAntares(areas = "all",
                       # clusters = "all",
                       mcYears = "all",
                       # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
-                      select = c("SOLAR", "WIND", "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "LOAD"),
+                      select = c("SOLAR", "WIND", "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "LOAD", "H. STOR", "BALANCE"),
                       timeStep = "weekly"
                       # Ah euh, les imports et les exports quand même !!
 )
@@ -83,16 +83,18 @@ setProdStackAlias(
     NUCLEAR = NUCLEAR,
     WIND = WIND,
     SOLAR = SOLAR,
+    `H. STOR` = `H. STOR`,
     GAS = GAS,
     COAL = COAL,
-    `MIX. FUEL` = `MIX. FUEL`
+    `MIX. FUEL` = `MIX. FUEL`,
+    EXCHANGES = -BALANCE
   ),
-  colors = c("yellow", "turquoise", "orange", "red", "brown", "darkgreen"),
+  colors = c("yellow", "turquoise", "orange", "blue", "red", "darkred", "darkgreen", "grey"),
   lines = alist(
     LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + GAS + COAL + `MIX. FUEL`
+    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + `MIX. FUEL`
   ),
-  lineColors = c("black", "royalblue")
+  lineColors = c("black", "green")
 )
 
 prodStack(

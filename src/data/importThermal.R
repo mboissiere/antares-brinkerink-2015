@@ -129,7 +129,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     filter(parent_class == "Emission") %>%
     pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
 
-  print(emissions_tbl)
+  # print(emissions_tbl)
 
   emissions_tbl <- emissions_tbl %>%
     # replace(is.na(.), 0) %>%

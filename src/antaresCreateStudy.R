@@ -20,6 +20,8 @@ study_path = file.path(base_path, study_name,
 
 msg = paste("[MAIN] - Creating", study_name, "study...\n")
 logMain(msg)
+msg = paste("[MAIN] - Unit commitment mode :", toupper(UNIT_COMMITMENT_MODE))
+logMain(msg)
 
 updateAllSettings()
 # En vrai là je pourrais mettre des petits prints genre "added machin"

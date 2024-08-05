@@ -21,12 +21,12 @@ updateAllSettings <- function() {
     leapyear = is_leap_year(horizon),
     year.by.year = year_by_year,
     
-    generate = c("thermal", "hydro"),
+    generate = c("thermal"),
     # nbtimeseriesload = 1,
     # nbtimeserieshydro = 1,
     # nbtimeserieswind = 1,
     nbtimeseriesthermal = 10,
-    nbtimeserieshydro = 10
+    #nbtimeserieshydro = 10
   )
   
   updateOptimizationSettings(
