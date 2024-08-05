@@ -141,6 +141,16 @@ if (GENERATE_SOLAR_PV) {
 }
 
 ################################################################################
+################################-= HYDRO IMPORT =-##############################
+
+if (GENERATE_HYDRO) {
+  importHydro_file = file.path("src", "data", "importHydro.R")
+  source(importHydro_file)
+  addHydroStorageToAntares(NODES)
+  # Oh dip, and should I start caring about these fast/accurate modes ?
+}
+
+################################################################################
 ################################# THERMAL IMPORT ###############################
 
 if (GENERATE_THERMAL) {
@@ -158,16 +168,6 @@ if (GENERATE_THERMAL) {
   duration <- round(difftime(end_time, start_time, units = "mins"), 2)
   msg = paste0("[MAIN] - Done adding thermal data! (run time : ", duration,"min).\n")
   logMain(msg)
-}
-
-################################################################################
-################################-= HYDRO IMPORT =-##############################
-
-if (GENERATE_HYDRO) {
-  importHydro_file = file.path("src", "data", "importHydro.R")
-  source(importHydro_file)
-  addHydroStorageToAntares(NODES)
-  # Oh dip, and should I start caring about these fast/accurate modes ?
 }
 
 ################################################################################
