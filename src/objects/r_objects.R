@@ -2,6 +2,23 @@ all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
 full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
 full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
 
+# emissions_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+#   filter(parent_class == "Emission") %>%
+#   pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
+# 
+# print(emissions_tbl)
+# 
+# emissions_tbl <- emissions_tbl %>%
+#   mutate(`Production Rate` = ifelse(is.na(`Production Rate`), 0, `Production Rate`)) %>%
+#   # replace(is.na(.), 0) %>% 
+#   # select(child_object, "Production Rate")
+#   # ah mais ça sert à rien de modifier ici, c'est dans la fusion qu'il y aura des NA
+#   mutate(fuel_group = child_object,
+#          co2_emission = `Production Rate`/1000) %>% # it's in *tons*CO2/MWh in Antares
+#   select(fuel_group, co2_emission)
+# 
+# print(emissions_tbl, n = 137)
+
 
 # # Note : I might have to manually make categories for THE, CHE, PHS etc etc...
 # # Oh wait, there it is actually, since I want to filter by PHS

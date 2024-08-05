@@ -21,15 +21,17 @@ updateAllSettings <- function() {
     leapyear = is_leap_year(horizon),
     year.by.year = year_by_year,
     
-    generate = "thermal",
+    generate = c("thermal", "hydro"),
     # nbtimeseriesload = 1,
     # nbtimeserieshydro = 1,
     # nbtimeserieswind = 1,
-    nbtimeseriesthermal = 10
+    nbtimeseriesthermal = 10,
+    nbtimeserieshydro = 10
   )
   
   updateOptimizationSettings(
-    renewable.generation.modelling = RENEWABLE_GENERATION_MODELLING
+    renewable.generation.modelling = RENEWABLE_GENERATION_MODELLING,
+    unit.commitment.mode = UNIT_COMMITMENT_MODE # not sure what this means but yea
   )
   
   updateOutputSettings(

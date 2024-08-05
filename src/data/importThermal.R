@@ -124,18 +124,25 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power)
   
   # Time to add CO2 emissions (basically why we kept fuel_type now)
+  # Attention c'est NA pour le nuc !
   emissions_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(parent_class == "Emission") %>%
-    pivot_wider(names_from = property, values_from = value) %>%
-    # select(child_object, "Production Rate")
+    pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
+
+  print(emissions_tbl)
+
+  emissions_tbl <- emissions_tbl %>%
+    # replace(is.na(.), 0) %>%
+    select(child_object, "Production Rate") %>%
     mutate(fuel_group = child_object,
            co2_emission = `Production Rate`/1000) %>% # it's in *tons*CO2/MWh in Antares
     select(fuel_group, co2_emission)
-  
+
   # print(emissions_tbl)
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
     left_join(emissions_tbl, by = "fuel_group") %>%
+    mutate(co2_emission = ifelse(is.na(co2_emission), 0, co2_emission)) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, start_cost, co2_emission)
   
   # print(generators_tbl)
@@ -186,8 +193,9 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     min_stable_power = thermal_generators_tbl$min_stable_power[row]
     # J'ai quasiment tout des thermiques, mais ce serait bien que j'implémente les
     # Maintenance Rate et Mean Time To Repair, qui sont dans les données Deane également....
-    
     co2_emission = thermal_generators_tbl$co2_emission[row]
+    #test = paste("CO2 emission for", generator_name, "plant:", co2_emission)
+    #print(test)
     list_pollutants = list("co2"= co2_emission) # "nh3"= 0.25, "nox"= 0.45, "pm2_5"= 0.25, "pm5"= 0.25, "pm10"= 0.25, "nmvoc"= 0.25, "so2"= 0.25, "op1"= 0.25, "op2"= 0.25, "op3"= 0.25, "op4"= 0.25, "op5"= NULL)
     tryCatch({
       createCluster(

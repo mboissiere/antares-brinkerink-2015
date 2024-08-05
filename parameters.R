@@ -29,10 +29,11 @@ GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
 GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = FALSE
+GENERATE_THERMAL = TRUE
 GENERATE_HYDRO = TRUE
+THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear")
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
-THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
+# THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
 ADD_VOLL = TRUE
 INCLUDE_ZERO_NTC_LINES = FALSE
 
@@ -158,6 +159,7 @@ nb_MCyears = 10 # entier, nombre d'années Monte-Carlo
 # dans le grand excel qui résume les variables Antares
 
 RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
+UNIT_COMMITMENT_MODE = "fast" # "fast" or "accurate"
 
 # zones = c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA")
 #c("FRA", "GBR", "DEU", "ITA", "ESP")

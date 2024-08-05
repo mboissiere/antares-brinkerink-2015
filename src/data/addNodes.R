@@ -117,14 +117,14 @@ addVoLLToNodes <- function(nodes_tbl) {
   voll_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Regions" & property == "VoLL") %>%
     # NOTA BENE :
-    # Je vais faire l'hypothèse que le value of lost load il faut faire x10
+    # Je vais faire l'hypothèse que le value of lost load il faut faire x1000
     # parce que des valeurs comme "131" désolé mais je trouve ça tellement peu
     # et c'est vraiment un truc à demander à Deane
     # Quoique non c'est pas fidèle au fait de faire Comme Deane(TM) au début.
     # ....mais bon.....
-    rename(
+    mutate(
       continent = child_object,
-      voll = value
+      voll = value * 1000
     ) %>%
     select(continent, voll)
   

@@ -1,0 +1,35 @@
+INFO [2024-08-05 11:13:17] [MAIN] - Creating Etude_sur_R_Monde__2024_08_05_11_13_17 study...
+
+INFO [2024-08-05 11:13:17] [MAIN] - Adding nodes...
+
+INFO [2024-08-05 11:13:19] [MAIN] - Done adding nodes! (run time : 2.32s).
+
+INFO [2024-08-05 11:13:19] [MAIN] - Adding load data...
+
+INFO [2024-08-05 11:13:21] [MAIN] - Done adding load data! (run time : 1.3s).
+
+INFO [2024-08-05 11:13:21] [MAIN] - Fetching wind data...
+
+INFO [2024-08-05 11:13:21] [MAIN] - Done adding wind data! (run time : 0.25s).
+
+INFO [2024-08-05 11:13:21] [MAIN] - Fetching solar data...
+
+INFO [2024-08-05 11:13:21] [MAIN] - Done adding solar data! (run time : 0.3s).
+
+INFO [2024-08-05 11:13:21] [MAIN] - Fetching thermal data...
+
+INFO [2024-08-05 11:14:47] [MAIN] - Done adding thermal data! (run time : 1.43min).
+
+INFO [2024-08-05 11:14:47] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-05 11:14:50] [MAIN] - Done adding hydro!
+INFO [2024-08-05 11:14:50] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-05 11:14:51] [MAIN] - Done adding lines! (run time : 1.55s).
+
+INFO [2024-08-05 11:14:51] [MAIN] - Finished setting up Antares study! (run time : 1.58min).
+ 
+
+INFO [2024-08-05 11:14:51] [MAIN] - Starting simulation__2024_08_05_11_14_51 simulation...
+INFO [2024-08-05 11:14:55] [MAIN] - Antares simulation finished! (run time : 0.06min).
+ 
+
