@@ -160,8 +160,12 @@ if (GENERATE_THERMAL) {
   
   importThermal_file = file.path("src", "data", "importThermal.R")
   source(importThermal_file)
+  #print(generators_tbl)
+  #print(THERMAL_TYPES)
   thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
+  #print(thermal_generators_tbl)
   thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
+  #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)
   
   end_time <- Sys.time()

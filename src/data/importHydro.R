@@ -7,8 +7,8 @@ library(tidyr)
 
 # print(full_2015_generators_tbl)
 
-generators_tbl <- full_2015_generators_tbl %>%
-  filter(fuel_type == "Hydro")
+# generators_tbl <- full_2015_generators_tbl %>%
+#   filter(fuel_type == "Hydro")
 
 getHydroGeneratorsProperties <- function() {
   hydro_generators_tbl <- full_2015_generators_tbl %>%
@@ -69,7 +69,8 @@ addHydroStorageToAntares <- function(nodes) {
     max_power_matrix = matrix(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
     #max_power_matrix = matrix(c(10000, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
     #print(max_power_matrix)
-    list_params = list("inter-daily-modulation" = 2)
+    list_params = list("inter-daily-breakdown" = 2)
+    # mais jpp ça s'appelle juste breakdown et pas modulation oh là là
                        #"intra-daily-modulation" = 24, # va savoir pk
                         # va savoir pk
                        # Let's assume that by default the rest is ok

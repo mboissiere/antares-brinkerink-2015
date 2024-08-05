@@ -3,6 +3,8 @@
 library(antaresProcessing)
 library(antaresViz)
 
+source("parameters.R")
+
 # Ouais faut vraiment rendre ça plus propre
 
 
@@ -72,7 +74,7 @@ mydata <- readAntares(areas = "all",
                       mcYears = "all",
                       # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
                       select = c("SOLAR", "WIND", "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "LOAD", "H. STOR", "BALANCE"),
-                      timeStep = "weekly"
+                      timeStep = PLOT_TIMESTEP # ça c'est un paramètre qui serait bien dans parameters ça
                       # Ah euh, les imports et les exports quand même !!
 )
 
