@@ -92,7 +92,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     # Ah, it's the capital letters that's causing all the problems.. Was good practice for Ninja
     # but now it's bad practice because we're pulling from the same dataset
     # Oh well
-    filter(property %in% c("Max Capacity", "Start Cost", "Units", "Min Stable Factor"))
+    filter(property %in% c("Max Capacity", "Start Cost", "Units", "Min Stable Factor", "Heat Rate"))
     # NB : there will be more but we'll take it easy
     # notably, nb units needs to be adressed because it returns vectors given scenarios
   
@@ -111,7 +111,8 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
       nominal_capacity = "Max Capacity",
       start_cost = "Start Cost",
       nb_units = "Units",
-      min_stable_factor = "Min Stable Factor"
+      min_stable_factor = "Min Stable Factor",
+      heat_rate = "Heat Rate"
     ) %>%
     mutate(min_stable_power = nominal_capacity * min_stable_factor / 100) %>%
   #   <error/dplyr:::mutate_error>
@@ -121,33 +122,42 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   #   ! argument non numérique pour un opérateur binaire
     ########## Etonnamment, une valeur qui pop pas pour le jeu de test CHE-DEU-FRA
     # mais qui pop pour le NA-CAN-QC, AF-MAR...
-    select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power)
+    select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power, heat_rate)
   
   # Time to add CO2 emissions (basically why we kept fuel_type now)
   # Attention c'est NA pour le nuc !
-  emissions_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
-    filter(parent_class == "Emission") %>%
+  
+  # Time to add variable cost baybee
+  emissions_and_prices_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+    filter(collection == "Fuels") %>%
+  # Hah y avait un pb pendant le pivot_wider vu comment y avait comme parent_object "System" ou "CO2"
+  # et du coup bon courage pour mettre ça sur la même ligne
+  # yessai
+    select(child_object, property, value) %>%
+  # print(emissions_and_prices_tbl, n=300)
     pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
+    # select(child_object, `Production Rate`, Price)
+    
+  # print(emissions_and_prices_tbl)
 
-  # print(emissions_tbl)
-
-  emissions_tbl <- emissions_tbl %>%
+  emissions_and_prices_tbl <- emissions_and_prices_tbl %>%
     # replace(is.na(.), 0) %>%
-    select(child_object, "Production Rate") %>%
+    #select(child_object, "Production Rate") %>%
     mutate(fuel_group = child_object,
+           fuel_cost = Price,
            co2_emission = `Production Rate`/1000) %>% # it's in *tons*CO2/MWh in Antares
-    select(fuel_group, co2_emission)
+    select(fuel_group, fuel_cost, co2_emission)
 
-  # print(emissions_tbl)
+  # print(thermal_generators_tbl)
+  # print(emissions_and_prices_tbl)
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    left_join(emissions_tbl, by = "fuel_group") %>%
-    mutate(co2_emission = ifelse(is.na(co2_emission), 0, co2_emission)) %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, start_cost, co2_emission)
+    left_join(emissions_and_prices_tbl, by = "fuel_group") %>%
+    mutate(co2_emission = ifelse(is.na(co2_emission), 0, co2_emission),
+           variable_cost = heat_rate * fuel_cost) %>%
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
   
-  # print(generators_tbl)
-  # print(thermal_properties_tbl)
-  # left_join earlier ? there will be less pivoting if there's only the places we like
+  
     
   return(thermal_generators_tbl)
 }
@@ -166,14 +176,14 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 
 
 # full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
-# # J'espère que ça a filtré quand même...
-# # full_2015_generators_tbl <- filterFor2015(full_2015_generators_tbl)
-# # Faudrait que je fasse de ce path une variable globale
+# # # J'espère que ça a filtré quand même...
+# # # full_2015_generators_tbl <- filterFor2015(full_2015_generators_tbl)
+# # # Faudrait que je fasse de ce path une variable globale
 # thermal_types <- c("Hard Coal", "Gas", "Nuclear")
 # thermal_clusters_tbl <- filterClusters(full_2015_generators_tbl, thermal_types)
-# # print(thermal_clusters_tbl)
-# 
 # thermal_clusters_tbl <- getThermalPropertiesTable(thermal_clusters_tbl)
+# print(thermal_clusters_tbl)
+
 # print(thermal_clusters_tbl)
 
 
@@ -188,7 +198,6 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     node = thermal_generators_tbl$node[row]
     cluster_type = thermal_generators_tbl$cluster_type[row]
     nominal_capacity = thermal_generators_tbl$nominal_capacity[row]
-    start_cost = thermal_generators_tbl$start_cost[row]
     nb_units = thermal_generators_tbl$nb_units[row]
     min_stable_power = thermal_generators_tbl$min_stable_power[row]
     # J'ai quasiment tout des thermiques, mais ce serait bien que j'implémente les
@@ -197,6 +206,9 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     #test = paste("CO2 emission for", generator_name, "plant:", co2_emission)
     #print(test)
     list_pollutants = list("co2"= co2_emission) # "nh3"= 0.25, "nox"= 0.45, "pm2_5"= 0.25, "pm5"= 0.25, "pm10"= 0.25, "nmvoc"= 0.25, "so2"= 0.25, "op1"= 0.25, "op2"= 0.25, "op3"= 0.25, "op4"= 0.25, "op5"= NULL)
+    
+    variable_cost = thermal_generators_tbl$variable_cost[row]
+    start_cost = thermal_generators_tbl$start_cost[row]
     tryCatch({
       createCluster(
         area = node,
@@ -206,11 +218,13 @@ addThermalToAntares <- function(thermal_generators_tbl) {
         nominalcapacity = nominal_capacity,
         min_stable_power = min_stable_power, # Point d'attention : ça s'écrit avec des tirets dans le .ini
         # mais en fait c'est ... euh
-        startup_cost = start_cost,
         list_pollutants = list_pollutants,
         #...,
         #list_pollutants = NULL,
         #time_series = NULL,
+        marginal_cost = variable_cost,
+        startup_cost = start_cost,
+        market_bid_cost = variable_cost,
         #prepro_data = NULL,
         #prepro_modulation = NULL,
         add_prefix = FALSE,

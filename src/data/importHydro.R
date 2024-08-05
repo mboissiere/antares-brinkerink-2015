@@ -65,17 +65,28 @@ addHydroStorageToAntares <- function(nodes) {
     node <- node_info$node
     #print(node)
     
-    #reservoir_capacity <- node_info$total_nominal_capacity
-    list_params = list("intra-daily-modulation" = 2, # Let's assume that by default the rest is ok
+    hydro_capacity <- node_info$total_nominal_capacity
+    max_power_matrix = data.table(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
+    #max_power_matrix = matrix(c(10000, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
+    #print(max_power_matrix)
+    list_params = list("intra-daily-modulation" = 24, # va savoir pk
+                       "inter-daily-modulation" = 2  # va savoir pk
+                       # Let's assume that by default the rest is ok
                        #"reservoir" = TRUE, # except I kinda need to toggle reservoir management if i have capacity
-                       "reservoir" = FALSE, # except no actually i was wrong
-                       "use heuristic" = FALSE, # i don't really get it but nicolas !!
+                       #"reservoir" = FALSE, # except no actually i was wrong
+                       #"use heuristic" = FALSE # i don't really get it but nicolas !!
                        )
                        #"reservoir capacity" = reservoir_capacity) # Apparently needs to be an integer ? Will see if it's ok
     # faire un trycatch en vrai etc etc
     tryCatch({
       writeIniHydro(area = node,
                     params = list_params
+      )
+      writeHydroValues(
+        area = node,
+        type = "maxpower",
+        data = max_power_matrix,
+        overwrite = TRUE
       )
       msg = paste("[HYDRO] - Initializing", node, "hydro parameters...")
       logFull(msg)
