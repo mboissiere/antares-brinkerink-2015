@@ -2,14 +2,14 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = TRUE
-IMPORT_STUDY_NAME = "threePoints_withHydro" # quand je ferai des presets
-LAUNCH_SIMULATION = TRUE
+CREATE_STUDY = FALSE
+IMPORT_STUDY_NAME = "deaneEurope_minimal" # quand je ferai des presets
+LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
 READ_RESULTS = TRUE
-PLOT_TIMESTEP = "weekly"
+PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
 #   réfléchir à quelque chose pour faciliter la sauvegarde de captures d'écran
@@ -115,8 +115,8 @@ DEANE_NODES_EUROPE = c('EU-ALB', 'EU-ARM', 'EU-AUT', 'EU-AZE', 'EU-BEL', 'EU-BGR
 # et un truc de paramètres que l'utilisateur peut être amené à bouger souvent
 # (Comme je le dis depuis qq temps oups)
 
-# NODES = DEANE_NODES_EUROPE
-NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+NODES = DEANE_NODES_ALL
+# NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 # plutôt avoir des variables qui peuvent bcp changer en "nodes"
 # et des variables vrmt statiques (comme horizon plus bas, en attendant le preset...)
 # en "NODES"

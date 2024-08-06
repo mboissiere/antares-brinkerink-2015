@@ -15,6 +15,7 @@ if (!CREATE_STUDY) {
   study_path = file.path("input", "antares_presets", study_name,
                          fsep = .Platform$file.sep)
   msg = paste("[MAIN] - Reading simulations of pre-existing", study_name, "study...")
+  # jsp pourquoi mais ça le print genre 3 fois
   logMain(msg)
 }
 if (!LAUNCH_SIMULATION) {
@@ -26,12 +27,19 @@ setSimulationPath(study_path, simulation_name)
 
 if (simulation_name == -1) {
   msg = "[MAIN] - Opening latest simulation..."
+  # ça aussi
   logMain(msg)
   } else {
     msg = paste("[MAIN] - Opening", simulation_name, "simulation...")
     logMain(msg)
   }
 
+# Error in readAntares(areas = "all", links = "all", clusters = "all", mcYears = "all",  : 
+#                        You want to load more than 10Go of data,
+#                      if you want you can modify antaresRead rules of RAM control with setRam()
+#Set maximum ram to used to 50 Go
+setRam(16)
+# If there's a way to read RAM on PC thatd be goated
 
 
 
@@ -69,8 +77,9 @@ end_date <- "2015-12-31"
 
 # Charger les données de production au pas horaire pour toutes les zones
 mydata <- readAntares(areas = "all",
-                      # links = "all",
-                      # clusters = "all",
+                      links = "all",
+                      # clusters = "all", # pretty long, make an "import clusters" function.
+                      # a good thing would also be to make districts for deane world
                       mcYears = "all",
                       # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
                       select = c("SOLAR", "WIND", "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", "LOAD", "H. STOR", "BALANCE"),
@@ -86,24 +95,25 @@ setProdStackAlias(
     WIND = WIND,
     SOLAR = SOLAR,
     `H. STOR` = `H. STOR`,
+    `MIX. FUEL` = `MIX. FUEL`,
     GAS = GAS,
     COAL = COAL,
     OIL = OIL,
-    `MIX. FUEL` = `MIX. FUEL`,
     EXCHANGES = -BALANCE
   ),
-  colors = c("yellow", "turquoise", "orange", "blue", "red", "darkred", "darkslategray", "darkgreen", "grey"),
+  colors = c("yellow", "turquoise", "orange", "blue", "darkgreen", "red", "darkred", "darkslategray", "grey"),
   lines = alist(
     LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + `MIX. FUEL`
+    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL`
   ),
-  lineColors = c("black", "green")
+  lineColors = c("black", "violetred")#"green")
 )
 
 prodStack(
   x = mydata,
   stack = "customStack",
   areas = "all",
+  #links = "all",
   dateRange = c(start_date, end_date),
   #timeStep = c("hourly", "daily", "weekly", "monthly", "annual"),
   #timestep = "weekly",
