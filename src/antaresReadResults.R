@@ -7,7 +7,8 @@ source("parameters.R")
 
 # Ouais faut vraiment rendre ça plus propre
 
-
+# Pour faire du transfert de simulations plus simplement en format compressé :
+# https://rdrr.io/cran/antaresRead/f/vignettes/antaresH5.Rmd
 
 
 if (!CREATE_STUDY) {
