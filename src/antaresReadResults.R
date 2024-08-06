@@ -122,7 +122,29 @@ prodStack(
   unit = "MWh"
 )
 
+
+initializeOutputFolder <- function()
+  output_dir = paste0("./output/results_", study_name, "--", simulation_name)
+  # folder_dir <- paste0("./logs/logs_", format(Sys.time(), "%Y-%m-%d"))
+  if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+  }
+  
+  # long term, this should probably end up in main/util
+# and there should be like a h5 copy of study and simulation
+# but so far, we want mostly screenshots soooooo
+
+### let's make a function that saves a bunch of PNGs !
 # savePlotAsPng(plot, file = "Rplot.png", width = 600, height = 480, ...)
+# 
+# plot	
+# A plot generated with one of the functions of this package.
+# 
+# ## Not run: 
+# mydata <- readAntares()
+# myplot <- plot(mydata, variable = "MRG. PRICE", type = "density")
+# savePlotAsPng(myplot, file = "myplot.png")
+# 
 
 # # Lire les résultats de la simulation
 # sim_results <- readAntares(
