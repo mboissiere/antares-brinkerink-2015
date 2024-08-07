@@ -7,6 +7,7 @@ library(tidyr)
 
 # print(full_2015_batteries_tbl)
 
+library("data.table")
 
 addBatteriesToAntares <- function(batteries_tbl) {
   
@@ -22,7 +23,7 @@ addBatteriesToAntares <- function(batteries_tbl) {
     # soit, faire max_power x units
     # (et soit, agréger encore plus)
     capacity = batteries_tbl$capacity[row]
-    # In supplementary material, it's actually written to be in GWh !
+    
     max_power = batteries_tbl$max_power[row]
     initial_state = batteries_tbl$initial_state[row]
     efficiency = batteries_tbl$efficiency[row]
@@ -36,8 +37,8 @@ addBatteriesToAntares <- function(batteries_tbl) {
     storage_parameters_list$injectionnominalcapacity <- max_power
     storage_parameters_list$withdrawalnominalcapacity <- max_power
     storage_parameters_list$reservoircapacity <- capacity
-    storage_parameters_list$efficiency <- efficiency
-    storage_parameters_list$initiallevel <- initial_state
+    storage_parameters_list$efficiency <- efficiency/100
+    storage_parameters_list$initiallevel <- initial_state/100
     storage_parameters_list$initialleveloptim <- FALSE
     
     for (k in 1:units) {
@@ -45,9 +46,11 @@ addBatteriesToAntares <- function(batteries_tbl) {
       tryCatch({
         createClusterST(
           area = node,
+          #cluster_name = battery_name,
           cluster_name = battery_name,
           group = cluster_type,
           storage_parameters = storage_parameters_list,
+          
           # blabla pmax inflows rule curve on n'a rien a priori
           # Nicolas : "Pour les STEP, on les modélise comme des stockages "court-terme" 
           # (donc des STEP closed-loop) avec un rendement de 75% et les données de 
@@ -76,3 +79,8 @@ addBatteriesToAntares <- function(batteries_tbl) {
 # bruh décidez vous mdr
 
 # Et failed to add les batteries Battery aussi zut
+
+# le warning c'est No cluster description available.
+# peut-être que c'est une histoire de limite de caractères ? typiquement mon CSV a exporté en FRA_PHS_SuperBissortePu393
+# à vvérifier sur antares web en vrai mais eh
+# nop c'est pas ça, manuellement c'est ok

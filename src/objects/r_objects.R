@@ -67,13 +67,16 @@ full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds
 # 
 # batteries_tbl <- batteries_tbl %>%
 #   pivot_wider(names_from = property, values_from = value) %>%
-#   rename(
-#     units = "Units",
-#     capacity = "Capacity",
+#   mutate(
+#     units = Units,
+#     #capacity = 1000 * `Capacity`,
+#     capacity = Capacity,
 #     max_power = `Max Power`,
 #     initial_state = `Initial SoC`,
 #     efficiency = `Charge Efficiency`
 #   )
+# # In supplementary material, capacity is actually written to be in GWh !
+# # Though I should try to produce a document to double check.
 # 
 # full_2015_batteries_tbl <- batteries_tbl
 # print(full_2015_batteries_tbl)
@@ -119,11 +122,10 @@ full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds
 # saveRDS(full_2015_batteries_tbl, file = ".\\src\\objects\\full_2015_batteries_tbl.rds")
 # full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
 # print(full_2015_batteries_tbl)
-# # full_2015_batteries_tbl <- batteries_tbl
-# # print(full_2015_batteries_tbl)
-# 
-# 
-# ####################
+# full_2015_batteries_tbl <- batteries_tbl
+# print(full_2015_batteries_tbl)
+
+#############
 
 
 # source(".\\src\\data\\preprocessPlexosData.R")

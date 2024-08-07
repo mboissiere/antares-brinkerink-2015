@@ -49,6 +49,7 @@ getHydroGeneratorsProperties <- function() {
 # }
 
 source(".\\src\\utils\\timeSeriesConversion.R")
+library("data.table")
 
 addHydroStorageToAntares <- function(nodes) {
   msg = "[MAIN] - Beginning hydro implementation..."
@@ -66,7 +67,7 @@ addHydroStorageToAntares <- function(nodes) {
     #print(node)
     
     hydro_capacity <- node_info$total_nominal_capacity
-    max_power_matrix = matrix(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
+    max_power_matrix = data.table(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
     #max_power_matrix = matrix(c(10000, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
     #print(max_power_matrix)
     list_params = list("inter-daily-breakdown" = 2)
