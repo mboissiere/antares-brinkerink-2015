@@ -104,11 +104,11 @@ full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds
 # # will just be taken as closed-loop
 # full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
 #   mutate(cluster_type = case_when(
-#     battery_group == "Pumped Hydro Storage" ~ "PSP Closed",
+#     battery_group == "Pumped Hydro Storage" ~ "PSP_closed",
 #     battery_group == "Chemical Battery" ~ "Battery",
-#     battery_group == "Thermal" ~ "Other",
-#     battery_group == "Hydrogen" ~ "Other 2",
-#     battery_group == "Compressed Air Energy" ~ "Other 3",
+#     battery_group == "Thermal" ~ "Other1",
+#     battery_group == "Hydrogen" ~ "Other2",
+#     battery_group == "Compressed Air Energy" ~ "Other3",
 #     TRUE ~ NA_character_ # In case there are other types not listed
 #   )) %>%
 #   select(battery_name, continent, node, battery_group, cluster_type, units, capacity, max_power, initial_state, efficiency)
@@ -124,7 +124,7 @@ full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds
 # 
 # 
 # ####################
-# 
+
 
 # source(".\\src\\data\\preprocessPlexosData.R")
 # all_deane_nodes <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")

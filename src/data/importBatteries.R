@@ -26,13 +26,20 @@ addBatteriesToAntares <- function(batteries_tbl) {
     max_power = batteries_tbl$max_power[row]
     initial_state = batteries_tbl$initial_state[row]
     efficiency = batteries_tbl$efficiency[row]
+    # storage_parameters_list = list("injectionnominalcapacity" = max_power,
+    #                           "withdrawalnominalcapacity" = max_power,
+    #                           "reservoircapacity" = capacity,
+    #                           "efficiency" = efficiency,
+    #                           "initiallevel" = initial_state,
+    #                           "initialleveloptim" = FALSE)
+    storage_parameters_list <- storage_values_default()
+    storage_parameters_list$injectionnominalcapacity <- max_power
+    storage_parameters_list$withdrawalnominalcapacity <- max_power
+    storage_parameters_list$reservoircapacity <- capacity
+    storage_parameters_list$efficiency <- efficiency
+    storage_parameters_list$initiallevel <- initial_state
+    storage_parameters_list$initialleveloptim <- FALSE
     
-    storage_parameters_list = list("injectionnominalcapacity" = max_power,
-                              "withdrawalnominalcapacity" = max_power,
-                              "reservoircapacity" = capacity,
-                              "efficiency" = efficiency,
-                              "initiallevel" = initial_state,
-                              "initialleveloptim" = FALSE)
     for (k in 1:units) {
       battery_name = paste0(batteries_tbl$battery_name[row], "_", k)
       tryCatch({
@@ -59,3 +66,13 @@ addBatteriesToAntares <- function(batteries_tbl) {
     }
   }
 }
+# 
+# Group: 'Other 2' is not a valid name recognized by Antares, you should be using one of: PSP_open, PSP_closed, Pondage, Battery, Other1, Other2, Other3, Other4, Other5
+# 17: No cluster description available.
+# 18: In createClusterST(area = node, cluster_name = battery_name,  ... :
+#                          Group: 'PSP Closed' is not a valid name recognized by Antares, you should be using one of: PSP_open, PSP_closed, Pondage, Battery, Other1, Other2, Other3, Other4, Other5
+#                        19: No cluster description available.
+#                        
+# bruh décidez vous mdr
+
+# Et failed to add les batteries Battery aussi zut
