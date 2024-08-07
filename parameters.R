@@ -4,11 +4,11 @@
 
 CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "deaneWorld_v1" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -30,11 +30,20 @@ GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
 GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = FALSE
+GENERATE_THERMAL = TRUE
 GENERATE_HYDRO = TRUE
 GENERATE_STORAGE = TRUE
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
                   "Other", "Other 2", "Other 3", "Other 4")
+
+# Everything is here now EXCEPT CSP
+## Il serait bien de faire un code qui check quelles centrales existent dans ninja
+## mais pas dans PLEXOS, et ensuite de voir si on retrouve les CSP dans le cas du solaire.
+## (pour les éoliennes, il devrait pas y en avoir du tout, donc TRES intéressant si y en a...)
+
+# Question que Nicolas posait aussi : y a de la défaillance en Europe ?
+
+# bientôt battery types soon tkt
 # Idée : paramétriser simplifications genre
 # "get all other" ou juste geothermal
 # fin en fait c'est ça mdr mais c'est peu explicite là ce serait bien de faire un

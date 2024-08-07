@@ -83,7 +83,12 @@ mydata <- readAntares(areas = "all",
                       # a good thing would also be to make districts for deane world
                       mcYears = "all",
                       # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
-                      select = c("SOLAR", "WIND", "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", "LOAD", "H. STOR", "BALANCE"),
+                      select = c("SOLAR", "WIND", 
+                                 "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
+                                 "LOAD", 
+                                 "H. STOR", 
+                                 "BALANCE", 
+                                 "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4"),
                       timeStep = PLOT_TIMESTEP # ça c'est un paramètre qui serait bien dans parameters ça
                       # Ah euh, les imports et les exports quand même !!
 )
@@ -95,20 +100,34 @@ setProdStackAlias(
     NUCLEAR = NUCLEAR,
     WIND = WIND,
     SOLAR = SOLAR,
-    `H. STOR` = `H. STOR`,
-    `MIX. FUEL` = `MIX. FUEL`,
+    GEOTHERMAL = `MISC. DTG`,
+    # Nota bene : dans les graphes finaux de Deane, en toute logique le CSP est dans solaire
+    # enfin je crois il faudrait lui demander demander
+    HYDRO = `H. STOR`,
+    `BIO AND WASTE` = `MIX. FUEL`,
     GAS = GAS,
     COAL = COAL,
     OIL = OIL,
+    OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     EXCHANGES = -BALANCE
   ),
-  colors = c("yellow", "turquoise", "orange", "blue", "darkgreen", "red", "darkred", "darkslategray", "grey"),
+  colors = c("yellow", "turquoise", "orange", "blue", "darkgreen",
+             "red", "darkred", "darkslategray", "springgreen", "lavender",
+             "grey"),
   lines = alist(
     LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL`
+    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+    # est-ce que les psp injection des batteries machin faut le mettre ? ou c'est du double comptage ?
   ),
   lineColors = c("black", "violetred")#"green")
 )
+
+# Comme graphes au total je pense qu'il faudrait faire :
+# - stack de production
+# - injection/soutirage des différentes formes de stockage
+# - défaillances/spillage
+# - émissions de CO2
+# - échanges
 
 prodStack(
   x = mydata,
