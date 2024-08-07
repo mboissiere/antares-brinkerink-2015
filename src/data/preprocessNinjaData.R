@@ -4,7 +4,7 @@ library(dplyr) # To be commented if the main script has that
 
 ########## PARAMETERS ##########
 
-NINJA_PATH = file.path("input", "dataverse_files")
+NINJA_PATH = file.path(".", "input", "dataverse_files")
 
 WIND_DATA_PATH = file.path(NINJA_PATH, "Renewables.ninja.wind.output.Full.adjusted.txt")
 PV_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Solar.farms.output.full.adjusted.txt")
@@ -29,7 +29,13 @@ getTableFromNinja <- function(ninja_data_path) {
   
   # Removing potential duplicates
   duplicate_columns <- which(duplicated(names(tbl)))
-  tbl <- tbl[ , -duplicate_columns]
+  if (length(duplicate_columns) > 0) {
+    msg = paste("[WARN] - The following columns were found as duplicates in input data :", duplicate_columns)
+    logError(msg)
+    # Now that I don't rebuild the dataset from scratch, this will be useless / never show up
+    # but still.
+    tbl <- tbl[ , -duplicate_columns]
+  }
   tbl <- as_tibble(tbl)
   return(tbl)
 }
