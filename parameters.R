@@ -2,13 +2,13 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "deaneWorld_v1" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = TRUE
+LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -32,7 +32,19 @@ GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
 GENERATE_HYDRO = TRUE
-THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
+GENERATE_STORAGE = TRUE
+THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
+                  "Other", "Other 2", "Other 3", "Other 4")
+# Idée : paramétriser simplifications genre
+# "get all other" ou juste geothermal
+# fin en fait c'est ça mdr mais c'est peu explicite là ce serait bien de faire un
+# include marémoteur qui en fait traduit ça
+# et aussi le fait de faire des batteries en _k, d'agréger des clusters ou pas...
+
+# Other being Geothermal
+# could also import Other 2 but it's so minimal...
+# Si on réfléchit genre 30 s je trouve ça trop bizarre le géo et le marémoteur
+# en cluster thermique mais bon... je vois pas comment faire autrement.
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
 ADD_VOLL = TRUE
@@ -115,8 +127,9 @@ DEANE_NODES_EUROPE = c('EU-ALB', 'EU-ARM', 'EU-AUT', 'EU-AZE', 'EU-BEL', 'EU-BGR
 # et un truc de paramètres que l'utilisateur peut être amené à bouger souvent
 # (Comme je le dis depuis qq temps oups)
 
-NODES = DEANE_NODES_ALL
+# NODES = DEANE_NODES_ALL
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+NODES = "EU-FRA"
 # plutôt avoir des variables qui peuvent bcp changer en "nodes"
 # et des variables vrmt statiques (comme horizon plus bas, en attendant le preset...)
 # en "NODES"

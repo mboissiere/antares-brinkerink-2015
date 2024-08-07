@@ -1,3 +1,6 @@
+library(dplyr)
+library(tidyr)
+
 all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
 full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
 full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
@@ -20,32 +23,9 @@ full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds
 # print(emissions_tbl, n = 137)
 
 
-# # Note : I might have to manually make categories for THE, CHE, PHS etc etc...
-# # Oh wait, there it is actually, since I want to filter by PHS
-# 
-# # Define a function to extract the middle string from the battery_name
-# extract_middle_string <- function(battery_name) {
-#   return(substr(battery_name, 5, 7))
-# }
-# 
-# # Add the battery_group column to the tibble
-# full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
-#   mutate(battery_group = case_when(
-#     extract_middle_string(battery_name) == "CHE" ~ "Chemical Battery",
-#     extract_middle_string(battery_name) == "THE" ~ "Thermal",
-#     extract_middle_string(battery_name) == "PHS" ~ "Pumped Hydro Storage",
-#     extract_middle_string(battery_name) == "HYD" ~ "Hydrogen",
-#     extract_middle_string(battery_name) == "CAE" ~ "Compressed Air Energy",
-#     TRUE ~ NA_character_ # In case there are other types not listed
-#   )) %>%
-#   select(battery_name, continent, node, battery_group, units, capacity, max_power, initial_state, efficiency)
-# 
-# # print(full_2015_batteries_tbl)
-# 
-# saveRDS(full_2015_batteries_tbl, file = ".\\src\\objects\\full_2015_batteries_tbl.rds")
-
-
 # print(full_2015_generators_tbl)
+
+# Group: 'Other 1' is not a valid name recognized by Antares, you should be using one of: Gas, Hard coal, Lignite, Mixed fuel, Nuclear, Oil, Other, Other 2, Other 3, Other 4
 
 # preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
 # source(preprocessPlexosData_module)
@@ -98,4 +78,70 @@ full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds
 # full_2015_batteries_tbl <- batteries_tbl
 # print(full_2015_batteries_tbl)
 # 
+# # Note : I might have to manually make categories for THE, CHE, PHS etc etc...
+# # Oh wait, there it is actually, since I want to filter by PHS
+# 
+# # Define a function to extract the middle string from the battery_name
+# extract_middle_string <- function(battery_name) {
+#   return(substr(battery_name, 5, 7))
+# }
+# 
+# # Add the battery_group column to the tibble
+# full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
+#   mutate(battery_group = case_when(
+#     extract_middle_string(battery_name) == "CHE" ~ "Chemical Battery",
+#     extract_middle_string(battery_name) == "THE" ~ "Thermal",
+#     extract_middle_string(battery_name) == "PHS" ~ "Pumped Hydro Storage",
+#     extract_middle_string(battery_name) == "HYD" ~ "Hydrogen",
+#     extract_middle_string(battery_name) == "CAE" ~ "Compressed Air Energy",
+#     TRUE ~ NA_character_ # In case there are other types not listed
+#   )) %>%
+#   select(battery_name, continent, node, battery_group, units, capacity, max_power, initial_state, efficiency)
+# 
+# # This is the part where we add Antares cluster types and it sucks
+# # because it's just gonna be "Other" a bunch
+# # Also, we have no way of getting intakes, so all "open-loop" PHS
+# # will just be taken as closed-loop
+# full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
+#   mutate(cluster_type = case_when(
+#     battery_group == "Pumped Hydro Storage" ~ "PSP Closed",
+#     battery_group == "Chemical Battery" ~ "Battery",
+#     battery_group == "Thermal" ~ "Other",
+#     battery_group == "Hydrogen" ~ "Other 2",
+#     battery_group == "Compressed Air Energy" ~ "Other 3",
+#     TRUE ~ NA_character_ # In case there are other types not listed
+#   )) %>%
+#   select(battery_name, continent, node, battery_group, cluster_type, units, capacity, max_power, initial_state, efficiency)
+# 
+# 
+# # print(full_2015_batteries_tbl)
+# 
 # saveRDS(full_2015_batteries_tbl, file = ".\\src\\objects\\full_2015_batteries_tbl.rds")
+# full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+# print(full_2015_batteries_tbl)
+# # full_2015_batteries_tbl <- batteries_tbl
+# # print(full_2015_batteries_tbl)
+# 
+# 
+# ####################
+# 
+
+# source(".\\src\\data\\preprocessPlexosData.R")
+# all_deane_nodes <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
+# full_2015_generators_tbl <- getGeneratorsFromNodes(all_deane_nodes)
+# full_2015_generators_tbl <- addGeneralFuelInfo(full_2015_generators_tbl)
+# full_2015_generators_tbl <- filterFor2015(full_2015_generators_tbl)
+# 
+# saveRDS(full_2015_generators_tbl, ".\\src\\objects\\full_2015_generators_tbl.rds")
+# full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
+# print(full_2015_generators_tbl)
+  
+# 
+# geothermal_tbl <- full_2015_generators_tbl %>%
+#   filter(fuel_group == "Europe_Geo")
+# 
+# print(geothermal_tbl)
+# full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
+# print(full_2015_generators_tbl)
+# full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+# print(full_2015_batteries_tbl)

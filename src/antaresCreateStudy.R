@@ -85,11 +85,17 @@ if (GENERATE_LOAD) {
 generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
 generators_tbl <- readRDS(generators_file)
 
+batteries_file = ".\\src\\objects\\full_2015_batteries_tbl.rds"
+batteries_tbl <- readRDS(batteries_file)
+
 ## Oooh okay I see what's going on. We should filter it over countries now.
 # For example if we have three points, but then don't alter generators_tbl
 # until the thermal clusters, then it'll try to import stuff from all around the world.
 
 generators_tbl <- generators_tbl %>%
+  filter(node %in% NODES)
+
+batteries_tbl <- batteries_tbl %>%
   filter(node %in% NODES)
 
 # This might cause confusion over how we worked with wind_aggregated before.
@@ -171,6 +177,26 @@ if (GENERATE_THERMAL) {
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "mins"), 2)
   msg = paste0("[MAIN] - Done adding thermal data! (run time : ", duration,"min).\n")
+  logMain(msg)
+}
+
+################################################################################
+################################# STORAGE IMPORT ###############################
+
+if (GENERATE_STORAGE) {
+  msg = "[MAIN] - Fetching storage data...\n"
+  logMain(msg)
+  start_time <- Sys.time()
+  
+  importBatteries_file = file.path("src", "data", "importBatteries.R")
+  source(importBatteries_file)
+  # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
+  # faudrait ptet que je fasse ça pour les batteries en vrai de vrai
+  addBatteriesToAntares(batteries_tbl)
+  
+  end_time <- Sys.time()
+  duration <- round(difftime(end_time, start_time, units = "mins"), 2)
+  msg = paste0("[MAIN] - Done adding storage data! (run time : ", duration,"min).\n")
   logMain(msg)
 }
 

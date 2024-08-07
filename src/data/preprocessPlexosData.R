@@ -204,6 +204,18 @@ addGeneralFuelInfo <- function(generators_tbl) {
       
       grepl("Hyd$", fuel_group) ~ "Hydro", # It's debateable whether or not this will be useful.
       # Hydro will probably require a very different implementation than the usual generators_tbl.
+      grepl("Geo$", fuel_group) ~ "Other", # yep, Geothermal is on the menu
+      # Group: 'Other 1' is not a valid name recognized by Antares, you should be using one of: Gas, Hard coal, Lignite, Mixed fuel, Nuclear, Oil, Other, Other 2, Other 3, Other 4
+      
+      grepl("Sto$", fuel_group) ~ "Other 2",
+      grepl("Wav$", fuel_group) ~ "Other 3",
+      grepl("Oth$", fuel_group) ~ "Other 4",
+      # Dans les graphes, il y a une catégorie "Other" et je pense qu'on va pas se faire chier à importer par la suite
+      # chaque truc individuellement alors qu'on peut juste mettre un "Other" tou poti.
+      # cependant, c'est bête de perdre de l'information quand on pourrait un jour s'y intéresser.
+      # D'où, les 4 others.
+      # sure, why not at this point
+      
       TRUE ~ NA_character_  # For unrelated child_object values (other)
     )) %>%
     filter(!is.na(cluster_type)) %>%
