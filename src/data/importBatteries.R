@@ -9,6 +9,11 @@ library(tidyr)
 
 library("data.table")
 
+hourly_zeros <- matrix(0, 8760)
+hourly_zeros_datatable <- as.data.table(hourly_zeros)
+hourly_ones <- matrix(1, 8760)
+hourly_ones_datatable <- as.data.table(hourly_ones)
+
 addBatteriesToAntares <- function(batteries_tbl) {
   
   for (row in 1:nrow(batteries_tbl)) {
@@ -41,15 +46,39 @@ addBatteriesToAntares <- function(batteries_tbl) {
     storage_parameters_list$initiallevel <- initial_state/100
     storage_parameters_list$initialleveloptim <- FALSE
     
+    
+    #storage_parameters <- as.data.table(storage_parameters_list)
+    
     for (k in 1:units) {
       battery_name = paste0(batteries_tbl$battery_name[row], "_", k)
+      
+      # print(node)
+      # print(battery_name)
+      # print(cluster_type)
+      # print(storage_parameters_list)
+      # print(as.matrix(storage_parameters_list))
+      # print(as.data.table(as.matrix(storage_parameters_list)))
+      
       tryCatch({
+        # suppressWarnings(as.data.table(matrix_data)) # c'est dangereux, 
+        # mais je vois pas comment enlever ces warnings étranges autrement
         createClusterST(
           area = node,
           #cluster_name = battery_name,
           cluster_name = battery_name,
           group = cluster_type,
           storage_parameters = storage_parameters_list,
+          
+          PMAX_injection = hourly_ones_datatable,
+          PMAX_withdrawal = hourly_ones_datatable,
+          inflows = hourly_zeros_datatable,
+          lower_rule_curve = hourly_zeros_datatable,
+          upper_rule_curve = hourly_ones_datatable,
+          # hell yeah c'était ça et ça a marché
+          overwrite = TRUE,
+          
+          # là le warning x being coerced from class: matrix to data.table
+          # est réellement mystérieux parce que y a mm pas de matrices ici
           
           # blabla pmax inflows rule curve on n'a rien a priori
           # Nicolas : "Pour les STEP, on les modélise comme des stockages "court-terme" 

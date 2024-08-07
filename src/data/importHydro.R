@@ -67,7 +67,12 @@ addHydroStorageToAntares <- function(nodes) {
     #print(node)
     
     hydro_capacity <- node_info$total_nominal_capacity
-    max_power_matrix = data.table(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
+    max_power_matrix = as.data.table(matrix(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE))
+    # mdr, quand je mets data.table enlève le warning chiant "x being coerced from class: matrix to data.table"
+    #... mais ça marche pas
+    # ah prendre une matrice puis faire as.data.table ça marche
+    # oui en fait jsuis con sûrement que ça prenait pas les mm arguments
+    
     #max_power_matrix = matrix(c(10000, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
     #print(max_power_matrix)
     list_params = list("inter-daily-breakdown" = 2)
