@@ -104,6 +104,10 @@ setProdStackAlias(
     # Nota bene : dans les graphes finaux de Deane, en toute logique le CSP est dans solaire
     # enfin je crois il faudrait lui demander demander
     HYDRO = `H. STOR`,
+    # mais étrange alors, Wav est-il dans Hydro ou Other ? Est-ce qu'en fait s'il y a pas de Other
+    # dans les graphes de fin c'est qu'il a mis des trucs en vrac (whatever Sto and Oth can be) ?
+    # parce que en prenant un Other fidèle au PLEXOS (sauf le géothermique) on a quand même
+    # un truc non négligeable (assez enthousiaste sur le marémoteur en fait, en tout cas en France)
     `BIO AND WASTE` = `MIX. FUEL`,
     GAS = GAS,
     COAL = COAL,
@@ -111,8 +115,8 @@ setProdStackAlias(
     OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     EXCHANGES = -BALANCE
   ),
-  colors = c("yellow", "turquoise", "orange", "blue", "darkgreen",
-             "red", "darkred", "darkslategray", "springgreen", "lavender",
+  colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
+             "darkgreen", "red", "darkred", "darkslategray", "lavender",
              "grey"),
   lines = alist(
     LOAD = LOAD,
