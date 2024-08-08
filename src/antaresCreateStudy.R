@@ -137,7 +137,7 @@ if (GENERATE_SOLAR_PV) {
     importSolarPV_file = file.path("src", "data", "importSolarPV.R",
                                    fsep = .Platform$file.sep)
     source(importSolarPV_file)
-    addAggregatedSolarPV(NODES, generators_tbl)
+    addAggregatedSolar(NODES, generators_tbl, GENERATE_SOLAR_CSP)
   }
   
   end_time <- Sys.time()
@@ -205,22 +205,22 @@ if (GENERATE_STORAGE) {
 
 
 
-# Welp, I've laid the groundwork for interesting stuff, but I don't think we're
-# gonna use it right now.
-if (GENERATE_SOLAR_CSP) {
-  msg = "[MAIN] - Fetching solar CSP data...\n"
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  importCSP_file = file.path("src", "data", "importCSP.R")
-  source(importCSP_file)
-  addCSPToAntares(NODES)
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "mins"), 2)
-  msg = paste0("[MAIN] - Done adding CSP data! (run time : ", duration,"min).\n")
-  logMain(msg)
-}
+# # Welp, I've laid the groundwork for interesting stuff, but I don't think we're
+# # gonna use it right now.
+# if (GENERATE_SOLAR_CSP) {
+#   msg = "[MAIN] - Fetching solar CSP data...\n"
+#   logMain(msg)
+#   start_time <- Sys.time()
+#   
+#   importCSP_file = file.path("src", "data", "importCSP.R")
+#   source(importCSP_file)
+#   addCSPToAntares(NODES)
+#   
+#   end_time <- Sys.time()
+#   duration <- round(difftime(end_time, start_time, units = "mins"), 2)
+#   msg = paste0("[MAIN] - Done adding CSP data! (run time : ", duration,"min).\n")
+#   logMain(msg)
+# }
 
 ################################################################################
 ################################# LINKING AREAS ################################

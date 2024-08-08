@@ -26,7 +26,7 @@ logging_module = file.path("src", "logging.R",
                          fsep = .Platform$file.sep)
 source(logging_module)
 
-source("parameters.R")
+# source("parameters.R")
 
 if (EXPORT_TO_OUTPUT_FOLDER) {
   output_dir <- paste0("./output/", generateName("run"))

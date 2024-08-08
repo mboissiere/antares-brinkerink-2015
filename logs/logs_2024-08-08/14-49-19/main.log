@@ -1,0 +1,21 @@
+INFO [2024-08-08 14:49:19] [MAIN] - Creating Etude_sur_R_Beta__2024_08_08_14_49_18 study...
+
+INFO [2024-08-08 14:49:19] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-08 14:49:19] [MAIN] - Adding nodes...
+
+INFO [2024-08-08 14:49:22] [MAIN] - Done adding nodes! (run time : 2.84s).
+
+INFO [2024-08-08 14:49:22] [MAIN] - Adding load data...
+
+INFO [2024-08-08 14:49:23] [MAIN] - Done adding load data! (run time : 1.64s).
+
+INFO [2024-08-08 14:49:23] [MAIN] - Fetching wind data...
+
+INFO [2024-08-08 14:49:24] [MAIN] - Done adding wind data! (run time : 0.45s).
+
+INFO [2024-08-08 14:49:24] [MAIN] - Fetching solar data...
+
+INFO [2024-08-08 14:49:24] [MAIN] - Starting simulation__2024_08_08_14_49_24 simulation...
+INFO [2024-08-08 14:49:32] [MAIN] - Antares simulation finished! (run time : 0.14min).
+ 
+

@@ -29,6 +29,9 @@ GENERATE_LOAD = TRUE
 GENERATE_REN = FALSE
 GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
+# Technically my PV implementation is very bad because if I had
+# solar PV off (which i never do) then I wouldn't have CSP either.
+# But this is fiiiiiiiiiiiiine right.
 GENERATE_SOLAR_CSP = TRUE
 # Avoir que le CSP ça fait crasher..
 # ou alors le CSP est mal mis ??
