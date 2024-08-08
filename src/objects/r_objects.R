@@ -11,6 +11,48 @@ hourly_zeros_datatable <- as.data.table(hourly_zeros)
 hourly_ones <- matrix(1, 8760)
 hourly_ones_datatable <- as.data.table(hourly_ones)
 
+
+# 
+# source(".\\src\\data\\addNodes.R")
+# all_deane_nodes_lst <- getAllNodes()
+# print(all_deane_nodes_lst)
+# saveRDS(object = all_deane_nodes_lst,
+#         file = ".\\src\\objects\\all_deane_nodes_lst.rds")
+# 
+# europe_nodes_lst <- getNodesFromContinents("Europe")
+# print(europe_nodes_lst)
+# saveRDS(object = europe_nodes_lst,
+#         file = ".\\src\\objects\\europe_nodes_lst.rds")
+# 
+# africa_nodes_lst <- getNodesFromContinents("Africa")
+# print(africa_nodes_lst)
+# saveRDS(object = africa_nodes_lst,
+#         file = ".\\src\\objects\\africa_nodes_lst.rds")
+# 
+# asia_nodes_lst <- getNodesFromContinents("Asia")
+# print(asia_nodes_lst)
+# saveRDS(object = asia_nodes_lst,
+#         file = ".\\src\\objects\\asia_nodes_lst.rds")
+# 
+# north_america_nodes_lst <- getNodesFromContinents("North America")
+# print(north_america_nodes_lst)
+# saveRDS(object = north_america_nodes_lst,
+#         file = ".\\src\\objects\\north_america_nodes_lst.rds")
+# 
+# south_america_nodes_lst <- getNodesFromContinents("South America")
+# print(south_america_nodes_lst)
+# saveRDS(object = south_america_nodes_lst,
+#         file = ".\\src\\objects\\south_america_nodes_lst.rds")
+# 
+# oceania_nodes_lst <- getNodesFromContinents("Oceania")
+# print(oceania_nodes_lst)
+# saveRDS(object = oceania_nodes_lst,
+#         file = ".\\src\\objects\\oceania_nodes_lst.rds")
+
+
+
+
+
 # emissions_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
 #   filter(parent_class == "Emission") %>%
 #   pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
