@@ -5,6 +5,12 @@ all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
 full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
 full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
 
+library(data.table)
+hourly_zeros <- matrix(0, 8760)
+hourly_zeros_datatable <- as.data.table(hourly_zeros)
+hourly_ones <- matrix(1, 8760)
+hourly_ones_datatable <- as.data.table(hourly_ones)
+
 # emissions_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
 #   filter(parent_class == "Emission") %>%
 #   pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global

@@ -9,11 +9,6 @@ library(tidyr)
 
 library("data.table")
 
-hourly_zeros <- matrix(0, 8760)
-hourly_zeros_datatable <- as.data.table(hourly_zeros)
-hourly_ones <- matrix(1, 8760)
-hourly_ones_datatable <- as.data.table(hourly_ones)
-
 addBatteriesToAntares <- function(batteries_tbl) {
   
   for (row in 1:nrow(batteries_tbl)) {

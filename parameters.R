@@ -4,7 +4,7 @@
 
 CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "deaneWorld_v1" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
@@ -19,7 +19,7 @@ PLOT_TIMESTEP = "daily"
 EXPORT_TO_OUTPUT_FOLDER = TRUE
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Etude_sur_R_Monde"
+study_basename <- "Etude_sur_R_Batteries_sans_CSP"
 # Dans l'idéal ce serait bien aussi d'avoir une sorte de generateName intelligent avec les nodes genre
 # ou un paramètre mais fin
 # si j'ai europe_nodes qu'il écrive europe, si j'ai all nodes qu'il écrive monde, sinon cas par cas etc
@@ -28,13 +28,17 @@ GENERATE_LOAD = TRUE
 GENERATE_REN = FALSE
 GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
-GENERATE_SOLAR_CSP = TRUE
+GENERATE_SOLAR_CSP = FALSE
+# Avoir que le CSP ça fait crasher..
+# ou alors le CSP est mal mis ??
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = FALSE
 GENERATE_HYDRO = FALSE
-GENERATE_STORAGE = FALSE
+GENERATE_STORAGE = TRUE
+# i should really say batteries
+# bc storage will be done for csp independantly
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
-                  "Other", "Other 2", "Other 3", "Other 4")
+                  "Other", "Other 2", "Other 3") #, "Other 4")
 # Nota bene : comme je filoute et met directement (provisoirement) "Other4" ici
 # en fait c'est pas compté dans les thermal types
 # c'est géré par variable import csp qui lance le programme ou pas

@@ -1,0 +1,35 @@
+INFO [2024-08-08 13:45:30] [MAIN] - Creating Etude_sur_R_Monde__2024_08_08_13_45_30 study...
+
+INFO [2024-08-08 13:45:30] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-08 13:45:30] [MAIN] - Adding nodes...
+
+INFO [2024-08-08 13:45:33] [MAIN] - Done adding nodes! (run time : 2.71s).
+
+INFO [2024-08-08 13:45:33] [MAIN] - Adding load data...
+
+INFO [2024-08-08 13:45:35] [MAIN] - Done adding load data! (run time : 2.25s).
+
+INFO [2024-08-08 13:45:35] [MAIN] - Fetching wind data...
+
+INFO [2024-08-08 13:45:36] [MAIN] - Done adding wind data! (run time : 0.3s).
+
+INFO [2024-08-08 13:45:36] [MAIN] - Fetching solar data...
+
+INFO [2024-08-08 13:45:36] [MAIN] - Done adding solar data! (run time : 0.21s).
+
+INFO [2024-08-08 13:45:36] [MAIN] - Fetching solar CSP data...
+
+INFO [2024-08-08 13:45:40] [MAIN] - Done adding CSP data! (run time : 0.07min).
+
+INFO [2024-08-08 13:45:40] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-08 13:45:42] [MAIN] - Done adding lines! (run time : 1.49s).
+
+INFO [2024-08-08 13:45:42] [MAIN] - Finished setting up Antares study! (run time : 0.2min).
+ 
+
+INFO [2024-08-08 13:45:42] [MAIN] - Starting simulation__2024_08_08_13_45_42 simulation...
+INFO [2024-08-08 13:45:44] [MAIN] - Antares simulation finished! (run time : 0.04min).
+ 
+
+INFO [2024-08-08 13:45:46] [MAIN] - Opening latest simulation...

@@ -204,7 +204,7 @@ aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
 # aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
 # print(aggregated_csp_tbl)
 
-# library(data.table)
+library(data.table)
 
 addCSPToAntares <- function(nodes 
                             #all_csp_tbl = csp
@@ -236,6 +236,7 @@ addCSPToAntares <- function(nodes
   
   for (row in 1:nrow(csp_tbl)) {
     storage_name = csp_tbl$storage_name[row]
+    #print(storage_name)
     node = csp_tbl$node[row]
     max_storage_volume = csp_tbl$max_volume[row]
     nominal_capacity = csp_tbl$nominal_capacity[row]
@@ -245,13 +246,31 @@ addCSPToAntares <- function(nodes
     # Encore une fois, injection = charge d'après doc
     # en gros on dit ici que le CSP ne se charge pas du réseau, seulement des apports
     storage_parameters_list$withdrawalnominalcapacity <- nominal_capacity
+    #storage_parameters_list$reservoircapacity <- max_storage_volume * 1000
+    # storage_parameters_list$reservoircapacity <- max_storage_volume * 1000000 # test, a vocation à être changé
+    # je vois pas comment ça peut être autrement, parce que c'est trop bizarre
+    # on a ESP_PLANTASOLARTE qui a 0.0011 de max_volume,
+    # mais dans sa timeseries il peut atteindre un apport de 22 ??
     storage_parameters_list$reservoircapacity <- max_storage_volume
+    # Nicolas a dit pas multiplier, on multiplie pas
     storage_parameters_list$initiallevel <- 0
+    #print(storage_parameters_list)
     # pour le faire proprement il faudrait l'extraire du deane etc ce que j'ai juste zappé.
     # je me souviens que c'est 0.
     
     storage_ts <- csp_timeseries_tbl[[storage_name]]
-    #storage_ts <- as.data.table(storage_ts)
+    if (is.null(storage_ts)) {
+      msg = paste("[WARN] - Timeseries for", storage_name, "is null.")
+      logError(msg)
+    }
+    # put a null TS warning
+    #print(storage_ts)
+    # is_integer_col <- sapply(storage_ts, function(col) all(col == as.integer(col)))
+    # print(is_integer_col)
+    # perhaps one important thing is for them to be integers ?
+    
+    storage_ts <- as.data.table(storage_ts)
+    # whoa c'était vraiment juste ça
     tryCatch({
       createClusterST(
         area = node,
@@ -259,7 +278,13 @@ addCSPToAntares <- function(nodes
         cluster_name = storage_name,
         group = "Other4",
         storage_parameters = storage_parameters_list,
+        
         inflows = storage_ts,
+        PMAX_injection = hourly_ones_datatable,
+        PMAX_withdrawal = hourly_ones_datatable,
+        lower_rule_curve = hourly_zeros_datatable, # pmin mayhaps ??
+        upper_rule_curve = hourly_ones_datatable,
+        #inflows = as.data.table(storage_ts),
         # lower_rule_curve = hourly_zeros_datatable,
         # envisager de mettre min_stable_factor en pourcentage ? pourquoi/pourquoi pas?
         overwrite = TRUE,
@@ -269,9 +294,23 @@ addCSPToAntares <- function(nodes
       logFull(msg)
     }, error = function(e) {
       msg = paste("[WARN] - Failed to add", storage_name, "CSP generator to", node, "node, skipping...")
-      logFull(msg)
+      logError(msg)
     })
+#     INFO [2024-08-08 11:32:27] [MAIN] - Fetching solar CSP data...
+#     
+#     Error in fwrite(x = get(name), row.names = FALSE, col.names = FALSE, sep = "\t",  : 
+#                       is.list(x) n'est pas TRUE
     
+    # Erreur incompréhensible.... time to regarder le code source !
+    # https://github.com/rte-antares-rpackage/antaresEditObject/blob/c9adc8e13bc2ec238b4a8d7f57afb3531219bbd4/R/createClusterST.R#L77
+    
+    # il reste un 2: No cluster description available.
+    # ce qui me rassure pas sur le fait que ptet 1 bugge encore mais bon
+    
+# De plus : Warning messages:
+# 1: Parameter 'horizon' is missing or inconsistent with 'january.1st' and 'leapyear'. Assume correct year is 2018.
+# To avoid this warning message in future simulations, open the study with Antares and go to the simulation tab, put a valid year number in the cell 'horizon' and use consistent values for parameters 'Leap year' and '1st january'. 
+# 2: No cluster description available.
   }
 }
 

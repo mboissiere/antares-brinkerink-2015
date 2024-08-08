@@ -1,0 +1,21 @@
+INFO [2024-08-08 11:32:23] [MAIN] - Creating Etude_sur_R_Monde__2024_08_08_11_32_23 study...
+
+INFO [2024-08-08 11:32:23] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-08 11:32:23] [MAIN] - Adding nodes...
+
+INFO [2024-08-08 11:32:25] [MAIN] - Done adding nodes! (run time : 1.9s).
+
+INFO [2024-08-08 11:32:25] [MAIN] - Adding load data...
+
+INFO [2024-08-08 11:32:26] [MAIN] - Done adding load data! (run time : 1.19s).
+
+INFO [2024-08-08 11:32:26] [MAIN] - Fetching wind data...
+
+INFO [2024-08-08 11:32:27] [MAIN] - Done adding wind data! (run time : 0.32s).
+
+INFO [2024-08-08 11:32:27] [MAIN] - Fetching solar data...
+
+INFO [2024-08-08 11:32:27] [MAIN] - Done adding solar data! (run time : 0.36s).
+
+INFO [2024-08-08 11:32:27] [MAIN] - Fetching solar CSP data...
+

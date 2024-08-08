@@ -21,7 +21,9 @@ updateAllSettings <- function() {
     leapyear = is_leap_year(horizon),
     year.by.year = year_by_year,
     
-    generate = c("thermal"),
+    generate = c("thermal"),# en vrai ce truc devrait être dans
+    # la partie generate thermal, c bizarre siy a pas
+    # bon ça devrait pas non plus bugger qd mm
     # nbtimeseriesload = 1,
     # nbtimeserieshydro = 1,
     # nbtimeserieswind = 1,
