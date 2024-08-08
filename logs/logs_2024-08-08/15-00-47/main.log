@@ -1,0 +1,27 @@
+INFO [2024-08-08 15:00:47] [MAIN] - Creating Etude_sur_R_Beta_3Pts__2024_08_08_15_00_47 study...
+
+INFO [2024-08-08 15:00:47] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-08 15:00:47] [MAIN] - Adding nodes...
+
+INFO [2024-08-08 15:00:49] [MAIN] - Done adding nodes! (run time : 1.71s).
+
+INFO [2024-08-08 15:00:49] [MAIN] - Adding load data...
+
+INFO [2024-08-08 15:00:50] [MAIN] - Done adding load data! (run time : 1.15s).
+
+INFO [2024-08-08 15:00:50] [MAIN] - Fetching wind data...
+
+INFO [2024-08-08 15:00:50] [MAIN] - Done adding wind data! (run time : 0.18s).
+
+INFO [2024-08-08 15:00:50] [MAIN] - Fetching solar data...
+
+INFO [2024-08-08 15:00:50] [MAIN] - Done adding solar data! (run time : 0.18s).
+
+INFO [2024-08-08 15:00:50] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-08 15:00:55] [MAIN] - Done adding hydro!
+INFO [2024-08-08 15:00:55] [MAIN] - Fetching thermal data...
+
+INFO [2024-08-08 15:01:03] [MAIN] - Starting simulation__2024_08_08_15_01_03 simulation...
+INFO [2024-08-08 15:01:04] [MAIN] - Antares simulation finished! (run time : 0.01min).
+ 
+

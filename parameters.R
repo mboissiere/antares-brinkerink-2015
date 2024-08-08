@@ -8,7 +8,7 @@ LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -19,7 +19,7 @@ PLOT_TIMESTEP = "daily"
 EXPORT_TO_OUTPUT_FOLDER = TRUE
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Etude_sur_R_Beta" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Etude_sur_R_Beta_3Pts" # pourrait être corrélé à import_study_name en vrai
 
 # Dans l'idéal ce serait bien aussi d'avoir une sorte de generateName intelligent avec les nodes genre
 # ou un paramètre mais fin
@@ -41,13 +41,13 @@ GENERATE_SOLAR_CSP = TRUE
 # quoique pas forcément le plus dyslexique ffriendly haha*
 # ça change !
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = FALSE
-GENERATE_HYDRO = FALSE
-GENERATE_STORAGE = FALSE
+GENERATE_THERMAL = TRUE
+GENERATE_HYDRO = TRUE
+GENERATE_STORAGE = TRUE
 # i should really say batteries
 # bc storage will be done for csp independantly
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
-                  "Other", "Other 2", "Other 3") #, "Other 4")
+                  "Other", "Other 2", "Other 3", "Other 4") #, "Other 4" is actually useless but isok
 # Nota bene : comme je filoute et met directement (provisoirement) "Other4" ici
 # en fait c'est pas compté dans les thermal types
 # c'est géré par variable import csp qui lance le programme ou pas
@@ -153,10 +153,13 @@ DEANE_NODES_EUROPE = c('EU-ALB', 'EU-ARM', 'EU-AUT', 'EU-AZE', 'EU-BEL', 'EU-BGR
 # et un truc de paramètres que l'utilisateur peut être amené à bouger souvent
 # (Comme je le dis depuis qq temps oups)
 
+
 # NODES = DEANE_NODES_ALL
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 # NODES = "EU-FRA"
-NODES = c("AF-MAR", "EU-ESP", "EU-DEU", "EU-FRA")
+# NODES = c("AF-MAR", "EU-ESP", "EU-DEU", "EU-FRA")
+
+
 # plutôt avoir des variables qui peuvent bcp changer en "nodes"
 # et des variables vrmt statiques (comme horizon plus bas, en attendant le preset...)
 # en "NODES"

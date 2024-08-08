@@ -121,6 +121,8 @@ setProdStackAlias(
   lines = alist(
     LOAD = LOAD,
     TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+    # on ne compte pas du coup les batteries ? ouais voilà mdr ce que j'avais déjà dit en fait
+    # pour moi c'est ni dans production mais après on peut faire un graphe batteries
     # est-ce que les psp injection des batteries machin faut le mettre ? ou c'est du double comptage ?
   ),
   lineColors = c("black", "violetred")#"green")
