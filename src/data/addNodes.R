@@ -143,7 +143,7 @@ addVoLLToNodes <- function(nodes_tbl) {
     # ....mais bon.....
     mutate(
       continent = child_object,
-      voll = value * 1000
+      voll = value #* 1000 # Nicolas a dit on évite de multiplier !
     ) %>%
     select(continent, voll)
   

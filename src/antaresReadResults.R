@@ -134,6 +134,11 @@ setProdStackAlias(
 # - défaillances/spillage
 # - émissions de CO2
 # - échanges
+# Un truc que j'me dis aussi : ce serait bien d'avoir ces données par pays non ?
+# Parce que le Deane il sort ça par continent ok mais si ça se trouve
+# ça allume des centrales thermiques carrément dans les mauvais pays
+# (bon... en soi c'est ptet pas le but de l'étude, de modéliser de façon micro)
+
 
 prodStack(
   x = mydata,
