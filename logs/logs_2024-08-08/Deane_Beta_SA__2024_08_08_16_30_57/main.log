@@ -1,0 +1,36 @@
+INFO [2024-08-08 16:30:57] [MAIN] - Creating Deane_Beta_SA__2024_08_08_16_30_57 study...
+
+INFO [2024-08-08 16:30:57] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-08 16:30:57] [MAIN] - Adding nodes...
+
+INFO [2024-08-08 16:31:03] [MAIN] - Done adding nodes! (run time : 6.29s).
+
+INFO [2024-08-08 16:31:03] [MAIN] - Adding load data...
+
+INFO [2024-08-08 16:31:08] [MAIN] - Done adding load data! (run time : 4.25s).
+
+INFO [2024-08-08 16:31:08] [MAIN] - Fetching wind data...
+
+INFO [2024-08-08 16:31:10] [MAIN] - Done adding wind data! (run time : 1.69s).
+
+INFO [2024-08-08 16:31:10] [MAIN] - Fetching solar data...
+
+INFO [2024-08-08 16:31:11] [MAIN] - Done adding solar data! (run time : 1.62s).
+
+INFO [2024-08-08 16:31:11] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-08 16:31:46] [MAIN] - Done adding hydro!
+INFO [2024-08-08 16:31:46] [MAIN] - Fetching thermal data...
+
+INFO [2024-08-08 16:41:50] [MAIN] - Done adding thermal data! (run time : 10.07min).
+
+INFO [2024-08-08 16:41:50] [MAIN] - Fetching storage data...
+
+INFO [2024-08-08 16:41:53] [MAIN] - Done adding storage data! (run time : 0.05min).
+
+INFO [2024-08-08 16:41:53] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-08 16:41:59] [MAIN] - Done adding lines! (run time : 5.92s).
+
+INFO [2024-08-08 16:41:59] [MAIN] - Finished setting up Antares study! (run time : 11.03min).
+ 
+

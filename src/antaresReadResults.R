@@ -134,6 +134,11 @@ setProdStackAlias(
 # - défaillances/spillage
 # - émissions de CO2
 # - échanges
+
+# Un truc intéressant c'est que la défaillance ca colle bien aux scénarios genre.
+# Le scénarios S1 pourrait dire "ok pour de la défaillance"
+# Pour le scénario S4 ce serait inacceptable (le "ce que je veux, rapidement" etc)
+
 # Un truc que j'me dis aussi : ce serait bien d'avoir ces données par pays non ?
 # Parce que le Deane il sort ça par continent ok mais si ça se trouve
 # ça allume des centrales thermiques carrément dans les mauvais pays

@@ -26,16 +26,18 @@ north_america_nodes_lst <- readRDS(".\\src\\objects\\north_america_nodes_lst.rds
 south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-NODES = europe_nodes_lst
+NODES = north_america_nodes_lst
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Beta_EU" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_Beta_NA" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
 # ... plus être possible.
 # Mais c'est bien de faire des runs et au moins j'aurai un retour genre
 # "ah ce niveau d'agrégation c'est x temps à tourner avec y gigas de mémoire..."
+# ça peut être de beaux jeux de données / documentation
+# (tout en gardant en tête tout de même qu'il faut alors préciser specs de la machine...)
 
 # Ce serait bien en fait de générer les études et puis les faire tourner sur AntaresWeb en vrai.
 # Oh, et puis vu que j'ai mappé le disque avec un raccourci, ptet que ya  moyen
@@ -46,6 +48,9 @@ study_basename <- "Deane_Beta_EU" # pourrait être corrélé à import_study_nam
 # Dans l'idéal ce serait bien aussi d'avoir une sorte de generateName intelligent avec les nodes genre
 # ou un paramètre mais fin
 # si j'ai europe_nodes qu'il écrive europe, si j'ai all nodes qu'il écrive monde, sinon cas par cas etc
+
+# one extra reason that it's coherent to do tolower instead of toupper:
+# that's how the .txt files in antares are
 
 GENERATE_LOAD = TRUE
 GENERATE_REN = FALSE

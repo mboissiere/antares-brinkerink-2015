@@ -1,0 +1,7 @@
+ERROR [2024-08-08 16:17:13] [WARN] - Skipped adding wind data for OC-AUS-NT (no generators found in PLEXOS).
+ERROR [2024-08-08 16:17:14] [WARN] - Skipped adding wind data for OC-PNG (no generators found in PLEXOS).
+ERROR [2024-08-08 16:17:14] [WARN] - Skipped adding solar data for OC-ATA (no generators found in PLEXOS).
+ERROR [2024-08-08 16:17:14] [WARN] - Skipped adding solar data for OC-AUS-TA (no generators found in PLEXOS).
+ERROR [2024-08-08 16:17:14] [WARN] - Skipped adding solar data for OC-AUS-VI (no generators found in PLEXOS).
+ERROR [2024-08-08 16:17:15] [WARN] - Skipped adding solar data for OC-FJI (no generators found in PLEXOS).
+ERROR [2024-08-08 16:17:15] [WARN] - Skipped adding solar data for OC-PNG (no generators found in PLEXOS).

@@ -146,6 +146,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     mutate(fuel_group = child_object,
            fuel_cost = Price,
            co2_emission = `Production Rate`/1000) %>% # it's in *tons*CO2/MWh in Antares
+    # en fait vrmt le production rate c'est quoi ptn
     select(fuel_group, fuel_cost, co2_emission)
 
   # print(thermal_generators_tbl)

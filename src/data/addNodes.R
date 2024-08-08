@@ -26,6 +26,25 @@ DEFAULT_SCALING_FACTOR = 25
 
 # It didn't happen again, maybe a cosmic particle hit my machine at just the wrong time lmao
 
+# ok perhaps an update should be : a "NO_NODE_LEFT_BEHIND" parameter that,
+# if checked, shuts down the code whenever a node isn't added
+# (so, yknow. what happens when i don't catch the exception actually lmao)
+# and also another idea for user transparency : the timer is cool but maybe
+# actually do an error counter : whenever we got to the "warn" part of a trycatch
+# increment a thing. and then the result will say "got x warnings"
+# could even restart it lmao but hm problem of a forever loop
+
+# # Nicolas : BOISSIERE Matteo
+# Pour ce problème je dirais que c'est lié au fait qu'Antares fonctionne avec 
+# des fichiers et que R ne fait que lire et écrire dans ces fichiers. 
+# Mais si l'OS peine à suivre, alors les opérations d'écriture peuvent échouer. 
+# 
+# Peut-être qu'en insérant un petit Sys.sleep(x) entre chaque création tu 
+# auras un comportement plus reproductible. 
+# 
+# En l"occurence ce n'est pas un problème d'Antares mais de R
+#  
+
 
 getAllNodes <- function() {
   nodes_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
