@@ -8,11 +8,12 @@ source(".\\src\\data\\preprocessPlexosData.R")
 source(".\\src\\data\\preprocessNinjaData.R")
 source(".\\src\\objects\\r_objects.R")
 
-print(full_2015_generators_tbl)
+# print(full_2015_generators_tbl)
 
-csp_timeseries <- getTableFromNinja(CSP_DATA_PATH)
+# csp_timeseries <- getTableFromNinja(CSP_DATA_PATH)
+# saveRDS(object = csp_timeseries, file = ".\\src\\objects\\csp_clusters_ninja_tbl.rds")
 
-print(csp_timeseries)
+# print(csp_timeseries)
 
 # applyFilterForCSP <- function(properties_tbl) %>%
 #   rows_to_remove <- properties_tbl %>%
@@ -109,10 +110,12 @@ getPropertiesCSP <- function() {
   return(csp_tbl)
 }
 
-csp_tbl <- getPropertiesCSP() 
-print(csp_tbl)
+# csp_tbl <- getPropertiesCSP()
+# saveRDS(object = csp_tbl, file = ".\\src\\objects\\csp_properties_plexos_tbl.rds")
+# csp_tbl <- readRDS(".\\src\\objects\\csp_properties_plexos_tbl.rds")
+# print(csp_tbl)
 
-getCSPFromNodes(nodes) <- function() {
+getCSPFromNodes <- function(nodes) {
   csp_tbl <- getPropertiesCSP()
   
   csp_tbl <- csp_tbl %>%
@@ -121,10 +124,112 @@ getCSPFromNodes(nodes) <- function() {
   return(csp_tbl)
 }
 
-print(getCSPFromNodes("EU-ESP"))
+# print(getCSPFromNodes("EU-ESP"))
+
+# Relou, faut refaire la fonction aggregateGeneratorTimeSeries parce que ça parse
+# la colonne storage_name et pas generator_name
+# si j'étais chaud je ferais une sorte de fonction fils là qui se décline
+# mais flemme pour l'instant
+
+aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
+  # objectif : nodes donne champ d'étude, properties_tbl est un objet global avec tout,
+  # ninja_tbl est un objet global avec tout, et on filtrera
+
+  storages_tbl <- properties_tbl %>%
+    #filter(node %in% nodes) %>%
+    select(storage_name, node) #, nominal_capacity, units)
+  # On va pas multiplier par la nominal capacity, cette fois-ci.
+  
+  # nodes_studied <- generators_tbl$node
+  # print(storages_tbl)
+  
+  product_tbl <- timeseries_tbl %>%
+    gather(key = "storage_name", value = "production", -DATETIME) 
+  
+  # print(product_tbl, n = 9001)
+  
+  product_tbl <- product_tbl %>% 
+    left_join(storages_tbl, by = "storage_name") %>%
+    filter(node %in% nodes)
+  
+  # print(product_tbl)
+  
+  # product_tbl <- product_tbl %>%
+  #   mutate(power_output = units * nominal_capacity * capacity_factor / 100)
+  
+  product_tbl <- product_tbl %>%
+    select(DATETIME, node, production)
+  
+  # print(product_tbl)
+  
+  aggregated_tbl <- product_tbl %>%
+    group_by(DATETIME, node) %>%
+    summarize(node_production = sum(production, na.rm = FALSE), .groups = 'drop')
+  
+  # print(aggregated_tbl)
+
+  aggregated_tbl <- aggregated_tbl %>%
+    pivot_wider(names_from = node, values_from = node_production)
+  
+  # print(aggregated_tbl)
+  
+  return(aggregated_tbl)
+}
+
+# csp_properties_tbl <- readRDS(".\\src\\objects\\csp_properties_plexos_tbl.rds")
+# csp_timeseries_tbl <- readRDS(".\\src\\objects\\csp_clusters_ninja_tbl.rds")
+# 
+# # nodes = c("EU-ESP", "AF-MAR")
+# # aggregated_csp_tbl <- aggregateStorageTimeSeries(nodes, csp_properties_tbl, csp_timeseries_tbl)
+# # print(aggregated_csp_tbl)
+# 
+# aggregated_csp_tbl <- aggregateStorageTimeSeries(all_deane_nodes_lst, csp_properties_tbl, csp_timeseries_tbl)
+# saveRDS(aggregated_csp_tbl, file = ".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
+# aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
+# print(aggregated_csp_tbl)
 
 
+# csp_timeseries <- readRDS(".\\src\\objects\\csp_clusters_ninja_tbl.rds")
 
+### Plein de ressources pour implémenter CSP proprement avec stockage + timeseries apports
+# mais pour l'instant... hm..
+# Ptn la timeseries Ninja c'est des entiers et les apports sur Antares sont limités aux entiers mdr
+# c'est quoi ce truc de fou furieux
+
+# Est-ce que par exemple vu le fonctionnement on peut prendre "max_volume" en stock,
+# et nominal_capacity en injection, mais pas en soutirage ? Vu que ça dépend du soleil
+# et c'est que les apports qui... apportent
+# Bon allez on va dire que c'est Other4 les CSP haha
+
+addCSPToAntares <- function(nodes 
+                            #all_csp_tbl = csp
+                            ) {
+  
+  
+}
+  
+  # for (row in 1:nrow(csp_tbl)) {
+  #   csp_tbl <- getCSPFromNodes(nodes)
+  #   node = csp_tbl$node[row]
+  #   cluster_type = "Other4"
+  #   max_storage_capacity = csp_tbl$max_volume[row]
+    
+    ## cf discussions riches avec jean yves et nicolas sur teams :
+    ## comment modéliser tous ces aspects des CSP ?
+    
+    ## et euh faire une petite enquête sur le solaire : que représentent les
+    # TS Ninja CSP, les TS Ninja qu'on a vu dans le PV mais qu'on a reconnu comme CSP ?
+    # sont-elles corrélées ? y a-t-il du double comptage ? (pas sur mon code en tout cas)
+    
+    # peut-être que les PV produisent à l'instant comme dans le ninja PV
+    # (et dans ce cas là j'ai bien fait de récupérer la capacité nominale
+    # (même s'il y aura écrit Sol et pas Csp dans la ligne trop rleou)
+    # ET le Storage repérsente bah le stock
+    
+    # max_power = batteries_tbl$max_power[row]
+    # initial_state = 0
+    
+  }
 
 ### NEXT STEP : actually model it as a storage with inputs ?
 ### And seperate onshore, offshore etc into clusters

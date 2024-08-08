@@ -41,6 +41,8 @@ addBatteriesToAntares <- function(batteries_tbl) {
     storage_parameters_list <- storage_values_default()
     storage_parameters_list$injectionnominalcapacity <- max_power
     storage_parameters_list$withdrawalnominalcapacity <- max_power
+    # Petit piège : "injection" c'est pompage parce que c'est du POV de
+    # la batterie
     storage_parameters_list$reservoircapacity <- capacity
     storage_parameters_list$efficiency <- efficiency/100
     storage_parameters_list$initiallevel <- initial_state/100
@@ -86,7 +88,7 @@ addBatteriesToAntares <- function(batteries_tbl) {
           # puissance et de capa du fichier de Deane."
           # est-ce que ça veut dire qu'on peut ajouter des trucs ? eh je le lis pas comme ça
           add_prefix = FALSE
-          )
+        )
         msg = paste("[STORAGE] - Adding", battery_name, "battery to", node, "node...")
         logFull(msg)
       }, error = function(e) {
