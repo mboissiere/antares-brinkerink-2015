@@ -7,6 +7,25 @@ source("parameters.R")
 library(tidyr)
 
 DEFAULT_SCALING_FACTOR = 25
+# 
+# ✓ Renewables Energy Sources activated
+# ✓ Short Term Storages Sources activated
+# INFO [2024-08-08 13:57:59] [MAIN] - Creating Etude_sur_R_CSP_sans_batteries__2024_08_08_13_57_59 study...
+# 
+# INFO [2024-08-08 13:57:59] [MAIN] - Unit commitment mode : FAST
+# INFO [2024-08-08 13:57:59] [MAIN] - Adding nodes...
+# 
+# INFO [2024-08-08 13:58:00] [NODES] - Adding AF-MAR node...
+# INFO [2024-08-08 13:58:01] [NODES] - Adding EU-DEU node...
+# INFO [2024-08-08 13:58:01] [NODES] - Adding EU-ESP node...
+# INFO [2024-08-08 13:58:01] [NODES] - Adding EU-FRA node...
+# ERROR [2024-08-08 13:58:01] [WARN] - Could not create node EU-FRA - skipping and continuing...
+# INFO [2024-08-08 13:58:01] [MAIN] - Done adding nodes! (run time : 1.78s).
+# 
+# WHAT IN THE DAMN HELL
+
+# It didn't happen again, maybe a cosmic particle hit my machine at just the wrong time lmao
+
 
 getAllNodes <- function() {
   nodes_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%

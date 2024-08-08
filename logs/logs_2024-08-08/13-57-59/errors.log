@@ -1,0 +1,7 @@
+ERROR [2024-08-08 13:58:01] [WARN] - Could not create node EU-FRA - skipping and continuing...
+ERROR [2024-08-08 13:58:02] [WARN] - Could not add load data to EU-FRA node, skipping...
+ERROR [2024-08-08 13:58:03] [WARN] - Skipped adding wind data for EU-FRA (no generators found in PLEXOS).
+ERROR [2024-08-08 13:58:03] [WARN] - Skipped adding solar data for AF-MAR (no generators found in PLEXOS).
+ERROR [2024-08-08 13:58:03] [WARN] - Skipped adding solar data for EU-FRA (no generators found in PLEXOS).
+ERROR [2024-08-08 13:58:08] [WARN] - Skipping EU-DEU to EU-FRA line (one of the nodes may not exist)
+ERROR [2024-08-08 13:58:08] [WARN] - Skipping EU-ESP to EU-FRA line (one of the nodes may not exist)

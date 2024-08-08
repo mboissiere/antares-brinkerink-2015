@@ -203,6 +203,10 @@ if (GENERATE_STORAGE) {
 ################################################################################
 ################################### CSP IMPORT #################################
 
+
+
+# Welp, I've laid the groundwork for interesting stuff, but I don't think we're
+# gonna use it right now.
 if (GENERATE_SOLAR_CSP) {
   msg = "[MAIN] - Fetching solar CSP data...\n"
   logMain(msg)

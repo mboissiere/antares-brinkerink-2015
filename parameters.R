@@ -19,7 +19,8 @@ PLOT_TIMESTEP = "daily"
 EXPORT_TO_OUTPUT_FOLDER = TRUE
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Etude_sur_R_Batteries_sans_CSP"
+study_basename <- "Etude_sur_R_Beta" # pourrait être corrélé à import_study_name en vrai
+
 # Dans l'idéal ce serait bien aussi d'avoir une sorte de generateName intelligent avec les nodes genre
 # ou un paramètre mais fin
 # si j'ai europe_nodes qu'il écrive europe, si j'ai all nodes qu'il écrive monde, sinon cas par cas etc
@@ -28,13 +29,18 @@ GENERATE_LOAD = TRUE
 GENERATE_REN = FALSE
 GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
-GENERATE_SOLAR_CSP = FALSE
+GENERATE_SOLAR_CSP = TRUE
 # Avoir que le CSP ça fait crasher..
 # ou alors le CSP est mal mis ??
+
+# Nota bene : les CSP font tolower() automatiquement
+# est-ce que je mettrais pas les thermiques en tolower au lieu de toupper ?
+# quoique pas forcément le plus dyslexique ffriendly haha*
+# ça change !
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = FALSE
 GENERATE_HYDRO = FALSE
-GENERATE_STORAGE = TRUE
+GENERATE_STORAGE = FALSE
 # i should really say batteries
 # bc storage will be done for csp independantly
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 

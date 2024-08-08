@@ -95,6 +95,20 @@ addBatteriesToAntares <- function(batteries_tbl) {
     }
   }
 }
+
+# INFO [2024-08-08 13:55:10] [MAIN] - Starting simulation__2024_08_08_13_55_10 simulation...
+# WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+# W0000 00:00:1723118110.813430   11744 environment.cc:195] Environment variable XPRESSDIR undefined.
+# W0000 00:00:1723118110.813731   11744 environment.cc:261] NOT_FOUND: Could not find the Xpress shared library. Looked in: [C:\xpressmp\bin\xprs.dll', 'C:\Program Files\xpressmp\bin\xprs.dll]. Please check environment variable XPRESSDIR
+# 
+# [2024-08-08 13:55:33][solver][warns] I/O error: Maximum path length limitation (> 256 characters)
+# [2024-08-08 13:55:33][solver][warns] I/O error: Maximum path length limitation (> 256 characters)
+# [2024-08-08 13:55:33][solver][warns] I/O error: Maximum path length limitation (> 256 characters)
+# 
+# lmao what why do i have some new shit now
+
+
+
 # 
 # Group: 'Other 2' is not a valid name recognized by Antares, you should be using one of: PSP_open, PSP_closed, Pondage, Battery, Other1, Other2, Other3, Other4, Other5
 # 17: No cluster description available.

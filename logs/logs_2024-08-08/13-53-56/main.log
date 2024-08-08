@@ -1,0 +1,34 @@
+INFO [2024-08-08 13:53:56] [MAIN] - Creating Etude_sur_R_Batteries_sans_CSP__2024_08_08_13_53_56 study...
+
+INFO [2024-08-08 13:53:56] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-08 13:53:56] [MAIN] - Adding nodes...
+
+INFO [2024-08-08 13:53:58] [MAIN] - Done adding nodes! (run time : 2.26s).
+
+INFO [2024-08-08 13:53:58] [MAIN] - Adding load data...
+
+INFO [2024-08-08 13:53:59] [MAIN] - Done adding load data! (run time : 1.15s).
+
+INFO [2024-08-08 13:54:00] [MAIN] - Fetching wind data...
+
+INFO [2024-08-08 13:54:00] [MAIN] - Done adding wind data! (run time : 0.29s).
+
+INFO [2024-08-08 13:54:00] [MAIN] - Fetching solar data...
+
+INFO [2024-08-08 13:54:00] [MAIN] - Done adding solar data! (run time : 0.3s).
+
+INFO [2024-08-08 13:54:00] [MAIN] - Fetching storage data...
+
+INFO [2024-08-08 13:55:08] [MAIN] - Done adding storage data! (run time : 1.14min).
+
+INFO [2024-08-08 13:55:08] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-08 13:55:10] [MAIN] - Done adding lines! (run time : 1.37s).
+
+INFO [2024-08-08 13:55:10] [MAIN] - Finished setting up Antares study! (run time : 1.24min).
+ 
+
+INFO [2024-08-08 13:55:10] [MAIN] - Starting simulation__2024_08_08_13_55_10 simulation...
+INFO [2024-08-08 13:56:35] [MAIN] - Antares simulation finished! (run time : 1.42min).
+ 
+

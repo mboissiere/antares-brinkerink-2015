@@ -207,6 +207,8 @@ aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
 library(data.table)
 
 addCSPToAntares <- function(nodes 
+  #étrangeté aussi : les nodes n'ont pas le fra
+  # alors certes y a pas de Csp mais ça devrait tt de même avoir de la conso etc
                             #all_csp_tbl = csp
                             ) {
   # A l'ordre 1, donc, on va juste l'ajouter au PV.  
@@ -234,6 +236,8 @@ addCSPToAntares <- function(nodes
   # c'est ptet déjà le cas d'un for vide ?
   # })
   
+  
+  
   for (row in 1:nrow(csp_tbl)) {
     storage_name = csp_tbl$storage_name[row]
     #print(storage_name)
@@ -242,10 +246,16 @@ addCSPToAntares <- function(nodes
     nominal_capacity = csp_tbl$nominal_capacity[row]
     
     storage_parameters_list <- storage_values_default()
-    storage_parameters_list$injectionnominalcapacity <- 0
     # Encore une fois, injection = charge d'après doc
     # en gros on dit ici que le CSP ne se charge pas du réseau, seulement des apports
+    
+    storage_parameters_list$injectionnominalcapacity <- 0
     storage_parameters_list$withdrawalnominalcapacity <- nominal_capacity
+    
+    # TEST, A MODIFIER APRES
+    # storage_parameters_list$withdrawalnominalcapacity <- 0
+    # storage_parameters_list$injectionnominalcapacity <- nominal_capacity
+    
     #storage_parameters_list$reservoircapacity <- max_storage_volume * 1000
     # storage_parameters_list$reservoircapacity <- max_storage_volume * 1000000 # test, a vocation à être changé
     # je vois pas comment ça peut être autrement, parce que c'est trop bizarre
@@ -269,8 +279,9 @@ addCSPToAntares <- function(nodes
     # print(is_integer_col)
     # perhaps one important thing is for them to be integers ?
     
-    storage_ts <- as.data.table(storage_ts)
-    # whoa c'était vraiment juste ça
+    storage_ts <- as.data.table(-storage_ts) # et si apports c'était inversé ?
+    # ça l'est ! C'est plus des outflows que des inflows ! Mais ça ne résout pas
+    # le problème pour autant
     tryCatch({
       createClusterST(
         area = node,
