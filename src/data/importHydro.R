@@ -77,19 +77,19 @@ addHydroStorageToAntares <- function(nodes) {
     #print(max_power_matrix)
     list_params = list("inter-daily-breakdown" = 2)
     # mais jpp ça s'appelle juste breakdown et pas modulation oh là là
-                       #"intra-daily-modulation" = 24, # va savoir pk
-                        # va savoir pk
-                       # Let's assume that by default the rest is ok
-                       #"reservoir" = TRUE, # except I kinda need to toggle reservoir management if i have capacity
-                       #"reservoir" = FALSE, # except no actually i was wrong
-                       #"use heuristic" = FALSE # i don't really get it but nicolas !!
-                       #)
-                       #"reservoir capacity" = reservoir_capacity) # Apparently needs to be an integer ? Will see if it's ok
+    #"intra-daily-modulation" = 24, # va savoir pk
+    # va savoir pk
+    # Let's assume that by default the rest is ok
+    #"reservoir" = TRUE, # except I kinda need to toggle reservoir management if i have capacity
+    #"reservoir" = FALSE, # except no actually i was wrong
+    #"use heuristic" = FALSE # i don't really get it but nicolas !!
+    #)
+    #"reservoir capacity" = reservoir_capacity) # Apparently needs to be an integer ? Will see if it's ok
     # faire un trycatch en vrai etc etc
     tryCatch({
       writeIniHydro(area = node,
                     params = list_params
-                    )
+      )
       msg = paste("[HYDRO] - Initializing", node, "hydro parameters...")
       logFull(msg)
     }, error = function(e) {

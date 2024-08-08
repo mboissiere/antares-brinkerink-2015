@@ -96,7 +96,7 @@ addBatteriesToAntares <- function(batteries_tbl) {
         # Tiens, possible qu'à des endroit j'ai mis WARN et d'autres THERMAL/etc
         logError(msg)
       })
-      
+      # Pour plus de robustesse faudrait mettre le try catch "no batteery at all" en principe mais fleeeeeemme
     }
   }
 }

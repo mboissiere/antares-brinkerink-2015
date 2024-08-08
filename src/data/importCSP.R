@@ -185,8 +185,7 @@ aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
 # 
 # aggregated_csp_tbl <- aggregateStorageTimeSeries(all_deane_nodes_lst, csp_properties_tbl, csp_timeseries_tbl)
 # saveRDS(aggregated_csp_tbl, file = ".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
-# aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
-# print(aggregated_csp_tbl)
+
 
 
 # csp_timeseries <- readRDS(".\\src\\objects\\csp_clusters_ninja_tbl.rds")
@@ -201,12 +200,110 @@ aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
 # et c'est que les apports qui... apportent
 # Bon allez on va dire que c'est Other4 les CSP haha
 
+
+# aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
+# print(aggregated_csp_tbl)
+
+# library(data.table)
+
 addCSPToAntares <- function(nodes 
                             #all_csp_tbl = csp
                             ) {
+  # A l'ordre 1, donc, on va juste l'ajouter au PV.  
+  # Je pense que pour une v2 il faudra un peu faire ça plus proprement.
+  # Avec un objet Storage.
   
+  # Oh là là ça va être d'une laideur (je vais devoir get le PV / le sommer puis l'ajouter)
+  # En fait c'est techniquement pas dur mais l'architecture de mon code fait que
+  # c'est horrible.
+  # Je crois que je vais faire une modélisation storage et tant pis pour le Pmin.
   
+  # nodes = c("EU-ESP", "AF-MAR")
+  csp_properties_tbl <- readRDS(".\\src\\objects\\csp_properties_plexos_tbl.rds")
+  
+  csp_tbl <- csp_properties_tbl %>%
+    filter(node %in% nodes)
+  
+  # print(csp_tbl)
+  
+  csp_timeseries_tbl <- readRDS(".\\src\\objects\\csp_clusters_ninja_tbl.rds")
+  # print(csp_timeseries_tbl)
+  
+  # tryCatch({
+  #   juste regarder si csp_tbl est vide nan ?
+  # c'est ptet déjà le cas d'un for vide ?
+  # })
+  
+  for (row in 1:nrow(csp_tbl)) {
+    storage_name = csp_tbl$storage_name[row]
+    node = csp_tbl$node[row]
+    max_storage_volume = csp_tbl$max_volume[row]
+    nominal_capacity = csp_tbl$nominal_capacity[row]
+    
+    storage_parameters_list <- storage_values_default()
+    storage_parameters_list$injectionnominalcapacity <- 0
+    # Encore une fois, injection = charge d'après doc
+    # en gros on dit ici que le CSP ne se charge pas du réseau, seulement des apports
+    storage_parameters_list$withdrawalnominalcapacity <- nominal_capacity
+    storage_parameters_list$reservoircapacity <- max_storage_volume
+    storage_parameters_list$initiallevel <- 0
+    # pour le faire proprement il faudrait l'extraire du deane etc ce que j'ai juste zappé.
+    # je me souviens que c'est 0.
+    
+    storage_ts <- csp_timeseries_tbl[[storage_name]]
+    #storage_ts <- as.data.table(storage_ts)
+    tryCatch({
+      createClusterST(
+        area = node,
+        #cluster_name = battery_name,
+        cluster_name = storage_name,
+        group = "Other4",
+        storage_parameters = storage_parameters_list,
+        inflows = storage_ts,
+        # lower_rule_curve = hourly_zeros_datatable,
+        # envisager de mettre min_stable_factor en pourcentage ? pourquoi/pourquoi pas?
+        overwrite = TRUE,
+        add_prefix = FALSE
+      )
+      msg = paste("[CSP] - Adding", storage_name, "CSP generator to", node, "node...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[WARN] - Failed to add", storage_name, "CSP generator to", node, "node, skipping...")
+      logFull(msg)
+    })
+    
+  }
 }
+
+
+# aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
+# 
+# tryCatch({
+#   aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
+#   
+#   for (node in nodes) {
+#     csp_ts <- aggregated[[node]]
+#     tryCatch({
+#       writeInputTS(
+#         data = solar_ts,
+#         type = "solar",
+#         area = node
+#       )
+#       msg = paste("[SOLAR] - Adding", node, "aggregated solar data...")
+#       logFull(msg)
+#     }, error = function(e) {
+#       msg = paste("[WARN] - Skipped adding solar data for", node, "(no generators found in PLEXOS).")
+#       logError(msg)
+#     }
+#     
+#     )
+#   }
+# }, error = function(e){
+#   msg = paste("[WARN] - Skipped adding solar PV data for all nodes (no generators found in PLEXOS).")
+#   logError(msg)
+# }
+# )
+
   
   # for (row in 1:nrow(csp_tbl)) {
   #   csp_tbl <- getCSPFromNodes(nodes)
@@ -228,8 +325,6 @@ addCSPToAntares <- function(nodes
     
     # max_power = batteries_tbl$max_power[row]
     # initial_state = 0
-    
-  }
 
 ### NEXT STEP : actually model it as a storage with inputs ?
 ### And seperate onshore, offshore etc into clusters

@@ -4,11 +4,11 @@
 
 CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "deaneWorld_v1" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = TRUE
+LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -28,13 +28,17 @@ GENERATE_LOAD = TRUE
 GENERATE_REN = FALSE
 GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
-GENERATE_SOLAR_CSP = FALSE
+GENERATE_SOLAR_CSP = TRUE
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = TRUE
-GENERATE_HYDRO = TRUE
-GENERATE_STORAGE = TRUE
+GENERATE_THERMAL = FALSE
+GENERATE_HYDRO = FALSE
+GENERATE_STORAGE = FALSE
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
                   "Other", "Other 2", "Other 3", "Other 4")
+# Nota bene : comme je filoute et met directement (provisoirement) "Other4" ici
+# en fait c'est pas compté dans les thermal types
+# c'est géré par variable import csp qui lance le programme ou pas
+# (ce qui est... très bien !)
 
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja
@@ -138,7 +142,8 @@ DEANE_NODES_EUROPE = c('EU-ALB', 'EU-ARM', 'EU-AUT', 'EU-AZE', 'EU-BEL', 'EU-BGR
 
 # NODES = DEANE_NODES_ALL
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
-NODES = "EU-FRA"
+# NODES = "EU-FRA"
+NODES = c("AF-MAR", "EU-ESP", "EU-DEU", "EU-FRA")
 # plutôt avoir des variables qui peuvent bcp changer en "nodes"
 # et des variables vrmt statiques (comme horizon plus bas, en attendant le preset...)
 # en "NODES"

@@ -201,6 +201,24 @@ if (GENERATE_STORAGE) {
 }
 
 ################################################################################
+################################### CSP IMPORT #################################
+
+if (GENERATE_SOLAR_CSP) {
+  msg = "[MAIN] - Fetching solar CSP data...\n"
+  logMain(msg)
+  start_time <- Sys.time()
+  
+  importCSP_file = file.path("src", "data", "importCSP.R")
+  source(importCSP_file)
+  addCSPToAntares(NODES)
+  
+  end_time <- Sys.time()
+  duration <- round(difftime(end_time, start_time, units = "mins"), 2)
+  msg = paste0("[MAIN] - Done adding CSP data! (run time : ", duration,"min).\n")
+  logMain(msg)
+}
+
+################################################################################
 ################################# LINKING AREAS ################################
 
 if (GENERATE_LINES) {
