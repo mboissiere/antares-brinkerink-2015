@@ -2,13 +2,13 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = TRUE
-IMPORT_STUDY_NAME = "deaneWorld_v1" #"deaneEurope_minimal" # quand je ferai des presets
+CREATE_STUDY = FALSE
+IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -26,10 +26,10 @@ north_america_nodes_lst <- readRDS(".\\src\\objects\\north_america_nodes_lst.rds
 south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-NODES = north_america_nodes_lst
+NODES = all_deane_nodes_lst
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Beta_NA" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_Beta_World" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...

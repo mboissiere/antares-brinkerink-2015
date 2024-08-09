@@ -1,0 +1,23 @@
+INFO [2024-08-09 09:59:52] [MAIN] - Creating Deane_Beta_World__2024_08_09_09_59_52 study...
+
+INFO [2024-08-09 09:59:52] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-09 09:59:52] [MAIN] - Adding nodes...
+
+INFO [2024-08-09 10:05:10] [MAIN] - Done adding nodes! (run time : 317.66s).
+
+INFO [2024-08-09 10:05:10] [MAIN] - Adding load data...
+
+INFO [2024-08-09 10:10:33] [MAIN] - Done adding load data! (run time : 322.45s).
+
+INFO [2024-08-09 10:10:33] [MAIN] - Fetching wind data...
+
+INFO [2024-08-09 10:13:22] [MAIN] - Done adding wind data! (run time : 169.1s).
+
+INFO [2024-08-09 10:13:22] [MAIN] - Fetching solar data...
+
+INFO [2024-08-09 10:16:46] [MAIN] - Done adding solar data! (run time : 203.69s).
+
+INFO [2024-08-09 10:16:46] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-09 10:31:51] [MAIN] - Done adding hydro!
+INFO [2024-08-09 10:31:51] [MAIN] - Fetching thermal data...
+

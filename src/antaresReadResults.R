@@ -4,6 +4,7 @@ library(antaresProcessing)
 library(antaresViz)
 
 source("parameters.R")
+source(".\\src\\logging.R")
 
 # Ouais faut vraiment rendre ça plus propre
 
@@ -76,26 +77,26 @@ setRam(16)
 start_date <- "2015-01-01"
 end_date <- "2015-12-31"
 
-# Charger les données de production au pas horaire pour toutes les zones
-mydata <- readAntares(areas = "all",
-                      links = "all",
-                      # clusters = "all", # pretty long, make an "import clusters" function.
-                      # a good thing would also be to make districts for deane world
-                      mcYears = "all",
-                      # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
-                      select = c("SOLAR", "WIND", 
-                                 "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
-                                 "LOAD", 
-                                 "H. STOR", 
-                                 "BALANCE", 
-                                 "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4"),
-                      timeStep = PLOT_TIMESTEP # ça c'est un paramètre qui serait bien dans parameters ça
-                      # Ah euh, les imports et les exports quand même !!
-)
+########################
+# # Charger les données de production au pas horaire pour toutes les zones
+# prodData <- readAntares(areas = "all",
+#                       # clusters = "all", # pretty long, make an "import clusters" function.
+#                       # a good thing would also be to make districts for deane world
+#                       mcYears = "all",
+#                       # timeStep = c("hourly", "daily", "weekly", "monthly", "annual"), J'ARRIVE PAS A AVOIR REGLAGE
+#                       select = c("SOLAR", "WIND", 
+#                                  "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
+#                                  "LOAD", 
+#                                  "H. STOR", 
+#                                  "BALANCE", 
+#                                  "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4"),
+#                       timeStep = PLOT_TIMESTEP # ça c'est un paramètre qui serait bien dans parameters ça
+#                       # Ah euh, les imports et les exports quand même !!
+# )
 
 # Créer un alias pour la stack de production
 setProdStackAlias(
-  name = "customStack",
+  name = "productionStack",
   variables = alist(
     NUCLEAR = NUCLEAR,
     WIND = WIND,
@@ -144,26 +145,127 @@ setProdStackAlias(
 # ça allume des centrales thermiques carrément dans les mauvais pays
 # (bon... en soi c'est ptet pas le but de l'étude, de modéliser de façon micro)
 
+########################
+# prodStack(
+#   x = prodData,
+#   stack = "productionStack",
+#   areas = "all",
+#   #links = "all",
+#   dateRange = c(start_date, end_date),
+#   #timeStep = c("hourly", "daily", "weekly", "monthly", "annual"),
+#   #timestep = "weekly",
+#   #main = "Production horaire par mode de production",
+#   unit = "MWh"
+# )
 
-prodStack(
-  x = mydata,
-  stack = "customStack",
-  areas = "all",
-  #links = "all",
-  dateRange = c(start_date, end_date),
-  #timeStep = c("hourly", "daily", "weekly", "monthly", "annual"),
-  #timestep = "weekly",
-  #main = "Production horaire par mode de production",
-  unit = "MWh"
-)
+# CONTINENTS = c("Europe", "Africa", "Asia", "North America", "South America", "Oceania")
+# # r_object mayb
+# Maybe make an R object of the Nodes tbl with like node-continent association
 
+source(".\\src\\data\\addNodes.R")
+# nodes_tbl <- getNodesTable(c("EU-FRA", "AF-MAR", "EU-ESP", "EU-DEU"))
+# print(nodes_tbl)
+# print(nodes_tbl$continent %>% unique())
+# ça pourrait se transformer en listContinentsInNodes jsp
 
-initializeOutputFolder <- function()
-  output_dir = paste0("./output/results_", study_name, "--", simulation_name)
+initializeOutputFolder <- function(nodes) {
+  output_dir = paste0("./output/results_", study_name, "-sim-", 
+                      simulation_name # peut-être faire en sorte que ça soit vrmt simulationName si jamais c'est -1
+                      # et peut-être aussi le raccourcir psk wow ça fait des dossiers DEBILEMENT LONGS
+                      ) 
   # folder_dir <- paste0("./logs/logs_", format(Sys.time(), "%Y-%m-%d"))
   if (!dir.exists(output_dir)) {
   dir.create(output_dir)
   }
+  
+  dir.create(file.path(output_dir, "continent_graphs"))
+  dir.create(file.path(output_dir, "country_graphs"))
+  nodes_tbl <- getNodesTable(nodes)
+  continents <- nodes_tbl$continent %>% unique()
+  for (continent in continents) {
+    print(continent)
+    continent_dir <- file.path(output_dir, "country_graphs", tolower(continent))
+    print(continent_dir)
+    dir.create(continent_dir)
+  }
+  return(output_dir)
+}
+
+
+# Question se pose de comment on organise folder.
+# peut-être des "country_graphs" avec une séparation AS/EU/etc via un tibble
+# nodes/continents ?
+# puis également, un continent_graphs avec juste bam les trucs par continent.
+
+# Possiblement que pour contrôler production je ferai des paramètres
+# "plot production stack", "plot co2" etc etc
+# et peut-être ça implique soit un parameters.R en plus, soit un long parameters.R
+
+WIDTH = 600
+HEIGHT = 480
+
+saveCountryProductionStacks <- function(nodes, 
+                                        output_folder,
+                                        timestep # could actually just make folders for all of them by default ?
+                                        # or do something like. days at hourly. weeks at daily. idk.
+                                        # all timescales are interesting, but hourly is hard to read at a year start/end date
+                                        # and some weeks are different in the year.........
+                                        ) {
+  prodData <- readAntares(areas = nodes,
+                          select = c("SOLAR", "WIND", 
+                                     "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
+                                     "LOAD", 
+                                     "H. STOR", 
+                                     "BALANCE", 
+                                     "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4"),
+                          timeStep = timestep
+  )
+  
+  
+  country_graphs_dir = file.path(output_folder, "country_graphs")
+                             #"productionStack")
+  nodes_tbl <- getNodesTable(nodes)
+  continents <- nodes_tbl$continent %>% unique()
+  for (cnt in continents) {
+    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
+    nodes_in_continent <- nodes_in_continent_tbl$node
+    prod_stack_dir <- file.path(country_graphs_dir, continent, "productionStack")
+    if (!dir.exists(prod_stack_dir)) {
+      dir.create(prod_stack_dir)
+    }
+    for (country in nodes_in_continent) {
+      stack_plot <- prodStack(
+        x = prodData,
+        stack = "productionStack",
+        areas = country,
+        dateRange = c(start_date, end_date),
+        timeStep = timestep,
+        main = paste(timestep, "production stack for", country, "in 2015 (MWh)"),
+        unit = "MWh"
+                     # library(tools)
+                     # 
+                     # # Example usage:
+                     # toTitleCase("hello world")
+        
+      )
+      msg = paste("[OUTPUT] - Saving", timestep, "production stack for", country, "node...")
+      logFull(msg)
+      savePlotAsPng(stack_plot, file = file.path(prod_stack_dir, 
+                                                 paste0(country, ".png"),
+                                                 width = WIDTH,
+                                                 height = HEIGHT
+                                                 )
+                    )
+      msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
+      logFull(msg)
+    }
+  }
+}
+
+nodes = europe_nodes_lst
+output_dir <- initializeOutputFolder(nodes)
+saveCountryProductionStacks(nodes, output_dir, "daily")
+
   
   # long term, this should probably end up in main/util
 # and there should be like a h5 copy of study and simulation

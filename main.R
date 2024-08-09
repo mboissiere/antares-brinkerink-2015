@@ -26,6 +26,8 @@ logging_module = file.path("src", "logging.R",
                          fsep = .Platform$file.sep)
 source(logging_module)
 
+setRam(16)
+
 # source("parameters.R")
 
 if (EXPORT_TO_OUTPUT_FOLDER) {
