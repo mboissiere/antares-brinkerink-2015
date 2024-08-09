@@ -214,6 +214,7 @@ initializeOutputFolder <- function(nodes) {
 
 WIDTH = 1920
 HEIGHT = 1080
+TIMESTEPS = c("hourly", "daily", "weekly", "monthly", "annual")
 # webshot::install_phantomjs()
 # c'était important de le faire, garedr en tête si besoin de debug
 # ça marche enfin !!!!
@@ -224,6 +225,9 @@ saveCountryProductionStacks <- function(nodes,
                                         # or do something like. days at hourly. weeks at daily. idk.
                                         # all timescales are interesting, but hourly is hard to read at a year start/end date
                                         # and some weeks are different in the year.........
+                                        
+                                        # sinon genre monthly sur l'année, weekly sur le mois, daily sur la semaine, hourly sur le jour
+                                        # en créeant un dossier pour chaque jour ptdr ou comment détruire son ordinateur
                                         ) {
   areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
   prod_data <- readAntares(areas = areas,
@@ -248,6 +252,15 @@ saveCountryProductionStacks <- function(nodes,
   #print(nodes_tbl)
   continents <- nodes_tbl$continent %>% unique()
   for (cnt in continents) {
+    
+    # ici serait un bon endroit pour faire un prodStack par continent
+    # mais j'ai pas l'info hélas
+    # ok, en fait pour prodstack ça aggregate automatiquement
+    # pour des tsplot il y a un argument "aggregate" qui peut d'ailleurs faire des means, des sums...
+    
+    # oh, une fois qu'on fait ça, et si jamais on fait juste un prodStack d'une vContinents
+    # avec 6 points agrégés, ça peut faire un test d'à quel point la descente d'échelle est ok !
+    
     nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt) #%>% tolower() # les areas c lowercase
     # print(nodes_in_continent_tbl)
     nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
@@ -256,7 +269,10 @@ saveCountryProductionStacks <- function(nodes,
     if (!dir.exists(prod_stack_dir)) {
       dir.create(prod_stack_dir)
     }
+    unit = "GWh"
     for (country in nodes_in_continent) {
+      # fuck it, why not all timesteps ?
+      # mayb later i want to do graphes de défaillance là
       # print(country)
       # print(prod_data)
       stack_plot <- prodStack(
@@ -265,8 +281,8 @@ saveCountryProductionStacks <- function(nodes,
         areas = country,
         dateRange = c(start_date, end_date),
         timeStep = timestep,
-        main = paste(timestep, "production stack for", country, "in 2015 (MWh)"),
-        unit = "MWh",
+        main = paste(timestep, "production stack for", country, "in 2015", unit),
+        unit = unit,
         interactive = FALSE
                      # library(tools)
                      # 
@@ -287,9 +303,80 @@ saveCountryProductionStacks <- function(nodes,
   }
 }
 
+saveUnsuppliedAndSpillage <- function(nodes,
+                                      output_folder,
+                                      timestep
+                                      ) {
+  areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
+  energy_data <- readAntares(areas = areas,
+                           mcYears = "all",
+                           # En vrai, il faudrait trouver un moyen d'assurer cohérence que genre,
+                           # les nodes sont bien dans l'étude qu'on extraits, via un filter par exemple
+                           # sinon on peut causer des bugs trop facilement
+                           select = c("UNSP. ENRG", "SPIL. ENRG"),
+                           timeStep = timestep
+  )
+  # oh pour les tsplot :
+  #   type = c("ts", "barplot", "monotone", "density", "cdf", "heatmap"),
+  
+  
+  country_graphs_dir = file.path(output_folder, "country_graphs")
+  nodes_tbl <- getNodesTable(nodes)
+  continents <- nodes_tbl$continent %>% unique()
+  # ca peut clairement etre mieux mdrr
+  for (cnt in continents) {
+    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
+    nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
+    unsp_spil_dir <- file.path(country_graphs_dir, tolower(cnt), "unsuppliedAndSpillage")
+    # ça en fait juste faut faire dans initialize outputfolder avec nodes là...
+    if (!dir.exists(unsp_spil_dir)) {
+      dir.create(unsp_spil_dir)
+    }
+    unit = "MWh"
+    for (country in nodes_in_continent) {
+      ts_plot <- plot(
+        x = energy_data,
+        type = "ts",
+        # variable =  c(`UNSP. ENRG`, `SPIL. ENRG`), # mais je le veux en négatif et je le veux en rouge
+        # variable =  c(-`UNSP. ENRG`, `SPIL. ENRG`),
+        # Error in X[[table]]$plotFun(mcYear, 1, variable, variable2Axe, elements,  :
+        #                               objet 'UNSP. ENRG' introuvable
+        #                             Called from: X[[table]]$plotFun(mcYear, 1, variable, variable2Axe, elements,
+        #                                                             type, typeConfInt, confInt, dateRange, minValue, maxValue,
+        #                                                             aggregate, legend, highlight, stepPlot, drawPoints, main)
+        ## AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa
+        variable =  -`UNSP. ENRG`,
+        colors = "red",
+        elements = country,
+        dateRange = c(start_date, end_date),
+        #timeStep = timestep,
+        main = paste(timestep, "unsupplied energy for", country, "in 2015 (MWh)"),
+        interactive = FALSE
+        )
+      # fuck it, why not all timesteps ?
+      # mayb later i want to do graphes de défaillance là
+      # print(country)
+      # print(prod_data)
+      msg = paste("[OUTPUT] - Saving", timestep, "unsupplied/spilled energy for", country, "node...")
+      logFull(msg)
+      png_path = file.path(unsp_spil_dir, paste0(country, "_", timestep, ".png"))
+      #print(png_path)
+      savePlotAsPng(ts_plot, file = png_path,
+                    width = WIDTH,
+                    height = HEIGHT)
+      msg = paste("[OUTPUT] - The", timestep, "unsupplied/spilled energy for", country, "has been saved!")
+      logFull(msg)
+    }
+  }
+}
+
+# En fait, bientôt un readResults qui fait juste des appels à ces fonctions comme createStudy
+# et donc, au même titre que j'ai un dossier "data" qui va ptet changer de nom, ranger les auxilliaires
+# createStudyFunctions ? readResultsFunctions ?
 nodes = europe_nodes_lst
 output_dir <- initializeOutputFolder(nodes)
-saveCountryProductionStacks(nodes, output_dir, "daily")
+# saveCountryProductionStacks(nodes, output_dir, "daily")
+saveUnsuppliedAndSpillage(nodes, output_dir, "hourly")
 
   
   # long term, this should probably end up in main/util

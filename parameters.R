@@ -26,6 +26,9 @@ north_america_nodes_lst <- readRDS(".\\src\\objects\\north_america_nodes_lst.rds
 south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
+# Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
+# c'est les pannes prévues et non prévues sur le thermique...
+
 NODES = all_deane_nodes_lst
 
 # Nom servant de base pour la classification de l'étude
