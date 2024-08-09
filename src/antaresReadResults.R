@@ -178,15 +178,26 @@ initializeOutputFolder <- function(nodes) {
   dir.create(output_dir)
   }
   
-  dir.create(file.path(output_dir, "continent_graphs"))
-  dir.create(file.path(output_dir, "country_graphs"))
+  continents_dir <- file.path(output_dir, "continent_graphs")
+  if (!dir.exists(continents_dir)) {
+    dir.create(continents_dir)
+  }
+  
+  countries_dir <- file.path(output_dir, "country_graphs")
+  if (!dir.exists(countries_dir)) {
+    dir.create(countries_dir)
+  }
+  
   nodes_tbl <- getNodesTable(nodes)
   continents <- nodes_tbl$continent %>% unique()
+  # print(continents)
   for (continent in continents) {
-    print(continent)
-    continent_dir <- file.path(output_dir, "country_graphs", tolower(continent))
-    print(continent_dir)
-    dir.create(continent_dir)
+    # print(continent)
+    continent_dir <- file.path(countries_dir, tolower(continent))
+    # print(continent_dir)
+    if (!dir.exists(continent_dir)) {
+      dir.create(continent_dir)
+    }
   }
   return(output_dir)
 }
@@ -201,8 +212,11 @@ initializeOutputFolder <- function(nodes) {
 # "plot production stack", "plot co2" etc etc
 # et peut-être ça implique soit un parameters.R en plus, soit un long parameters.R
 
-WIDTH = 600
-HEIGHT = 480
+WIDTH = 1920
+HEIGHT = 1080
+# webshot::install_phantomjs()
+# c'était important de le faire, garedr en tête si besoin de debug
+# ça marche enfin !!!!
 
 saveCountryProductionStacks <- function(nodes, 
                                         output_folder,
@@ -211,7 +225,12 @@ saveCountryProductionStacks <- function(nodes,
                                         # all timescales are interesting, but hourly is hard to read at a year start/end date
                                         # and some weeks are different in the year.........
                                         ) {
-  prodData <- readAntares(areas = nodes,
+  areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
+  prod_data <- readAntares(areas = areas,
+                           mcYears = "all",
+                           # En vrai, il faudrait trouver un moyen d'assurer cohérence que genre,
+                           # les nodes sont bien dans l'étude qu'on extraits, via un filter par exemple
+                           # sinon on peut causer des bugs trop facilement
                           select = c("SOLAR", "WIND", 
                                      "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
                                      "LOAD", 
@@ -220,28 +239,35 @@ saveCountryProductionStacks <- function(nodes,
                                      "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4"),
                           timeStep = timestep
   )
+  # le importing areas est long à chaque fois, envisager d'en faire un Robject
   
   
   country_graphs_dir = file.path(output_folder, "country_graphs")
                              #"productionStack")
   nodes_tbl <- getNodesTable(nodes)
+  #print(nodes_tbl)
   continents <- nodes_tbl$continent %>% unique()
   for (cnt in continents) {
-    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
-    nodes_in_continent <- nodes_in_continent_tbl$node
-    prod_stack_dir <- file.path(country_graphs_dir, continent, "productionStack")
+    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt) #%>% tolower() # les areas c lowercase
+    # print(nodes_in_continent_tbl)
+    nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
+    # print(nodes_in_continent)
+    prod_stack_dir <- file.path(country_graphs_dir, tolower(cnt), "productionStack")
     if (!dir.exists(prod_stack_dir)) {
       dir.create(prod_stack_dir)
     }
     for (country in nodes_in_continent) {
+      # print(country)
+      # print(prod_data)
       stack_plot <- prodStack(
-        x = prodData,
+        x = prod_data,
         stack = "productionStack",
         areas = country,
         dateRange = c(start_date, end_date),
         timeStep = timestep,
         main = paste(timestep, "production stack for", country, "in 2015 (MWh)"),
-        unit = "MWh"
+        unit = "MWh",
+        interactive = FALSE
                      # library(tools)
                      # 
                      # # Example usage:
@@ -250,12 +276,11 @@ saveCountryProductionStacks <- function(nodes,
       )
       msg = paste("[OUTPUT] - Saving", timestep, "production stack for", country, "node...")
       logFull(msg)
-      savePlotAsPng(stack_plot, file = file.path(prod_stack_dir, 
-                                                 paste0(country, ".png"),
-                                                 width = WIDTH,
-                                                 height = HEIGHT
-                                                 )
-                    )
+      png_path = file.path(prod_stack_dir, paste0(country, "_", timestep, ".png"))
+      #print(png_path)
+      savePlotAsPng(stack_plot, file = png_path,
+                    width = WIDTH,
+                    height = HEIGHT)
       msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
       logFull(msg)
     }
