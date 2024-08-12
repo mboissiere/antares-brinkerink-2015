@@ -1,9 +1,0 @@
-INFO [2024-08-05 17:47:09] [MAIN] - Creating Etude_sur_R_Monde__2024_08_05_17_47_09 study...
-
-INFO [2024-08-05 17:47:09] [MAIN] - Unit commitment mode : FAST
-INFO [2024-08-05 17:47:09] [MAIN] - Adding nodes...
-
-INFO [2024-08-05 17:47:11] [MAIN] - Done adding nodes! (run time : 1.86s).
-
-INFO [2024-08-05 17:47:11] [MAIN] - Adding load data...
-

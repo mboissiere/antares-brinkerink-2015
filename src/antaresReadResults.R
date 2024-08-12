@@ -129,6 +129,56 @@ setProdStackAlias(
   lineColors = c("black", "violetred")#"green")
 )
 
+#https://cran.r-project.org/web/packages/khroma/vignettes/tol.html
+# ici des color palettes colorblind compatibles
+# notamment les bright, contrast, vibrant, muted
+# En fait celle ci est vrmt sympa :
+# https://org.coloradomesa.edu/~mapierce2/accessible/
+# https://personal.sron.nl/~pault/
+# et ici y en a 16 !
+# https://lospec.com/palette-list/krzywinski-colorblind-16
+# Ouais mais "Some colors may appear similar to individuals with tritanopia."
+# Pour montrer que c'est cool, ce serait bien de faire un graphe "simulant" le truc pour colorblind
+# (il y a une formule dans le site de PaulT)
+# faire un "colorblind mode" dans les paramètres serait dingo en tout cas
+
+setProdStackAlias(
+  name = "productionStackColorblindSafe",
+  variables = alist(
+    NUCLEAR = NUCLEAR,
+    WIND = WIND,
+    SOLAR = SOLAR,
+    GEOTHERMAL = `MISC. DTG`,
+    # Nota bene : dans les graphes finaux de Deane, en toute logique le CSP est dans solaire
+    # enfin je crois il faudrait lui demander demander
+    HYDRO = `H. STOR`,
+    # mais étrange alors, Wav est-il dans Hydro ou Other ? Est-ce qu'en fait s'il y a pas de Other
+    # dans les graphes de fin c'est qu'il a mis des trucs en vrac (whatever Sto and Oth can be) ?
+    # parce que en prenant un Other fidèle au PLEXOS (sauf le géothermique) on a quand même
+    # un truc non négligeable (assez enthousiaste sur le marémoteur en fait, en tout cas en France)
+    `BIO AND WASTE` = `MIX. FUEL`,
+    GAS = GAS,
+    COAL = COAL,
+    OIL = OIL,
+    OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    EXCHANGES = -BALANCE
+  ),
+  colors = c("#F7F056", "#7BAFDE", "#F4A736", "#CAACCB", "#1965B0", 
+             "#4EB265", "#E65518", "#A5170E", "#42150A", "#AA6F9E",
+             "#777777"),
+  # Ici basé sur le discrete rainbow à 23 couleurs : https://personal.sron.nl/~pault/#fig:scheme_rainbow_discrete
+  lines = alist(
+    LOAD = LOAD,
+    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+    # on ne compte pas du coup les batteries ? ouais voilà mdr ce que j'avais déjà dit en fait
+    # pour moi c'est ni dans production mais après on peut faire un graphe batteries
+    # est-ce que les psp injection des batteries machin faut le mettre ? ou c'est du double comptage ?
+  ),
+  lineColors = c("black", "#882E72")#"green")
+)
+
+
+
 # Comme graphes au total je pense qu'il faudrait faire :
 # - stack de production
 # - injection/soutirage des différentes formes de stockage
@@ -219,7 +269,7 @@ TIMESTEPS = c("hourly", "daily", "weekly", "monthly", "annual")
 # c'était important de le faire, garedr en tête si besoin de debug
 # ça marche enfin !!!!
 
-saveCountryProductionStacks <- function(nodes, 
+saveCountryProductionStacks <- function(nodes = NULL, 
                                         output_folder,
                                         timestep # could actually just make folders for all of them by default ?
                                         # or do something like. days at hourly. weeks at daily. idk.
@@ -229,7 +279,12 @@ saveCountryProductionStacks <- function(nodes,
                                         # sinon genre monthly sur l'année, weekly sur le mois, daily sur la semaine, hourly sur le jour
                                         # en créeant un dossier pour chaque jour ptdr ou comment détruire son ordinateur
                                         ) {
-  areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
+  if (is.null(nodes)) {
+    areas = "all"
+    }
+  else {
+    areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
+  } # c'est si schlag bordel
   prod_data <- readAntares(areas = areas,
                            mcYears = "all",
                            # En vrai, il faudrait trouver un moyen d'assurer cohérence que genre,
@@ -373,10 +428,16 @@ saveUnsuppliedAndSpillage <- function(nodes,
 # En fait, bientôt un readResults qui fait juste des appels à ces fonctions comme createStudy
 # et donc, au même titre que j'ai un dossier "data" qui va ptet changer de nom, ranger les auxilliaires
 # createStudyFunctions ? readResultsFunctions ?
-nodes = europe_nodes_lst
-output_dir <- initializeOutputFolder(nodes)
-# saveCountryProductionStacks(nodes, output_dir, "daily")
-saveUnsuppliedAndSpillage(nodes, output_dir, "hourly")
+
+nodes = oceania_nodes_lst 
+# si je commente en vrai, ça importe bien non ?
+output_dir <- initializeOutputFolder(nodes) # ah ptn y a ça aussi aaaaaa
+saveCountryProductionStacks(nodes, output_dir, "daily")
+# NB SUR LES COULEURS DES STACKS : FAIRE UN MODE EASILY ACCESSIBLE POUR COLORBLIND
+
+# saveUnsuppliedAndSpillage(nodes, output_dir, "hourly")
+# Pour l'instant hélas ça bugge
+
 
   
   # long term, this should probably end up in main/util

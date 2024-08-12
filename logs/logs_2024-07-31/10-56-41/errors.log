@@ -1,2 +1,0 @@
-ERROR [2024-07-31 10:58:19] [WARN] - Skipped adding wind data for all nodes (no generators found in PLEXOS).
-ERROR [2024-07-31 10:59:14] [WARN] - Skipped adding solar PV data for all nodes (no generators found in PLEXOS).

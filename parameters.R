@@ -3,7 +3,12 @@
 # Objets en snake_case, fonctions en camelCase
 
 CREATE_STUDY = FALSE
-IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
+IMPORT_STUDY_NAME = "Deane_Beta_OC__2024_08_08_16_17_05"
+# NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
+# genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
+# "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
+
+# IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
