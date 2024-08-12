@@ -59,6 +59,11 @@ setProdStackAlias(
   ),
   lineColors = c("black", "violetred")
 )
+# If I try to do that, the light gray balance just transforms into dark grey unsupplied
+# and I have no fucking idea why.
+
+# So, looking at the graphs with no unsp energy but still gaps between production and load...
+# "how much batteries help" is pretty much load - total production right ?
 
 setProdStackAlias(
   name = "contributionsBatteries",
