@@ -94,89 +94,13 @@ end_date <- "2015-12-31"
 #                       # Ah euh, les imports et les exports quand même !!
 # )
 
-# Créer un alias pour la stack de production
-setProdStackAlias(
-  name = "productionStack",
-  variables = alist(
-    NUCLEAR = NUCLEAR,
-    WIND = WIND,
-    SOLAR = SOLAR,
-    GEOTHERMAL = `MISC. DTG`,
-    # Nota bene : dans les graphes finaux de Deane, en toute logique le CSP est dans solaire
-    # enfin je crois il faudrait lui demander demander
-    HYDRO = `H. STOR`,
-    # mais étrange alors, Wav est-il dans Hydro ou Other ? Est-ce qu'en fait s'il y a pas de Other
-    # dans les graphes de fin c'est qu'il a mis des trucs en vrac (whatever Sto and Oth can be) ?
-    # parce que en prenant un Other fidèle au PLEXOS (sauf le géothermique) on a quand même
-    # un truc non négligeable (assez enthousiaste sur le marémoteur en fait, en tout cas en France)
-    `BIO AND WASTE` = `MIX. FUEL`,
-    GAS = GAS,
-    COAL = COAL,
-    OIL = OIL,
-    OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-    EXCHANGES = -BALANCE
-  ),
-  colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
-             "darkgreen", "red", "darkred", "darkslategray", "lavender",
-             "grey"),
-  lines = alist(
-    LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
-    # on ne compte pas du coup les batteries ? ouais voilà mdr ce que j'avais déjà dit en fait
-    # pour moi c'est ni dans production mais après on peut faire un graphe batteries
-    # est-ce que les psp injection des batteries machin faut le mettre ? ou c'est du double comptage ?
-  ),
-  lineColors = c("black", "violetred")#"green")
-)
-
-#https://cran.r-project.org/web/packages/khroma/vignettes/tol.html
-# ici des color palettes colorblind compatibles
-# notamment les bright, contrast, vibrant, muted
-# En fait celle ci est vrmt sympa :
-# https://org.coloradomesa.edu/~mapierce2/accessible/
-# https://personal.sron.nl/~pault/
-# et ici y en a 16 !
-# https://lospec.com/palette-list/krzywinski-colorblind-16
-# Ouais mais "Some colors may appear similar to individuals with tritanopia."
-# Pour montrer que c'est cool, ce serait bien de faire un graphe "simulant" le truc pour colorblind
-# (il y a une formule dans le site de PaulT)
-# faire un "colorblind mode" dans les paramètres serait dingo en tout cas
-
-setProdStackAlias(
-  name = "productionStackColorblindSafe",
-  variables = alist(
-    NUCLEAR = NUCLEAR,
-    WIND = WIND,
-    SOLAR = SOLAR,
-    GEOTHERMAL = `MISC. DTG`,
-    # Nota bene : dans les graphes finaux de Deane, en toute logique le CSP est dans solaire
-    # enfin je crois il faudrait lui demander demander
-    HYDRO = `H. STOR`,
-    # mais étrange alors, Wav est-il dans Hydro ou Other ? Est-ce qu'en fait s'il y a pas de Other
-    # dans les graphes de fin c'est qu'il a mis des trucs en vrac (whatever Sto and Oth can be) ?
-    # parce que en prenant un Other fidèle au PLEXOS (sauf le géothermique) on a quand même
-    # un truc non négligeable (assez enthousiaste sur le marémoteur en fait, en tout cas en France)
-    `BIO AND WASTE` = `MIX. FUEL`,
-    GAS = GAS,
-    COAL = COAL,
-    OIL = OIL,
-    OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-    EXCHANGES = -BALANCE
-  ),
-  colors = c("#F7F056", "#7BAFDE", "#F4A736", "#CAACCB", "#1965B0", 
-             "#4EB265", "#E65518", "#A5170E", "#42150A", "#AA6F9E",
-             "#777777"),
-  # Ici basé sur le discrete rainbow à 23 couleurs : https://personal.sron.nl/~pault/#fig:scheme_rainbow_discrete
-  lines = alist(
-    LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
-    # on ne compte pas du coup les batteries ? ouais voilà mdr ce que j'avais déjà dit en fait
-    # pour moi c'est ni dans production mais après on peut faire un graphe batteries
-    # est-ce que les psp injection des batteries machin faut le mettre ? ou c'est du double comptage ?
-  ),
-  lineColors = c("black", "#882E72")#"green")
-)
-
+source(".\\src\\antaresReadResults_support\\productionStacksPresets.R")
+# il existe : productionStack, productionStackColorblindSafe
+# encore une fois, ce serait bien un Excel pour pouvoir faire défiler
+# une liste avec ce qui existe, voire avoir des commentaires qui s'affichent
+# pour expliquer à l'utilisateur ce que c'est.
+# un par défaut, "standard RTE eCO2Mix color palette",
+# et si on prend le colorblind "colorblind-friendly palette according to ..."
 
 
 # Comme graphes au total je pense qu'il faudrait faire :
@@ -269,8 +193,9 @@ TIMESTEPS = c("hourly", "daily", "weekly", "monthly", "annual")
 # c'était important de le faire, garedr en tête si besoin de debug
 # ça marche enfin !!!!
 
-saveCountryProductionStacks <- function(nodes = NULL, 
+saveCountryProductionStacks <- function(nodes, 
                                         output_folder,
+                                        stack_palette,
                                         timestep # could actually just make folders for all of them by default ?
                                         # or do something like. days at hourly. weeks at daily. idk.
                                         # all timescales are interesting, but hourly is hard to read at a year start/end date
@@ -294,8 +219,19 @@ saveCountryProductionStacks <- function(nodes = NULL,
                                      "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
                                      "LOAD", 
                                      "H. STOR", 
-                                     "BALANCE", 
-                                     "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4"),
+                                     "BALANCE",
+                                     "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                                     
+                                     "UNSP. ENRG",
+                                     
+                                     "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
+                                     "Battery_injection", "Battery_withdrawal", "Battery_level",
+                                     "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
+                                     "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
+                                     "Other3_injection", "Other3_withdrawal", "Other3_level" # Rappel : CAE
+                                     ),
+                          # Attention si on s'amuse à séparer les palettes dans un autre fichier,
+                          # il faut penser à également tout bien importer...
                           timeStep = timestep
   )
   # le importing areas est long à chaque fois, envisager d'en faire un Robject
@@ -324,7 +260,7 @@ saveCountryProductionStacks <- function(nodes = NULL,
     if (!dir.exists(prod_stack_dir)) {
       dir.create(prod_stack_dir)
     }
-    unit = "GWh"
+    unit = "MWh"
     for (country in nodes_in_continent) {
       # fuck it, why not all timesteps ?
       # mayb later i want to do graphes de défaillance là
@@ -332,7 +268,7 @@ saveCountryProductionStacks <- function(nodes = NULL,
       # print(prod_data)
       stack_plot <- prodStack(
         x = prod_data,
-        stack = "productionStack",
+        stack = stack_palette,
         areas = country,
         dateRange = c(start_date, end_date),
         timeStep = timestep,
@@ -350,7 +286,7 @@ saveCountryProductionStacks <- function(nodes = NULL,
       png_path = file.path(prod_stack_dir, paste0(country, "_", timestep, ".png"))
       #print(png_path)
       savePlotAsPng(stack_plot, file = png_path,
-                    width = WIDTH,
+                    width = WIDTH, # faire 2x WIDTH pour horaire ?
                     height = HEIGHT)
       msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
       logFull(msg)
@@ -429,10 +365,19 @@ saveUnsuppliedAndSpillage <- function(nodes,
 # et donc, au même titre que j'ai un dossier "data" qui va ptet changer de nom, ranger les auxilliaires
 # createStudyFunctions ? readResultsFunctions ?
 
-nodes = oceania_nodes_lst 
+nodes = europe_nodes_lst 
 # si je commente en vrai, ça importe bien non ?
 output_dir <- initializeOutputFolder(nodes) # ah ptn y a ça aussi aaaaaa
-saveCountryProductionStacks(nodes, output_dir, "daily")
+saveCountryProductionStacks(nodes,
+                            output_dir,
+                            #"productionStackColorblindSafe",
+                            # Un peu mal foutu vu comment le titre du graphe change également si on change le stack
+                            # En fait absolument tout peut changer mdr :
+                            # le titre, l'unité, le timestep....
+                            # il faudrait une fonction pour un stack en théorie
+                            "contributionsBatteries",
+                            "daily") # la conclusion est formelle : faire des dossiers 
+  # sinon avoir daily et hourly au mm endroit c insupportable
 # NB SUR LES COULEURS DES STACKS : FAIRE UN MODE EASILY ACCESSIBLE POUR COLORBLIND
 
 # saveUnsuppliedAndSpillage(nodes, output_dir, "hourly")
