@@ -140,77 +140,93 @@ setProdStackAlias(
 # Ok ici on va essayer de faire comme le précédent mais en dynamique,
 # en excluant les trucs nuls
 
-all_variables <- alist(
-  Nucleaire = NUCLEAR,
-  Eolien = WIND,
-  Solaire = SOLAR,
-  Geothermique = `MISC. DTG`,
-  `Hydro lacs` = `H. STOR`,
-  `Bio et déchets` = `MIX. FUEL`,
-  Gaz = GAS,
-  Charbon = COAL,
-  Fioul = OIL,
-  Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-  `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
-  `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
-  `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
-  `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
-  `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
-  `Import/Export` = -BALANCE,
-  Defaillance = `UNSP. ENRG`
-)
-
-all_colors <- c("yellow", "turquoise", "orange", "springgreen", "blue", 
-                "darkgreen", "red", "darkred", "darkslategray", "lavender",
-                "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
-                "gray", "gray25"
-)
-
-# Subset of variables contributing to "Production"
-production_subset <- alist(NUCLEAR, WIND, SOLAR, `H. STOR`, GAS, COAL, OIL, `MIX. FUEL`, `MISC. DTG`, `MISC. DTG 2`, `MISC. DTG 3`, `MISC. DTG 4`)
-
-
-createFilteredStack <- function(stack_name, null_variables) {
-  # Filter out null variables from the production subset
-  filtered_production <- production_subset[!sapply(production_subset, deparse) %in% null_variables]
-  print("Filtered production :")
-  print(filtered_production)
-  
-  # Filter all variables (outside of production subset filtering)
-  filtered_variables <- all_variables[!(all_variables %in% null_variables)]
-  print("Filtered variables :")
-  print(filtered_variables)
-  
-  # Filter colors based on the filtered variables
-  filtered_colors <- all_colors[names(all_variables) %in% names(filtered_variables)]
-  print("Filtered colors :")
-  print(filtered_colors)
-  
-  # # Constructing the `Production` expression dynamically
-  # production_expression <- as.call(c(quote(`+`), filtered_production))
-  # print("Production expression :")
-  # print(production_expression)
-  
-  # Constructing the `Production` expression dynamically
-  production_expression <- as.call(c(quote(`+`), filtered_production))
-  
-  # Creating the `setProdStackAlias` dynamically
-  do.call(setProdStackAlias, list(
-    name = stack_name,
-    variables = filtered_variables,
-    colors = filtered_colors,
-    lines = list(
-      Consommation = quote(LOAD),
-      Production = production_expression
-    ),
-    # lines = alist(
-    #   Consommation = LOAD,
-    #   Production =  eval(as.call(c(quote(`+`), filtered_production)))
-    # ),
-    lineColors = c("black", "violetred")
-  ))
-  
-}
+#### OK BAH C'EST HORRIBLE et si je continue à forcer je vais câbler si jamais Nicolas trouve mieux
+# en un claquement de doigts
+# 
+# all_variables <- alist(
+#   Nucleaire = NUCLEAR,
+#   Eolien = WIND,
+#   Solaire = SOLAR,
+#   Geothermique = `MISC. DTG`,
+#   `Hydro lacs` = `H. STOR`,
+#   `Bio et déchets` = `MIX. FUEL`,
+#   Gaz = GAS,
+#   Charbon = COAL,
+#   Fioul = OIL,
+#   Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+#   `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+#   `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+#   `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+#   `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+#   `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+#   `Import/Export` = -BALANCE,
+#   Defaillance = `UNSP. ENRG`
+# )
+# 
+# all_colors <- c("yellow", "turquoise", "orange", "springgreen", "blue", 
+#                 "darkgreen", "red", "darkred", "darkslategray", "lavender",
+#                 "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
+#                 "gray", "gray25"
+# )
+# 
+# # # Subset of variables contributing to "Production"
+# # production_subset <- alist(NUCLEAR, WIND, SOLAR, `H. STOR`, GAS, COAL, OIL, `MIX. FUEL`, `MISC. DTG`, `MISC. DTG 2`, `MISC. DTG 3`, `MISC. DTG 4`)
+# 
+# 
+# # # Define production subset (non-null variables for production)
+# # production_subset <- c("NUCLEAR", "WIND", "SOLAR", "`H. STOR`", "GAS", "COAL", "OIL", "`MIX. FUEL`", "`MISC. DTG`", "`MISC. DTG 2`", "`MISC. DTG 3`", "`MISC. DTG 4`")
+# 
+# 
+# createFilteredStack <- function(stack_name, null_variables) {
+#   # Initialize empty alist for variables
+#   variables_list <- alist()
+#   
+#   # Initialize empty alist for lines
+#   lines_list <- alist()
+#   
+#   # Add non-null variables to the variables_list
+#   for (var in names(all_variables)) {
+#     if (!(deparse(all_variables[[var]]) %in% null_variables)) {
+#       variables_list[[var]] <- all_variables[[var]]
+#     }
+#   }
+#   print(variables_list)
+#   
+#   # Filter colors
+#   filtered_colors <- all_colors[names(all_variables) %in% names(variables_list)]
+#   print(filtered_colors)
+#   
+#   # Add lines
+#   lines_list$Consommation <- quote(LOAD)
+#   
+#   ####### SCREW THIS
+#   # # Filter out non-null variables from the production subset
+#   # filtered_production <- production_subset[!(production_subset %in% null_variables)]
+#   # 
+#   # # Build the Production expression dynamically
+#   # production_expr <- as.call(
+#   #   c(
+#   #     quote(`+`), 
+#   #     lapply(filtered_production, function(var) {
+#   #       # Safely convert string to an expression
+#   #       eval(parse(text = var))
+#   #     })
+#   #   )
+#   # )
+#   # 
+#   # # Add production line to the lines_list
+#   # lines_list$Production <- production_expr
+#   
+#   # Creating the `setProdStackAlias` dynamically
+#   do.call(setProdStackAlias, list(
+#     name = stack_name,
+#     variables = variables_list,
+#     colors = filtered_colors,
+#     lines = lines_list,
+#     lineColors = c("black", "violetred")
+#   ))
+#   
+# }
 
 
 

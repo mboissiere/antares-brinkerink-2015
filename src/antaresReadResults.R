@@ -282,20 +282,8 @@ saveCountryProductionStacks <- function(nodes,
     }
     unit = "MWh"
     for (country in nodes_in_continent) {
-      null_variables = list()
-      for (variable in variables_of_interest) {
-        var_in_area_df <- readAntares(areas = country,
-                                      mcYears = "all",
-                                      timeStep = timestep,
-                                      select = variable
-                                      )[[variable]]
-        df_is_null <- all(var_in_area_df == 0)
-        if (df_is_null) {
-          null_variables <- c(null_variables, variable)
-        }
-      }
-      print(paste("Null variables in", country, ":"))
-      print(null_variables)
+      # print(paste("Null variables in", country, ":"))
+      # print(null_variables)
       # prod_data <- readAntares(areas = country,
       #                          mcYears = "all",
       #                          select = non_null_variables,
@@ -310,6 +298,18 @@ saveCountryProductionStacks <- function(nodes,
       # Attention donc avec cette ligne on retire (provisoirement) la customisation.
       # Ou alors...
       if (stack_palette == "dynamic") {
+        null_variables = list()
+        for (variable in variables_of_interest) {
+          var_in_area_df <- readAntares(areas = country,
+                                        mcYears = "all",
+                                        timeStep = timestep,
+                                        select = variable
+          )[[variable]]
+          df_is_null <- all(var_in_area_df == 0)
+          if (df_is_null) {
+            null_variables <- c(null_variables, variable)
+          }
+        }
         createFilteredStack(stack_palette, null_variables)
       }
       
@@ -437,8 +437,8 @@ saveCountryProductionStacks(nodes,
                             # En fait absolument tout peut changer mdr :
                             # le titre, l'unité, le timestep....
                             # il faudrait une fonction pour un stack en théorie
-                            "dynamic",
-                            #"productionStackWithBatteryContributions",
+                            # "dynamic",
+                            "productionStackWithBatteryContributions",
                             "daily") # la conclusion est formelle : faire des dossiers 
   # sinon avoir daily et hourly au mm endroit c insupportable
 # NB SUR LES COULEURS DES STACKS : FAIRE UN MODE EASILY ACCESSIBLE POUR COLORBLIND
