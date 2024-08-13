@@ -107,7 +107,7 @@ setProdStackAlias(
     Geothermique = `MISC. DTG`,
     `Hydro lacs` = `H. STOR`,
     
-    `Bio et déchets` = `MIX. FUEL`,
+    `Bio et dechets` = `MIX. FUEL`,
     Gaz = GAS,
     Charbon = COAL,
     Fioul = OIL,
@@ -119,8 +119,8 @@ setProdStackAlias(
     `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
     `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
     
-    EXCHANGES = -BALANCE,
-    UNSUPPLIED = `UNSP. ENRG`
+    `Imports/Exports` = -BALANCE,
+    Defaillance = `UNSP. ENRG`
   ),
   colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
              "darkgreen", "red", "darkred", "darkslategray", "lavender",

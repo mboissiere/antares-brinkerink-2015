@@ -222,6 +222,11 @@ saveCountryProductionStacks <- function(nodes,
                              "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
                              "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
                              "Other3_injection", "Other3_withdrawal", "Other3_level" # Rappel : CAE
+                             #Enft jsuis un peu débile les injections de batteries en pratique on les fait avant de lancer le thermique...
+                             # mais en même temps ça permet de voir en pointe à quel point ça a aidé
+                             # vs que ça se fasse écraser tout en bas
+                             # et également mettre d'un côté et de l'autre ce qui sort de la courbe rose de production totale
+                             # dans laquelle on peut pas trop mettre les batteries pour risque de double comptage
                              )
   # } # c'est si schlag bordel
   prod_data <- readAntares(areas = areas,
@@ -280,7 +285,7 @@ saveCountryProductionStacks <- function(nodes,
     if (!dir.exists(prod_stack_dir)) {
       dir.create(prod_stack_dir)
     }
-    unit = "MWh"
+    unit = "GWh"
     for (country in nodes_in_continent) {
       # print(paste("Null variables in", country, ":"))
       # print(null_variables)
@@ -348,8 +353,8 @@ saveCountryProductionStacks <- function(nodes,
       png_path = file.path(prod_stack_dir, paste0(country, "_", timestep, ".png"))
       #print(png_path)
       savePlotAsPng(stack_plot, file = png_path,
-                    width = WIDTH, # faire 2x WIDTH pour horaire ?
-                    height = HEIGHT)
+                    width = 3*WIDTH, # faire 2x WIDTH pour horaire ?
+                    height = 2*HEIGHT)
       msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
       logFull(msg)
     }
@@ -427,7 +432,7 @@ saveUnsuppliedAndSpillage <- function(nodes,
 # et donc, au même titre que j'ai un dossier "data" qui va ptet changer de nom, ranger les auxilliaires
 # createStudyFunctions ? readResultsFunctions ?
 
-nodes = europe_nodes_lst 
+nodes = asia_nodes_lst 
 # si je commente en vrai, ça importe bien non ?
 output_dir <- initializeOutputFolder(nodes) # ah ptn y a ça aussi aaaaaa
 saveCountryProductionStacks(nodes,

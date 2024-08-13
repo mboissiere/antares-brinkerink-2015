@@ -3,7 +3,7 @@
 # Objets en snake_case, fonctions en camelCase
 
 CREATE_STUDY = FALSE
-IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17"
+IMPORT_STUDY_NAME = "Deane_Beta_AS__2024_08_09_09_19_43"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
