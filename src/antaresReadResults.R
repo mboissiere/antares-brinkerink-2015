@@ -238,13 +238,17 @@ saveCountryProductionStacks <- function(nodes,
   ## Test : obtain only nuclear in countries
   # areas <- getAreas(prod_data)
   # print(areas)
+  variables = c("NUCLEAR", "MIX. FUEL")
   for (area in areas) {
-    nuclear_df <- readAntares(areas = area,
-                              select = c("NUCLEAR")
-    )$NUCLEAR
-    df_is_null <- all(nuclear_df == 0)
-    print(paste("Nuclear in", area, ":", !df_is_null))
+    for (variable in variables) {
+      var_in_area_df <- readAntares(areas = area,
+                                select = variable
+      )[[variable]]
+      df_is_null <- all(var_in_area_df == 0)
+      print(paste(variable, "in", area, ":", !df_is_null))
+    }
   }
+  
   # 
   # print(prod_data)
   ## Fin test
