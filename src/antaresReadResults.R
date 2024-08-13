@@ -229,21 +229,7 @@ saveCountryProductionStacks <- function(nodes,
                            # En vrai, il faudrait trouver un moyen d'assurer cohérence que genre,
                            # les nodes sont bien dans l'étude qu'on extraits, via un filter par exemple
                            # sinon on peut causer des bugs trop facilement
-                          select = c("SOLAR", "WIND",
-                                     "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
-                                     "LOAD",
-                                     "H. STOR",
-                                     "BALANCE",
-                                     "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-
-                                     "UNSP. ENRG",
-
-                                     "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
-                                     "Battery_injection", "Battery_withdrawal", "Battery_level",
-                                     "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
-                                     "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
-                                     "Other3_injection", "Other3_withdrawal", "Other3_level" # Rappel : CAE
-                                     ),
+                          select = variables_of_interest,
                           # Attention si on s'amuse à séparer les palettes dans un autre fichier,
                           # il faut penser à également tout bien importer...
                           timeStep = timestep
@@ -296,33 +282,51 @@ saveCountryProductionStacks <- function(nodes,
     }
     unit = "MWh"
     for (country in nodes_in_continent) {
-      non_null_variables = list()
+      null_variables = list()
       for (variable in variables_of_interest) {
         var_in_area_df <- readAntares(areas = country,
-                                     select = variable
-        )[[variable]]
+                                      mcYears = "all",
+                                      timeStep = timestep,
+                                      select = variable
+                                      )[[variable]]
         df_is_null <- all(var_in_area_df == 0)
-        if (!df_is_null) {
-          non_null_variables <- c(non_null_variables, variable)
+        if (df_is_null) {
+          null_variables <- c(null_variables, variable)
         }
       }
-      prod_data <- readAntares(areas = country,
-                               mcYears = "all",
-                               select = non_null_variables,
-                               timeStep = timestep
-      )
+      print(paste("Null variables in", country, ":", null_variables))
+      # prod_data <- readAntares(areas = country,
+      #                          mcYears = "all",
+      #                          select = non_null_variables,
+      #                          timeStep = timestep
+      # )
       # fuck it, why not all timesteps ?
       # mayb later i want to do graphes de défaillance là
       # print(country)
       # print(prod_data)
       stack_plot <- prodStack(
         x = prod_data,
-        stack = stack_palette,
+        stack = stack_palette, # ah mais là ça bloque parce que palette prend éléments autres..
+        # en fait il faudrait tout import, mais trouver "hidden" avec au contraire les null
+        # # hidden	
+        # logical Names of input to hide. Defaut to NULL
+        # ET EN FAIT NON
+        # Error in .validHidden(listParamsCheck$hidden, listParamsCheck$valHidden) : 
+        # Invalid arguments for 'hidden' : 'SOLAR', 'WIND', 'GAS', 'COAL', 'NUCLEAR', 
+        # 'MIX. FUEL', 'OIL', 'MISC. DTG', 'MISC. DTG 2', 'MISC. DTG 3', 'UNSP. ENRG', 
+        # 'PSP_closed_injection', 'PSP_closed_withdrawal', 'PSP_closed_level', 
+        # 'Battery_injection', 'Battery_withdrawal', 'Battery_level', 
+        # 'Other1_injection', 'Other1_withdrawal', 'Other1_level', 
+        # 'Other2_injection', 'Other2_withdrawal', 'Other2_level', 
+        # 'Other3_injection', 'Other3_withdrawal', 'Other3_level'. 
+        # Possible values : 'H5request', 'timeSteph5', 'tables', 'mcYearH5', 'mcYear', 
+        # 'main', 'dateRange', 'stack', 'unit', 'areas', 'legend', 'stepPlot', 'drawPoints'.
         areas = country,
         dateRange = c(start_date, end_date),
         timeStep = timestep,
         main = paste(timestep, "production stack for", country, "in 2015", unit),
         unit = unit,
+        hidden = null_variables,
         interactive = FALSE
                      # library(tools)
                      # 
