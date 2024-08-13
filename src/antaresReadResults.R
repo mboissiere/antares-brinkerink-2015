@@ -209,21 +209,35 @@ saveCountryProductionStacks <- function(nodes,
   #   }
   # else {
   areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
+  variables_of_interest <- c("SOLAR", "WIND", # Ici l'ordre compte pas jcrois,
+                             # c'est dans setStackAlias machin qu'on le détermine
+                             "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
+                             "LOAD",
+                             "H. STOR",
+                             "BALANCE",
+                             "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                             "UNSP. ENRG",
+                             "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
+                             "Battery_injection", "Battery_withdrawal", "Battery_level",
+                             "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
+                             "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
+                             "Other3_injection", "Other3_withdrawal", "Other3_level" # Rappel : CAE
+                             )
   # } # c'est si schlag bordel
   prod_data <- readAntares(areas = areas,
                            mcYears = "all",
                            # En vrai, il faudrait trouver un moyen d'assurer cohérence que genre,
                            # les nodes sont bien dans l'étude qu'on extraits, via un filter par exemple
                            # sinon on peut causer des bugs trop facilement
-                          select = c("SOLAR", "WIND", 
-                                     "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL", 
-                                     "LOAD", 
-                                     "H. STOR", 
+                          select = c("SOLAR", "WIND",
+                                     "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
+                                     "LOAD",
+                                     "H. STOR",
                                      "BALANCE",
                                      "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                                     
+
                                      "UNSP. ENRG",
-                                     
+
                                      "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
                                      "Battery_injection", "Battery_withdrawal", "Battery_level",
                                      "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
@@ -234,21 +248,23 @@ saveCountryProductionStacks <- function(nodes,
                           # il faut penser à également tout bien importer...
                           timeStep = timestep
   )
+  # en fait plus simple d'importer séparément jpense
   #print(prod_data)
   ## Test : obtain only nuclear in countries
   # areas <- getAreas(prod_data)
   # print(areas)
-  variables = c("NUCLEAR", "MIX. FUEL")
-  for (area in areas) {
-    for (variable in variables) {
-      var_in_area_df <- readAntares(areas = area,
-                                select = variable
-      )[[variable]]
-      df_is_null <- all(var_in_area_df == 0)
-      print(paste(variable, "in", area, ":", !df_is_null))
-    }
-  }
   
+  # variables = c("NUCLEAR", "MIX. FUEL")
+  # for (area in areas) {
+  #   for (variable in variables) {
+  #     var_in_area_df <- readAntares(areas = area,
+  #                               select = variable
+  #     )[[variable]]
+  #     df_is_null <- all(var_in_area_df == 0)
+  #     print(paste(variable, "in", area, ":", !df_is_null))
+  #   }
+  # }
+  # 
   # 
   # print(prod_data)
   ## Fin test
@@ -280,6 +296,21 @@ saveCountryProductionStacks <- function(nodes,
     }
     unit = "MWh"
     for (country in nodes_in_continent) {
+      non_null_variables = list()
+      for (variable in variables_of_interest) {
+        var_in_area_df <- readAntares(areas = country,
+                                     select = variable
+        )[[variable]]
+        df_is_null <- all(var_in_area_df == 0)
+        if (!df_is_null) {
+          non_null_variables <- c(non_null_variables, variable)
+        }
+      }
+      prod_data <- readAntares(areas = country,
+                               mcYears = "all",
+                               select = non_null_variables,
+                               timeStep = timestep
+      )
       # fuck it, why not all timesteps ?
       # mayb later i want to do graphes de défaillance là
       # print(country)
