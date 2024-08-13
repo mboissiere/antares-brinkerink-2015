@@ -294,7 +294,8 @@ saveCountryProductionStacks <- function(nodes,
           null_variables <- c(null_variables, variable)
         }
       }
-      print(paste("Null variables in", country, ":", null_variables))
+      print(paste("Null variables in", country, ":"))
+      print(null_variables)
       # prod_data <- readAntares(areas = country,
       #                          mcYears = "all",
       #                          select = non_null_variables,
@@ -304,6 +305,14 @@ saveCountryProductionStacks <- function(nodes,
       # mayb later i want to do graphes de défaillance là
       # print(country)
       # print(prod_data)
+      
+      # En fait si on crée des trucs custom, l'argument stack_palette est ici rendu inutile.
+      # Attention donc avec cette ligne on retire (provisoirement) la customisation.
+      # Ou alors...
+      if (stack_palette == "dynamic") {
+        createFilteredStack(stack_palette, null_variables)
+      }
+      
       stack_plot <- prodStack(
         x = prod_data,
         stack = stack_palette, # ah mais là ça bloque parce que palette prend éléments autres..
@@ -326,7 +335,7 @@ saveCountryProductionStacks <- function(nodes,
         timeStep = timestep,
         main = paste(timestep, "production stack for", country, "in 2015", unit),
         unit = unit,
-        hidden = null_variables,
+        # hidden = null_variables,
         interactive = FALSE
                      # library(tools)
                      # 
@@ -428,7 +437,8 @@ saveCountryProductionStacks(nodes,
                             # En fait absolument tout peut changer mdr :
                             # le titre, l'unité, le timestep....
                             # il faudrait une fonction pour un stack en théorie
-                            "productionStackWithBatteryContributions",
+                            "dynamic",
+                            #"productionStackWithBatteryContributions",
                             "daily") # la conclusion est formelle : faire des dossiers 
   # sinon avoir daily et hourly au mm endroit c insupportable
 # NB SUR LES COULEURS DES STACKS : FAIRE UN MODE EASILY ACCESSIBLE POUR COLORBLIND

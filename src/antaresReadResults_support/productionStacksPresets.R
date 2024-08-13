@@ -101,17 +101,17 @@ setProdStackAlias(
 setProdStackAlias(
   name = "productionStackWithBatteryContributions",
   variables = alist(
-    NUCLEAR = NUCLEAR,
-    WIND = WIND,
-    SOLAR = SOLAR,
-    GEOTHERMAL = `MISC. DTG`,
-    HYDRO = `H. STOR`,
+    Nucleaire = NUCLEAR,
+    Eolien = WIND,
+    Solaire = SOLAR,
+    Geothermique = `MISC. DTG`,
+    `Hydro lacs` = `H. STOR`,
     
-    `BIO AND WASTE` = `MIX. FUEL`,
-    GAS = GAS,
-    COAL = COAL,
-    OIL = OIL,
-    OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    `Bio et déchets` = `MIX. FUEL`,
+    Gaz = GAS,
+    Charbon = COAL,
+    Fioul = OIL,
+    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     
     `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
     `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
@@ -128,11 +128,96 @@ setProdStackAlias(
              "gray", "gray25"
              ),
   lines = alist(
-    LOAD = LOAD,
-    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+    Consommation = LOAD,
+    Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
   ),
   lineColors = c("black", "violetred")
 )
+
+
+##########################################
+
+# Ok ici on va essayer de faire comme le précédent mais en dynamique,
+# en excluant les trucs nuls
+
+all_variables <- alist(
+  Nucleaire = NUCLEAR,
+  Eolien = WIND,
+  Solaire = SOLAR,
+  Geothermique = `MISC. DTG`,
+  `Hydro lacs` = `H. STOR`,
+  `Bio et déchets` = `MIX. FUEL`,
+  Gaz = GAS,
+  Charbon = COAL,
+  Fioul = OIL,
+  Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+  `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+  `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+  `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+  `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+  `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+  `Import/Export` = -BALANCE,
+  Defaillance = `UNSP. ENRG`
+)
+
+all_colors <- c("yellow", "turquoise", "orange", "springgreen", "blue", 
+                "darkgreen", "red", "darkred", "darkslategray", "lavender",
+                "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
+                "gray", "gray25"
+)
+
+# Subset of variables contributing to "Production"
+production_subset <- alist(NUCLEAR, WIND, SOLAR, `H. STOR`, GAS, COAL, OIL, `MIX. FUEL`, `MISC. DTG`, `MISC. DTG 2`, `MISC. DTG 3`, `MISC. DTG 4`)
+
+
+createFilteredStack <- function(stack_name, null_variables) {
+  # Filter out null variables from the production subset
+  filtered_production <- production_subset[!sapply(production_subset, deparse) %in% null_variables]
+  print("Filtered production :")
+  print(filtered_production)
+  
+  # Filter all variables (outside of production subset filtering)
+  filtered_variables <- all_variables[!(all_variables %in% null_variables)]
+  print("Filtered variables :")
+  print(filtered_variables)
+  
+  # Filter colors based on the filtered variables
+  filtered_colors <- all_colors[names(all_variables) %in% names(filtered_variables)]
+  print("Filtered colors :")
+  print(filtered_colors)
+  
+  # # Constructing the `Production` expression dynamically
+  # production_expression <- as.call(c(quote(`+`), filtered_production))
+  # print("Production expression :")
+  # print(production_expression)
+  
+  # Constructing the `Production` expression dynamically
+  production_expression <- as.call(c(quote(`+`), filtered_production))
+  
+  # Creating the `setProdStackAlias` dynamically
+  do.call(setProdStackAlias, list(
+    name = stack_name,
+    variables = filtered_variables,
+    colors = filtered_colors,
+    lines = list(
+      Consommation = quote(LOAD),
+      Production = production_expression
+    ),
+    # lines = alist(
+    #   Consommation = LOAD,
+    #   Production =  eval(as.call(c(quote(`+`), filtered_production)))
+    # ),
+    lineColors = c("black", "violetred")
+  ))
+  
+}
+
+
+
+
+
+
+##########################################
 
 #https://cran.r-project.org/web/packages/khroma/vignettes/tol.html
 # ici des color palettes colorblind compatibles
