@@ -204,12 +204,12 @@ saveCountryProductionStacks <- function(nodes,
                                         # sinon genre monthly sur l'année, weekly sur le mois, daily sur la semaine, hourly sur le jour
                                         # en créeant un dossier pour chaque jour ptdr ou comment détruire son ordinateur
                                         ) {
-  if (is.null(nodes)) {
-    areas = "all"
-    }
-  else {
-    areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
-  } # c'est si schlag bordel
+  # if (is.null(nodes)) {
+  #   areas = "all"
+  #   }
+  # else {
+  areas = getAreas(nodes) # les areas c lowercase, eu-aut eu-fra etc
+  # } # c'est si schlag bordel
   prod_data <- readAntares(areas = areas,
                            mcYears = "all",
                            # En vrai, il faudrait trouver un moyen d'assurer cohérence que genre,
@@ -234,6 +234,20 @@ saveCountryProductionStacks <- function(nodes,
                           # il faut penser à également tout bien importer...
                           timeStep = timestep
   )
+  #print(prod_data)
+  ## Test : obtain only nuclear in countries
+  # areas <- getAreas(prod_data)
+  # print(areas)
+  for (area in areas) {
+    nuclear_df <- readAntares(areas = area,
+                              select = c("NUCLEAR")
+    )$NUCLEAR
+    df_is_null <- all(nuclear_df == 0)
+    print(paste("Nuclear in", area, ":", !df_is_null))
+  }
+  # 
+  # print(prod_data)
+  ## Fin test
   # le importing areas est long à chaque fois, envisager d'en faire un Robject
   
   
@@ -375,7 +389,7 @@ saveCountryProductionStacks(nodes,
                             # En fait absolument tout peut changer mdr :
                             # le titre, l'unité, le timestep....
                             # il faudrait une fonction pour un stack en théorie
-                            "contributionsBatteries",
+                            "productionStackWithBatteryContributions",
                             "daily") # la conclusion est formelle : faire des dossiers 
   # sinon avoir daily et hourly au mm endroit c insupportable
 # NB SUR LES COULEURS DES STACKS : FAIRE UN MODE EASILY ACCESSIBLE POUR COLORBLIND

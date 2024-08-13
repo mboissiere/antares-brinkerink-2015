@@ -52,7 +52,8 @@ setProdStackAlias(
   ),
   colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
              "darkgreen", "red", "darkred", "darkslategray", "lavender",
-             "gray75", "gray25"),
+             "gray", "gray25"),
+  # NB : je crois que gray75 est plus sombre qu'annoncé
   lines = alist(
     LOAD = LOAD,
     TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
@@ -95,6 +96,42 @@ setProdStackAlias(
     `Niveau Air comprime` = Other3_level
     ),
   lineColors = c("blue", "green", "goldenrod", "gray", "salmon")
+)
+
+setProdStackAlias(
+  name = "productionStackWithBatteryContributions",
+  variables = alist(
+    NUCLEAR = NUCLEAR,
+    WIND = WIND,
+    SOLAR = SOLAR,
+    GEOTHERMAL = `MISC. DTG`,
+    HYDRO = `H. STOR`,
+    
+    `BIO AND WASTE` = `MIX. FUEL`,
+    GAS = GAS,
+    COAL = COAL,
+    OIL = OIL,
+    OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    
+    `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+    `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+    `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+    `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+    `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+    
+    EXCHANGES = -BALANCE,
+    UNSUPPLIED = `UNSP. ENRG`
+  ),
+  colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
+             "darkgreen", "red", "darkred", "darkslategray", "lavender",
+             "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
+             "gray", "gray25"
+             ),
+  lines = alist(
+    LOAD = LOAD,
+    TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+  ),
+  lineColors = c("black", "violetred")
 )
 
 #https://cran.r-project.org/web/packages/khroma/vignettes/tol.html
