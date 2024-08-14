@@ -2,7 +2,7 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
@@ -13,7 +13,7 @@ LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = -1 # for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 PLOT_TIMESTEP = "daily"
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -34,10 +34,11 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
 
-NODES = all_deane_nodes_lst
+NODES = europe_nodes_lst
+# NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Beta_World" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_Beta_EU_Agg" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
@@ -46,6 +47,9 @@ study_basename <- "Deane_Beta_World" # pourrait être corrélé à import_study_
 # "ah ce niveau d'agrégation c'est x temps à tourner avec y gigas de mémoire..."
 # ça peut être de beaux jeux de données / documentation
 # (tout en gardant en tête tout de même qu'il faut alors préciser specs de la machine...)
+
+UNIT_COMMITMENT_MODE = "fast" # "fast" or "accurate"
+# En vrai, si on fait tourner sur VM, ça peut tout à fait être accurate.
 
 # Ce serait bien en fait de générer les études et puis les faire tourner sur AntaresWeb en vrai.
 # Oh, et puis vu que j'ai mappé le disque avec un raccourci, ptet que ya  moyen
@@ -239,7 +243,7 @@ nb_MCyears = 10 # entier, nombre d'années Monte-Carlo
 # dans le grand excel qui résume les variables Antares
 
 RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
-UNIT_COMMITMENT_MODE = "fast" # "fast" or "accurate"
+
 
 # zones = c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA")
 #c("FRA", "GBR", "DEU", "ITA", "ESP")

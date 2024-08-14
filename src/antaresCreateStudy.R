@@ -177,7 +177,10 @@ if (GENERATE_THERMAL) {
   } else {
     thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
   }
-  thermal_generators_tbl <- filterClusters(thermal_generators_tbl, THERMAL_TYPES)
+  thermal_generators_tbl <- thermal_generators_tbl %>%
+    filter(node %in% NODES & cluster_type %in% THERMAL_TYPES)
+  # thermal_generators_tbl <- filterClusters(thermal_generators_tbl, THERMAL_TYPES)
+  # et le filter node in nodes ?? à force de tout vouloir court circuiter !!
   
   #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)

@@ -176,7 +176,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #   gen_no_prefix <- substring(generator_name, 9)
 #   return(gen_no_prefix)
 # }
-# # 
+# #
 # # getGeneratorNameWithoutPrefix <- function(generator_name) {
 # #   gen_no_prefix <- substring(generator_name, 9)
 # #   return(gen_no_prefix)
@@ -202,6 +202,13 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #   return(name)
 # }
 # 
+# # INFO [2024-08-14 14:10:45] [THERMAL] - Adding DEU_BIO_BIOMASSGENERAT10962 generator to EU-DEU node...
+# # ERROR [2024-08-14 14:10:46] [WARN] - Failed to add DEU_WAS_AHKWNEUNKIRCHE10873_BIOMASSGENERAT10950_HEIZKRAFTWERKK11270_KLRANLAGE11381_WASTEINCINERAT11791 generator to EU-DEU node, skipping...
+# # # et pourtant !!
+# 
+# # Vectorize the truncateString function to handle vectors
+# truncateStringVec <- Vectorize(truncateString)
+# 
 # aggregateEquivalentGenerators <- function(generators_tbl) {
 #   aggregated_generators_tbl <- generators_tbl %>%
 #     group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission, variable_cost, start_cost) %>%
@@ -216,7 +223,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #       ),
 #       .groups = 'drop'
 #     ) %>%
-#     mutate(generator_name = truncateString(combined_names),
+#     mutate(generator_name = truncateStringVec(combined_names, 88),
 #            nb_units = total_units) %>%  # Rename and truncate the combined names
 #     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
 #     # select(-combined_names, -total_units)  # Remove the temporary columns
