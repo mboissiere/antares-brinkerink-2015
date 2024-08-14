@@ -5,6 +5,17 @@ all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
 full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
 full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
 
+# print(full_2015_generators_tbl)
+# source(".\\src\\data\\importThermal.R")
+# THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
+#                   "Other", "Other 2", "Other 3", "Other 4")
+# full_2015_generators_tbl <- filterClusters(full_2015_generators_tbl, THERMAL_TYPES)
+# full_2015_generators_tbl <- getThermalPropertiesTable(full_2015_generators_tbl)
+# print(full_2015_generators_tbl)
+# saveRDS(full_2015_generators_tbl, ".\\src\\objects\\thermal_generators_properties_tbl.rds")
+# thermal_generators_properties_tbl <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+# print(thermal_generators_properties_tbl)
+
 library(data.table)
 hourly_zeros <- matrix(0, 8760)
 hourly_zeros_datatable <- as.data.table(hourly_zeros)

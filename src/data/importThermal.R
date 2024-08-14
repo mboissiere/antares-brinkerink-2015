@@ -158,8 +158,6 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
            variable_cost = heat_rate * fuel_cost) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
   
-  
-    
   return(thermal_generators_tbl)
 }
 

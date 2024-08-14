@@ -69,6 +69,8 @@ setProdStackAlias(
 setProdStackAlias(
   name = "contributionsBatteries",
   variables = alist(
+    # Par contre on fait un POV batterie (et on suit l'évolution du niveau)
+    # ou on fait un POV réseau (et on suit l'évolution de - le niveau) ?
     `Contrib. STEP` = PSP_closed_withdrawal,
     `Contrib. Batteries` = Battery_withdrawal,
     `Contrib. Thermique` = Other1_withdrawal,
@@ -89,11 +91,11 @@ setProdStackAlias(
              "lightblue", "lightgreen", "lightgoldenrod", "lightgray", "lightsalmon"),
   # colors = c("blue", "yellow", "orange", "cyan", "red"),
   lines = alist(
-    `Niveau STEP` = PSP_closed_level,
-    `Niveau Batteries` = Battery_level,
-    `Niveau Thermique` = Other1_level,
-    `Niveau Hydrogene` = Other2_level,
-    `Niveau Air comprime` = Other3_level
+    `Niveau STEP` = PSP_closed_level - PSP_closed_level[1], # ça marche ça ? pour prendre le niveau initial ?
+    `Niveau Batteries` = Battery_level - Battery_level[1],
+    `Niveau Thermique` = Other1_level - Other1_level[1],
+    `Niveau Hydrogene` = Other2_level - Other2_level[1],
+    `Niveau Air comprime` = Other3_level - Other3_level[1]
     ),
   lineColors = c("blue", "green", "goldenrod", "gray", "salmon")
 )

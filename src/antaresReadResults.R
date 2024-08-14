@@ -432,7 +432,7 @@ saveUnsuppliedAndSpillage <- function(nodes,
 # et donc, au même titre que j'ai un dossier "data" qui va ptet changer de nom, ranger les auxilliaires
 # createStudyFunctions ? readResultsFunctions ?
 
-nodes = asia_nodes_lst 
+nodes = europe_nodes_lst 
 # si je commente en vrai, ça importe bien non ?
 output_dir <- initializeOutputFolder(nodes) # ah ptn y a ça aussi aaaaaa
 saveCountryProductionStacks(nodes,
@@ -443,7 +443,10 @@ saveCountryProductionStacks(nodes,
                             # le titre, l'unité, le timestep....
                             # il faudrait une fonction pour un stack en théorie
                             # "dynamic",
-                            "productionStackWithBatteryContributions",
+                            "contributionsBatteries",
+                            
+                            #"productionStackWithBatteryContributions",
+                            
                             "daily") # la conclusion est formelle : faire des dossiers 
   # sinon avoir daily et hourly au mm endroit c insupportable
 # NB SUR LES COULEURS DES STACKS : FAIRE UN MODE EASILY ACCESSIBLE POUR COLORBLIND
