@@ -1,0 +1,20 @@
+INFO [2024-08-14 16:30:05] [MAIN] - Creating Deane_World_5-clu-thermal__2024_08_14_16_30_04 study...
+
+INFO [2024-08-14 16:30:05] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-14 16:30:05] [MAIN] - Adding nodes...
+
+INFO [2024-08-14 16:34:42] [MAIN] - Done adding nodes! (run time : 277.16s).
+
+INFO [2024-08-14 16:34:42] [MAIN] - Adding load data...
+
+INFO [2024-08-14 16:40:26] [MAIN] - Done adding load data! (run time : 344.03s).
+
+INFO [2024-08-14 16:40:26] [MAIN] - Fetching wind data...
+
+INFO [2024-08-14 16:45:25] [MAIN] - Done adding wind data! (run time : 299.16s).
+
+INFO [2024-08-14 16:45:26] [MAIN] - Fetching solar data...
+
+INFO [2024-08-14 16:50:17] [MAIN] - Done adding solar data! (run time : 291.73s).
+
+INFO [2024-08-14 16:50:18] [MAIN] - Beginning hydro implementation...

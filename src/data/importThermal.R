@@ -202,7 +202,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
       # but you wanna know why it's not a priority ? coz AntaresFast doesn't use start cost lmao
       .groups = 'drop'
     ) 
-  print(aggregated_generators_tbl)
+  # print(aggregated_generators_tbl)
   #%>%
   aggregated_generators_tbl <- aggregated_generators_tbl %>%
     mutate(generator_name = truncateStringVec(combined_names, 88),  # Truncate the combined names
@@ -213,19 +213,19 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
   
   return(aggregated_generators_tbl)
 }
-
-test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
-# print(test_thermal_properties, n = 20)
-print(test_thermal_properties, n = 50)
-
-test_thermal_properties <- aggregateEquivalentGenerators(test_thermal_properties)
-# print(test_thermal_properties %>% filter(node == "AF-ZAF"), n = 25)
-# print(test_thermal_properties, n = 100)
-# print(test_thermal_properties$generator_name[87])
-
-saveRDS(test_thermal_properties, ".\\src\\objects\\thermal_aggregated_tbl.rds")
-test_thermal_properties <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-print(test_thermal_properties)
+# 
+# test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+# # print(test_thermal_properties, n = 20)
+# print(test_thermal_properties, n = 50)
+# 
+# test_thermal_properties <- aggregateEquivalentGenerators(test_thermal_properties)
+# # print(test_thermal_properties %>% filter(node == "AF-ZAF"), n = 25)
+# # print(test_thermal_properties, n = 100)
+# # print(test_thermal_properties$generator_name[87])
+# 
+# saveRDS(test_thermal_properties, ".\\src\\objects\\thermal_aggregated_tbl.rds")
+# test_thermal_properties <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+# print(test_thermal_properties)
 
 # Error in `mutate()`:
 #   i In argument: `min_stable_power = nominal_capacity * min_stable_factor/100`.

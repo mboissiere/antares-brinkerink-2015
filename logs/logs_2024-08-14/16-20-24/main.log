@@ -25,3 +25,12 @@ INFO [2024-08-14 16:25:15] [MAIN] - Done adding thermal data! (run time : 2.81mi
 
 INFO [2024-08-14 16:25:15] [MAIN] - Fetching battery data...
 
+INFO [2024-08-14 16:29:01] [MAIN] - Done adding battery data! (run time : 3.77min).
+
+INFO [2024-08-14 16:29:01] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-14 16:29:27] [MAIN] - Done adding lines! (run time : 25.81s).
+
+INFO [2024-08-14 16:29:27] [MAIN] - Finished setting up Antares study! (run time : 9.06min).
+ 
+

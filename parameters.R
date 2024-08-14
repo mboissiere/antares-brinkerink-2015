@@ -38,7 +38,7 @@ NODES = europe_nodes_lst
 # NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Beta_EU_Clu" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_EU_5-clusters" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
@@ -94,7 +94,9 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # c'est géré par variable import csp qui lance le programme ou pas
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
-CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
+CLUSTER_THERMAL = 5
+#faudrait un true ou false
+# CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
 # ET PAS DU TOUT MODULABLE AUTREMENT QUE 10 ET 5 meme si ce serait facile mais en attendant
 # here it will be 10. We should make it customizeable but uuuhhh 
 AGGREGATE_BATTERIES = TRUE
