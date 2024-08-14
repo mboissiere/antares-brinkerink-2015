@@ -2,6 +2,8 @@ preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
 source(preprocessPlexosData_module)
 
 source(".\\src\\objects\\r_objects.R")
+#source("parameters.R")
+
 
 library(tidyr)
 
@@ -93,6 +95,58 @@ addBatteriesToAntares <- function(batteries_tbl) {
       })
       # Pour plus de robustesse faudrait mettre le try catch "no batteery at all" en principe mais fleeeeeemme
     }
+  }
+}
+
+# La deuxième fonction est très proche
+# et j'suis sûr qu'on peut cleanup le code mais euh ouais
+
+addBatteriesToAntaresAggregated <- function(batteries_tbl) {
+  
+  for (row in 1:nrow(batteries_tbl)) {
+    battery_name = batteries_tbl$battery_name[row]
+    node = batteries_tbl$node[row]
+    cluster_type = batteries_tbl$cluster_type[row]
+    
+    units = batteries_tbl$units[row]
+    max_power = batteries_tbl$max_power[row]
+    capacity = batteries_tbl$capacity[row]
+    
+    nominal_capacity = max_power * units
+    reservoir_capacity = capacity * units
+    
+    
+    initial_state = batteries_tbl$initial_state[row]
+    efficiency = batteries_tbl$efficiency[row]
+    
+    storage_parameters_list <- storage_values_default()
+    storage_parameters_list$injectionnominalcapacity <- nominal_capacity
+    storage_parameters_list$withdrawalnominalcapacity <- nominal_capacity
+    storage_parameters_list$reservoircapacity <- reservoir_capacity
+    storage_parameters_list$efficiency <- efficiency/100
+    storage_parameters_list$initiallevel <- initial_state/100
+    storage_parameters_list$initialleveloptim <- FALSE
+    tryCatch({
+      createClusterST(
+        area = node,
+        cluster_name = battery_name,
+        group = cluster_type,
+        storage_parameters = storage_parameters_list,
+        
+        PMAX_injection = hourly_ones_datatable,
+        PMAX_withdrawal = hourly_ones_datatable,
+        inflows = hourly_zeros_datatable,
+        lower_rule_curve = hourly_zeros_datatable,
+        upper_rule_curve = hourly_ones_datatable,
+        overwrite = TRUE,
+        add_prefix = FALSE
+      )
+      msg = paste("[STORAGE] - Adding", battery_name, "battery to", node, "node...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[WARN] - Failed to add", battery_name, "battery to", node, "node, skipping...")
+      logError(msg)
+    })
   }
 }
 

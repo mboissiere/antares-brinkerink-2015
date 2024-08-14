@@ -87,7 +87,8 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # en fait c'est pas compté dans les thermal types
 # c'est géré par variable import csp qui lance le programme ou pas
 # (ce qui est... très bien !)
-
+AGGREGATE_THERMAL = TRUE
+AGGREGATE_BATTERIES = TRUE
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja
 ## mais pas dans PLEXOS, et ensuite de voir si on retrouve les CSP dans le cas du solaire.

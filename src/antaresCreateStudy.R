@@ -181,10 +181,10 @@ if (GENERATE_THERMAL) {
 }
 
 ################################################################################
-################################# STORAGE IMPORT ###############################
+################################# BATTERY IMPORT ###############################
 
 if (GENERATE_STORAGE) {
-  msg = "[MAIN] - Fetching storage data...\n"
+  msg = "[MAIN] - Fetching battery data...\n"
   logMain(msg)
   start_time <- Sys.time()
   
@@ -192,11 +192,16 @@ if (GENERATE_STORAGE) {
   source(importBatteries_file)
   # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
   # faudrait ptet que je fasse ça pour les batteries en vrai de vrai
-  addBatteriesToAntares(batteries_tbl)
+  if (AGGREGATE_BATTERIES) {
+    addBatteriesToAntaresAggregated(batteries_tbl)
+  } else {
+    addBatteriesToAntares(batteries_tbl)
+  }
+  
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "mins"), 2)
-  msg = paste0("[MAIN] - Done adding storage data! (run time : ", duration,"min).\n")
+  msg = paste0("[MAIN] - Done adding battery data! (run time : ", duration,"min).\n")
   logMain(msg)
 }
 

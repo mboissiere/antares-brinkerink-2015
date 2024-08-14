@@ -83,7 +83,7 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
 
 # Apply clustering and summarization
 clustering_test <- thermal_generators_properties_tbl %>%
-  filter(cluster_type == "Mixed Fuel") %>%# for testing purposes, will speed things up
+  filter(cluster_type == "Hard Coal") %>%# for testing purposes, will speed things up
   group_by(node, cluster_type) %>%
   nest() %>%
   mutate(
@@ -96,6 +96,22 @@ clustering_test <- thermal_generators_properties_tbl %>%
 
 # View the result
 print(clustering_test)
+
+########
+
+# It works !!
+# The smart thing to do would be to generalize this method in the script right now.
+# The lazy thing to do is to create an r_object and just run a simulation right now.
+# Hm..
+
+# Nevermind it doesn't work anymore..
+
+# deja aggregate without clustering ça serait pas mal nn ? mdrrr
+# faudrait faire un AGGREGATE_THERMAL et AGGREGATE_AND_CLUSTER_THERMAL
+# tout comme un AGGREGATE_BATTERIES tout simple ça reviendrait juste
+# à changer la règle / la boucle for
+
+##########
 
 # I have a question concerning clustering algorithms. 
 # Is it possible to generate automatically the amount of clusters, 
