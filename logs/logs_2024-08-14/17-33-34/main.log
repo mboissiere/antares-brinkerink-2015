@@ -1,0 +1,23 @@
+INFO [2024-08-14 17:33:34] [MAIN] - Creating Deane_AS_5-clusters__2024_08_14_17_33_34 study...
+
+INFO [2024-08-14 17:33:34] [MAIN] - Unit commitment mode : FAST
+INFO [2024-08-14 17:33:34] [MAIN] - Adding nodes...
+
+INFO [2024-08-14 17:34:20] [MAIN] - Done adding nodes! (run time : 45.32s).
+
+INFO [2024-08-14 17:34:20] [MAIN] - Adding load data...
+
+INFO [2024-08-14 17:35:13] [MAIN] - Done adding load data! (run time : 53.58s).
+
+INFO [2024-08-14 17:35:13] [MAIN] - Fetching wind data...
+
+INFO [2024-08-14 17:35:39] [MAIN] - Done adding wind data! (run time : 25.75s).
+
+INFO [2024-08-14 17:35:39] [MAIN] - Fetching solar data...
+
+INFO [2024-08-14 17:36:00] [MAIN] - Done adding solar data! (run time : 21.09s).
+
+INFO [2024-08-14 17:36:00] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-14 17:38:53] [MAIN] - Done adding hydro!
+INFO [2024-08-14 17:38:53] [MAIN] - Fetching thermal data...
+

@@ -1,7 +1,7 @@
 ## Fichier visant à rassembler des fonctions utilitaires, une "boîte à outils" ##
 ## Les fonctions réutilisables / qui ne sont pas associées à un processus particulier, sont regroupés ici ##
 
-
+source("parameters.R")
 
 # Fonction pour générer le nom d'un fichier basé sur l'heure actuelle
 generateName <- function(prefix) {
@@ -107,7 +107,7 @@ removePrefix <- function(generator_name) {
 # 88 !! # 88 is maximum and 89 bugs
 
 # Define function to truncate string to a maximum length
-truncateString <- function(name, max_length = 88) {
+truncateString <- function(name, max_length = CLUSTER_NAME_LIMIT) {
   if (nchar(name) > max_length) {
     return(substring(name, 1, max_length))
   }
@@ -117,6 +117,11 @@ truncateString <- function(name, max_length = 88) {
 # INFO [2024-08-14 14:10:45] [THERMAL] - Adding DEU_BIO_BIOMASSGENERAT10962 generator to EU-DEU node...
 # ERROR [2024-08-14 14:10:46] [WARN] - Failed to add DEU_WAS_AHKWNEUNKIRCHE10873_BIOMASSGENERAT10950_HEIZKRAFTWERKK11270_KLRANLAGE11381_WASTEINCINERAT11791 generator to EU-DEU node, skipping...
 # # et pourtant !!
+
+### UPDATE : visiblement c'est pas 88. Il y a eu qq couacs avec des 88.
+# Peut-être déjà en faire un paramètre global qu'on peut régler là le cluster_name_limit
+# ERROR [2024-08-14 17:16:11] [WARN] - Failed to add IND_BIO_HIRIYURBIOMASS12341_HAVALGASUGAR12336_KMDODDISUGAR12423_KOPPASUGAR12437_SANKESHW generator to AS-IND-SO node, skipping...
+# Bon, on la joue safe et on reste à 75 ?
 
 # Vectorize the truncateString function to handle vectors
 truncateStringVec <- Vectorize(truncateString)

@@ -4,6 +4,7 @@ library(tidyr)
 library(purrr)
 
 source(".\\src\\utils.R")
+source("parameters.R")
 
 thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
 print(thermal_aggregated_tbl)
@@ -77,7 +78,7 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
   # Prepend the country and fuel type to the generated name
   summary <- summary %>%
     mutate(
-      generator_name = truncateStringVec(combined_names, 88),
+      generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
       # generator_name = paste0(node, "_", gsub(" ", "-", cluster_type), "_", generator_name),
       # # combined_names = paste0(
       # #   unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
@@ -105,7 +106,7 @@ clustering_test <- thermal_aggregated_tbl %>%
   group_by(node, cluster_type) %>%
   nest() %>%
   mutate(
-    clustered_data = map(data, ~ cluster_and_summarize(.x, k = 5, node, cluster_type))
+    clustered_data = map(data, ~ cluster_and_summarize(.x, k = 20, node, cluster_type))
     # the number k can be changed and generalized !
   ) %>%
   # unnest_wider(clustered_data) %>%
@@ -114,6 +115,9 @@ clustering_test <- thermal_aggregated_tbl %>%
   # select(-data)  # Remove `data` after unnesting
 
 # View the result
+# print(clustering_test, n = 200)
+saveRDS(object = clustering_test, file = ".\\src\\objects\\thermal_20clustering_tbl.rds")
+clustering_test <- readRDS(".\\src\\objects\\thermal_20clustering_tbl.rds")
 print(clustering_test, n = 200)
 
 # Un test du 10-clustering (on est généreux !) sur le Hard Coal fait passer 
@@ -137,9 +141,35 @@ print(clustering_test, n = 200)
 # de 7697 lignes à 2675.
 # Pour donner une idée, il y a 3006 thermiques en Asie, et le run tourne bien.
 
-saveRDS(object = clustering_test, file = ".\\src\\objects\\thermal_5clustering_tbl.rds")
-clustering_test <- readRDS(".\\src\\objects\\thermal_5clustering_tbl.rds")
-print(clustering_test)
+
+# Autre possible point de patch trouvé en faisant le 20-clustering :
+# le variable cost, lui aussi, peut être amené à changer un peu avec même nominal capacity
+# mais units différents. Un exemple :
+
+# # A tibble: 21 x 7
+# generator_name    nominal_capacity nb_units min_stable_power co2_emission variable_cost start_cost
+# <chr>                        <dbl>    <dbl>            <dbl>        <dbl>         <dbl>      <dbl>
+#   1 CAN_BIO_EASTLFG3~                1        3              0.3            0          21.6      1684.
+# 2 CAN_BIO_ROBERTO_~                2        1              0.6            0          21.5      2004 
+# 3 CAN_BIO_BENSFORT~                2        6              0.6            0          21.6      1811.
+# 4 CAN_BIO_WESTLORN~                3        2              0.9            0          21.5      2140.
+# 5 CAN_BIO_LAFLECHE~                4        1              1.2            0          21.5      2448 
+# 6 CAN_BIO_BEAREROA~                5        2              1.5            0          21.3      2608 
+# 7 CAN_BIO_WATERLOO~                5        1              1.5            0          21.5      2547 
+# 8 CAN_BIO_BRITANNI~                6        3              1.8            0          21.3      2883.
+# 9 CAN_BIO_CHAPLEAU~                7        1              2.1            0          21.3      3187 
+# 10 CAN_BIO_WHITERIV~                8        1              2.4            0          21.2      3261 
+# # i 11 more rows
+# # i Use `print(n = ...)` to see more rows
+# Error in `mutate()`:
+#   i In argument: `clustered_data = map(data, ~cluster_and_summarize(.x, k = 20, node,
+#                                                                     cluster_type))`.
+# i In group 528: `node = "NA-CAN-ON"` and `cluster_type = "Mixed Fuel"`.
+# Caused by error in `map()`:
+#   i In index: 1.
+# Caused by error in `kmeans()`:
+#   ! more cluster centers than distinct data points.
+
 
 ########
 

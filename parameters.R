@@ -34,11 +34,11 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
 
-NODES = europe_nodes_lst
+NODES = asia_nodes_lst
 # NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_EU_5-clusters" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_AS_5-clusters" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
@@ -95,10 +95,17 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = 5
+CLUSTER_NAME_LIMIT = 75
 #faudrait un true ou false
 # CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
 # ET PAS DU TOUT MODULABLE AUTREMENT QUE 10 ET 5 meme si ce serait facile mais en attendant
 # here it will be 10. We should make it customizeable but uuuhhh 
+
+# En vrai faire un petit morceau de maths qui explique "en fait voici pourquoi trop de variables
+# c pa bi1 pour un pb d'optimisation qui inverse probablement des matrices, et du coup
+# j'ai fait un algorithme de k-clustering et voici comment ça marche et en fait y a
+# les k-médoides et les elbow method" ça serait une diiiiiinguerie comment ce serait intéressant
+# parce que mine de rien il s'en passe des trucs sous le capot mdr
 AGGREGATE_BATTERIES = TRUE
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja
