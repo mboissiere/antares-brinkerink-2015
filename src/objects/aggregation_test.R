@@ -3,8 +3,10 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-thermal_generators_properties_tbl <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
-print(thermal_generators_properties_tbl)
+source(".\\src\\utils.R")
+
+thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+print(thermal_aggregated_tbl)
 # NOTA BENE : vérifier avec la formule qu'on a pour les marginaux,
 # que la valeur moyenne du cout marginal est bien le coût marginal de la moyenne des centrales
 # (genre, c'est sûrement une somme et du coup sommer/moyenner les centrales est ok)
@@ -18,48 +20,47 @@ print(thermal_generators_properties_tbl)
 # choix de méthodes (ou assumer : k-medoids est mieux mais paltime)
 
 # Function to perform clustering and aggregation
+# Edit : no need for aggregation, it's now a feature of importThermal
 cluster_and_summarize <- function(df, k, node, cluster_type) {
   print("df:")
   print(df)
-  # Aggregate rows with identical properties
-  aggregated_df <- df %>%
-    group_by(nominal_capacity, min_stable_power, co2_emission, variable_cost, start_cost) %>%
-    summarize(total_nb_units = sum(nb_units), .groups = 'drop')
-  
-  print("aggregated df:")
-  print(aggregated_df)
-  # Check if the number of aggregated rows is greater than k
-  if (nrow(aggregated_df) > k) {
+  # Check if the number of rows is greater than k
+  if (nrow(df) > k) {
     # Perform k-means clustering on the aggregated data's nominal_capacity
-    clusters <- kmeans(aggregated_df$nominal_capacity, centers = k)
-    aggregated_df$cluster <- as.factor(clusters$cluster)
+    clusters <- kmeans(df$nominal_capacity, centers = k)
+    df$cluster <- as.factor(clusters$cluster)
   } else {
     # If there are fewer rows than k, each row becomes its own cluster
-    aggregated_df$cluster <- as.factor(1:nrow(aggregated_df))
+    df$cluster <- as.factor(1:nrow(df))
   }
-  print("aggregated df with clusters:")
-  print(aggregated_df)
+  print("df with clusters")
+  print(df)
   
-  # Join the cluster information back to the original dataframe
-  df_clustered <- df %>%
-    left_join(aggregated_df %>% select(nominal_capacity, min_stable_power, co2_emission, variable_cost, start_cost, total_nb_units, cluster), 
-              by = c("nominal_capacity", "min_stable_power", "co2_emission", "variable_cost", "start_cost")) %>%
-    mutate(cluster = aggregated_df$cluster[match(df$nominal_capacity, aggregated_df$nominal_capacity)])
-  
-  print(df_clustered)
-  print("clustered df:")
-  df <- df_clustered
+  # # Join the cluster information back to the original dataframe
+  # df_clustered <- df %>%
+  #   left_join(aggregated_df %>% select(nominal_capacity, min_stable_power, co2_emission, variable_cost, start_cost, total_nb_units, cluster), 
+  #             by = c("nominal_capacity", "min_stable_power", "co2_emission", "variable_cost", "start_cost")) %>%
+  #   mutate(cluster = aggregated_df$cluster[match(df$nominal_capacity, aggregated_df$nominal_capacity)])
+  # 
+  # print(df_clustered)
+  # print("clustered df:")
+  # df <- df_clustered
   
   # Summarize the clusters
   summary <- df %>%
     group_by(cluster) %>%
     summarise(
-      generator_name = paste(unique(substring(gsub("^[^_]+_[^_]+_", "", generator_name), 1, 5)), collapse = "_"),
+      # generator_name = paste(unique(substring(gsub("^[^_]+_[^_]+_", "", generator_name), 1, 5)), collapse = "_"),
+      generator_name = {
+        prefix <- unique(getPrefix(generator_name))[1]
+        combined_names <- paste(unique(substring(removePrefix(generator_name), 1, 5)), collapse = "_")
+        truncateStringVec(paste0(prefix, combined_names), 88)
+      },
       nominal_capacity = mean(nominal_capacity),
       nb_units = sum(nb_units),
       min_stable_power = mean(min_stable_power),
       co2_emission = mean(co2_emission),
-      variable_cost = mean(variable_cost),   # Include other relevant columns
+      variable_cost = mean(variable_cost), # Include other relevant columns
       start_cost = mean(start_cost),
       .groups = 'drop'
     )
@@ -69,6 +70,13 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
   summary <- summary %>%
     mutate(
       generator_name = paste0(node, "_", gsub(" ", "-", cluster_type), "_", generator_name),
+      # combined_names = paste0(
+      #   unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+      #   paste(
+      #     unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
+      #     collapse = "_"
+      #   )
+      # )
       node = node,
       cluster_type = cluster_type
     )
@@ -82,7 +90,7 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
 }
 
 # Apply clustering and summarization
-clustering_test <- thermal_generators_properties_tbl %>%
+clustering_test <- thermal_aggregated_tbl %>%
   filter(cluster_type == "Hard Coal") %>%# for testing purposes, will speed things up
   group_by(node, cluster_type) %>%
   nest() %>%

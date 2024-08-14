@@ -161,82 +161,67 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   return(thermal_generators_tbl)
 }
 
-# test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
-# # print(test_thermal_properties, n = 20)
-# print(test_thermal_properties, n = 50)
-# 
-# # Define function to get the prefix of a generator name
-# getPrefix <- function(generator_name) {
-#   prefix <- substring(generator_name, 1, 8)
-#   return(prefix)
-# }
-# 
-# # Define function to remove the prefix from a generator name
-# removePrefix <- function(generator_name) {
-#   gen_no_prefix <- substring(generator_name, 9)
-#   return(gen_no_prefix)
-# }
-# #
-# # getGeneratorNameWithoutPrefix <- function(generator_name) {
-# #   gen_no_prefix <- substring(generator_name, 9)
-# #   return(gen_no_prefix)
-# # }
-# # test <- getGeneratorNameWithoutPrefix("AGO_GAS_CAPACITY SCALER")
-# # print(test)
-# 
-# # And lets test the character limit in Antares
-# # This is a 10-character string :
-# # ABCDEABCDE
-# # 50 OK
-# # AAAAABBBBBCCCCCDDDDDEEEEEAAAAABBBBBCCCCCDDDDDEEEEE
-# # 60 OK
-# # 80 OK
-# # 85 OK
-# # 88 !! # 88 is maximum and 89 bugs
-# 
-# # Define function to truncate string to a maximum length
-# truncateString <- function(name, max_length = 88) {
-#   if (nchar(name) > max_length) {
-#     return(substring(name, 1, max_length))
-#   }
-#   return(name)
-# }
-# 
-# # INFO [2024-08-14 14:10:45] [THERMAL] - Adding DEU_BIO_BIOMASSGENERAT10962 generator to EU-DEU node...
-# # ERROR [2024-08-14 14:10:46] [WARN] - Failed to add DEU_WAS_AHKWNEUNKIRCHE10873_BIOMASSGENERAT10950_HEIZKRAFTWERKK11270_KLRANLAGE11381_WASTEINCINERAT11791 generator to EU-DEU node, skipping...
-# # # et pourtant !!
-# 
-# # Vectorize the truncateString function to handle vectors
-# truncateStringVec <- Vectorize(truncateString)
-# 
-# aggregateEquivalentGenerators <- function(generators_tbl) {
-#   aggregated_generators_tbl <- generators_tbl %>%
-#     group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission, variable_cost, start_cost) %>%
-#     summarize(
-#       total_units = sum(nb_units),
-#       combined_names = paste0(
-#         unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
-#         paste(
-#           sapply(generator_name, removePrefix),  # Remove the prefix from each name
-#           collapse = "_"
-#         )
-#       ),
-#       .groups = 'drop'
-#     ) %>%
-#     mutate(generator_name = truncateStringVec(combined_names, 88),
-#            nb_units = total_units) %>%  # Rename and truncate the combined names
-#     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
-#     # select(-combined_names, -total_units)  # Remove the temporary columns
-# }
-# 
-# 
-# test_thermal_properties <- aggregateEquivalentGenerators(test_thermal_properties)
+###################################
+
+
+
+# Les fonctions qui gèrent les strings sont maintenant dans utils !!
+source(".\\src\\utils.R")
+
+aggregateEquivalentGenerators <- function(generators_tbl) {
+  # generators_tbl <- test_thermal_properties # for temporary testing
+  aggregated_generators_tbl <- generators_tbl %>%
+    # filter(node == "AF-ZAF") %>% # for temporary testing
+    # A nest approach could be tempted but.. this really should work..
+    group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission, variable_cost) %>% #, start_cost) %>%
+    # START COST CHANGES !! START COST ISNT DEPENDENT ON NOMINAL CAPACITY !! I GET LIKE 2952 FOR ZAF_COA_MATIMBAPOWERS
+    # AND 2954 FOR LETHABOPOWERS
+    # (...wait, it's not ? wow, the difference must be SO slight)
+    # but the moral of the story is : we're gonna clusterize on nominal capacity later on, so let's just aggregate via fuckin nominal capacity
+    # and i guess for the rest... averages ?
+    
+    # ok yea, Sc is a polynomial of C, which iself is MWst/U so it depends on units
+    # and U is MWt/MWst (MW true / MW standard)
+    # so, it can vary.
+    summarize(
+      total_units = sum(nb_units),
+      combined_names = paste0(
+        unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+        paste(
+          unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
+          collapse = "_"
+        )
+      ),
+      avg_start_cost = mean(start_cost), # THIS IS A CHOICE.
+      # It might not be omega accurate (but we may be able to find the real formula
+      # if we use the polynomial from the paper)
+      # but you wanna know why it's not a priority ? coz AntaresFast doesn't use start cost lmao
+      .groups = 'drop'
+    ) 
+  print(aggregated_generators_tbl)
+  #%>%
+  aggregated_generators_tbl <- aggregated_generators_tbl %>%
+    mutate(generator_name = truncateStringVec(combined_names, 88),  # Truncate the combined names
+           nb_units = total_units,
+           start_cost = avg_start_cost
+           ) %>%
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+  
+  return(aggregated_generators_tbl)
+}
+
+test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+# print(test_thermal_properties, n = 20)
+print(test_thermal_properties, n = 50)
+
+test_thermal_properties <- aggregateEquivalentGenerators(test_thermal_properties)
+# print(test_thermal_properties %>% filter(node == "AF-ZAF"), n = 25)
 # print(test_thermal_properties, n = 100)
-# # print(test_thermal_properties$generator_name[87])
-# 
-# saveRDS(test_thermal_properties, ".\\src\\objects\\thermal_aggregated_tbl.rds")
-# test_thermal_properties <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-# print(test_thermal_properties)
+# print(test_thermal_properties$generator_name[87])
+
+saveRDS(test_thermal_properties, ".\\src\\objects\\thermal_aggregated_tbl.rds")
+test_thermal_properties <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+print(test_thermal_properties)
 
 # Error in `mutate()`:
 #   i In argument: `min_stable_power = nominal_capacity * min_stable_factor/100`.

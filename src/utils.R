@@ -75,3 +75,48 @@ log_message <- function(message, log_file, printer = TRUE) {
 }
 
 # Faire une fonction : preprocess data en enlevant espaces, en mettant _
+
+
+# Define function to get the prefix of a generator name
+getPrefix <- function(generator_name) {
+  prefix <- substring(generator_name, 1, 8)
+  return(prefix)
+}
+
+# Define function to remove the prefix from a generator name
+removePrefix <- function(generator_name) {
+  gen_no_prefix <- substring(generator_name, 9)
+  return(gen_no_prefix)
+}
+#
+# getGeneratorNameWithoutPrefix <- function(generator_name) {
+#   gen_no_prefix <- substring(generator_name, 9)
+#   return(gen_no_prefix)
+# }
+# test <- getGeneratorNameWithoutPrefix("AGO_GAS_CAPACITY SCALER")
+# print(test)
+
+# And lets test the character limit in Antares
+# This is a 10-character string :
+# ABCDEABCDE
+# 50 OK
+# AAAAABBBBBCCCCCDDDDDEEEEEAAAAABBBBBCCCCCDDDDDEEEEE
+# 60 OK
+# 80 OK
+# 85 OK
+# 88 !! # 88 is maximum and 89 bugs
+
+# Define function to truncate string to a maximum length
+truncateString <- function(name, max_length = 88) {
+  if (nchar(name) > max_length) {
+    return(substring(name, 1, max_length))
+  }
+  return(name)
+}
+
+# INFO [2024-08-14 14:10:45] [THERMAL] - Adding DEU_BIO_BIOMASSGENERAT10962 generator to EU-DEU node...
+# ERROR [2024-08-14 14:10:46] [WARN] - Failed to add DEU_WAS_AHKWNEUNKIRCHE10873_BIOMASSGENERAT10950_HEIZKRAFTWERKK11270_KLRANLAGE11381_WASTEINCINERAT11791 generator to EU-DEU node, skipping...
+# # et pourtant !!
+
+# Vectorize the truncateString function to handle vectors
+truncateStringVec <- Vectorize(truncateString)

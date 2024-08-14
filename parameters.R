@@ -34,11 +34,11 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
 
-NODES = europe_nodes_lst
+NODES = africa_nodes_lst
 # NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Beta_EU_Agg" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_Beta_AF_Agg" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
