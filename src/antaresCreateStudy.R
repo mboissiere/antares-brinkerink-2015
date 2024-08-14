@@ -168,9 +168,17 @@ if (GENERATE_THERMAL) {
   source(importThermal_file)
   #print(generators_tbl)
   #print(THERMAL_TYPES)
-  thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
-  #print(thermal_generators_tbl)
-  thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
+  # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
+  # #print(thermal_generators_tbl)
+  # thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
+  
+  if (AGGREGATE_THERMAL) {
+    thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+  } else {
+    thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+  }
+  thermal_generators_tbl <- filterClusters(thermal_generators_tbl, THERMAL_TYPES)
+  
   #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)
   

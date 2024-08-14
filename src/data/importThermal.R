@@ -161,6 +161,75 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   return(thermal_generators_tbl)
 }
 
+# test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+# # print(test_thermal_properties, n = 20)
+# print(test_thermal_properties, n = 50)
+# 
+# # Define function to get the prefix of a generator name
+# getPrefix <- function(generator_name) {
+#   prefix <- substring(generator_name, 1, 8)
+#   return(prefix)
+# }
+# 
+# # Define function to remove the prefix from a generator name
+# removePrefix <- function(generator_name) {
+#   gen_no_prefix <- substring(generator_name, 9)
+#   return(gen_no_prefix)
+# }
+# # 
+# # getGeneratorNameWithoutPrefix <- function(generator_name) {
+# #   gen_no_prefix <- substring(generator_name, 9)
+# #   return(gen_no_prefix)
+# # }
+# # test <- getGeneratorNameWithoutPrefix("AGO_GAS_CAPACITY SCALER")
+# # print(test)
+# 
+# # And lets test the character limit in Antares
+# # This is a 10-character string :
+# # ABCDEABCDE
+# # 50 OK
+# # AAAAABBBBBCCCCCDDDDDEEEEEAAAAABBBBBCCCCCDDDDDEEEEE
+# # 60 OK
+# # 80 OK
+# # 85 OK
+# # 88 !! # 88 is maximum and 89 bugs
+# 
+# # Define function to truncate string to a maximum length
+# truncateString <- function(name, max_length = 88) {
+#   if (nchar(name) > max_length) {
+#     return(substring(name, 1, max_length))
+#   }
+#   return(name)
+# }
+# 
+# aggregateEquivalentGenerators <- function(generators_tbl) {
+#   aggregated_generators_tbl <- generators_tbl %>%
+#     group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission, variable_cost, start_cost) %>%
+#     summarize(
+#       total_units = sum(nb_units),
+#       combined_names = paste0(
+#         unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+#         paste(
+#           sapply(generator_name, removePrefix),  # Remove the prefix from each name
+#           collapse = "_"
+#         )
+#       ),
+#       .groups = 'drop'
+#     ) %>%
+#     mutate(generator_name = truncateString(combined_names),
+#            nb_units = total_units) %>%  # Rename and truncate the combined names
+#     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+#     # select(-combined_names, -total_units)  # Remove the temporary columns
+# }
+# 
+# 
+# test_thermal_properties <- aggregateEquivalentGenerators(test_thermal_properties)
+# print(test_thermal_properties, n = 100)
+# # print(test_thermal_properties$generator_name[87])
+# 
+# saveRDS(test_thermal_properties, ".\\src\\objects\\thermal_aggregated_tbl.rds")
+# test_thermal_properties <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+# print(test_thermal_properties)
 
 # Error in `mutate()`:
 #   i In argument: `min_stable_power = nominal_capacity * min_stable_factor/100`.
