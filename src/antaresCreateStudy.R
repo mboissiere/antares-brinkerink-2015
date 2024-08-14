@@ -172,11 +172,17 @@ if (GENERATE_THERMAL) {
   # #print(thermal_generators_tbl)
   # thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
   
-  if (AGGREGATE_THERMAL) {
+  if (AGGREGATE_THERMAL) { # c'est hyper moche comme structure et provisoire mais ouais
     thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+    if (CLUSTER_THERMAL == 10) {
+      thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_10clustering_tbl.rds")
+    } else if (CLUSTER_THERMAL == 5) {
+      thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_5clustering_tbl.rds")
+    }
   } else {
     thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
   }
+  
   thermal_generators_tbl <- thermal_generators_tbl %>%
     filter(node %in% NODES & cluster_type %in% THERMAL_TYPES)
   # thermal_generators_tbl <- filterClusters(thermal_generators_tbl, THERMAL_TYPES)

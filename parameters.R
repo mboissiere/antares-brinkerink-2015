@@ -34,11 +34,11 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
 
-NODES = africa_nodes_lst
+NODES = europe_nodes_lst
 # NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Beta_AF_Agg" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_Beta_EU_Clu" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
@@ -94,7 +94,9 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # c'est géré par variable import csp qui lance le programme ou pas
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
-CLUSTER_THERMAL = TRUE # here it will be 10. We should make it customizeable but uuuhhh 
+CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
+# ET PAS DU TOUT MODULABLE AUTREMENT QUE 10 ET 5 meme si ce serait facile mais en attendant
+# here it will be 10. We should make it customizeable but uuuhhh 
 AGGREGATE_BATTERIES = TRUE
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja
