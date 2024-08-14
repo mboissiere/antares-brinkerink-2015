@@ -115,7 +115,6 @@ addBatteriesToAntaresAggregated <- function(batteries_tbl) {
     nominal_capacity = max_power * units
     reservoir_capacity = capacity * units
     
-    
     initial_state = batteries_tbl$initial_state[row]
     efficiency = batteries_tbl$efficiency[row]
     
