@@ -183,6 +183,10 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     # ok yea, Sc is a polynomial of C, which iself is MWst/U so it depends on units
     # and U is MWt/MWst (MW true / MW standard)
     # so, it can vary.
+    
+    # en fait, le vrai truc rigoureux de fou je pense, ce serait un mode qui aggregate ce qui est vraiment exactement les mêmes sur chaque paramètre
+  # puis, faire du clustering non pas sur nominal_capacity mais sur les objets de dimension n qui regroupent toutes les propriétés
+  # je soupçonne néanmoins que ça soit bcp plus lent.
     summarize(
       total_units = sum(nb_units),
       combined_names = paste0(

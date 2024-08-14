@@ -49,6 +49,8 @@ study_basename <- "Deane_Beta_AF_Agg" # pourrait être corrélé à import_study
 # (tout en gardant en tête tout de même qu'il faut alors préciser specs de la machine...)
 
 UNIT_COMMITMENT_MODE = "fast" # "fast" or "accurate"
+
+
 # En vrai, si on fait tourner sur VM, ça peut tout à fait être accurate.
 
 # Ce serait bien en fait de générer les études et puis les faire tourner sur AntaresWeb en vrai.
@@ -92,6 +94,7 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # c'est géré par variable import csp qui lance le programme ou pas
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
+CLUSTER_THERMAL = TRUE # here it will be 10. We should make it customizeable but uuuhhh 
 AGGREGATE_BATTERIES = TRUE
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja

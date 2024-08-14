@@ -50,12 +50,19 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
   summary <- df %>%
     group_by(cluster) %>%
     summarise(
+      combined_names = paste0(
+        unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+        paste(
+          unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
+          collapse = "_"
+        )
+      ),
       # generator_name = paste(unique(substring(gsub("^[^_]+_[^_]+_", "", generator_name), 1, 5)), collapse = "_"),
-      generator_name = {
-        prefix <- unique(getPrefix(generator_name))[1]
-        combined_names <- paste(unique(substring(removePrefix(generator_name), 1, 5)), collapse = "_")
-        truncateStringVec(paste0(prefix, combined_names), 88)
-      },
+      # generator_name = {
+      #   prefix <- unique(getPrefix(generator_name))[1]
+      #   combined_names <- paste(unique(substring(removePrefix(generator_name), 1, 5)), collapse = "_")
+      #   truncateStringVec(paste0(prefix, combined_names), 88)
+      # },
       nominal_capacity = mean(nominal_capacity),
       nb_units = sum(nb_units),
       min_stable_power = mean(min_stable_power),
@@ -66,24 +73,27 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
     )
   print(summary)
   
+  #There is no reason that commenting these lines should pose a problem...
   # Prepend the country and fuel type to the generated name
   summary <- summary %>%
     mutate(
-      generator_name = paste0(node, "_", gsub(" ", "-", cluster_type), "_", generator_name),
-      # combined_names = paste0(
-      #   unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
-      #   paste(
-      #     unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
-      #     collapse = "_"
-      #   )
-      # )
-      node = node,
+      generator_name = truncateStringVec(combined_names, 88),
+      # generator_name = paste0(node, "_", gsub(" ", "-", cluster_type), "_", generator_name),
+      # # combined_names = paste0(
+      # #   unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+      # #   paste(
+      # #     unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
+      # #     collapse = "_"
+      # #   )
+      # # )
+      node = node, # the lines seem silly, but they're actually deeply necessary
+      # for accessing node and cluster type within the nested df, and aggregate
       cluster_type = cluster_type
     )
   print(summary)
   
   #return(summary)
-  return(summary %>% select(-node, -cluster_type))  # Exclude node and cluster_type
+  return(summary %>% select(-node, -cluster_type, -combined_names))  # Exclude node and cluster_type
   # Will need to remove node and cluster_type, 
   # although it was useful back when aggregating and such,
   # the fact that it is duplicated will cause an error while unnesting later
@@ -91,18 +101,44 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
 
 # Apply clustering and summarization
 clustering_test <- thermal_aggregated_tbl %>%
-  filter(cluster_type == "Hard Coal") %>%# for testing purposes, will speed things up
+  # filter(cluster_type == "Hard Coal") %>%# for testing purposes, will speed things up
   group_by(node, cluster_type) %>%
   nest() %>%
   mutate(
-    clustered_data = map(data, ~ cluster_and_summarize(.x, k = 10, node, cluster_type))
+    clustered_data = map(data, ~ cluster_and_summarize(.x, k = 5, node, cluster_type))
     # the number k can be changed and generalized !
   ) %>%
   # unnest_wider(clustered_data) %>%
   unnest(clustered_data) %>%
-  select(-data)  # Remove `data` after unnesting
+  select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+  # select(-data)  # Remove `data` after unnesting
 
 # View the result
+print(clustering_test, n = 200)
+
+# Un test du 10-clustering (on est généreux !) sur le Hard Coal fait passer 
+# de 1636 lignes à 971.
+
+# Essayons sur chaque type de thermique maintenant !
+
+# Warning message:
+#   There was 1 warning in `mutate()`.
+# i In argument: `clustered_data = map(data, ~cluster_and_summarize(.x, k = 10, node, cluster_type))`.
+# i In group 201: `node = "AS-IND-EA"` and `cluster_type = "Hard Coal"`.
+# Caused by warning:
+#   ! did not converge in 10 iterations 
+
+# Bon pour l'avoir print, c'est bel et bien un warning et ça a bien convergé
+# pour passer de 10 à 17 du coup
+
+# Un test du 10-clustering sur tous les thermiques a fait passer le tableau
+# de 7697 lignes à 4053.
+# Un test du 5-clustering sur tous les thermiques a fait passer le tableau
+# de 7697 lignes à 2675.
+# Pour donner une idée, il y a 3006 thermiques en Asie, et le run tourne bien.
+
+saveRDS(object = clustering_test, file = ".\\src\\objects\\thermal_5clustering_tbl.rds")
+clustering_test <- readRDS(".\\src\\objects\\thermal_5clustering_tbl.rds")
 print(clustering_test)
 
 ########
