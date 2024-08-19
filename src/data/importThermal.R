@@ -165,60 +165,60 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 
 
 
-# Les fonctions qui gèrent les strings sont maintenant dans utils !!
-source(".\\src\\utils.R")
-
-aggregateEquivalentGenerators <- function(generators_tbl) {
-  # generators_tbl <- test_thermal_properties # for temporary testing
-  aggregated_generators_tbl <- generators_tbl %>%
-    # filter(node == "AF-ZAF") %>% # for temporary testing
-    # A nest approach could be tempted but.. this really should work..
-    group_by(node, cluster_type, nominal_capacity, min_stable_power) %>% #, co2_emission, variable_cost, start_cost) %>%
-    # START COST CHANGES !! START COST ISNT DEPENDENT ON NOMINAL CAPACITY !! I GET LIKE 2952 FOR ZAF_COA_MATIMBAPOWERS
-    # AND 2954 FOR LETHABOPOWERS
-    # (...wait, it's not ? wow, the difference must be SO slight)
-    # but the moral of the story is : we're gonna clusterize on nominal capacity later on, so let's just aggregate via fuckin nominal capacity
-    # and i guess for the rest... averages ?
-    
-    # ok yea, Sc is a polynomial of C, which iself is MWst/U so it depends on units
-    # and U is MWt/MWst (MW true / MW standard)
-    # so, it can vary.
-    
-    # en fait, le vrai truc rigoureux de fou je pense, ce serait un mode qui aggregate ce qui est vraiment exactement les mêmes sur chaque paramètre
-  # puis, faire du clustering non pas sur nominal_capacity mais sur les objets de dimension n qui regroupent toutes les propriétés
-  # je soupçonne néanmoins que ça soit bcp plus lent.
-    summarize(
-      total_units = sum(nb_units),
-      combined_names = paste0(
-        unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
-        paste(
-          unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
-          collapse = "_"
-        )
-      ),
-      avg_start_cost = mean(start_cost), # THIS IS A CHOICE.
-      # It might not be omega accurate (but we may be able to find the real formula
-      # if we use the polynomial from the paper)
-      # but you wanna know why it's not a priority ? coz AntaresFast doesn't use start cost lmao
-      avg_variable_cost = mean(variable_cost), # it was detected that variable cost can also change, while running a 20-cluster attempt
-      # and if that changes, I reckon other things might...
-      avg_co2_emission = mean(co2_emission), 
-      # If I wanted to be very precise, I would probably also keep the min stable FACTOR in memory and divide from the nominal capacity again
-      .groups = 'drop'
-    ) 
-  # print(aggregated_generators_tbl)
-  #%>%
-  aggregated_generators_tbl <- aggregated_generators_tbl %>%
-    mutate(generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),  # Truncate the combined names
-           nb_units = total_units,
-           start_cost = avg_start_cost,
-           variable_cost = avg_variable_cost,
-           co2_emission = avg_co2_emission
-           ) %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
-  
-  return(aggregated_generators_tbl)
-}
+# # Les fonctions qui gèrent les strings sont maintenant dans utils !!
+# source(".\\src\\utils.R")
+# 
+# aggregateEquivalentGenerators <- function(generators_tbl) {
+#   # generators_tbl <- test_thermal_properties # for temporary testing
+#   aggregated_generators_tbl <- generators_tbl %>%
+#     # filter(node == "AF-ZAF") %>% # for temporary testing
+#     # A nest approach could be tempted but.. this really should work..
+#     group_by(node, cluster_type, nominal_capacity, min_stable_power) %>% #, co2_emission, variable_cost, start_cost) %>%
+#     # START COST CHANGES !! START COST ISNT DEPENDENT ON NOMINAL CAPACITY !! I GET LIKE 2952 FOR ZAF_COA_MATIMBAPOWERS
+#     # AND 2954 FOR LETHABOPOWERS
+#     # (...wait, it's not ? wow, the difference must be SO slight)
+#     # but the moral of the story is : we're gonna clusterize on nominal capacity later on, so let's just aggregate via fuckin nominal capacity
+#     # and i guess for the rest... averages ?
+#     
+#     # ok yea, Sc is a polynomial of C, which iself is MWst/U so it depends on units
+#     # and U is MWt/MWst (MW true / MW standard)
+#     # so, it can vary.
+#     
+#     # en fait, le vrai truc rigoureux de fou je pense, ce serait un mode qui aggregate ce qui est vraiment exactement les mêmes sur chaque paramètre
+#   # puis, faire du clustering non pas sur nominal_capacity mais sur les objets de dimension n qui regroupent toutes les propriétés
+#   # je soupçonne néanmoins que ça soit bcp plus lent.
+#     summarize(
+#       total_units = sum(nb_units),
+#       combined_names = paste0(
+#         unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+#         paste(
+#           unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
+#           collapse = "_"
+#         )
+#       ),
+#       avg_start_cost = mean(start_cost), # THIS IS A CHOICE.
+#       # It might not be omega accurate (but we may be able to find the real formula
+#       # if we use the polynomial from the paper)
+#       # but you wanna know why it's not a priority ? coz AntaresFast doesn't use start cost lmao
+#       avg_variable_cost = mean(variable_cost), # it was detected that variable cost can also change, while running a 20-cluster attempt
+#       # and if that changes, I reckon other things might...
+#       avg_co2_emission = mean(co2_emission), 
+#       # If I wanted to be very precise, I would probably also keep the min stable FACTOR in memory and divide from the nominal capacity again
+#       .groups = 'drop'
+#     ) 
+#   # print(aggregated_generators_tbl)
+#   #%>%
+#   aggregated_generators_tbl <- aggregated_generators_tbl %>%
+#     mutate(generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),  # Truncate the combined names
+#            nb_units = total_units,
+#            start_cost = avg_start_cost,
+#            variable_cost = avg_variable_cost,
+#            co2_emission = avg_co2_emission
+#            ) %>%
+#     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+#   
+#   return(aggregated_generators_tbl)
+# }
 # 
 # test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
 # # print(test_thermal_properties, n = 20)

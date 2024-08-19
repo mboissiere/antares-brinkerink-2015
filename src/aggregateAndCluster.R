@@ -6,12 +6,10 @@ library(purrr) # vérifier si c'est utile ça et pourquoi
 source(".\\src\\utils.R")
 source("parameters.R")
 
-thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-print(thermal_aggregated_tbl)
 
 batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
-print(batteries_tbl)
-print(batteries_tbl, n = 200)
+# print(batteries_tbl)
+# print(batteries_tbl, n = 200)
 
 
 aggregateEquivalentGenerators <- function(generators_tbl) {
@@ -43,6 +41,20 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
   return(aggregated_generators_tbl)
 }
 
+#######
+# # Redoing aggregation because it didn't have variable cost in current RDS
+# thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+# print(thermal_properties %>% filter(node == "NA-CAN-ON"), n = 25)
+# print(thermal_properties, n = 50)
+# 
+# aggregated_thermal <- aggregateEquivalentGenerators(thermal_properties)
+# 
+# saveRDS(aggregated_thermal, ".\\src\\objects\\thermal_aggregated_tbl.rds")
+# aggregated_thermal <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+# print(aggregated_thermal %>% filter(node == "NA-CAN-ON"), n = 25)
+# print(aggregated_thermal, n = 50)
+# # New aggregation results : from 11,692 total thermal to 7,532
+
 
 # Equivalent batteries are a different kind of beast...
 # Is the goal of aggregate to fuse two objects which are functionally the same (eg exact same properties)
@@ -68,9 +80,9 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
 # ooh, I might like the average silhouette method https://www.datanovia.com/en/lessons/determining-the-optimal-number-of-clusters-3-must-know-methods/
 
 
-batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
-print(batteries_tbl)
-print(batteries_tbl, n = 50)
+# batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+# print(batteries_tbl)
+# print(batteries_tbl, n = 50)
 
 aggregateEquivalentBatteries <- function(batteries_tbl) {
   # Aggregating and adjusting values
@@ -81,7 +93,7 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
       units = 1
     )
   
-  print(aggregated_batteries_tbl, n = 50)
+  # print(aggregated_batteries_tbl, n = 50)
   
   aggregated_batteries_tbl <- aggregated_batteries_tbl %>%
     group_by(node, cluster_type, continent, battery_group, max_power, efficiency) %>% # efficiency should be redundant with cluster type
@@ -110,7 +122,87 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
   return(aggregated_batteries_tbl)
 }
 
-aggregated_batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
-saveRDS(aggregated_batteries_tbl, ".\\src\\objects\\batteries_aggregated_tbl.rds")
-aggregated_batteries_tbl <- readRDS(".\\src\\objects\\batteries_aggregated_tbl.rds")
-print(aggregated_batteries_tbl, n  = 50)
+# aggregated_batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
+# saveRDS(aggregated_batteries_tbl, ".\\src\\objects\\batteries_aggregated_tbl.rds")
+# aggregated_batteries_tbl <- readRDS(".\\src\\objects\\batteries_aggregated_tbl.rds")
+# print(aggregated_batteries_tbl, n  = 50)
+
+clusteringForGenerators <- function(aggregated_generators_tbl, max_clusters) {
+  cluster_and_summarize <- function(df, k, node, cluster_type) {
+    print("df:")
+    print(df)
+    # Check if the number of rows is greater than k
+    if (nrow(df) > k) {
+      # Perform k-means clustering on the aggregated data's nominal_capacity
+      clusters <- kmeans(df$nominal_capacity, centers = k)
+      df$cluster <- as.factor(clusters$cluster)
+    } else {
+      # If there are fewer rows than k, each row becomes its own cluster
+      df$cluster <- as.factor(1:nrow(df))
+    }
+    print("df with clusters")
+    print(df)
+    
+    # Summarize the clusters
+    summary <- df %>%
+      group_by(cluster) %>%
+      summarise(
+        combined_names = paste0(
+          unique(getPrefix(generator_name))[1],  # Extract and keep the prefix only once
+          paste(
+            unique(sapply(generator_name, removePrefix)),  # Remove the prefix and combine unique names
+            collapse = "_"
+          )
+        ),
+        nominal_capacity = mean(nominal_capacity), 
+        nb_units = sum(nb_units),
+        min_stable_power = mean(min_stable_power),
+        co2_emission = mean(co2_emission),
+        variable_cost = mean(variable_cost), # Include other relevant columns
+        start_cost = mean(start_cost),
+        .groups = 'drop'
+      )
+    print(summary)
+    # prints are super interesting to keep track of clustering.
+    # perhaps create a seperate clusteringLog ?
+    
+    summary <- summary %>%
+      mutate(
+        generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
+        node = node, # the lines seem silly, but they're actually deeply necessary
+        # for accessing node and cluster type within the nested df, and aggregate
+        cluster_type = cluster_type
+      )
+    print(summary)
+    
+    return(summary %>% select(-node, -cluster_type, -combined_names))  
+  }
+  
+  # Apply clustering and summarization
+  clustering_test <- thermal_aggregated_tbl %>%
+    group_by(node, cluster_type) %>%
+    nest() %>%
+    mutate(
+      clustered_data = map(data, ~ cluster_and_summarize(.x, k = max_clusters, node, cluster_type))
+    ) %>%
+    unnest(clustered_data) %>%
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+}
+
+# Test on generators
+thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+print("Thermal aggregated table :")
+print(thermal_aggregated_tbl)
+
+max_clusters = 20
+thermal_clusters_tbl <- clusteringForGenerators(thermal_aggregated_tbl, max_clusters)
+print(paste0(max_clusters,"-clustering for dataset:"))
+print(thermal_clusters_tbl, n = 100)
+saveRDS(object = thermal_clusters_tbl, file = ".\\src\\objects\\thermal_20clustering_tbl.rds")
+
+# # View the result
+# # print(clustering_test, n = 200)
+# 
+# saveRDS(object = clustering_test, file = ".\\src\\objects\\thermal_20clustering_tbl.rds")
+# clustering_test <- readRDS(".\\src\\objects\\thermal_20clustering_tbl.rds")
+# print(clustering_test, n = 200)

@@ -142,6 +142,8 @@ print(clustering_test, n = 200)
 # Bon pour l'avoir print, c'est bel et bien un warning et ça a bien convergé
 # pour passer de 10 à 17 du coup
 
+# Un test du 20-clustering sur tous les thermiques a fait passer le tableau
+# de 7532 (aggregation v2 !) à 5,531.
 # Un test du 10-clustering sur tous les thermiques a fait passer le tableau
 # de 7697 lignes à 4053.
 # Un test du 5-clustering sur tous les thermiques a fait passer le tableau
