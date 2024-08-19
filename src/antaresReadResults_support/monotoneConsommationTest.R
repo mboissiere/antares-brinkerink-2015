@@ -93,20 +93,69 @@ print(fra_tbl_long, n = 50)
 #   labs(x = "Consommation (triée décroissante)", y = "Consommation par source", fill = "Source d'énergie") +
 #   theme_minimal()
 
+# Cette ligne est censée réordonner selon l'ordre choisi
+# (choisi dans l'écriture de la liste sources)
+fra_tbl_long$energy_source <- factor(fra_tbl_long$energy_source, levels = rev(sources_new))
+print(fra_tbl_long, n = 50)
+
 # Créer le graphique empilé avec la courbe de la consommation totale
-ggplot(fra_tbl_long, aes(x = reorder(time, -LOAD))) +
+p <- ggplot(fra_tbl_long, aes(x = reorder(time, -LOAD))) +
   # Graphique empilé
   geom_bar(aes(y = production_mwh, fill = energy_source), stat = "identity") +
   # Ajouter la courbe de consommation totale
-  geom_line(aes(y = LOAD, group = 1), color = "black", size = 1) +
+  geom_line(aes(y = LOAD, group = 1), color = "black", size = 0.5) +
   scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                "IMPORTS" = "grey")) +
-  labs(x = "Consommation (triée décroissante)", y = "Consommation", fill = "Source d'énergie") +
-  theme_minimal() # +
+  labs(x = "Load (in reverse order)", y = "Production", fill = "Energy source") +
+  theme_minimal() +
+  theme(
+    # Legend adjustments
+    legend.position = "right",
+    legend.text = element_text(size = 8), # Legend text size
+    legend.title = element_text(size = 10), # Legend title size
+    legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+    legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+    legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+    legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+    
+    # Axis title adjustments
+    axis.title.x = element_text(size = 10), # X-axis title size
+    axis.title.y = element_text(size = 10), # Y-axis title size
+    
+    # Axis label adjustments
+    axis.text.x = element_text(size = 8), # X-axis labels size
+    axis.text.y = element_text(size = 8)  # Y-axis labels size
+  ) 
   # theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())  # Pour cacher les labels des abscisses si besoin
 
+# Example: Save the plot to the Desktop with a resolution of 300 DPI
+
+
+# Error in `ggsave()`:
+#   ! Dimensions exceed 50 inches (`height` and `width` are specified in inches not pixels).
+# i If you're sure you want a plot that big, use `limitsize = FALSE`.
+# Run `rlang::last_trace()` to see where the error occurred.
+# 
+# To create a 1920x1080 pixel image, you can calculate the required width and height in inches by dividing the pixel dimensions by the desired DPI.
+# 
+# For example, with a DPI of 300:
+# 
+# Width in inches = 1920 pixels / 300 DPI = 6.4 inches
+# Height in inches = 1080 pixels / 300 DPI = 3.6 inches
+resolution_dpi = 300
+# width_pixels = 1920
+height_pixels = 2*1080
+# is this 4k ??
+width_pixels = 2 * height_pixels # ptet mieux pour un graphe looong comme une année en horaire
+
+node = "eu-fra"
+chemin_sortie <- file.path("output", "graphes", paste0(node,"_monotone_",resolution_dpi,"dpi.png"))
+
+ggsave(filename = chemin_sortie, plot = p, 
+       width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+       dpi = resolution_dpi)
 
 # 
 # setProdStackAlias(
