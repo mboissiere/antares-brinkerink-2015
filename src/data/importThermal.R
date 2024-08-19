@@ -173,7 +173,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
   aggregated_generators_tbl <- generators_tbl %>%
     # filter(node == "AF-ZAF") %>% # for temporary testing
     # A nest approach could be tempted but.. this really should work..
-    group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission, variable_cost) %>% #, start_cost) %>%
+    group_by(node, cluster_type, nominal_capacity, min_stable_power) %>% #, co2_emission, variable_cost, start_cost) %>%
     # START COST CHANGES !! START COST ISNT DEPENDENT ON NOMINAL CAPACITY !! I GET LIKE 2952 FOR ZAF_COA_MATIMBAPOWERS
     # AND 2954 FOR LETHABOPOWERS
     # (...wait, it's not ? wow, the difference must be SO slight)
@@ -200,14 +200,20 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
       # It might not be omega accurate (but we may be able to find the real formula
       # if we use the polynomial from the paper)
       # but you wanna know why it's not a priority ? coz AntaresFast doesn't use start cost lmao
+      avg_variable_cost = mean(variable_cost), # it was detected that variable cost can also change, while running a 20-cluster attempt
+      # and if that changes, I reckon other things might...
+      avg_co2_emission = mean(co2_emission), 
+      # If I wanted to be very precise, I would probably also keep the min stable FACTOR in memory and divide from the nominal capacity again
       .groups = 'drop'
     ) 
   # print(aggregated_generators_tbl)
   #%>%
   aggregated_generators_tbl <- aggregated_generators_tbl %>%
-    mutate(generator_name = truncateStringVec(combined_names, 88),  # Truncate the combined names
+    mutate(generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),  # Truncate the combined names
            nb_units = total_units,
-           start_cost = avg_start_cost
+           start_cost = avg_start_cost,
+           variable_cost = avg_variable_cost,
+           co2_emission = avg_co2_emission
            ) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
   

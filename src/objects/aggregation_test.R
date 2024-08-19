@@ -8,6 +8,10 @@ source("parameters.R")
 
 thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
 print(thermal_aggregated_tbl)
+
+batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+print(batteries_tbl)
+
 # NOTA BENE : vérifier avec la formule qu'on a pour les marginaux,
 # que la valeur moyenne du cout marginal est bien le coût marginal de la moyenne des centrales
 # (genre, c'est sûrement une somme et du coup sommer/moyenner les centrales est ok)
@@ -64,7 +68,9 @@ cluster_and_summarize <- function(df, k, node, cluster_type) {
       #   combined_names <- paste(unique(substring(removePrefix(generator_name), 1, 5)), collapse = "_")
       #   truncateStringVec(paste0(prefix, combined_names), 88)
       # },
-      nominal_capacity = mean(nominal_capacity),
+      nominal_capacity = mean(nominal_capacity), # beaucoup de paramètres
+      # il faudrait généraliser la fonction en distinguant la propriété sur laquelle on clusterize
+      #(nominal capacity), les units qu'on somme, et les autres qu'on mean.
       nb_units = sum(nb_units),
       min_stable_power = mean(min_stable_power),
       co2_emission = mean(co2_emission),
@@ -116,6 +122,7 @@ clustering_test <- thermal_aggregated_tbl %>%
 
 # View the result
 # print(clustering_test, n = 200)
+
 saveRDS(object = clustering_test, file = ".\\src\\objects\\thermal_20clustering_tbl.rds")
 clustering_test <- readRDS(".\\src\\objects\\thermal_20clustering_tbl.rds")
 print(clustering_test, n = 200)

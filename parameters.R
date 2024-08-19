@@ -107,6 +107,12 @@ CLUSTER_NAME_LIMIT = 75
 # les k-médoides et les elbow method" ça serait une diiiiiinguerie comment ce serait intéressant
 # parce que mine de rien il s'en passe des trucs sous le capot mdr
 AGGREGATE_BATTERIES = TRUE
+# notons que ceci influe implémentation à l'échelle de importBatteries
+# c'est plus une question de "model_units_seperately" en fait vu qu'on peut
+# clusteriser à balle avec un algo de k-means, mais ensuite
+# modéliser les batteries aux 14 units comme séparées si on veut
+# c'est donc pas le même mot à employer que ce qu'on a fait pour le thermique imo
+
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja
 ## mais pas dans PLEXOS, et ensuite de voir si on retrouve les CSP dans le cas du solaire.

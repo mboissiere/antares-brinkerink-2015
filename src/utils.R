@@ -78,7 +78,8 @@ log_message <- function(message, log_file, printer = TRUE) {
 
 
 # Define function to get the prefix of a generator name
-getPrefix <- function(generator_name) {
+getPrefix <- function(generator_name) { # can also be a battery name, or any deane name,
+  # silent variable needs a rename
   prefix <- substring(generator_name, 1, 8)
   return(prefix)
 }
