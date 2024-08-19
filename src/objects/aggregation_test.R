@@ -146,8 +146,10 @@ print(clustering_test, n = 200)
 # de 7532 (aggregation v2 !) à 5,531.
 # Un test du 10-clustering sur tous les thermiques a fait passer le tableau
 # de 7697 lignes à 4053.
+# v2 : 7532 à 4041
 # Un test du 5-clustering sur tous les thermiques a fait passer le tableau
 # de 7697 lignes à 2675.
+# v2 : de 7532 à 2670
 # Pour donner une idée, il y a 3006 thermiques en Asie, et le run tourne bien.
 
 
