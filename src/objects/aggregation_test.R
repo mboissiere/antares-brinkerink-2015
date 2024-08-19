@@ -151,6 +151,9 @@ print(clustering_test, n = 200)
 # de 7697 lignes à 2675.
 # v2 : de 7532 à 2670
 # Pour donner une idée, il y a 3006 thermiques en Asie, et le run tourne bien.
+# Et sous sa forme ultime, 1 thermique par type par région (1-clustering) :
+# on passe à 805.
+# et pour 15 clusters, on est à 4,897, juste en dessous de 5000.
 
 
 # Autre possible point de patch trouvé en faisant le 20-clustering :

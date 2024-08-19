@@ -159,8 +159,11 @@ if (GENERATE_HYDRO) {
 ################################################################################
 ################################# THERMAL IMPORT ###############################
 
+source(".\\src\\aggregateAndCluster.R")
+# à terme, il y aura un dossier de helperfunctions pour createstudy
+
 if (GENERATE_THERMAL) {
-  msg = "[MAIN] - Fetching thermal data...\n"
+  msg = "[MAIN] - Fetching thermal data..."
   logMain(msg)
   start_time <- Sys.time()
   
@@ -168,26 +171,28 @@ if (GENERATE_THERMAL) {
   source(importThermal_file)
   #print(generators_tbl)
   #print(THERMAL_TYPES)
-  # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
-  # #print(thermal_generators_tbl)
-  # thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
+  thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
+  #print(thermal_generators_tbl)
+  #print(thermal_generators_tbl)
+  thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
+  #print(thermal_generators_tbl)
   
   if (AGGREGATE_THERMAL) { # c'est hyper moche comme structure et provisoire mais ouais
-    thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-    if (CLUSTER_THERMAL == 10) {
-      thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_10clustering_tbl.rds")
-    } else if (CLUSTER_THERMAL == 5) {
-      thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_5clustering_tbl.rds")
-    }
-  } else {
-    thermal_generators_tbl <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
+    msg = "[MAIN] - Aggregating identical generators..."
+    logMain(msg)
+    thermal_generators_tbl <- aggregateEquivalentGenerators(thermal_generators_tbl)
+    #print(thermal_generators_tbl)
   }
-  
-  thermal_generators_tbl <- thermal_generators_tbl %>%
-    filter(node %in% NODES & cluster_type %in% THERMAL_TYPES)
-  # thermal_generators_tbl <- filterClusters(thermal_generators_tbl, THERMAL_TYPES)
-  # et le filter node in nodes ?? à force de tout vouloir court circuiter !!
-  
+  # Pour l'instant, si il y a clusters thermal mais pas aggregate thermal, il y a un bug, par construction
+  if (CLUSTER_THERMAL) {
+    # This log should be within the program instead of out here, in clusteringForGenerators
+    msg = paste0("[MAIN] - Running ", NB_CLUSTERS_THERMAL, "-clustering algorithm on generators...")
+    logMain(msg)
+    thermal_generators_tbl <- clusteringForGenerators(thermal_generators_tbl, NB_CLUSTERS_THERMAL)
+    msg = paste0("[MAIN] - Done running ", NB_CLUSTERS_THERMAL, "-clustering algorithm on generators!\n")
+    logMain(msg)
+    #print(thermal_generators_tbl)
+  }
   #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)
   
@@ -210,7 +215,13 @@ if (GENERATE_STORAGE) {
   # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
   # faudrait ptet que je fasse ça pour les batteries en vrai de vrai
   if (AGGREGATE_BATTERIES) {
+    msg = "[MAIN] - Aggregating identical batteries..."
+    logMain(msg)
+    batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
     addBatteriesToAntaresAggregated(batteries_tbl)
+    # those two functions shouldn't walk over each other. indeed addAggregated multiplies values by "unit"
+    # and aggregateEquivalent puts units to 1 and multiplies the properties directly, unless it detects copycats,
+    # in which case it increases the amount of units. things should be fine.
   } else {
     addBatteriesToAntares(batteries_tbl)
   }

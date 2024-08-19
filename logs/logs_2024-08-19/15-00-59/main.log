@@ -1,0 +1,40 @@
+INFO [2024-08-19 15:00:59] [MAIN] - Creating Deane_EU_Agg_new__2024_08_19_15_00_59 study...
+
+INFO [2024-08-19 15:00:59] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-08-19 15:00:59] [MAIN] - Adding nodes...
+
+INFO [2024-08-19 15:01:17] [MAIN] - Done adding nodes! (run time : 17.94s).
+
+INFO [2024-08-19 15:01:17] [MAIN] - Adding load data...
+
+INFO [2024-08-19 15:01:31] [MAIN] - Done adding load data! (run time : 13.96s).
+
+INFO [2024-08-19 15:01:31] [MAIN] - Fetching wind data...
+
+INFO [2024-08-19 15:01:40] [MAIN] - Done adding wind data! (run time : 8.51s).
+
+INFO [2024-08-19 15:01:40] [MAIN] - Fetching solar data...
+
+INFO [2024-08-19 15:01:49] [MAIN] - Done adding solar data! (run time : 9.14s).
+
+INFO [2024-08-19 15:01:49] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-19 15:03:38] [MAIN] - Done adding hydro!
+INFO [2024-08-19 15:03:39] [MAIN] - Fetching thermal data...
+INFO [2024-08-19 15:03:42] [MAIN] - Aggregating identical generators...
+INFO [2024-08-19 15:03:42] [MAIN] - Running 25-clustering algorithm on generators...
+INFO [2024-08-19 15:03:44] [MAIN] - Done running 25-clustering algorithm on generators!
+
+INFO [2024-08-19 15:09:38] [MAIN] - Done adding thermal data! (run time : 5.99min).
+
+INFO [2024-08-19 15:09:38] [MAIN] - Fetching battery data...
+
+INFO [2024-08-19 15:09:38] [MAIN] - Aggregating identical batteries...
+INFO [2024-08-19 15:13:34] [MAIN] - Done adding battery data! (run time : 3.94min).
+
+INFO [2024-08-19 15:13:34] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-19 15:14:04] [MAIN] - Done adding lines! (run time : 30.18s).
+
+INFO [2024-08-19 15:14:04] [MAIN] - Finished setting up Antares study! (run time : 13.09min).
+ 
+

@@ -228,7 +228,12 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) {
   return(summary %>% select(-node, -cluster_type, -combined_names))  
 }
 
-clusteringForGenerators <- function(aggregated_generators_tbl, max_clusters) {
+clusteringForGenerators <- function(thermal_aggregated_tbl, 
+                                    max_clusters
+                                    # nodes # useful when you only want a subset of nodes, which is common
+                                    # # in createStudy and testing...
+                                    # # wait, the problem was simply a discrepancy between argument name and variable used in program lmao
+                                    ) {
   # Apply clustering and summarization
   thermal_clusters_tbl <- thermal_aggregated_tbl %>%
     group_by(node, cluster_type) %>%
@@ -243,16 +248,16 @@ clusteringForGenerators <- function(aggregated_generators_tbl, max_clusters) {
 
 #############
 
-# # Test on generators
-# thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-# print("Thermal aggregated table :")
-# print(thermal_aggregated_tbl)
-# 
-# max_clusters = 25
-# thermal_clusters_tbl <- clusteringForGenerators(thermal_aggregated_tbl, max_clusters)
-# print(paste0(max_clusters,"-clustering for dataset:"))
-# print(thermal_clusters_tbl, n = 100)
-# # saveRDS(object = thermal_clusters_tbl, file = ".\\src\\objects\\thermal_5clustering_tbl.rds")
+# Test on generators
+thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+print("Thermal aggregated table :")
+print(thermal_aggregated_tbl)
+
+max_clusters = 15
+thermal_clusters_tbl <- clusteringForGenerators(thermal_aggregated_tbl, max_clusters)
+print(paste0(max_clusters,"-clustering for dataset:"))
+print(thermal_clusters_tbl, n = 100)
+saveRDS(object = thermal_clusters_tbl, file = paste0(".\\src\\objects\\thermal_",max_clusters,"-clustering_tbl.rds"))
 
 # # View the result
 # # print(clustering_test, n = 200)

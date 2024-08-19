@@ -34,11 +34,11 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
 
-NODES = asia_nodes_lst
+NODES = all_deane_nodes_lst
 # NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_AS_5-clusters" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_World_Agg_new" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
@@ -48,7 +48,14 @@ study_basename <- "Deane_AS_5-clusters" # pourrait être corrélé à import_stu
 # ça peut être de beaux jeux de données / documentation
 # (tout en gardant en tête tout de même qu'il faut alors préciser specs de la machine...)
 
-UNIT_COMMITMENT_MODE = "fast" # "fast" or "accurate"
+UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
+# it could be intelligent to include unit commitment mode in the
+# simulation name, when running automatic simulation launcher.
+
+# notons aussi que c'est débile de le print au début de la création d'étude
+# comme on le fait actuellement, puisque ça n'intervient que dans la partie
+# simulation
+
 
 
 # En vrai, si on fait tourner sur VM, ça peut tout à fait être accurate.
@@ -94,7 +101,8 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # c'est géré par variable import csp qui lance le programme ou pas
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
-CLUSTER_THERMAL = 5
+CLUSTER_THERMAL = TRUE
+NB_CLUSTERS_THERMAL = 15
 CLUSTER_NAME_LIMIT = 75
 #faudrait un true ou false
 # CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
