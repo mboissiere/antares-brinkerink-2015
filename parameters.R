@@ -103,7 +103,7 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
 NB_CLUSTERS_THERMAL = 15
-CLUSTER_NAME_LIMIT = 75
+CLUSTER_NAME_LIMIT = 50
 #faudrait un true ou false
 # CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
 # ET PAS DU TOUT MODULABLE AUTREMENT QUE 10 ET 5 meme si ce serait facile mais en attendant

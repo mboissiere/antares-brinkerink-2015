@@ -14,7 +14,7 @@ source("parameters.R")
 
 aggregateEquivalentGenerators <- function(generators_tbl) {
   aggregated_generators_tbl <- generators_tbl %>%
-    group_by(node, cluster_type, nominal_capacity, min_stable_power) %>%
+    group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
   summarize(
     total_units = sum(nb_units),
     combined_names = paste0(
@@ -26,15 +26,17 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     ),
     avg_start_cost = mean(start_cost),
     avg_variable_cost = mean(variable_cost),
-    avg_co2_emission = mean(co2_emission), 
+    # avg_co2_emission = mean(co2_emission), 
     .groups = 'drop'
   ) 
+  
   aggregated_generators_tbl <- aggregated_generators_tbl %>%
     mutate(generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
            nb_units = total_units,
            start_cost = avg_start_cost,
            variable_cost = avg_variable_cost,
-           co2_emission = avg_co2_emission
+           # co2_emission = avg_co2_emission
+           # co2_emission dépend vrmt seulement du fuel group pour le coup, un select avant devrait suffir
     ) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
   
@@ -175,7 +177,12 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
 
 ######################
 
-cluster_and_summarize_generators <- function(df, k, node, cluster_type) {
+cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je pourrais ici, si je veux,
+  # filtrer tout ce sur quoi je fais pas du clustering (donc co2_emission...)
+  # pour le remettre plus tard
+  # attention pas min_stable_power car min_stable_power peut changer avec la capacity.
+  # min_stable_factor en revanche si on l'avait encore, oui.
+  
   # print("df:")
   # print(df)
   # Check if the number of rows is greater than k
