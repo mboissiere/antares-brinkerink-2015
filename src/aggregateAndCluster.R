@@ -235,6 +235,14 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je p
   return(summary %>% select(-node, -cluster_type, -combined_names))  
 }
 
+# Possible truc que je pourrais faire pour la transparence du clustering tout ça :
+# seulement crop le nom au moment de le mettre sur generator_name (comme je fais)
+# mais qd meme sauver le combined names qqpart genre dans un log type
+# created XXX_YYY_ZZZ cluster !
+# que ça reste dans la mémoire même si y en a dix mille (ce qui ne sera pas le cas
+# de l'étude antares, où l'on pourrait même raccourcir les noms si on voulait)
+# et ce serait ptet mm plus transparent que de rogner direct des noms
+
 clusteringForGenerators <- function(thermal_aggregated_tbl, 
                                     max_clusters
                                     # nodes # useful when you only want a subset of nodes, which is common
@@ -254,17 +262,17 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
 }
 
 #############
-
-# Test on generators
-thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-print("Thermal aggregated table :")
-print(thermal_aggregated_tbl)
-
-max_clusters = 15
-thermal_clusters_tbl <- clusteringForGenerators(thermal_aggregated_tbl, max_clusters)
-print(paste0(max_clusters,"-clustering for dataset:"))
-print(thermal_clusters_tbl, n = 100)
-saveRDS(object = thermal_clusters_tbl, file = paste0(".\\src\\objects\\thermal_",max_clusters,"-clustering_tbl.rds"))
+# 
+# # Test on generators
+# thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
+# print("Thermal aggregated table :")
+# print(thermal_aggregated_tbl)
+# 
+# max_clusters = 15
+# thermal_clusters_tbl <- clusteringForGenerators(thermal_aggregated_tbl, max_clusters)
+# print(paste0(max_clusters,"-clustering for dataset:"))
+# print(thermal_clusters_tbl, n = 100)
+# saveRDS(object = thermal_clusters_tbl, file = paste0(".\\src\\objects\\thermal_",max_clusters,"-clustering_tbl.rds"))
 
 # # View the result
 # # print(clustering_test, n = 200)

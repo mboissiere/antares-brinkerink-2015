@@ -103,7 +103,7 @@ p <- ggplot(fra_tbl_long, aes(x = reorder(time, -LOAD))) +
   # Graphique empilé
   geom_bar(aes(y = production_mwh, fill = energy_source), stat = "identity") +
   # Ajouter la courbe de consommation totale
-  geom_line(aes(y = LOAD, group = 1), color = "black", size = 0.5) +
+  geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
   scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",

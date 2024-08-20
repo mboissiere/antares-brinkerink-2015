@@ -2,19 +2,19 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = TRUE
-IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17"
+CREATE_STUDY = FALSE
+IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION = FALSE
-IMPORT_SIMULATION_NAME = -1 # for latest
+IMPORT_SIMULATION_NAME = "20240819-2115eco-World_thermal15clustering_accurateUCM" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
-PLOT_TIMESTEP = "daily"
+READ_RESULTS = TRUE
+PLOT_TIMESTEP = "daily" # not sure it's well integrated atm
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
 #   réfléchir à quelque chose pour faciliter la sauvegarde de captures d'écran
