@@ -70,6 +70,18 @@ initializeOutputFolder <- function(nodes) {
       dir.create(continent_dir)
     }
     
+    # Possible piste d'amélioration :
+    # faire une arborisation [1] world avec dedans des png des graphes par continent à la deane
+    # puis [6] continents avec dossiers africa, asia etc et ce que j'ai l'habitude de faire 
+    # (en fait des graphes de chaque pays)
+    # ET ! dans chaque pays en fait il y a des régions finalement.
+    # dans les graphes pays, prendre en fait les districts as-chn na-usa etc au lieu des régions
+    # mais au sein de chaque continent en fait faire des dossiers genre
+    # [34] as-chn regions, [5] as-ind regions, [24] na-usa regions, etc
+    # et hop architecture monde -> continent -> pays -> région au fur et à mesure qu'on clique
+    # (avec à chaque fois des dossiers prodStack, prodMonotone, etc)
+    # (j'ai tellement envie de faire stack des exports genre dans quels pays ça part etc...)
+    
     prod_stack_dir <- file.path(continent_dir, "productionStack")
       if (!dir.exists(prod_stack_dir)) {
         dir.create(prod_stack_dir)
@@ -103,6 +115,7 @@ variables_of_interest <- c("SOLAR", "WIND",
                            "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
                            "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
                            "Other3_injection", "Other3_withdrawal", "Other3_level") # Rappel : CAE
+# Pourrait être une variable globale vu comment elle pop souvent tbh
 
 getAntaresData <- function(nodes, timestep) {
   areas = getAreas(nodes)
@@ -258,7 +271,7 @@ sources <- c("NUCLEAR", "WIND", "SOLAR", "MISC. DTG", "H. STOR",
 sources_new <- c("NUCLEAR", "WIND", "SOLAR", "GEOTHERMAL", "HYDRO",
                  "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
                  "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
-                 "IMPORTS", "DEFAILLANCE")
+                 "IMPORTS", "UNSUPPLIED")
 
 library(dplyr)
 library(tidyr)
@@ -298,7 +311,7 @@ saveCountryProductionMonotones <- function(nodes,
           `THERMAL STOR` = `Other1_withdrawal`,
           `HYDROGEN STOR` = `Other2_withdrawal`,
           `COMPRESSED AIR STOR` = `Other3_withdrawal`,
-          DEFAILLANCE = `UNSP. ENRG`
+          UNSUPPLIED = `UNSP. ENRG`
         )
       
       area_tbl_long <- area_tbl_succint %>%
@@ -316,8 +329,8 @@ saveCountryProductionMonotones <- function(nodes,
         scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                      "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                      "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
-                                     "IMPORTS" = "grey", "DEFAILLANCE" = "grey25")) +
-        labs(x = "Load (in reverse order)", y = "Production", fill = paste(country, "energy mix")) +
+                                     "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
+        labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(country, "energy mix")) +
         theme_minimal() +
         theme(
           legend.position = "right",
@@ -358,18 +371,19 @@ saveCountryProductionMonotones <- function(nodes,
 # le passage par ggplot2 est quand même assez long en temps de calcul, rien à voir
 # par rapport aux stacks de production faits sur AntaresViz...
 # (10s pour un stack vs 3 min pour une monotone (qui s'est mm pas sauvegardée))
+# update : plutôt 45s en vrai, ça va un peu mieux. et la sauvegarde c'était une question de répertoire.
 # et ça peut aussi faciliter le travail si les districts sont implémentées
 
 ################################################################################
 
-nodes = all_deane_nodes_lst
-output_dir <- initializeOutputFolder(nodes)
-saveCountryProductionStacks(nodes,
+#nodes = all_deane_nodes_lst
+output_dir <- initializeOutputFolder(NODES)
+saveCountryProductionStacks(NODES,
                             output_dir#,
                             #"productionStackWithBatteryContributions",
                             #"daily"
                             )
-saveCountryProductionMonotones(nodes,
+saveCountryProductionMonotones(NODES,
                                output_dir,
                                "hourly"#,
                                #"hourly"

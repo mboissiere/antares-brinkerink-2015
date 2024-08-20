@@ -1,0 +1,48 @@
+INFO [2024-08-20 15:27:18] [MAIN] - Creating Deane_SA_districts_test__2024_08_20_15_27_17 study...
+
+INFO [2024-08-20 15:27:18] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-08-20 15:27:18] [MAIN] - Adding nodes...
+
+INFO [2024-08-20 15:27:26] [MAIN] - Done adding nodes! (run time : 8.33s).
+
+INFO [2024-08-20 15:27:26] [MAIN] - Adding districts...
+
+INFO [2024-08-20 15:27:28] [MAIN] - Done adding districts! (run time : 1.64s).
+
+INFO [2024-08-20 15:27:28] [MAIN] - Adding load data...
+
+INFO [2024-08-20 15:27:33] [MAIN] - Done adding load data! (run time : 5.49s).
+
+INFO [2024-08-20 15:27:33] [MAIN] - Fetching wind data...
+
+INFO [2024-08-20 15:27:36] [MAIN] - Done adding wind data! (run time : 2.15s).
+
+INFO [2024-08-20 15:27:36] [MAIN] - Fetching solar data...
+
+INFO [2024-08-20 15:27:38] [MAIN] - Done adding solar data! (run time : 1.98s).
+
+INFO [2024-08-20 15:27:38] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-20 15:28:31] [MAIN] - Done adding hydro!
+INFO [2024-08-20 15:28:31] [MAIN] - Fetching thermal data...
+INFO [2024-08-20 15:28:35] [MAIN] - Aggregating identical generators...
+INFO [2024-08-20 15:28:35] [MAIN] - Running 15-clustering algorithm on generators...
+INFO [2024-08-20 15:28:36] [MAIN] - Done running 15-clustering algorithm on generators!
+
+INFO [2024-08-20 15:30:14] [MAIN] - Done adding thermal data! (run time : 1.72min).
+
+INFO [2024-08-20 15:30:14] [MAIN] - Fetching battery data...
+
+INFO [2024-08-20 15:30:14] [MAIN] - Aggregating identical batteries...
+INFO [2024-08-20 15:30:17] [MAIN] - Done adding battery data! (run time : 0.04min).
+
+INFO [2024-08-20 15:30:17] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-20 15:30:23] [MAIN] - Done adding lines! (run time : 6.41s).
+
+INFO [2024-08-20 15:30:23] [MAIN] - Finished setting up Antares study! (run time : 3.09min).
+ 
+
+INFO [2024-08-20 15:30:23] [MAIN] - Starting World_15thermalClusters_accurateUCM_districtsTest__2024_08_20_15_30_23 simulation...
+INFO [2024-08-20 15:30:34] [MAIN] - Antares simulation finished! (run time : 0.17min).
+ 
+

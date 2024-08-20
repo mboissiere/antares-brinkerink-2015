@@ -22,9 +22,14 @@ if (!CREATE_STUDY) {
 # la lecture sur Antares Web est inintéressante au possible, c'est des tableurs
 # donc juste prendre le machin et le AntaresVizer
 
+source("parameters.R")
 
+if (INCLUDE_DATE_IN_SIMULATION) {
+  simulation_name <- generateName(LAUNCH_SIMULATION_NAME)
+} else {
+  simulation_name <- LAUNCH_SIMULATION_NAME
+}
 
-simulation_name <- generateName("simulation")
 msg = paste("[MAIN] - Starting", simulation_name, "simulation...")
 logMain(msg)
 simulation_start_time <- Sys.time()

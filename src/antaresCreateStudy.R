@@ -34,11 +34,28 @@ msg = "[MAIN] - Adding nodes...\n"
 logMain(msg)
 start_time <- Sys.time()
 
+# C'est pas ici qu'on devrait importer addNodes ? Bon ok
 addNodesToAntares(NODES, ADD_VOLL)
 
 end_time <- Sys.time()
 duration <- round(difftime(end_time, start_time, units = "secs"), 2)
 msg = paste0("[MAIN] - Done adding nodes! (run time : ", duration,"s).\n")
+logMain(msg)
+
+################################################################################
+############################### DISTRICT CREATION ##############################
+
+msg = "[MAIN] - Adding districts...\n"
+logMain(msg)
+start_time <- Sys.time()
+
+source(".\\src\\data\\createDistricts.R")
+createDistrictsFromContinents(NODES)
+createDistrictsFromRegionalNodes(NODES)
+
+end_time <- Sys.time()
+duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+msg = paste0("[MAIN] - Done adding districts! (run time : ", duration,"s).\n")
 logMain(msg)
 
 ################################################################################

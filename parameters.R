@@ -2,14 +2,21 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-CREATE_STUDY = FALSE
+NODES = south_america_nodes_lst
+# NODES = "EU-DEU"
+
+# Nom servant de base pour la classification de l'étude
+study_basename <- "Deane_SA" # pourrait être corrélé à import_study_name en vrai
+CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION_NAME = "15thmClu_accUCM_districtsTest"
+INCLUDE_DATE_IN_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = "20240819-2115eco-World_thermal15clustering_accurateUCM" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
@@ -33,12 +40,6 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
-
-NODES = all_deane_nodes_lst
-# NODES = "EU-DEU"
-
-# Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_World_Agg_new" # pourrait être corrélé à import_study_name en vrai
 
 # Très possible que next step soit de gérer l'aggrégation. 
 # Faire tous les thermiques et tous les batteries, sur un continent, ça risque de...
@@ -94,6 +95,15 @@ GENERATE_HYDRO = TRUE
 GENERATE_STORAGE = TRUE
 # i should really say batteries
 # bc storage will be done for csp independantly
+
+# autre subtilité : on pourrait vouloir antaresediter une simulation existante...
+# par exemple là j'ai un big deane world mais je pourrais vouloir changer un truc,
+# comme par exemple ajouter des districts...
+# peut-être qu'il faudrait plutôt avoir antaresUpdateStudy ?
+# après tout beaucoup de fonctions ont des arguments overwrite...
+# peut-être qu'une districtisation au sein de readResults, ça suffirait pour l'instant...
+
+GENERATE_DISTRICTS = TRUE
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
                   "Other", "Other 2", "Other 3", "Other 4") #, "Other 4" is actually useless but isok
 # Nota bene : comme je filoute et met directement (provisoirement) "Other4" ici
