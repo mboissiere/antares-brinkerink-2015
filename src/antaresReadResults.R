@@ -87,8 +87,8 @@ initializeOutputFolder <- function(nodes) {
 
 ################################################################################
 
-WIDTH = 1920
-HEIGHT = 1080
+HEIGHT = 2*1080
+WIDTH = 2*HEIGHT
 TIMESTEPS = c("hourly", "daily", "weekly", "monthly", "annual")
 
 variables_of_interest <- c("SOLAR", "WIND",
@@ -107,7 +107,7 @@ variables_of_interest <- c("SOLAR", "WIND",
 getAntaresData <- function(nodes, timestep) {
   areas = getAreas(nodes)
   antares_data <- readAntares(areas = areas,
-                              mcYears = "all",
+                              mcYears = NULL,#"all", # let's see if maybe it's better at averages
                               select = variables_of_interest,
                               timeStep = timestep
   )
@@ -185,8 +185,9 @@ saveCountryProductionStacks <- function(nodes,
       logFull(msg)
       png_path = file.path(prod_stack_dir, paste0(country, "_", timestep, ".png"))
       savePlotAsPng(stack_plot, file = png_path,
-                    width = 3*WIDTH,
-                    height = 2*HEIGHT)
+                    width = WIDTH, #3*WIDTH,
+                    height = HEIGHT # 2*HEIGHT)
+                    )
       msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
       logFull(msg)
     }
@@ -251,13 +252,13 @@ width_pixels = 2*height_pixels
 sources <- c("NUCLEAR", "WIND", "SOLAR", "MISC. DTG", "H. STOR",
                     "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
                     "PSP_closed_withdrawal", "Battery_withdrawal", "Other1_withdrawal",
-                    "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal",
-                    "BALANCE")
+                    "Other2_withdrawal", "Other3_withdrawal",
+                    "BALANCE", "UNSP. ENRG")
 
 sources_new <- c("NUCLEAR", "WIND", "SOLAR", "GEOTHERMAL", "HYDRO",
                  "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
                  "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
-                 "IMPORTS")
+                 "IMPORTS", "DEFAILLANCE")
 
 library(dplyr)
 library(tidyr)
@@ -270,68 +271,81 @@ saveCountryProductionMonotones <- function(nodes,
   hourly_prod_tbl <- as_tibble(hourly_prod_data)
   
   areas = getAreas(nodes)
-  for (country in areas) {
-    area_tbl <- hourly_prod_tbl %>%
-      filter(area == country)
-    
-    area_tbl_sorted <- area_tbl[order(-area_tbl$LOAD), ] %>%
-      select(timeId, time, LOAD, sources)
-    
-    area_tbl_succint <- area_tbl_sorted %>%
-      mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-             IMPORTS = -BALANCE) %>%
-      select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
-      rename(
-        GEOTHERMAL = `MISC. DTG`,
-        HYDRO = `H. STOR`,
-        `BIO AND WASTE` = `MIX. FUEL`,
-        `PSP STOR` = `PSP_closed_withdrawal`,
-        `CHEMICAL STOR` = `Battery_withdrawal`,
-        `THERMAL STOR` = `Other1_withdrawal`,
-        `HYDROGEN STOR` = `Other2_withdrawal`,
-        `COMPRESSED AIR STOR` = `Other3_withdrawal`
-      )
-    
-    area_tbl_long <- area_tbl_succint %>%
-      select(time, LOAD, sources_new) %>%
-      pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production_mwh")
-    
-    area_tbl_long$energy_source <- factor(area_tbl_long$energy_source, levels = rev(sources_new))
-    
-    p <- ggplot(area_tbl_long, aes(x = reorder(time, -LOAD))) +
-      geom_bar(aes(y = production_mwh, fill = energy_source), stat = "identity") +
-      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
-      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
-                                   "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
-                                   "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
-                                   "IMPORTS" = "grey")) +
-      labs(x = "Load (in reverse order)", y = "Production", fill = paste(country, "energy mix")) +
-      theme_minimal() +
-      theme(
-        legend.position = "right",
-        legend.text = element_text(size = 8), # Legend text size
-        legend.title = element_text(size = 10), # Legend title size
-        legend.key.size = unit(0.4, "cm"), # Size of the legend keys
-        legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
-        legend.margin = margin(0, 0, 0, 0), # Margin around the legend
-        legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
-        
-        axis.title.x = element_text(size = 10), # X-axis title size
-        axis.title.y = element_text(size = 10), # Y-axis title size
-        
-        axis.text.x = element_text(size = 8), # X-axis labels size
-        axis.text.y = element_text(size = 8)  # Y-axis labels size
-      )
-    
-    msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", country, "node...")
-    logFull(msg)
-    plot_path <- file.path(output_dir, "country_graphs", paste0(country,"_monotone.png"))
-    ggsave(filename = plot_path, plot = p, 
-           width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
-           dpi = resolution_dpi)
-    msg = paste("[OUTPUT] - The", timestep, "production monotone for", country, "has been saved!")
-    logFull(msg)
+  
+  nodes_tbl <- getNodesTable(nodes)
+  continents <- nodes_tbl$continent %>% unique()
+  for (cnt in continents) {
+    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
+    nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
+    continent_dir <- file.path(output_dir, "country_graphs", cnt)
+    for (country in nodes_in_continent) {
+      area_tbl <- hourly_prod_tbl %>%
+        filter(area == country)
+      
+      area_tbl_sorted <- area_tbl[order(-area_tbl$LOAD), ] %>%
+        select(timeId, time, LOAD, sources)
+      
+      area_tbl_succint <- area_tbl_sorted %>%
+        mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+               IMPORTS = -BALANCE) %>%
+        select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+        rename(
+          GEOTHERMAL = `MISC. DTG`,
+          HYDRO = `H. STOR`,
+          `BIO AND WASTE` = `MIX. FUEL`,
+          `PSP STOR` = `PSP_closed_withdrawal`,
+          `CHEMICAL STOR` = `Battery_withdrawal`,
+          `THERMAL STOR` = `Other1_withdrawal`,
+          `HYDROGEN STOR` = `Other2_withdrawal`,
+          `COMPRESSED AIR STOR` = `Other3_withdrawal`,
+          DEFAILLANCE = `UNSP. ENRG`
+        )
+      
+      area_tbl_long <- area_tbl_succint %>%
+        select(time, LOAD, sources_new) %>%
+        pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production_mwh")
+      
+      area_tbl_long$energy_source <- factor(area_tbl_long$energy_source, levels = rev(sources_new))
+      
+      # La production est mille fois trop grande, c'est peut-être un problème des mc years...
+      
+      
+      p <- ggplot(area_tbl_long, aes(x = reorder(time, -LOAD))) +
+        geom_bar(aes(y = production_mwh, fill = energy_source), stat = "identity") +
+        geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+        scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+                                     "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+                                     "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
+                                     "IMPORTS" = "grey", "DEFAILLANCE" = "grey25")) +
+        labs(x = "Load (in reverse order)", y = "Production", fill = paste(country, "energy mix")) +
+        theme_minimal() +
+        theme(
+          legend.position = "right",
+          legend.text = element_text(size = 8), # Legend text size
+          legend.title = element_text(size = 10), # Legend title size
+          legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+          legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+          legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+          legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+          
+          axis.title.x = element_text(size = 10), # X-axis title size
+          axis.title.y = element_text(size = 10), # Y-axis title size
+          
+          axis.text.x = element_text(size = 8), # X-axis labels size
+          axis.text.y = element_text(size = 8)  # Y-axis labels size
+        )
+      
+      msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", country, "node...")
+      logFull(msg)
+      plot_path <- file.path(continent_dir, "productionMonotone", paste0(country,"_monotone.png"))
+      ggsave(filename = plot_path, plot = p, 
+             width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+             dpi = resolution_dpi)
+      msg = paste("[OUTPUT] - The", timestep, "production monotone for", country, "has been saved!")
+      logFull(msg)
+    }
   }
+  # faudrait ajouter la défaillance aussi...
 }
 
 # Next step : continental graphs
@@ -339,6 +353,12 @@ saveCountryProductionMonotones <- function(nodes,
 # the easiest, honestly
 # not only districts for disaggregated countries (USA, China)
 # but also for continents
+
+# Voir en tout cas si y a pas moyen d'avoir des monotones sur AntaresViz.
+# le passage par ggplot2 est quand même assez long en temps de calcul, rien à voir
+# par rapport aux stacks de production faits sur AntaresViz...
+# (10s pour un stack vs 3 min pour une monotone (qui s'est mm pas sauvegardée))
+# et ça peut aussi faciliter le travail si les districts sont implémentées
 
 ################################################################################
 
@@ -350,6 +370,7 @@ saveCountryProductionStacks(nodes,
                             #"daily"
                             )
 saveCountryProductionMonotones(nodes,
-                               output_dir#,
+                               output_dir,
+                               "hourly"#,
                                #"hourly"
                                )
