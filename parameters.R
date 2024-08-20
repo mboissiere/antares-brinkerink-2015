@@ -2,12 +2,11 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-NODES = south_america_nodes_lst
-# NODES = "EU-DEU"
 
 # Nom servant de base pour la classification de l'étude
 study_basename <- "Deane_SA" # pourrait être corrélé à import_study_name en vrai
-CREATE_STUDY = TRUE
+# et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
+CREATE_STUDY = FALSE
 IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
@@ -16,12 +15,12 @@ IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION_NAME = "15thmClu_accUCM_districtsTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = TRUE
+LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = "20240819-2115eco-World_thermal15clustering_accurateUCM" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
 READ_RESULTS = TRUE
-PLOT_TIMESTEP = "daily" # not sure it's well integrated atm
+PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
 #   réfléchir à quelque chose pour faciliter la sauvegarde de captures d'écran
@@ -37,6 +36,10 @@ asia_nodes_lst <- readRDS(".\\src\\objects\\asia_nodes_lst.rds")
 north_america_nodes_lst <- readRDS(".\\src\\objects\\north_america_nodes_lst.rds")
 south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
+
+NODES = all_deane_nodes_lst
+# NODES = "EU-DEU"
+
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...

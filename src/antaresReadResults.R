@@ -379,12 +379,12 @@ saveCountryProductionMonotones <- function(nodes,
 #nodes = all_deane_nodes_lst
 output_dir <- initializeOutputFolder(NODES)
 saveCountryProductionStacks(NODES,
-                            output_dir#,
-                            #"productionStackWithBatteryContributions",
-                            #"daily"
+                            output_dir,
+                            "productionStackWithBatteryContributions",
+                            "hourly"
                             )
-saveCountryProductionMonotones(NODES,
-                               output_dir,
-                               "hourly"#,
-                               #"hourly"
-                               )
+# saveCountryProductionMonotones(NODES,
+#                                output_dir,
+#                                "hourly"#,
+#                                #"hourly"
+#                                )
