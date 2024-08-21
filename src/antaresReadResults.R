@@ -345,6 +345,8 @@ saveProductionStacks <- function(output_dir,
                                  timestep = "daily",
                                  stack_palette = "productionStackWithBatteryContributions"
 ) {
+  # on a pas encore de global district...... mais ça a l'air fascinant en vrai... asap !
+  # saveGlobalProductionStack(output_dir, timestep, stack_palette)
   saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ?
   #avec un par défaut ?
   saveNationalProductionStacks(output_dir, timestep, stack_palette)
@@ -360,6 +362,45 @@ saveProductionStacks <- function(output_dir,
 }
 
 ################################################################################
+
+saveGlobalProductionStack <- function(output_dir,
+                                            timestep = "daily",
+                                            stack_palette = "productionStackWithBatteryContributions"
+) {
+  msg = "[MAIN] - Preparing to save global production stack..."
+  logMain(msg)
+  
+  global_data <- getGlobalData(timestep)
+  
+  global_dir <- file.path(output_dir, "1 - Global-level graphs")
+  
+  prod_stack_dir <- file.path(global_dir, "Production stacks")
+  
+  
+  global_unit = "TWh"
+  # peut etre qu'un truc ce serait genre
+  # faire une fonction auxilliaire "saveproductionstack" avec en argument bah juste le node et le data
+  # et après hop la diff entre global/regional c'est jsute ce qu'on met dans le For
+  stack_plot <- prodStack(
+      x = global_data,
+      stack = stack_palette,
+      areas = "world",
+      dateRange = c(start_date, end_date),
+      timeStep = timestep,
+      main = paste(timestep, "production stack for the world in 2015", global_unit),
+      unit = continental_unit,
+      interactive = FALSE
+    )
+    png_path = file.path(prod_stack_dir, paste0(cont, "_", timestep, ".png"))
+    savePlotAsPng(stack_plot, file = png_path,
+                  width = WIDTH, #3*WIDTH,
+                  height = HEIGHT # 2*HEIGHT)
+    )
+  
+  msg = "[MAIN] - Done saving global production stack!" # et l'art du timer, il se perd...
+  logMain(msg)
+}
+
 
 saveContinentalProductionStacks <- function(output_dir,
                                  timestep = "daily",
