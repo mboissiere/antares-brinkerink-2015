@@ -268,7 +268,7 @@ getContinentalData <- function(timestep) {
 # un histogramme qui compare PLUSIEURS continents entre eux, c'est AUSSI un graphe continental.
 
 
-countries <- geography_lower_tbl$country %>% unique() #ça peut pas être global ça ?
+COUNTRIES <- geography_lower_tbl$country %>% unique() #ça peut pas être global ça ?
 # print(countries)
 # > getAreas(countries)
 # [1] "sa-arg"    "sa-bol"    "sa-bra-cn" "sa-bra-cw" "sa-bra-j1" "sa-bra-j2" "sa-bra-j3" "sa-bra-ne"
@@ -283,9 +283,9 @@ countries <- geography_lower_tbl$country %>% unique() #ça peut pas être global
 
 getNationalData <- function(timestep) {
   timestep = "daily"
-  country_areas = getAreas(select = countries,
+  country_areas = getAreas(select = COUNTRIES, #lowercase y avait un pb, verifions que si ca se trouve il FAUT que ce soit global
                            regexpSelect = FALSE)
-  country_districts = getDistricts(select = countries,
+  country_districts = getDistricts(select = COUNTRIES,
                                    regexpSelect = FALSE)
   
   # print(continental_districts)
@@ -319,6 +319,7 @@ regions_tbl <- geography_lower_tbl %>%
 # print(regions_tbl)
 
 regions <- regions_tbl$region %>% unique() #ça peut pas être global ça ?
+REGIONS <- regions
 # print(regions)
 
 getRegionalData <- function(timestep) {
@@ -344,11 +345,18 @@ saveProductionStacks <- function(output_dir,
                                  timestep = "daily",
                                  stack_palette = "productionStackWithBatteryContributions"
 ) {
-  saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ? 
+  saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ?
   #avec un par défaut ?
   saveNationalProductionStacks(output_dir, timestep, stack_palette)
+  saveRegionalProductionStacks(output_dir, timestep, stack_palette)
   
   # Idée : MWh pour pays, GWh pour continents, TWh pour monde
+  # OU en vrai de vrai
+  # MWh pour région, GWh pour pays, TWh pour continent, PWh pour monde
+  # ptdr les PETA WATT HEURE unité de zinzin
+  # (on va dire kTWh hein)
+  
+  # Wow y a pas de solaire au Brésil genre ??
 }
 
 ################################################################################
@@ -412,14 +420,30 @@ saveNationalProductionStacks <- function(output_dir,
   national_data <- getNationalData(timestep)
   
   # Il m'a fait que l'amérique du nord, ch elou
-  print(as_tibble(national_data))
+  print(national_data)
   
   national_dir <- file.path(output_dir, "3 - National-level graphs")
   
   prod_stack_dir <- file.path(national_dir, "Production stacks")
   
-  countries <- getAreas(national_data$area %>% unique())
-  print(countries)
+  countries <- getAreas(select = COUNTRIES, regexpSelect = FALSE)
+  # on va faire plus simple...
+  districts <- getDistricts(select = COUNTRIES, regexpSelect = FALSE)
+  # districts <- getDistricts(select = national_data$district %>% unique(),
+  #                       regexpSelect = FALSE)
+  # les districts se font zucc genre usa et canada et brésil et c'est chelou
+  # print(countries)
+  # print(districts)
+  # ceci ne devrait pas marcher..
+  # [1] "na-cri" "na-cub" "na-dom" "na-gtm" "na-hnd" "na-jam" "na-mex" "na-nic" "na-pan" "na-slv" "na-tto" "sa-arg" "sa-bol" "sa-chl" "sa-col"
+  # [16] "sa-ecu" "sa-guf" "sa-guy" "sa-per" "sa-pry" "sa-ury" "sa-ven"
+  # [1] "na-can"        "na-usa"        "north america" "sa-bra"        "south america"
+  # bruh
+  # bon bah nsm
+  countries <- c(countries, districts)
+  countries <- sort(countries) # ce sera plus propre dans création de fichiers psk
+  # les pays régionalisés peuvent se retrouver en bas tsais
+  # print(countries)
   
   national_unit = "MWh"
   
@@ -450,6 +474,58 @@ saveNationalProductionStacks <- function(output_dir,
 }
 
 
+
+saveRegionalProductionStacks <- function(output_dir,
+                                            timestep = "daily",
+                                            stack_palette = "productionStackWithBatteryContributions"
+) {
+  msg = "[MAIN] - Preparing to save regional production stacks..."
+  logMain(msg)
+  
+  regional_data <- getRegionalData(timestep)
+  #print(regional_data)
+  
+  # # Il m'a fait que l'amérique du nord, ch elou
+  # print(as_tibble(continental_data))
+  
+  regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+  
+  prod_stack_dir <- file.path(regional_dir, "Production stacks")
+  
+  regions <- getAreas(select = REGIONS, regexpSelect = FALSE)
+  #print(regions)
+  
+  regional_unit = "MWh"
+  
+  for (regn in regions) {
+    stack_plot <- prodStack(
+      x = regional_data,
+      stack = stack_palette,
+      areas = regn,
+      dateRange = c(start_date, end_date),
+      timeStep = timestep,
+      main = paste(timestep, "production stack for", regn, "in 2015", regional_unit), # where tf parentheses
+      unit = regional_unit,
+      interactive = FALSE
+    )
+    msg = paste("[OUTPUT] - Saving", timestep, "production stack for", regn, "region...")
+    logFull(msg)
+    png_path = file.path(prod_stack_dir, paste0(regn, "_", timestep, ".png"))
+    savePlotAsPng(stack_plot, file = png_path,
+                  width = WIDTH, #3*WIDTH,
+                  height = HEIGHT # 2*HEIGHT)
+    )
+    msg = paste("[OUTPUT] -", timestep, "production stack for", regn, "has been saved!")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving regional production stacks!" # et l'art du timer, il se perd...
+  logMain(msg)
+}
+
+# Pretty good ! Messy, but good
+
+# Now, histograaaams !
 
 ###########################################################
 # saveProductionStacks <- function(output_dir,
