@@ -78,15 +78,32 @@ log_message <- function(message, log_file, printer = TRUE) {
 
 
 # Define function to get the prefix of a generator name
-getPrefix <- function(generator_name) { # can also be a battery name, or any deane name,
-  # silent variable needs a rename
-  prefix <- substring(generator_name, 1, 8)
+getPrefix <- function(deane_name) { # can also be a battery name, or any deane name,
+  # # Check if the fourth character is a hyphen (e.g. : CHN-HE_BIO_CAPACITY SCALER)
+  # if (substring(deane_name, 4, 4) == "-") {
+  #   # If there's a hyphen at the fourth position, extract the prefix up to the first underscore
+  #   prefix <- substring(deane_name, 1, 11)
+  # } else {
+  #   # Otherwise (e.g. CHN_GAS_MUDANJIANGGUOJ6673), extract the first 8 characters as the prefix
+  #   prefix <- substring(deane_name, 1, 8)
+  # }
+  
+  prefix <- substring(deane_name, 1, 8)
   return(prefix)
 }
 
 # Define function to remove the prefix from a generator name
-removePrefix <- function(generator_name) {
-  gen_no_prefix <- substring(generator_name, 9)
+removePrefix <- function(deane_name) {
+  # # Check if the fourth character is a hyphen
+  # if (substring(deane_name, 4, 4) == "-") {
+  #   # If there's a hyphen at the fourth position, remove the first 11 characters as the prefix
+  #   gen_no_prefix <- substring(deane_name, 12)
+  # } else {
+  #   # Otherwise, remove the first 8 characters as the prefix
+  #   gen_no_prefix <- substring(deane_name, 9)
+  # }
+  
+  gen_no_prefix <- substring(deane_name, 9)
   return(gen_no_prefix)
 }
 
@@ -123,11 +140,17 @@ removePrefix <- function(generator_name) {
 # 85 OK
 # 88 !! # 88 is maximum and 89 bugs
 
+removeWhitespaces <- function(name) {
+  name <- gsub(" ", "", name)
+  return(name)
+}
+
 # Define function to truncate string to a maximum length
 truncateString <- function(name, max_length = CLUSTER_NAME_LIMIT) {
+  name <- removeWhitespaces(name)
   if (nchar(name) > max_length) {
-    return(substring(name, 1, max_length))
-  }
+    name <- substring(name, 1, max_length)
+  } 
   return(name)
 }
 

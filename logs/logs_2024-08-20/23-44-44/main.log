@@ -1,0 +1,48 @@
+INFO [2024-08-20 23:44:44] [MAIN] - Creating Deane_World_with_Districts__2024_08_20_23_44_43 study...
+
+INFO [2024-08-20 23:44:44] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-08-20 23:44:45] [MAIN] - Adding nodes...
+
+INFO [2024-08-20 23:47:54] [MAIN] - Done adding nodes! (run time : 189.41s).
+
+INFO [2024-08-20 23:47:54] [MAIN] - Adding districts...
+
+INFO [2024-08-20 23:48:06] [MAIN] - Done adding districts! (run time : 11.94s).
+
+INFO [2024-08-20 23:48:06] [MAIN] - Adding load data...
+
+INFO [2024-08-20 23:51:42] [MAIN] - Done adding load data! (run time : 216.53s).
+
+INFO [2024-08-20 23:51:43] [MAIN] - Fetching wind data...
+
+INFO [2024-08-20 23:53:40] [MAIN] - Done adding wind data! (run time : 117.58s).
+
+INFO [2024-08-20 23:53:40] [MAIN] - Fetching solar data...
+
+INFO [2024-08-20 23:56:01] [MAIN] - Done adding solar data! (run time : 140.46s).
+
+INFO [2024-08-20 23:56:01] [MAIN] - Beginning hydro implementation...
+INFO [2024-08-21 00:08:12] [MAIN] - Done adding hydro!
+INFO [2024-08-21 00:08:12] [MAIN] - Fetching thermal data...
+INFO [2024-08-21 00:08:14] [MAIN] - Aggregating identical generators...
+INFO [2024-08-21 00:08:15] [MAIN] - Running 15-clustering algorithm on generators...
+INFO [2024-08-21 00:08:22] [MAIN] - Done running 15-clustering algorithm on generators!
+
+INFO [2024-08-21 01:26:48] [MAIN] - Done adding thermal data! (run time : 78.61min).
+
+INFO [2024-08-21 01:26:49] [MAIN] - Fetching battery data...
+
+INFO [2024-08-21 01:26:49] [MAIN] - Aggregating identical batteries...
+INFO [2024-08-21 01:52:42] [MAIN] - Done adding battery data! (run time : 25.89min).
+
+INFO [2024-08-21 01:52:42] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-21 01:58:34] [MAIN] - Done adding lines! (run time : 351.91s).
+
+INFO [2024-08-21 01:58:34] [MAIN] - Finished setting up Antares study! (run time : 133.84min).
+ 
+
+INFO [2024-08-21 01:58:34] [MAIN] - Starting 15thmClu_accUCM__2024_08_21_01_58_34 simulation...
+INFO [2024-08-21 02:02:51] [MAIN] - Antares simulation finished! (run time : 4.27min).
+ 
+

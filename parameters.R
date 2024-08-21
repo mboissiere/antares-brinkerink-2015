@@ -4,18 +4,18 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_SA" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_testWorld" # pourrait être corrélé à import_study_name en vrai
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION_NAME = "15thmClu_accUCM_districtsTest"
-INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION_NAME = "15thmClu_accUCM"
+INCLUDE_DATE_IN_SIMULATION = TRUE
+LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = "20240819-2115eco-World_thermal15clustering_accurateUCM" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
@@ -38,7 +38,17 @@ south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
 NODES = all_deane_nodes_lst
+# NB : toutes les fonctions qui ré-appellent "NODES" en misant dessus / sans faire
+# jsp une intersection avec le jeu de données ou quoi, sont pas si robustes.
+# en effet si on a envie de faire tourner deux sessions R en même temps, on peut overwrite
+# et causer des erreurs, eg un run NA suivi d'un run World et qui puise des noeuds qui existent pas,
+# ce qui lancent des erreurs
+# (peut-être que c'est pour ça que TiTAN faisait des .bats, faisaient des copies de variables,
+# et une fois que le run était lancé c'était pas touche ?)
+
 # NODES = "EU-DEU"
+# NODES = c(north_america_nodes_lst, south_america_nodes_lst)
+# print(NODES)
 
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
@@ -116,7 +126,7 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
 NB_CLUSTERS_THERMAL = 15
-CLUSTER_NAME_LIMIT = 50
+CLUSTER_NAME_LIMIT = 60
 #faudrait un true ou false
 # CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
 # ET PAS DU TOUT MODULABLE AUTREMENT QUE 10 ET 5 meme si ce serait facile mais en attendant

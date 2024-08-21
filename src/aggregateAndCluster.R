@@ -230,6 +230,10 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je p
       # for accessing node and cluster type within the nested df, and aggregate
       cluster_type = cluster_type
     )
+  # ERROR [2024-08-21 00:42:08] [WARN] - Failed to add DEU_OIL_BRUNSBTTEL11000_WILMERSDORF11818_CAPACITY  generator to EU-DEU node, skipping...
+  # à chaque fois il faut faire gaffe à l'espace à la fin, c'est putain de sûr
+  # notons que ça veut dire que ptet le clustering a plusieurs choix et que mon algo est non-déterministe...
+  # genre regarder si j'ai eu ça en oil la dernière fois.
   # print(summary)
   
   return(summary %>% select(-node, -cluster_type, -combined_names))  
@@ -250,6 +254,7 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
                                     # # wait, the problem was simply a discrepancy between argument name and variable used in program lmao
                                     ) {
   # Apply clustering and summarization
+  # print(thermal_aggregated_tbl)
   thermal_clusters_tbl <- thermal_aggregated_tbl %>%
     group_by(node, cluster_type) %>%
     nest() %>%
@@ -258,6 +263,7 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
     ) %>%
     unnest(clustered_data) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+  # print(thermal_clusters_tbl)
   return(thermal_clusters_tbl)
 }
 

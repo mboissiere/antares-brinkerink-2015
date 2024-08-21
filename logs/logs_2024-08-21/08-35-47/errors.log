@@ -1,0 +1,43 @@
+ERROR [2024-08-21 08:36:49] [WARN] - Could not add load data to SA-BRA-J1 node, skipping...
+ERROR [2024-08-21 08:36:49] [WARN] - Could not add load data to SA-BRA-J2 node, skipping...
+ERROR [2024-08-21 08:36:49] [WARN] - Could not add load data to SA-BRA-J3 node, skipping...
+ERROR [2024-08-21 08:37:00] [WARN] - Skipped adding wind data for NA-SLV (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:00] [WARN] - Skipped adding wind data for NA-TTO (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:01] [WARN] - Skipped adding wind data for NA-USA-FR (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:01] [WARN] - Skipped adding wind data for NA-USA-GU (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:04] [WARN] - Skipped adding wind data for NA-USA-SA (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:04] [WARN] - Skipped adding wind data for NA-USA-SE (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for NA-USA-SV (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for SA-BOL (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for SA-BRA-CN (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for SA-BRA-CW (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for SA-BRA-J1 (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for SA-BRA-J2 (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:05] [WARN] - Skipped adding wind data for SA-BRA-J3 (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:06] [WARN] - Skipped adding wind data for SA-BRA-NW (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:06] [WARN] - Skipped adding wind data for SA-BRA-WE (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:07] [WARN] - Skipped adding wind data for SA-GUF (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:08] [WARN] - Skipped adding wind data for SA-PRY (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CAN-AR (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CAN-MB (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CAN-NL (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CAN-NO (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CAN-QC (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CAN-SK (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:09] [WARN] - Skipped adding solar data for NA-CRI (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:10] [WARN] - Skipped adding solar data for NA-JAM (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:11] [WARN] - Skipped adding solar data for NA-NIC (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:11] [WARN] - Skipped adding solar data for NA-TTO (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:11] [WARN] - Skipped adding solar data for NA-USA-AK (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:17] [WARN] - Skipped adding solar data for NA-USA-SA (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:20] [WARN] - Skipped adding solar data for SA-BRA-CN (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:20] [WARN] - Skipped adding solar data for SA-BRA-CW (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:20] [WARN] - Skipped adding solar data for SA-BRA-J1 (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:20] [WARN] - Skipped adding solar data for SA-BRA-J2 (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:20] [WARN] - Skipped adding solar data for SA-BRA-J3 (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:20] [WARN] - Skipped adding solar data for SA-BRA-NW (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:21] [WARN] - Skipped adding solar data for SA-BRA-WE (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:21] [WARN] - Skipped adding solar data for SA-COL (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:22] [WARN] - Skipped adding solar data for SA-GUY (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:22] [WARN] - Skipped adding solar data for SA-PRY (no generators found in PLEXOS).
+ERROR [2024-08-21 08:37:22] [WARN] - Skipped adding solar data for SA-VEN (no generators found in PLEXOS).

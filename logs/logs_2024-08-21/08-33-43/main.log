@@ -1,0 +1,25 @@
+INFO [2024-08-21 08:33:43] [MAIN] - Creating Deane_World_with_Districts__2024_08_21_08_33_42 study...
+
+INFO [2024-08-21 08:33:43] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-08-21 08:33:43] [MAIN] - Adding nodes...
+
+INFO [2024-08-21 08:37:46] [MAIN] - Done adding nodes! (run time : 242.92s).
+
+INFO [2024-08-21 08:37:46] [MAIN] - Adding districts...
+
+INFO [2024-08-21 08:37:55] [MAIN] - Done adding districts! (run time : 8.79s).
+
+INFO [2024-08-21 08:37:55] [MAIN] - Adding load data...
+
+INFO [2024-08-21 08:39:34] [MAIN] - Done adding load data! (run time : 98.65s).
+
+INFO [2024-08-21 08:39:34] [MAIN] - Fetching wind data...
+
+INFO [2024-08-21 08:40:32] [MAIN] - Done adding wind data! (run time : 58.13s).
+
+INFO [2024-08-21 08:40:32] [MAIN] - Fetching solar data...
+
+INFO [2024-08-21 08:40:54] [MAIN] - Starting 15thmClu_accUCM__2024_08_21_08_40_54 simulation...
+INFO [2024-08-21 08:49:31] [MAIN] - Antares simulation finished! (run time : 8.6min).
+ 
+
