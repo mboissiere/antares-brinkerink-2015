@@ -337,6 +337,124 @@ getRegionalData <- function(timestep) {
   return(regional_data)
 } 
 
+
+################################################################################
+
+saveProductionStacks <- function(output_dir,
+                                 timestep = "daily",
+                                 stack_palette = "productionStackWithBatteryContributions"
+) {
+  saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ? 
+  #avec un par défaut ?
+  
+  # Idée : MWh pour pays, GWh pour continents, TWh pour monde
+}
+
+################################################################################
+
+saveContinentalProductionStacks <- function(output_dir,
+                                 timestep = "daily",
+                                 stack_palette = "productionStackWithBatteryContributions"
+                                 # pour le colorblind check, faire un "colorblindify" pour aperçus
+) {
+  msg = "[MAIN] - Preparing to save continental production stacks..."
+  logMain(msg)
+
+  continental_data <- getContinentalData(timestep)
+  
+  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  
+  prod_stack_dir <- file.path(continental_dir, "Production stacks")
+  
+  continents <- getDistricts(continental_data$district %>% unique())[1]
+  
+  continental_unit = "GWh"
+  
+  for (cont in continents) {
+    stack_plot <- prodStack(
+      x = continental_data,
+      stack = stack_palette,
+      areas = cont,
+      dateRange = c(start_date, end_date),
+      timeStep = timestep,
+      main = paste(timestep, "production stack for", cont, "in 2015", continental_unit),
+      unit = continental_unit,
+      interactive = FALSE
+    )
+    msg = paste("[OUTPUT] - Saving", timestep, "production stack for", cont, "continent...")
+    logFull(msg)
+    png_path = file.path(prod_stack_dir, paste0(cont, "_", timestep, ".png"))
+    savePlotAsPng(stack_plot, file = png_path,
+                  width = WIDTH, #3*WIDTH,
+                  height = HEIGHT # 2*HEIGHT)
+    )
+    msg = paste("[OUTPUT] -", timestep, "production stack for", cont, "has been saved!")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving continental production stacks!" # et l'art du timer, il se perd...
+  logMain(msg)
+}
+
+# saveProductionStacks <- function(output_dir,
+#                                  timestep = "daily",
+#                                  stack_palette = "productionStackWithBatteryContributions"
+#                                  # pour le colorblind check, faire un "colorblindify" pour aperçus
+# ) {
+#   msg = "[OUTPUT] - Preparing to save production stacks to output folder..."
+#   logFull(msg)
+#   
+#   # IL DOIT BIEN Y AVOIR UN MOYEN DE LE FAIRE TOUT D'UN COUP
+#   # (ou bien je vais juste 4 fonctions horriblement similaires et puis juste
+#   # saveProductionStacks = l'enchainement des 4 ? ça me parait nul...)
+#   
+#   # Provisoire psk j'ai pas encore le district monde
+#   # D'ailleurs ce code est à tester avec des runs partiels, et des runs monde
+#   # genre est-ce que si j'ai juste 6 vieux noeuds ou 3 continents il pete un cable
+#   # global_data <- getGlobalData(timestep)
+#   continental_data <- getContinentalData(timestep)
+#   national_data <- getNationalData(timestep)
+#   regional_data <- getRegionalData(timestep)
+#   
+#   # antares_datatables_lst <- c(global_data, continental_data, national_data, regional_data)
+#   # # ceci est extremement ghetto, voyons voir si c'est autorisé par la convention de Genève
+#   # # ok bah ça marche pas
+#   
+#   # global_dir <- file.path(output_dir, "1 - Global-level graphs")
+#   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+#   national_dir <- file.path(output_dir, "3 - National-level graphs")
+#   regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+#   ## Tout ça c'est global à chaque truc.. Est-ce qu'on pourrait pas le garder
+#   # de côté, en vrai ??
+#   
+#   # geo_scales_dirs = c(global_dir, continental_dir, national_dir, regional_dir)
+#   
+#   folder_name = "Production stacks" # déjà initialisé aussi d'ailleurs
+#   # c'est si moche jpp
+#   # et puis là je fais quoi... un for machin avec global dir et global data ??
+#   # ça aurait pu juste être l'affaire de... fin faire une même fonctio navec des "modes" jsp
+#   # c'est terrible
+#   
+#   # bon je vais faire un truc atroce au début mais voilà hein
+#   
+#   
+#   country_graphs_dir = file.path(output_folder, "country_graphs")
+#   nodes_tbl <- getNodesTable(nodes)
+#   continents <- nodes_tbl$continent %>% unique()
+#   # for (cnt in continents) {
+#     
+#     # nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
+#     # nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
+#     # 
+#     # prod_stack_dir <- file.path(country_graphs_dir, tolower(cnt), "productionStack")
+#     # maybe could be part of the global variables / config
+#     # but the ones that we don't touch too much unlike parameters
+#     
+#   unit = "GWh"
+#     # Idée : MWh pour pays, GWh pour continents, TWh pour monde
+#   # }
+# }
+
 ################################################################################
 
 saveCountryProductionStacks <- function(nodes, 
@@ -347,19 +465,6 @@ saveCountryProductionStacks <- function(nodes,
   msg = "[OUTPUT] - Preparing to save production stacks to output folder..."
   logFull(msg)
   areas = getAreas(nodes)
-  variables_of_interest <- c("SOLAR", "WIND",
-                             "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
-                             "LOAD",
-                             "H. STOR",
-                             "BALANCE",
-                             "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                             "UNSP. ENRG",
-                             "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
-                             "Battery_injection", "Battery_withdrawal", "Battery_level",
-                             "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
-                             "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
-                             "Other3_injection", "Other3_withdrawal", "Other3_level" # Rappel : CAE
-                             )
   prod_data <- getAntaresData(nodes, timestep)
   
   country_graphs_dir = file.path(output_folder, "country_graphs")
@@ -586,18 +691,24 @@ saveCountryProductionMonotones <- function(nodes,
 
 #nodes = all_deane_nodes_lst
 output_dir <- initializeOutputFolder()
-saveCountryProductionStacks(NODES,
-                            output_dir,
-                            "productionStackWithBatteryContributions",
-                            "hourly"
-                            )
-# pareil est-ce que nodes c'est important ? ne veut-on pas juste tout produire ?
-# à voir
-saveCountryProductionMonotones(NODES,
-                               output_dir,
-                               "hourly"#,
-                               #"hourly"
-                               )
+
+saveProductionStacks(output_dir #,
+                     #timestep = "daily",
+                     #stack_palette = "productionStackWithBatteryContributions"
+)
+
+# saveCountryProductionStacks(NODES,
+#                             output_dir,
+#                             "productionStackWithBatteryContributions",
+#                             "hourly"
+#                             )
+# # pareil est-ce que nodes c'est important ? ne veut-on pas juste tout produire ?
+# # à voir
+# saveCountryProductionMonotones(NODES,
+#                                output_dir,
+#                                "hourly"#,
+#                                #"hourly"
+#                                )
 
 
 

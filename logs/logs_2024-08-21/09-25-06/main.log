@@ -33,3 +33,16 @@ INFO [2024-08-21 14:36:01] [MAIN] - Done adding thermal data! (run time : 244.72
 INFO [2024-08-21 14:36:01] [MAIN] - Fetching battery data...
 
 INFO [2024-08-21 14:36:01] [MAIN] - Aggregating identical batteries...
+INFO [2024-08-21 15:54:49] [MAIN] - Done adding battery data! (run time : 78.8min).
+
+INFO [2024-08-21 15:54:49] [MAIN] - Adding lines between areas...
+
+INFO [2024-08-21 16:10:53] [MAIN] - Done adding lines! (run time : 964.13s).
+
+INFO [2024-08-21 16:10:53] [MAIN] - Finished setting up Antares study! (run time : 405.79min).
+ 
+
+INFO [2024-08-21 16:10:54] [MAIN] - Starting 15thmClu_accUCM__2024_08_21_16_10_54 simulation...
+INFO [2024-08-21 16:22:25] [MAIN] - Antares simulation finished! (run time : 11.52min).
+ 
+

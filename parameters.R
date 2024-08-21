@@ -6,8 +6,8 @@
 # Nom servant de base pour la classification de l'étude
 study_basename <- "Deane_testWorld" # pourrait être corrélé à import_study_name en vrai
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = TRUE
-IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
+CREATE_STUDY = FALSE
+IMPORT_STUDY_NAME = "Deane_testAmericas__2024_08_21_08_53_21"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
@@ -15,8 +15,8 @@ IMPORT_STUDY_NAME = "Deane_World_Agg_new__2024_08_19_19_19_44"
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION_NAME = "15thmClu_accUCM"
 INCLUDE_DATE_IN_SIMULATION = TRUE
-LAUNCH_SIMULATION = TRUE
-IMPORT_SIMULATION_NAME = "20240819-2115eco-World_thermal15clustering_accurateUCM" # -1 for latest
+LAUNCH_SIMULATION = FALSE
+IMPORT_SIMULATION_NAME = "20240821-1125eco-testDistricts_fastUCM" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
 READ_RESULTS = TRUE
