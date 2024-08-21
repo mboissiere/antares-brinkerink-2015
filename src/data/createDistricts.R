@@ -20,6 +20,10 @@ isRegionalNode <- function(node) {
 # isRegionalNode("AS-CHN-FU")
 # isRegionalNode("EU-FRA")
 
+# Une idée de feature qui pourrait etre fun dans une version publiée :
+# un générateur de district simplifié
+# l'utilisateur pourrait par exemple dire "hm je veux voir les exports de l'UE"
+
 getCountryFromRegionalNode <- function(regional_node) {
   country_node <- substring(regional_node, 1, 6)
   return(country_node)

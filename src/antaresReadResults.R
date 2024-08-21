@@ -346,6 +346,7 @@ saveProductionStacks <- function(output_dir,
 ) {
   saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ? 
   #avec un par défaut ?
+  saveNationalProductionStacks(output_dir, timestep, stack_palette)
   
   # Idée : MWh pour pays, GWh pour continents, TWh pour monde
 }
@@ -362,11 +363,15 @@ saveContinentalProductionStacks <- function(output_dir,
 
   continental_data <- getContinentalData(timestep)
   
+  # # Il m'a fait que l'amérique du nord, ch elou
+  # print(as_tibble(continental_data))
+  
   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
   
   prod_stack_dir <- file.path(continental_dir, "Production stacks")
   
-  continents <- getDistricts(continental_data$district %>% unique())[1]
+  continents <- getDistricts(continental_data$district %>% unique())
+  #print(continents)
   
   continental_unit = "GWh"
   
@@ -396,6 +401,57 @@ saveContinentalProductionStacks <- function(output_dir,
   logMain(msg)
 }
 
+
+saveNationalProductionStacks <- function(output_dir,
+                                            timestep = "daily",
+                                            stack_palette = "productionStackWithBatteryContributions"
+) {
+  msg = "[MAIN] - Preparing to save national production stacks..."
+  logMain(msg)
+  
+  national_data <- getNationalData(timestep)
+  
+  # Il m'a fait que l'amérique du nord, ch elou
+  print(as_tibble(national_data))
+  
+  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  
+  prod_stack_dir <- file.path(national_dir, "Production stacks")
+  
+  countries <- getAreas(national_data$area %>% unique())
+  print(countries)
+  
+  national_unit = "MWh"
+  
+  for (ctry in countries) {
+    stack_plot <- prodStack(
+      x = national_data,
+      stack = stack_palette,
+      areas = ctry,
+      dateRange = c(start_date, end_date),
+      timeStep = timestep,
+      main = paste(timestep, "production stack for", ctry, "in 2015", national_unit),
+      unit = national_unit,
+      interactive = FALSE
+    )
+    msg = paste("[OUTPUT] - Saving", timestep, "production stack for", ctry, "country...")
+    logFull(msg)
+    png_path = file.path(prod_stack_dir, paste0(ctry, "_", timestep, ".png"))
+    savePlotAsPng(stack_plot, file = png_path,
+                  width = WIDTH, #3*WIDTH,
+                  height = HEIGHT # 2*HEIGHT)
+    )
+    msg = paste("[OUTPUT] -", timestep, "production stack for", ctry, "has been saved!")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving national production stacks!" # et l'art du timer, il se perd...
+  logMain(msg)
+}
+
+
+
+###########################################################
 # saveProductionStacks <- function(output_dir,
 #                                  timestep = "daily",
 #                                  stack_palette = "productionStackWithBatteryContributions"
@@ -690,7 +746,7 @@ saveCountryProductionMonotones <- function(nodes,
 ################################################################################
 
 #nodes = all_deane_nodes_lst
-output_dir <- initializeOutputFolder()
+output_dir <- initializeOutputFolder_v2()
 
 saveProductionStacks(output_dir #,
                      #timestep = "daily",
