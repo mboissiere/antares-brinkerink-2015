@@ -34,6 +34,49 @@ regional_nodes_tbl <- nodes_tbl %>%
   filter(isRegionalNode(node)) %>%
   mutate(district = getCountryFromRegionalNode(node))
 
+createGeographyTable <- function(nodes_lst) { # things would be more robust if this was
+  # nodes and not NODES everywhere
+  nodes_tbl <- getNodesTable(nodes_lst)
+  
+  regional_nodes_tbl <- nodes_tbl %>%
+    filter(isRegionalNode(node)) %>%
+    mutate(district = getCountryFromRegionalNode(node))
+  
+  # Step 1: Prepare the regional_nodes_tbl
+  regional_nodes_prepared <- regional_nodes_tbl %>%
+    mutate(
+      country = substr(node, 1, 6),  # Extract the first 6 characters as country code (e.g., NA-CAN)
+      region = node,                  # The node itself will serve as the region
+      node = node
+    ) %>%
+    select(continent, country, region, node)
+  
+  # Step 2: Prepare the nodes_tbl
+  nodes_prepared <- nodes_tbl %>%
+    filter(!node %in% regional_nodes_tbl$node) %>%  # Filter out nodes that are already regions
+    mutate(
+      country = node,                # The node itself is the country
+      region = NA,                    # Countries without regions will have NA in the region column
+      node = node
+    ) %>%
+    select(continent, country, region, node)
+  
+  # Step 3: Combine both prepared tibbles
+  geography_tbl <- bind_rows(regional_nodes_prepared, nodes_prepared)
+  
+  # Optional: Arrange by continent and country
+  geography_tbl <- geography_tbl %>%
+    arrange(continent, country, region, node)
+  
+  return(geography_tbl)
+}
+
+geography_tbl <- createGeographyTable(all_deane_nodes_lst)
+saveRDS(geography_tbl, ".\\src\\objects\\geography_tbl.rds")
+geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
+print(geography_tbl, n = 258)
+# print(createGeographyTable(north_america_nodes_lst))
+
 # print(regional_nodes_tbl, n = 100)
 # 
 # getDeaneCountries # sous entendu, pas la régionalisation Deane
@@ -113,6 +156,20 @@ createDistrictsFromContinents <- function(nodes #,
   }
 }
 
+createGlobalDistrict <- function(nodes #, 
+                                          # study_opts
+                                 ) {
+  all_areas = tolower(nodes)
+  msg = "[DISTRICTS] - Creating global district..."
+  logFull(msg)
+  createDistrict(name = "world",
+                 add_area = all_areas,
+                 output = TRUE
+                 )
+  msg = "[DISTRICTS] - Done creating global district..."
+  logFull(msg)
+  }
+
 ################################################################################
 
 # # study_name = "Deane_World_Agg_new__2024_08_19_19_19_44"
@@ -181,3 +238,19 @@ createDistrictsFromContinents <- function(nodes #,
 # # with districts in them
 # # (and screw the edit/updateStudy where i'd make functions for studies that already exist, honestly)
 # # print(districts_tbl$district %>% unique())
+# 
+# #########
+# 
+# no_districts_data <- readAntares(areas = "all",
+#                               #districts = "all",
+#                               timeStep = "daily",
+#                               select = variables_of_interest
+# )
+# 
+# print(no_districts_data)
+# print(no_districts_data$areas)
+# #> print(no_districts_data$areas)
+# #NULL
+# 
+# # attention donc aux imports !
+# # dans l'idéal il faudrait faire genre... un continent check, country check, region check

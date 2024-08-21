@@ -50,6 +50,7 @@ logMain(msg)
 start_time <- Sys.time()
 
 source(".\\src\\data\\createDistricts.R")
+createGlobalDistrict(NODES)
 createDistrictsFromContinents(NODES)
 createDistrictsFromRegionalNodes(NODES)
 
@@ -162,6 +163,10 @@ if (GENERATE_SOLAR_PV) {
   msg = paste0("[MAIN] - Done adding solar data! (run time : ", duration,"s).\n")
   logMain(msg)
 }
+
+# Une idée de test de vérification qui pourrait etre intéressant :
+# essayer le mode aggregated, et aussi clusters, et voir si y a des écarts
+# sur les tableaux que pond SOLAR et WIND etc
 
 ################################################################################
 ################################-= HYDRO IMPORT =-##############################

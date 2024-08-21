@@ -42,21 +42,24 @@ source(".\\src\\data\\addNodes.R")
 
 ################################################################################
 
-initializeOutputFolder <- function(nodes) {
-  output_dir = paste0("./output/results_", study_name, "-sim-", 
+initializeOutputFolder <- function(
+    #nodes
+    ) {
+  # output_dir = file.path("output", "test")
+  output_dir = paste0("./output/results_", study_name, "-sim-",
                       simulation_name
                       )
-  msg = "[OUTPUT] - Initializing output folder..."
-  logFull(msg)
+  # msg = "[OUTPUT] - Initializing output folder..."
+  # logFull(msg)
   if (!dir.exists(output_dir)) {
   dir.create(output_dir)
   }
-  
+ 
   continents_dir <- file.path(output_dir, "continent_graphs")
   if (!dir.exists(continents_dir)) {
     dir.create(continents_dir)
   }
-  
+
   countries_dir <- file.path(output_dir, "country_graphs")
   if (!dir.exists(countries_dir)) {
     dir.create(countries_dir)
@@ -82,20 +85,85 @@ initializeOutputFolder <- function(nodes) {
     # (avec à chaque fois des dossiers prodStack, prodMonotone, etc)
     # (j'ai tellement envie de faire stack des exports genre dans quels pays ça part etc...)
     
-    prod_stack_dir <- file.path(continent_dir, "productionStack")
-      if (!dir.exists(prod_stack_dir)) {
-        dir.create(prod_stack_dir)
-      }
-    
-    prod_mono_dir <- file.path(continent_dir, "productionMonotone")
-    # peut-être en faire des variables globales / paramètres ?
-    # doublement utile pour la simplification de cette fonction, et des autres
-    if (!dir.exists(prod_mono_dir)) {
-      dir.create(prod_mono_dir)
-    }
   }
   return(output_dir)
 }
+
+initializeOutputFolder_v2 <- function(
+    ) {
+  output_dir = paste0("./output/results_", study_name, "-sim-",
+                      simulation_name
+                      )
+  if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+  }
+  
+  global_dir <- file.path(output_dir, "1 - Global-level graphs")
+  if (!dir.exists(global_dir)) {
+    dir.create(global_dir)
+  }
+  
+  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  if (!dir.exists(continental_dir)) {
+    dir.create(continental_dir)
+  }
+  
+  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  if (!dir.exists(national_dir)) {
+    dir.create(national_dir)
+  }
+  
+  regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+  if (!dir.exists(regional_dir)) {
+    dir.create(regional_dir)
+  }
+  
+  geo_scales_dirs = c(global_dir, continental_dir, national_dir, regional_dir)
+  
+  rawdata_dir <- file.path(output_dir, "Raw data")
+  if (!dir.exists(rawdata_dir)) {
+    dir.create(rawdata_dir)
+  }
+  # backupStudy(
+  #   backupfile,
+  #   what = "study",
+  #   opts = antaresRead::simOptions(),
+  #   extension = ".zip"
+  # )
+  
+  # Copy of the output files of an Antares study.
+  # 
+  # Usage
+  # copyOutput(opts, extname, mcYears = "all")
+  
+  for (folder in geo_scales_dirs) {
+    prod_stack_dir <- file.path(folder, "Production stacks")
+    # ça ça pourrait aussi ce mettre en liste genre, la liste des noms possibles
+    # de trucs qu'on peut faire
+    if (!dir.exists(prod_stack_dir)) {
+      dir.create(prod_stack_dir)
+    }
+    
+    load_mono_dir <- file.path(folder, "Load monotones")
+    if (!dir.exists(load_mono_dir)) {
+      dir.create(load_mono_dir)
+    }
+  } 
+  return(output_dir)
+}
+
+# initializeOutputFolder()
+
+# et après faut ptet du preprocessing de AntaresRead genre...
+# on prend areas et district, on prend des tolower du geography_tbl et on fait un
+# countries, un continents, un regions qui vient remplacer le prod_data
+
+# ou bien un objet antaresread nouveau à chaque fois genre
+# for country in geography
+# if .isna region aller mettre le nom dans areas ou dans districts
+# if country = node peut-être
+# fin jsp parcourir row par row
+
 
 ################################################################################
 
@@ -114,8 +182,22 @@ variables_of_interest <- c("SOLAR", "WIND",
                            "Battery_injection", "Battery_withdrawal", "Battery_level",
                            "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
                            "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
-                           "Other3_injection", "Other3_withdrawal", "Other3_level") # Rappel : CAE
+                           "Other3_injection", "Other3_withdrawal", "Other3_level", # Rappel : CAE
+                           
+                           "CO2 EMIS."
+                           # Tout ce qu'on a dans les histos c'est CO2 Emission et Generation 
+                           # (pure donc, sans batteries jpense) totale en TWh
+                           # c'est donc amplement fine ce qu'on importe ici
+                           
+                           # (mais j'aimerais grave importer des trucs de links !!)
+                           
+                           )
 # Pourrait être une variable globale vu comment elle pop souvent tbh
+
+# Variables typiques quand on importe des liens :
+# "FLOW LIN.", "UCAP LIN." et des trucs de congestion on dirait
+
+##############################
 
 getAntaresData <- function(nodes, timestep) {
   areas = getAreas(nodes)
@@ -128,6 +210,132 @@ getAntaresData <- function(nodes, timestep) {
   } 
 # may seem redundant but saves time on the other variables if known
 # and we might switch often from hourly, to daily, etc
+
+
+##########
+
+getGlobalData <- function(timestep) {
+  global_data <- readAntares(areas = NULL,
+                              districts = "world", # ça pourrait être une variable etc etc
+                              mcYears = NULL,
+                              select = variables_of_interest,
+                              timeStep = timestep
+  )
+  # à tester
+  # print(antares_data)
+  return(global_data)
+} 
+
+geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
+# print(geography_tbl)
+
+# geography_lower_tbl <- geography_tbl %>%
+#   mutate(continent = tolower(continent),
+#          country = tolower(country),
+#          region = tolower(region),
+#          node = tolower(node)
+#          )
+tolowerVec <- Vectorize(tolower)
+geography_lower_tbl <- as_tibble(tolowerVec(geography_tbl))
+# print(geography_lower_tbl, n = 258)
+
+continents <- geography_lower_tbl$continent %>% unique() #ça peut pas être global ça ?
+# print(continents)
+
+getContinentalData <- function(timestep) {
+  timestep = "daily"
+  # districts = getDistricts(NULL)
+  # continental_districts <- intersect(districts, continents)
+  # mdr c'est débile att
+  
+  continental_districts = getDistricts(select = continents,
+                                       regexpSelect = FALSE)
+  # antares fait déjà un taf d'intersection ! même s'il y a des districts en trop
+  # dans ce qu'on passe en argument de getDistricts
+  # print(districts)
+  continental_data <- readAntares(areas = NULL, # ça existe ça ? j'y crois bof
+                              districts = continental_districts,
+                              mcYears = NULL,#"all", # let's see if maybe it's better at averages
+                              select = variables_of_interest,
+                              timeStep = timestep
+                              )
+  # print(continental_data)
+  return(continental_data)
+} 
+# Attention à être clair : un graphe continental, c'est un graphe où les données sont
+# à échelle des continents.
+# un plot stack avec SEULEMENT l'europe dessus, c'est un graphe continental.
+# un histogramme qui compare PLUSIEURS continents entre eux, c'est AUSSI un graphe continental.
+
+
+countries <- geography_lower_tbl$country %>% unique() #ça peut pas être global ça ?
+# print(countries)
+# > getAreas(countries)
+# [1] "sa-arg"    "sa-bol"    "sa-bra-cn" "sa-bra-cw" "sa-bra-j1" "sa-bra-j2" "sa-bra-j3" "sa-bra-ne"
+# [9] "sa-bra-nw" "sa-bra-se" "sa-bra-so" "sa-bra-we" "sa-chl"    "sa-col"    "sa-ecu"    "sa-guf"   
+# [17] "sa-guy"    "sa-per"    "sa-pry"    "sa-ury"    "sa-ven" 
+# chelou qu'il y ait des régions là-dedans
+# ok c bon ça la lisait comme des regexp
+
+#ignore.case	
+#Should the case be ignored when evaluating the regular expressions ?
+# depuis le début...
+
+getNationalData <- function(timestep) {
+  timestep = "daily"
+  country_areas = getAreas(select = countries,
+                           regexpSelect = FALSE)
+  country_districts = getDistricts(select = countries,
+                                   regexpSelect = FALSE)
+  
+  # print(continental_districts)
+  antares_data <- readAntares(areas = country_areas,
+                               districts = country_districts,
+                               mcYears = NULL,# again, if it's averages we want, which should be a parameter imo
+                               select = variables_of_interest,
+                               timeStep = timestep
+  )
+
+  areas_data <- antares_data$areas
+  districts_data <- antares_data$districts
+  
+  colnames(districts_data)[colnames(districts_data) == "district"] <- "area"
+  # if (!identical(colnames(areas_data), colnames(districts_data))) {
+  #   stop("Columns in 'areas' and 'districts' are not identical.")
+  # }
+  combined_data <- rbind(areas_data, districts_data)
+  # print(combined_data)
+  # Possible qu'il soit reconnu comme un "simple datatable" et non un antaresDataTable
+  # de type areas. Si c'est le cas, il y a des fonctions pour interpréter un df en objet antares
+  national_data <- as.antaresDataTable(combined_data, synthesis = TRUE, timeStep = timestep, type = "areas")
+  # synthesis = TRUE et le fait que mcYears soit NULL / une moyenne, c'est la même je crois
+  # print(national_data)
+  return(national_data)
+}
+
+regions_tbl <- geography_lower_tbl %>%
+  filter(!is.na(region))
+
+# print(regions_tbl)
+
+regions <- regions_tbl$region %>% unique() #ça peut pas être global ça ?
+# print(regions)
+
+getRegionalData <- function(timestep) {
+  timestep = "daily"
+  regional_areas = getAreas(select = regions,
+                            regexpSelect = FALSE)
+  
+  regional_data <- readAntares(areas = regional_areas,
+                              districts = NULL,
+                              mcYears = NULL,# again, if it's averages we want, which should be a parameter imo
+                              select = variables_of_interest,
+                              timeStep = timestep
+  )
+
+  # print(regional_data)
+  return(regional_data)
+} 
 
 ################################################################################
 
@@ -377,14 +585,211 @@ saveCountryProductionMonotones <- function(nodes,
 ################################################################################
 
 #nodes = all_deane_nodes_lst
-output_dir <- initializeOutputFolder(NODES)
+output_dir <- initializeOutputFolder()
 saveCountryProductionStacks(NODES,
                             output_dir,
                             "productionStackWithBatteryContributions",
                             "hourly"
                             )
-# saveCountryProductionMonotones(NODES,
-#                                output_dir,
-#                                "hourly"#,
-#                                #"hourly"
-#                                )
+# pareil est-ce que nodes c'est important ? ne veut-on pas juste tout produire ?
+# à voir
+saveCountryProductionMonotones(NODES,
+                               output_dir,
+                               "hourly"#,
+                               #"hourly"
+                               )
+
+
+
+#####################################################
+
+# initializeOutputFolder_v2 <- function(nodes) {
+#   output_dir = "./output/test"# just for testing
+#                       
+#   # output_dir = paste0("./output/results_", study_name, "-sim-", 
+#   #                     simulation_name
+#   # )
+#   msg = "[OUTPUT] - Initializing output folder..."
+#   print(msg)
+#   # logFull(msg)
+#   if (!dir.exists(output_dir)) {
+#     dir.create(output_dir)
+#   }
+#   
+#   graphs_dir <- file.path(output_dir, "graphs")
+#   if (!dir.exists(graphs_dir)) {
+#     dir.create(graphs_dir)
+#   }
+#   
+#   # Est-ce que c'était vraiment très malin de faire une arborescence alors que genre...
+#   # on pourrait vouloir tous les graphes d'un coup, non ?
+#   # peut-etre que continent_graphs + country_graphs en parallèle c'était bien depuis le début
+#   # juste graphs -> dossier continent level, dossier country level, + graphes mondiaux métriques deanes
+#   # dans dossier continent level, des stacks et des monotones européens etc
+#   # dans dossier country level
+#   # en fait juste du unordered quoi merde c'est ptet ça le mieux
+#   # du continent_graphs, country_graphs, region_graphs
+#   # dedans y a productionStacks et productionMonotones et C'EST TOUT et on mélange les continents
+#   # et au moins on a 2 niveaux de hiérarchie et pas genre 7
+#   # et au moins on peut les comparer en fait (libre à l'utilisateur de réorganiser après s'il veut)
+#   # (ne serait-ce qu'en triant par ordre alphabétique avec le af-... y aura déjà une séparation)
+#   
+#   # Note that graphs aren't the only thing.
+#   # It's good practice for open-source to also return raw data, so you can work on that
+#   # eg Antares results/output in txt form, or in rds form (txt seems better)
+# 
+#   # world_dir <- file.path(graphs_dir, "[1] - World")
+#   # if (!dir.exists(world_dir)) {
+#   #   dir.create(world_dir)
+#   # }
+# 
+#   # Le plus simple est ptet de faire un répertoire genre regions dans countries etc
+#   geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
+# 
+#   sim_geography_tbl <- geography_tbl %>%
+#     filter(node %in% nodes)
+#   
+#   continents <- sim_geography_tbl$continent %>% unique()
+#   nb_continents <- length(continents)
+#   
+#   # Step 1: Create "Continents" directory inside "World"
+#   # en fait y a un monde où ça c'est mon "main" et jsuis juste obligé de construire
+#   # les getProdStack machin etc dedans parce que sinon c'est infernal de re-choper les path après
+#   # ou alors repartir de geography_tbl (ouais mais j'ai nommé genre [.] continents, pas malin..)
+#   continents_dir <- file.path(graphs_dir, paste0("[", nb_continents,"] Continents"))
+#   if (!dir.exists(continents_dir)) {
+#     dir.create(continents_dir)
+#   }
+#   
+#   for (cont in continents) {
+#     
+#     continent_dir <- file.path(continents_dir, cont)
+#     if (!dir.exists(continent_dir)) {
+#       dir.create(continent_dir)
+#     }
+#     
+#     sim_continent_tbl <- sim_geography_tbl %>%
+#       filter(continent == cont)
+#     
+#     countries <- sim_continent_tbl$country %>% unique()
+#     nb_countries <- length(countries)
+#     
+#     countries_dir <- file.path(continent_dir, paste0("[", nb_countries,"] Countries"))
+#     if (!dir.exists(countries_dir)) {
+#       dir.create(countries_dir)
+#     }
+#     
+#     for (ctry in countries) {
+#       
+#       country_dir <- file.path(countries_dir, ctry)
+#       if (!dir.exists(country_dir)) {
+#         dir.create(country_dir)
+#       }
+#       
+#       sim_country_tbl <- sim_continent_tbl %>%
+#         filter(country == ctry)
+#       
+#       sim_regions_tbl <- sim_country_tbl %>%
+#         filter(!is.na(region))
+#       
+#       regions <- sim_regions_tbl$region %>%
+#         unique()
+#       
+#       nb_regions <- length(regions)
+#       #if (nb_regions > 0) { # pas sûr que ce soit nécessaire (for k in vide) mais ce serait propre
+#       for (regn in regions) { # ça fait automatiquement rien si regions est vide
+#         regions_dir <- file.path(country_dir, paste0("[", nb_regions,"] Regions"))
+#         if (!dir.exists(regions_dir)) {
+#           dir.create(regions_dir)
+#         }
+#         }
+#       #}
+#       
+#     }
+#   }
+#   
+#   # for (row in 1:nrow(geography_tbl)) {
+#   #   node_row = geography_tbl[row]
+#   # }
+#   
+#   # # Step 2: Loop through each continent and create folders
+#   # sim_geography_tbl %>%
+#   #   group_by(continent) %>%
+#   #   do({
+#   #     continent_name <- unique(.$continent)
+#   #     
+#   #     # Create continent folder
+#   #     continent_folder <- file.path(continents_dir, continent_name)
+#   #     if (!dir.exists(continent_folder)) {
+#   #       dir.create(continent_folder)
+#   #     }
+#   #     
+#   #     # Create "Countries" directory within continent folder
+#   #     countries_dir <- file.path(continent_folder, "[y] Countries")
+#   #     if (!dir.exists(countries_dir)) {
+#   #       dir.create(countries_dir)
+#   #     }
+#   #     
+#   #     # Step 3: Loop through each country and create folders
+#   #     .$country %>%
+#   #       unique() %>%
+#   #       lapply(function(country_name) {
+#   #         country_folder <- file.path(countries_dir, country_name)
+#   #         
+#   #         # Create country folder
+#   #         if (!dir.exists(country_folder)) {
+#   #           dir.create(country_folder)
+#   #         }
+#   #         
+#   #         # Step 4: Create region folders for countries that have regions
+#   #         country_data <- filter(sim_geography_tbl, country == country_name)
+#   #         if (any(!is.na(country_data$region))) {
+#   #           # Loop through regions
+#   #           country_data %>%
+#   #             filter(!is.na(region)) %>%
+#   #             .$region %>%
+#   #             unique() %>%
+#   #             lapply(function(region_name) {
+#   #               region_folder <- file.path(country_folder, paste("[z]", region_name, sep = " "))
+#   #               
+#   #               # Create region folder
+#   #               if (!dir.exists(region_folder)) {
+#   #                 dir.create(region_folder)
+#   #               }
+#   #               
+#   #               # You can create graphs here for each region and save them in this folder
+#   #               # Example: save graph for the region
+#   #               # plot(some_graph)
+#   #               # ggsave(filename = file.path(region_folder, "graph.png"))
+#   #             })
+#   #         }
+#   #       })
+#   #   })
+#     
+#     # Possible piste d'amélioration :
+#     # faire une arborisation [1] world avec dedans des png des graphes par continent à la deane
+#     # puis [6] continents avec dossiers africa, asia etc et ce que j'ai l'habitude de faire 
+#     # (en fait des graphes de chaque pays)
+#     # ET ! dans chaque pays en fait il y a des régions finalement.
+#     # dans les graphes pays, prendre en fait les districts as-chn na-usa etc au lieu des régions
+#     # mais au sein de chaque continent en fait faire des dossiers genre
+#     # [34] as-chn regions, [5] as-ind regions, [24] na-usa regions, etc
+#     # et hop architecture monde -> continent -> pays -> région au fur et à mesure qu'on clique
+#     # (avec à chaque fois des dossiers prodStack, prodMonotone, etc)
+#     # (j'ai tellement envie de faire stack des exports genre dans quels pays ça part etc...)
+#     
+#     # prod_stack_dir <- file.path(continent_dir, "productionStack")
+#     # if (!dir.exists(prod_stack_dir)) {
+#     #   dir.create(prod_stack_dir)
+#     # }
+#     # 
+#     # prod_mono_dir <- file.path(continent_dir, "productionMonotone")
+#     # # peut-être en faire des variables globales / paramètres ?
+#     # # doublement utile pour la simplification de cette fonction, et des autres
+#     # if (!dir.exists(prod_mono_dir)) {
+#     #   dir.create(prod_mono_dir)
+#     # }
+#   return(output_dir)
+# }
+# 
+# initializeOutputFolder_v2(all_deane_nodes_lst)
