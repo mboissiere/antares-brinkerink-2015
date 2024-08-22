@@ -144,9 +144,14 @@ initializeOutputFolder_v2 <- function(
       dir.create(prod_stack_dir)
     }
     
-    load_mono_dir <- file.path(folder, "Load monotones")
-    if (!dir.exists(load_mono_dir)) {
-      dir.create(load_mono_dir)
+    load_monot_dir <- file.path(folder, "Load monotones")
+    if (!dir.exists(load_monot_dir)) {
+      dir.create(load_monot_dir)
+    }
+    
+    emis_histo_dir <- file.path(folder, "Emission histograms")
+    if (!dir.exists(emis_histo_dir)) {
+      dir.create(emis_histo_dir)
     }
   } 
   return(output_dir)
@@ -420,7 +425,7 @@ saveContinentalProductionStacks <- function(output_dir,
   
   prod_stack_dir <- file.path(continental_dir, "Production stacks")
   
-  continents <- getDistricts(continental_data$district %>% unique())
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   #print(continents)
   
   continental_unit = "GWh"
@@ -462,7 +467,7 @@ saveNationalProductionStacks <- function(output_dir,
   national_data <- getNationalData(timestep)
   
   # Il m'a fait que l'amérique du nord, ch elou
-  print(national_data)
+  # print(national_data)
   
   national_dir <- file.path(output_dir, "3 - National-level graphs")
   
@@ -767,6 +772,90 @@ library(ggplot2)
 ################################
 
 
+saveGlobalLoadMonotone <- function(output_dir,
+                                    timestep = "hourly"
+) {
+  msg = "[MAIN] - Preparing to save global load monotone..."
+  logMain(msg)
+  
+  global_data <- getGlobalData(timestep)
+  global_tbl <- as_tibble(global_data)
+  # print(continental_tbl)
+  
+  global_dir <- file.path(output_dir, "1 - Global-level graphs")
+  
+  load_monot_dir <- file.path(global_dir, "Load monotones")
+  
+  world <- getDistricts(select = "world", regexpSelect = FALSE)
+  #print(continents)
+  
+  # unit = "GWh"
+  
+  glob_tbl <- global_tbl %>%
+    filter(district == "world")
+  
+  glob_tbl_sorted <- glob_tbl[order(-glob_tbl$LOAD), ] %>%
+    select(timeId, time, LOAD, sources)
+  
+  glob_tbl_succint <- glob_tbl_sorted %>%
+    mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+           IMPORTS = -BALANCE) %>%
+    select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+    rename(
+      GEOTHERMAL = `MISC. DTG`,
+      HYDRO = `H. STOR`,
+      `BIO AND WASTE` = `MIX. FUEL`,
+      `PSP STOR` = `PSP_closed_withdrawal`,
+      `CHEMICAL STOR` = `Battery_withdrawal`,
+      `THERMAL STOR` = `Other1_withdrawal`,
+      `HYDROGEN STOR` = `Other2_withdrawal`,
+      `COMPRESSED AIR STOR` = `Other3_withdrawal`,
+      UNSUPPLIED = `UNSP. ENRG`
+    )
+  
+  glob_tbl_long <- glob_tbl_succint %>%
+    select(time, LOAD, sources_new) %>%
+    pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production")
+  
+  glob_tbl_long$energy_source <- factor(glob_tbl_long$energy_source, levels = rev(sources_new))
+  
+  
+  p <- ggplot(glob_tbl_long, aes(x = reorder(time, -LOAD))) +
+    geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+    geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+    scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+                                 "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+                                 "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
+                                 "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
+    labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = "world energy mix") +
+    # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
+    theme_minimal() +
+    theme(
+      legend.position = "right",
+      legend.text = element_text(size = 8), # Legend text size
+      legend.title = element_text(size = 10), # Legend title size
+      legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+      legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+      legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+      legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+      
+      axis.title.x = element_text(size = 10), # X-axis title size
+      axis.title.y = element_text(size = 10), # Y-axis title size
+      
+      axis.text.x = element_text(size = 8), # X-axis labels size
+      axis.text.y = element_text(size = 8)  # Y-axis labels size
+    )
+
+  plot_path <- file.path(load_monot_dir, "world_monotone.png")
+  ggsave(filename = plot_path, plot = p, 
+         width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+         dpi = resolution_dpi)
+
+  msg = "[MAIN] - Done saving global load monotone!" 
+  logMain(msg)
+}
+
+
 saveContinentalLoadMonotones <- function(output_dir,
                                          timestep = "hourly" #,
                                       #stack_palette = "productionStackWithBatteryContributions"
@@ -1060,9 +1149,20 @@ saveRegionalLoadMonotones <- function(output_dir,
 saveLoadMonotones <- function(output_dir,
                               timestep = "hourly"
                               ) {
+  # saveGlobalLoadMonotone(output_dir, timestep)
   saveContinentalLoadMonotones(output_dir, timestep)
   saveNationalLoadMonotones(output_dir, timestep)
   saveRegionalLoadMonotones(output_dir, timestep)
+  # NOTE ! The timestep is never written, in the produced pngs' legends or in
+  # the file names. Whereas "daily" is, for the production stacks.
+  
+  # BRUHHH
+  # dans tsPlot il y avait depuis le début :
+  #  type = c("ts", "barplot", "monotone", "density", "cdf", "heatmap"),
+  # des putains de monotones......
+  
+  # j'espère que depuis le début en fait j'ai ajouté des trucs malins et j'ai pas juste
+  # bêtement vesqui un truc bien qui existait déjà...
 }
 
 #################################
@@ -1166,17 +1266,117 @@ saveCountryProductionMonotones <- function(nodes,
 
 ################################################################################
 
+# Histogram time babey
+
+HEIGHT_720P = 720
+
+saveContinentalEmissionHistograms <- function(output_dir,
+                                            timestep = "annual"# c'est vrai qu'on pourrait en faire d'autres. est-ce utile ?
+                                            # stack_palette = "productionStackWithBatteryContributions"
+                                            # il n'y a pas de palette mais c'est vrai qu'il faudrait faire un stack "par technologie"
+                                            # chose qui n'est pas représentée dans CO2 EMIS. - ah, il faudra faire des calculs !
+) {
+  msg = "[MAIN] - Preparing to save continental emission histograms..."
+  logMain(msg)
+  
+  continental_data <- getContinentalData(timestep)
+  
+  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  
+  emis_histo_dir <- file.path(continental_dir, "Emission histograms")
+  
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+  #print(continents)
+  
+  continental_unit = "GWh"
+  
+  #for (cont in continents) {
+  
+  histo_plot <- plot(continental_data,
+       variable = "CO2 EMIS.",
+       elements = continents,
+       mcYear = "average",
+       type = "barplot",
+       dateRange = NULL, # if NULL, then all data is displayed
+       aggregate = "none",
+       # compare = ,# ah, c'est ptet ça pour les représenter côte à côte
+       interactive = FALSE,
+       colors = "black", # peut être un vecteur, ce qui m'intéresse si on arrive à faire variable par moyen..
+       # mais quel enfer, chaque centrale a son tCO2/MWh différent ?
+       # on pourrait faire pollution (tCO2/MWh), * production du moyen, quitte à faire / EMIS si on veut un pourcentage
+       # mais ça reste assez infernal...
+       # jeter un oeil à CO2_emission dans le PLEXOS et voir comment ça marche, 
+       # iirc il y a une valeur par fuel_group donc Europe_Gas par exemple, ça dépend du continent et de la techno
+       # ceci pourrait être stocké quelque part, dans un tibble peut-être, mais ça reste casse-pieds
+       main = "CO2 emissions (tCO2)"
+       )
+  
+    # stack_plot <- prodStack(
+    #   x = continental_data,
+    #   stack = stack_palette,
+    #   areas = cont,
+    #   dateRange = c(start_date, end_date),
+    #   timeStep = timestep,
+    #   main = paste(timestep, "production stack for", cont, "in 2015", continental_unit),
+    #   unit = continental_unit,
+    #   interactive = FALSE
+    # )
+    # msg = paste("[OUTPUT] - Saving", timestep, "production stack for", cont, "continent...")
+    # logFull(msg)
+    png_path = file.path(emis_histo_dir, "co2_emis.png")
+    savePlotAsPng(histo_plot, file = png_path,
+                  width = HEIGHT_720P * 2,
+                  height = HEIGHT_720P
+                  #width = WIDTH, #3*WIDTH,
+                  #height = HEIGHT # 2*HEIGHT)
+                  # les valeurs étaient énormes pour les grpahes daily/hourly
+                  # ça aussi le width_height ça peut changer selon le type de graphe..
+                  # peut etre faire des presets genre WIDTH_720P, WIDTH_4K etc
+    )
+    # msg = paste("[OUTPUT] -", timestep, "production stack for", cont, "has been saved!")
+    # logFull(msg)
+  #}
+  
+  msg = "[MAIN] - Done saving continental emissions histograms!"
+  logMain(msg)
+}
+
+
+############################
+
 #nodes = all_deane_nodes_lst
 output_dir <- initializeOutputFolder_v2()
+
+saveContinentalEmissionHistograms(output_dir)
+# Ah puis les graphes du Deane il font des histogrammes par techno, un graphe = un continent...
+# ok... moi je verrais bien une stack colorée en fait mais on peut faire comme le Deane
 
 # saveProductionStacks(output_dir #,
 #                      #timestep = "daily",
 #                      #stack_palette = "productionStackWithBatteryContributions"
 # )
+# 
+# saveLoadMonotones(output_dir #,
+#                      #timestep = "daily"
+# )
 
-saveLoadMonotones(output_dir #,
-                     #timestep = "daily"
-)
+# Selon l'ordre dans lequel on a envie d'avoir des trucs, on peut aussi faire genre
+# getContinentalGraphs qui fait toutes les continentales (monotones, stacks, etc)
+
+# il serait ptet malin de faire un initializeOutputfolder qui initialize que le output folder et à la rigueur graphs
+# puis faire un initializecontinentsfolder fin jsp localement à chaque fois if dir exists etc
+# pour éviter l'éventuelle déception d'un dossier qui est créé mais en fait vide si on a pas tout lancé
+
+# l'intégrer aux fonctions ce serait des lignes en plus mais au moins le programme est malin et crée seulement
+# ce qu'il y a à créer
+
+
+# autre truc qui pourrait être malin : intégrer le variables_of_interest comme
+# variable dans getContinentalData etc
+# ce qui ferait que l'on épuiserait pas de l'espace mémoire utilement, on ferait des
+# presets de variables utiles à importer et on n'importerait que celles-ci au moment opportun
+
+
 
 # saveCountryProductionStacks(NODES,
 #                             output_dir,
