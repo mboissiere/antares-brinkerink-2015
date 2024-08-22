@@ -267,6 +267,7 @@ getContinentalData <- function(timestep) {
 # un plot stack avec SEULEMENT l'europe dessus, c'est un graphe continental.
 # un histogramme qui compare PLUSIEURS continents entre eux, c'est AUSSI un graphe continental.
 
+CONTINENTS <- geography_lower_tbl$continent %>% unique() #ça peut pas être global ça ?
 
 COUNTRIES <- geography_lower_tbl$country %>% unique() #ça peut pas être global ça ?
 # print(countries)
@@ -763,6 +764,309 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 
+################################
+
+
+saveContinentalLoadMonotones <- function(output_dir,
+                                         timestep = "hourly" #,
+                                      #stack_palette = "productionStackWithBatteryContributions"
+                                      # pour l'instant implémenté en dur dans ce code, mais ça peut changer oui
+                                      ) {
+  msg = "[MAIN] - Preparing to save continental load monotones..."
+  logMain(msg)
+  
+  continental_data <- getContinentalData(timestep)
+  continental_tbl <- as_tibble(continental_data)
+  # print(continental_tbl)
+  
+  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+
+  load_monot_dir <- file.path(continental_dir, "Load monotones")
+
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+    #print(continents)
+  
+  continental_unit = "GWh"
+  
+  for (cont in continents) {
+    cont_tbl <- continental_tbl %>%
+      filter(district == cont)
+    
+    cont_tbl_sorted <- cont_tbl[order(-cont_tbl$LOAD), ] %>%
+      select(timeId, time, LOAD, sources)
+    
+    cont_tbl_succint <- cont_tbl_sorted %>%
+      mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+             IMPORTS = -BALANCE) %>%
+      select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+      rename(
+        GEOTHERMAL = `MISC. DTG`,
+        HYDRO = `H. STOR`,
+        `BIO AND WASTE` = `MIX. FUEL`,
+        `PSP STOR` = `PSP_closed_withdrawal`,
+        `CHEMICAL STOR` = `Battery_withdrawal`,
+        `THERMAL STOR` = `Other1_withdrawal`,
+        `HYDROGEN STOR` = `Other2_withdrawal`,
+        `COMPRESSED AIR STOR` = `Other3_withdrawal`,
+        UNSUPPLIED = `UNSP. ENRG`
+      )
+    
+    cont_tbl_long <- cont_tbl_succint %>%
+      select(time, LOAD, sources_new) %>%
+      pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production")
+    
+    cont_tbl_long$energy_source <- factor(cont_tbl_long$energy_source, levels = rev(sources_new))
+    
+    
+    p <- ggplot(cont_tbl_long, aes(x = reorder(time, -LOAD))) +
+      geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+                                   "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+                                   "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
+                                   "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
+      labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(cont, "energy mix")) +
+      # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
+      theme_minimal() +
+      theme(
+        legend.position = "right",
+        legend.text = element_text(size = 8), # Legend text size
+        legend.title = element_text(size = 10), # Legend title size
+        legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+        legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+        legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+        legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+        
+        axis.title.x = element_text(size = 10), # X-axis title size
+        axis.title.y = element_text(size = 10), # Y-axis title size
+        
+        axis.text.x = element_text(size = 8), # X-axis labels size
+        axis.text.y = element_text(size = 8)  # Y-axis labels size
+      )
+    
+    msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", cont, "node...")
+    logFull(msg)
+    plot_path <- file.path(load_monot_dir, paste0(cont,"_monotone.png"))
+    ggsave(filename = plot_path, plot = p, 
+           width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+           dpi = resolution_dpi)
+    msg = paste("[OUTPUT] - The", timestep, "production monotone for", cont, "has been saved!")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving continental load monotones!" 
+  logMain(msg)
+}
+
+# Une idée en plus : mettre en légende d'abscisse le pourcentage genre de 0 à 100, comme ça on peut lire graphiquement
+# lire "pendant 50% de l'année on a tant de production)
+
+saveNationalLoadMonotones <- function(output_dir,
+                                         timestep = "hourly" #,
+                                         #stack_palette = "productionStackWithBatteryContributions"
+                                         # pour l'instant implémenté en dur dans ce code, mais ça peut changer oui
+) {
+  msg = "[MAIN] - Preparing to save national load monotones..."
+  logMain(msg)
+  
+  national_data <- getNationalData(timestep)
+  national_tbl <- as_tibble(national_data)
+  
+  # print(national_data)
+  
+  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  
+  load_monot_dir <- file.path(national_dir, "Load monotones")
+  
+  countries <- getAreas(select = COUNTRIES, regexpSelect = FALSE)
+  districts <- getDistricts(select = COUNTRIES, regexpSelect = FALSE)
+  countries <- c(countries, districts)
+  countries <- sort(countries)
+  
+  national_unit = "MWh"
+  
+  for (ctry in countries) {
+    ctry_tbl <- national_tbl %>%
+      filter(area == ctry)
+    
+    ctry_tbl_sorted <- ctry_tbl[order(-ctry_tbl$LOAD), ] %>%
+      select(timeId, time, LOAD, sources)
+    
+    ctry_tbl_succint <- ctry_tbl_sorted %>%
+      mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+             IMPORTS = -BALANCE) %>%
+      select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+      rename(
+        GEOTHERMAL = `MISC. DTG`,
+        HYDRO = `H. STOR`,
+        `BIO AND WASTE` = `MIX. FUEL`,
+        `PSP STOR` = `PSP_closed_withdrawal`,
+        `CHEMICAL STOR` = `Battery_withdrawal`,
+        `THERMAL STOR` = `Other1_withdrawal`,
+        `HYDROGEN STOR` = `Other2_withdrawal`,
+        `COMPRESSED AIR STOR` = `Other3_withdrawal`,
+        UNSUPPLIED = `UNSP. ENRG`
+      )
+    
+    ctry_tbl_long <- ctry_tbl_succint %>%
+      select(time, LOAD, sources_new) %>%
+      pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production")
+    
+    ctry_tbl_long$energy_source <- factor(ctry_tbl_long$energy_source, levels = rev(sources_new))
+    
+    
+    p <- ggplot(ctry_tbl_long, aes(x = reorder(time, -LOAD))) +
+      geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+                                   "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+                                   "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
+                                   "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
+      labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(ctry, "energy mix")) +
+      # ATTENTION pour l'instant tout est en MWh il me semble
+      # c'est pas comme antaresViz où "GWh" est passé dans les unités
+      # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
+      theme_minimal() +
+      theme(
+        legend.position = "right",
+        legend.text = element_text(size = 8), # Legend text size
+        legend.title = element_text(size = 10), # Legend title size
+        legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+        legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+        legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+        legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+        
+        axis.title.x = element_text(size = 10), # X-axis title size
+        axis.title.y = element_text(size = 10), # Y-axis title size
+        
+        axis.text.x = element_text(size = 8), # X-axis labels size
+        axis.text.y = element_text(size = 8)  # Y-axis labels size
+      )
+    
+    msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", ctry, "node...")
+    logFull(msg)
+    plot_path <- file.path(load_monot_dir, paste0(ctry,"_monotone.png"))
+    ggsave(filename = plot_path, plot = p, 
+           width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+           dpi = resolution_dpi)
+    msg = paste("[OUTPUT] - The", timestep, "load monotone for", ctry, "has been saved!")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving national load monotones!" 
+  logMain(msg)
+}
+
+saveRegionalLoadMonotones <- function(output_dir,
+                                      timestep = "hourly" #,
+                                      #stack_palette = "productionStackWithBatteryContributions"
+                                      # pour l'instant implémenté en dur dans ce code, mais ça peut changer oui
+) {
+  msg = "[MAIN] - Preparing to save national load monotones..."
+  logMain(msg)
+  
+  regional_data <- getRegionalData(timestep)
+  regional_tbl <- as_tibble(regional_data)
+  
+  regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+  
+  load_monot_dir <- file.path(regional_dir, "Load monotones")
+  
+  regions <- getAreas(select = REGIONS, regexpSelect = FALSE)
+  
+  regional_unit = "MWh"
+  
+  for (regn in regions) {
+    regn_tbl <- regional_tbl %>%
+      filter(area == regn)
+    
+    regn_tbl_sorted <- regn_tbl[order(-regn_tbl$LOAD), ] %>%
+      select(timeId, time, LOAD, sources)
+    
+    regn_tbl_succint <- regn_tbl_sorted %>%
+      mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+             IMPORTS = -BALANCE) %>%
+      select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+      rename(
+        GEOTHERMAL = `MISC. DTG`,
+        HYDRO = `H. STOR`,
+        `BIO AND WASTE` = `MIX. FUEL`,
+        `PSP STOR` = `PSP_closed_withdrawal`,
+        `CHEMICAL STOR` = `Battery_withdrawal`,
+        `THERMAL STOR` = `Other1_withdrawal`,
+        `HYDROGEN STOR` = `Other2_withdrawal`,
+        `COMPRESSED AIR STOR` = `Other3_withdrawal`,
+        UNSUPPLIED = `UNSP. ENRG`
+      )
+    
+    regn_tbl_long <- regn_tbl_succint %>%
+      select(time, LOAD, sources_new) %>%
+      pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production")
+    
+    regn_tbl_long$energy_source <- factor(regn_tbl_long$energy_source, levels = rev(sources_new))
+    
+    
+    p <- ggplot(regn_tbl_long, aes(x = reorder(time, -LOAD))) +
+      geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+                                   "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+                                   "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
+                                   "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
+      labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(regn, "energy mix")) +
+      # ATTENTION pour l'instant tout est en MWh il me semble
+      # c'est pas comme antaresViz où "GWh" est passé dans les unités
+      # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
+      theme_minimal() +
+      theme(
+        legend.position = "right",
+        legend.text = element_text(size = 8), # Legend text size
+        legend.title = element_text(size = 10), # Legend title size
+        legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+        legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+        legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+        legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+        
+        axis.title.x = element_text(size = 10), # X-axis title size
+        axis.title.y = element_text(size = 10), # Y-axis title size
+        
+        axis.text.x = element_text(size = 8), # X-axis labels size
+        axis.text.y = element_text(size = 8)  # Y-axis labels size
+      )
+    
+    msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", regn, "node...")
+    logFull(msg)
+    plot_path <- file.path(load_monot_dir, paste0(regn,"_monotone.png"))
+    ggsave(filename = plot_path, plot = p, 
+           width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+           dpi = resolution_dpi)
+    msg = paste("[OUTPUT] - The", timestep, "production monotone for", regn, "has been saved!")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving regional load monotones!" 
+  logMain(msg)
+}
+
+####
+
+# BOISSIERE Matteo
+# Sur cette histoire de trous qu'on avait vu sur les monotones de consommation, j'ai l'impression que c'est juste une limite de l'interface graphique. On avait été surpris de voir quelques bandes par-ci par-là, mais sur cet exemple et en zoomant, on voit que ça ressemble fort à des "bandes" unit…
+# 
+# Un contournement simple pourrait être de passer par un geom_step() plutôt qu'un histogramme.
+# 
+
+
+saveLoadMonotones <- function(output_dir,
+                              timestep = "hourly"
+                              ) {
+  saveContinentalLoadMonotones(output_dir, timestep)
+  saveNationalLoadMonotones(output_dir, timestep)
+  saveRegionalLoadMonotones(output_dir, timestep)
+}
+
+#################################
+
 saveCountryProductionMonotones <- function(nodes,
                                            output_dir,
                                            timestep = "hourly") {
@@ -865,9 +1169,13 @@ saveCountryProductionMonotones <- function(nodes,
 #nodes = all_deane_nodes_lst
 output_dir <- initializeOutputFolder_v2()
 
-saveProductionStacks(output_dir #,
-                     #timestep = "daily",
-                     #stack_palette = "productionStackWithBatteryContributions"
+# saveProductionStacks(output_dir #,
+#                      #timestep = "daily",
+#                      #stack_palette = "productionStackWithBatteryContributions"
+# )
+
+saveLoadMonotones(output_dir #,
+                     #timestep = "daily"
 )
 
 # saveCountryProductionStacks(NODES,
