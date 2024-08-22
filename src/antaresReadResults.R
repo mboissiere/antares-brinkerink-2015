@@ -1266,6 +1266,54 @@ saveCountryProductionMonotones <- function(nodes,
 
 ################################################################################
 
+
+emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
+
+emissions_tbl <- emissions_data %>%
+  mutate(continent = tolower(continent)) %>%
+  filter(fuel_type != "Oil") %>%
+  mutate(fuel_column = case_when(
+    fuel_type == "Gas" ~ "GAS",
+    fuel_type == "Coal" ~ "COAL",
+    fuel_type == "Oil country level" ~ "OIL",
+    TRUE ~ NA_character_ # In case there are other types not listed
+  )) %>%
+  select(continent, fuel_column, production_rate)
+# Ou alors stocker directement... hm.. attends
+
+# 18 Oil country level north america            73.8
+# 19 Oil               south america           107. 
+# 20 Oil               north america           107. 
+# Quel enfer, ça veut dire il faut faire ça générateur par générateur ?
+# Ou alors mettre genre en Other4 le oil country level vs oil pas country level
+# et après on peut le récupérer, mais on peut quand même faire la même couleur sur
+# AntaresViz en faisant OIL = la somme des deux.....
+# ohlala
+
+# de façon provisoire on va tej Oil..
+
+print(emissions_tbl)
+
+continental_data <- getContinentalData("annual")
+continental_tbl <- as_tibble(continental_data) %>%
+  select(district, timeId, COAL, GAS, OIL)
+
+# for (fuel in c("COAL", "GAS", "OIL")) {
+#   co2_column = paste0(fuel,"_CO2")
+#   continental_tbl <- mutate(
+#     co2_column = case_when(
+#       district == "Gas" ~ "GAS",
+#       fuel_type == "Coal" ~ "COAL",
+#       fuel_type == "Oil country level" ~ "OIL",
+#       TRUE ~ NA_character_ # In case there are other types not listed
+#     )) %>%
+#   )
+# }
+
+# bon jsp je suis paumé un peu
+
+print(continental_tbl)
+
 # Histogram time babey
 
 HEIGHT_720P = 720
@@ -1280,6 +1328,8 @@ saveContinentalEmissionHistograms <- function(output_dir,
   logMain(msg)
   
   continental_data <- getContinentalData(timestep)
+  continental_tbl <- as_tibble(continental_data)
+  print(continental_tbl)
   
   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
   
