@@ -352,7 +352,7 @@ saveProductionStacks <- function(output_dir,
                                  stack_palette = "productionStackWithBatteryContributions"
 ) {
   # on a pas encore de global district...... mais ça a l'air fascinant en vrai... asap !
-  # saveGlobalProductionStack(output_dir, timestep, stack_palette)
+  saveGlobalProductionStack(output_dir, timestep, stack_palette)
   saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ?
   #avec un par défaut ?
   saveNationalProductionStacks(output_dir, timestep, stack_palette)
@@ -394,10 +394,10 @@ saveGlobalProductionStack <- function(output_dir,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
       main = paste(timestep, "production stack for the world in 2015", global_unit),
-      unit = continental_unit,
+      unit = global_unit,
       interactive = FALSE
     )
-    png_path = file.path(prod_stack_dir, paste0(cont, "_", timestep, ".png"))
+    png_path = file.path(prod_stack_dir, paste0("world_", timestep, ".png"))
     savePlotAsPng(stack_plot, file = png_path,
                   width = WIDTH, #3*WIDTH,
                   height = HEIGHT # 2*HEIGHT)
@@ -1149,7 +1149,7 @@ saveRegionalLoadMonotones <- function(output_dir,
 saveLoadMonotones <- function(output_dir,
                               timestep = "hourly"
                               ) {
-  # saveGlobalLoadMonotone(output_dir, timestep)
+  saveGlobalLoadMonotone(output_dir, timestep)
   saveContinentalLoadMonotones(output_dir, timestep)
   saveNationalLoadMonotones(output_dir, timestep)
   saveRegionalLoadMonotones(output_dir, timestep)
@@ -1292,7 +1292,7 @@ emissions_tbl <- emissions_data %>%
 
 # de façon provisoire on va tej Oil..
 
-print(emissions_tbl)
+# print(emissions_tbl)
 
 continental_data <- getContinentalData("annual")
 continental_tbl <- as_tibble(continental_data) %>%
@@ -1312,7 +1312,7 @@ continental_tbl <- as_tibble(continental_data) %>%
 
 # bon jsp je suis paumé un peu
 
-print(continental_tbl)
+# print(continental_tbl)
 
 # Histogram time babey
 
@@ -1397,18 +1397,19 @@ saveContinentalEmissionHistograms <- function(output_dir,
 #nodes = all_deane_nodes_lst
 output_dir <- initializeOutputFolder_v2()
 
-saveContinentalEmissionHistograms(output_dir)
+# saveContinentalEmissionHistograms(output_dir)
 # Ah puis les graphes du Deane il font des histogrammes par techno, un graphe = un continent...
 # ok... moi je verrais bien une stack colorée en fait mais on peut faire comme le Deane
 
-# saveProductionStacks(output_dir #,
-#                      #timestep = "daily",
-#                      #stack_palette = "productionStackWithBatteryContributions"
-# )
-# 
-# saveLoadMonotones(output_dir #,
-#                      #timestep = "daily"
-# )
+saveProductionStacks(output_dir #,
+                     #timestep = "daily",
+                     #stack_palette = "productionStackWithBatteryContributions"
+                     # peut-être aussi sélection de sauvegarder que les continental, world, etc
+)
+
+saveLoadMonotones(output_dir #,
+                     #timestep = "daily"
+)
 
 # Selon l'ordre dans lequel on a envie d'avoir des trucs, on peut aussi faire genre
 # getContinentalGraphs qui fait toutes les continentales (monotones, stacks, etc)

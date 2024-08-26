@@ -78,7 +78,7 @@ createGeographyTable <- function(nodes_lst) { # things would be more robust if t
 geography_tbl <- createGeographyTable(all_deane_nodes_lst)
 saveRDS(geography_tbl, ".\\src\\objects\\geography_tbl.rds")
 geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
-print(geography_tbl, n = 258)
+# print(geography_tbl, n = 258)
 # print(createGeographyTable(north_america_nodes_lst))
 
 # print(regional_nodes_tbl, n = 100)
@@ -170,7 +170,7 @@ createGlobalDistrict <- function(nodes #,
                  add_area = all_areas,
                  output = TRUE
                  )
-  msg = "[DISTRICTS] - Done creating global district..."
+  msg = "[DISTRICTS] - Done creating global district!"
   logFull(msg)
   }
 

@@ -7,7 +7,7 @@
 study_basename <- "Deane_testWorld" # pourrait être corrélé à import_study_name en vrai
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
 CREATE_STUDY = FALSE
-IMPORT_STUDY_NAME = "Deane_testWorld__2024_08_21_09_25_06"
+IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
@@ -16,7 +16,7 @@ IMPORT_STUDY_NAME = "Deane_testWorld__2024_08_21_09_25_06"
 LAUNCH_SIMULATION_NAME = "15thmClu_accUCM"
 INCLUDE_DATE_IN_SIMULATION = TRUE
 LAUNCH_SIMULATION = FALSE
-IMPORT_SIMULATION_NAME = "20240821-1534eco-World_vDistricts_accurateUCM" # -1 for latest
+IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
 READ_RESULTS = TRUE
