@@ -34,8 +34,8 @@ if (simulation_name == -1) {
 
 setRam(16)
 
-start_date <- "2015-01-01"
-end_date <- "2015-12-31"
+# start_date <- "2015-01-01"
+# end_date <- "2015-12-31"
 
 source(".\\src\\antaresReadResults_support\\productionStacksPresets.R")
 source(".\\src\\data\\addNodes.R")
@@ -120,7 +120,7 @@ initializeOutputFolder_v2 <- function(
   
   geo_scales_dirs = c(global_dir, continental_dir, national_dir, regional_dir)
   
-  rawdata_dir <- file.path(output_dir, "Raw data")
+  rawdata_dir <- file.path(output_dir, "Raw data (EMPTY)")
   if (!dir.exists(rawdata_dir)) {
     dir.create(rawdata_dir)
   }
@@ -137,19 +137,19 @@ initializeOutputFolder_v2 <- function(
   # copyOutput(opts, extname, mcYears = "all")
   
   for (folder in geo_scales_dirs) {
-    prod_stack_dir <- file.path(folder, "Production stacks")
-    # ça ça pourrait aussi ce mettre en liste genre, la liste des noms possibles
-    # de trucs qu'on peut faire
-    if (!dir.exists(prod_stack_dir)) {
-      dir.create(prod_stack_dir)
-    }
-    
+    # prod_stack_dir <- file.path(folder, "Production stacks")
+    # # ça ça pourrait aussi ce mettre en liste genre, la liste des noms possibles
+    # # de trucs qu'on peut faire
+    # if (!dir.exists(prod_stack_dir)) {
+    #   dir.create(prod_stack_dir)
+    # }
+    # 
     load_monot_dir <- file.path(folder, "Load monotones")
     if (!dir.exists(load_monot_dir)) {
       dir.create(load_monot_dir)
     }
     
-    emis_histo_dir <- file.path(folder, "Emission histograms")
+    emis_histo_dir <- file.path(folder, "Emission histograms (EMPTY)")
     if (!dir.exists(emis_histo_dir)) {
       dir.create(emis_histo_dir)
     }
@@ -220,6 +220,10 @@ getAntaresData <- function(nodes, timestep) {
 ##########
 
 getGlobalData <- function(timestep) {
+  # ATTENTION J'AI PAS ENCORE DIVISE PAR EUH 24 POUR LE DAILY SELON SI C'EST MACHIN ETC
+  # Et de manière générale il faut probablement garder un truc uniforme genre. MWh partout.
+  # Sinon ça contribue ptet à rendre graphes difficiles à lire. Quoique : sur les continents on connaît
+  # nos capacités en GW, techno par techno.
   global_data <- readAntares(areas = NULL,
                               districts = "world", # ça pourrait être une variable etc etc
                               mcYears = NULL,
@@ -349,14 +353,16 @@ getRegionalData <- function(timestep) {
 
 saveProductionStacks <- function(output_dir,
                                  timestep = "daily",
+                                 start_date = "2015-01-01",
+                                 end_date = "2015-12-31",
                                  stack_palette = "productionStackWithBatteryContributions"
 ) {
   # on a pas encore de global district...... mais ça a l'air fascinant en vrai... asap !
-  saveGlobalProductionStack(output_dir, timestep, stack_palette)
-  saveContinentalProductionStacks(output_dir, timestep, stack_palette) # unit en argument ?
+  saveGlobalProductionStack(output_dir, timestep, start_date, end_date, stack_palette)
+  saveContinentalProductionStacks(output_dir, timestep, start_date, end_date, stack_palette) # unit en argument ?
   #avec un par défaut ?
-  saveNationalProductionStacks(output_dir, timestep, stack_palette)
-  saveRegionalProductionStacks(output_dir, timestep, stack_palette)
+  saveNationalProductionStacks(output_dir, timestep, start_date, end_date, stack_palette)
+  saveRegionalProductionStacks(output_dir, timestep, start_date, end_date, stack_palette)
   
   # Idée : MWh pour pays, GWh pour continents, TWh pour monde
   # OU en vrai de vrai
@@ -370,8 +376,10 @@ saveProductionStacks <- function(output_dir,
 ################################################################################
 
 saveGlobalProductionStack <- function(output_dir,
-                                            timestep = "daily",
-                                            stack_palette = "productionStackWithBatteryContributions"
+                                      timestep = "daily",
+                                      start_date = "2015-01-01",
+                                      end_date = "2015-12-31",
+                                      stack_palette = "productionStackWithBatteryContributions"
 ) {
   msg = "[MAIN] - Preparing to save global production stack..."
   logMain(msg)
@@ -380,7 +388,13 @@ saveGlobalProductionStack <- function(output_dir,
   
   global_dir <- file.path(output_dir, "1 - Global-level graphs")
   
-  prod_stack_dir <- file.path(global_dir, "Production stacks")
+  # prod_stack_dir <- file.path(global_dir, "Production stacks")
+  prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
+  prod_stack_dir <- file.path(global_dir, prod_stack_folder)
+  if (!dir.exists(prod_stack_dir)) {
+    dir.create(prod_stack_dir)
+  }
+  
   
   
   global_unit = "TWh"
@@ -397,20 +411,23 @@ saveGlobalProductionStack <- function(output_dir,
       unit = global_unit,
       interactive = FALSE
     )
-    png_path = file.path(prod_stack_dir, paste0("world_", timestep, ".png"))
+    png_path = file.path(prod_stack_dir, "world.png")
     savePlotAsPng(stack_plot, file = png_path,
                   width = WIDTH, #3*WIDTH,
                   height = HEIGHT # 2*HEIGHT)
     )
-  
+    #msg = paste("[OUTPUT] - The", timestep, "production stack for", cont, "from", start_date, "to", end_date, "has been saved!")
   msg = "[MAIN] - Done saving global production stack!" # et l'art du timer, il se perd...
+  # Et en fait c'est ptet pas là qu'il faudrait mettre le main, sinon incohérence avec les autres trucs où l'on précise timestep et date etc
   logMain(msg)
 }
 
 
 saveContinentalProductionStacks <- function(output_dir,
-                                 timestep = "daily",
-                                 stack_palette = "productionStackWithBatteryContributions"
+                                            timestep = "daily",
+                                            start_date = "2015-01-01",
+                                            end_date = "2015-12-31",
+                                            stack_palette = "productionStackWithBatteryContributions"
                                  # pour le colorblind check, faire un "colorblindify" pour aperçus
 ) {
   msg = "[MAIN] - Preparing to save continental production stacks..."
@@ -423,7 +440,12 @@ saveContinentalProductionStacks <- function(output_dir,
   
   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
   
-  prod_stack_dir <- file.path(continental_dir, "Production stacks")
+  # prod_stack_dir <- file.path(continental_dir, "Production stacks")
+  prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
+  prod_stack_dir <- file.path(continental_dir, prod_stack_folder)
+  if (!dir.exists(prod_stack_dir)) {
+    dir.create(prod_stack_dir)
+  }
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   #print(continents)
@@ -441,14 +463,14 @@ saveContinentalProductionStacks <- function(output_dir,
       unit = continental_unit,
       interactive = FALSE
     )
-    msg = paste("[OUTPUT] - Saving", timestep, "production stack for", cont, "continent...")
+    msg = paste("[OUTPUT] - Saving production stack for", cont, "continent...")
     logFull(msg)
-    png_path = file.path(prod_stack_dir, paste0(cont, "_", timestep, ".png"))
+    png_path = file.path(prod_stack_dir, paste0(cont, ".png"))
     savePlotAsPng(stack_plot, file = png_path,
                   width = WIDTH, #3*WIDTH,
                   height = HEIGHT # 2*HEIGHT)
     )
-    msg = paste("[OUTPUT] -", timestep, "production stack for", cont, "has been saved!")
+    msg = paste("[OUTPUT] - The", timestep, "production stack for", cont, "from", start_date, "to", end_date, "has been saved!")
     logFull(msg)
   }
   
@@ -458,8 +480,10 @@ saveContinentalProductionStacks <- function(output_dir,
 
 
 saveNationalProductionStacks <- function(output_dir,
-                                            timestep = "daily",
-                                            stack_palette = "productionStackWithBatteryContributions"
+                                         timestep = "daily",
+                                         start_date = "2015-01-01",
+                                         end_date = "2015-12-31",
+                                         stack_palette = "productionStackWithBatteryContributions"
 ) {
   msg = "[MAIN] - Preparing to save national production stacks..."
   logMain(msg)
@@ -471,7 +495,12 @@ saveNationalProductionStacks <- function(output_dir,
   
   national_dir <- file.path(output_dir, "3 - National-level graphs")
   
-  prod_stack_dir <- file.path(national_dir, "Production stacks")
+  # prod_stack_dir <- file.path(national_dir, "Production stacks")
+  prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
+  prod_stack_dir <- file.path(national_dir, prod_stack_folder)
+  if (!dir.exists(prod_stack_dir)) {
+    dir.create(prod_stack_dir)
+  }
   
   countries <- getAreas(select = COUNTRIES, regexpSelect = FALSE)
   # on va faire plus simple...
@@ -505,14 +534,14 @@ saveNationalProductionStacks <- function(output_dir,
       unit = national_unit,
       interactive = FALSE
     )
-    msg = paste("[OUTPUT] - Saving", timestep, "production stack for", ctry, "country...")
+    msg = paste("[OUTPUT] - Saving production stack for", ctry, "country...")
     logFull(msg)
-    png_path = file.path(prod_stack_dir, paste0(ctry, "_", timestep, ".png"))
+    png_path = file.path(prod_stack_dir, paste0(ctry, ".png"))
     savePlotAsPng(stack_plot, file = png_path,
                   width = WIDTH, #3*WIDTH,
                   height = HEIGHT # 2*HEIGHT)
     )
-    msg = paste("[OUTPUT] -", timestep, "production stack for", ctry, "has been saved!")
+    msg = paste("[OUTPUT] - The", timestep, "production stack for", ctry, "from", start_date, "to", end_date, "has been saved!")
     logFull(msg)
   }
   
@@ -523,8 +552,10 @@ saveNationalProductionStacks <- function(output_dir,
 
 
 saveRegionalProductionStacks <- function(output_dir,
-                                            timestep = "daily",
-                                            stack_palette = "productionStackWithBatteryContributions"
+                                         timestep = "daily",
+                                         start_date = "2015-01-01",
+                                         end_date = "2015-12-31",
+                                         stack_palette = "productionStackWithBatteryContributions"
 ) {
   msg = "[MAIN] - Preparing to save regional production stacks..."
   logMain(msg)
@@ -537,7 +568,12 @@ saveRegionalProductionStacks <- function(output_dir,
   
   regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
   
-  prod_stack_dir <- file.path(regional_dir, "Production stacks")
+  # prod_stack_dir <- file.path(regional_dir, "Production stacks")
+  prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
+  prod_stack_dir <- file.path(regional_dir, prod_stack_folder)
+  if (!dir.exists(prod_stack_dir)) {
+    dir.create(prod_stack_dir)
+  }
   
   regions <- getAreas(select = REGIONS, regexpSelect = FALSE)
   #print(regions)
@@ -555,14 +591,14 @@ saveRegionalProductionStacks <- function(output_dir,
       unit = regional_unit,
       interactive = FALSE
     )
-    msg = paste("[OUTPUT] - Saving", timestep, "production stack for", regn, "region...")
+    msg = paste("[OUTPUT] - Saving production stack for", regn, "region...")
     logFull(msg)
-    png_path = file.path(prod_stack_dir, paste0(regn, "_", timestep, ".png"))
+    png_path = file.path(prod_stack_dir, paste0(regn, ".png"))
     savePlotAsPng(stack_plot, file = png_path,
                   width = WIDTH, #3*WIDTH,
                   height = HEIGHT # 2*HEIGHT)
     )
-    msg = paste("[OUTPUT] -", timestep, "production stack for", regn, "has been saved!")
+    msg = paste("[OUTPUT] - The", timestep, "production stack for", regn, "from", start_date, "to", end_date, "has been saved!")
     logFull(msg)
   }
   
@@ -1400,6 +1436,21 @@ output_dir <- initializeOutputFolder_v2()
 # saveContinentalEmissionHistograms(output_dir)
 # Ah puis les graphes du Deane il font des histogrammes par techno, un graphe = un continent...
 # ok... moi je verrais bien une stack colorée en fait mais on peut faire comme le Deane
+
+saveProductionStacks(output_dir,
+                     "hourly",
+                     "2015-01-01",
+                     "2015-01-08"
+)
+
+saveProductionStacks(output_dir,
+                     "hourly",
+                     "2015-07-01",
+                     "2015-07-08"
+)
+# C'est pas intuitif parce que c'est "exclus". Ecrire incl et excl ou alors retirer un jour dans données écrites
+# tel que le dossier.
+# (Omega chelou parce qu'en vrai de vrai ça fait inclus sur world mais exclus sur continent ????)
 
 saveProductionStacks(output_dir #,
                      #timestep = "daily",
