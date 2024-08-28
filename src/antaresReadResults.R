@@ -113,6 +113,11 @@ initializeOutputFolder_v2 <- function(
     dir.create(national_dir)
   }
   
+  ranking_dir <- file.path(national_dir, "Import-Export Ranking")
+  if (!dir.exists(ranking_dir)) {
+    dir.create(ranking_dir)
+  }
+  
   regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
   if (!dir.exists(regional_dir)) {
     dir.create(regional_dir)
@@ -202,8 +207,39 @@ variables_of_interest <- c("SOLAR", "WIND",
 # Variables typiques quand on importe des liens :
 # "FLOW LIN.", "UCAP LIN." et des trucs de congestion on dirait
 
-##############################
+nb_hours_in_timestep <- c(
+  hourly = 1,
+  daily = 24,
+  weekly = 7 * 24,
+  # monthly is too complicated, not implemented for now since we probably won't use it...
+  annual = 52 * 7 * 24 # Antares actually optimises 52 weeks and not all 365 days.
+)
 
+variables_in_mwh = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", "WIND", "SOLAR",
+                     "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
+                     "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                     "H. STOR", "H. PUMP", "H. INFL", 
+                     "PSP_open_level", "PSP_closed_level", "Pondage_level", "Battery_level", 
+                     "Other1_level", "Other2_level", "Other3_level", "Other4_level", "Other5_level",
+                     "UNSP. ENRG", "SPIL. ENRG", "AVL DTG", "DTG MRG", "MAX MRG",
+                     
+                     "PSP_open_injection", "PSP_closed_injection", "Pondage_injection", "Battery_injection", 
+                     "Other1_injection", "Other2_injection", "Other3_injection", "Other4_injection", "Other5_injection",
+                     "PSP_open_withdrawal", "PSP_closed_withdrawal", "Pondage_withdrawal", "Battery_withdrawal", 
+                     "Other1_withdrawal", "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal", "Other5_withdrawal")
+
+# Et ce n'est pas précisé dans les sorties Antares que l'injection/soutirage des batteries ce sont des MWh,
+# c'est écrit "MW", mais... ce serait incohérent dans nos graphes sinon.
+
+# A noter que le "diviser par 24" machin ca devrait etre un parametre !!
+# reglable et tout pour avoir des MWh si on veut et des MW si on veut aussi !!!
+
+
+variables_of_interest_in_mwh <- intersect(variables_of_interest, variables_in_mwh)
+
+##############################
+# simplify	
+# If TRUE and only one type of output is imported then a data.table is returned. If FALSE, the result will always be a list of class "antaresData".
 getAntaresData <- function(nodes, timestep) {
   areas = getAreas(nodes)
   antares_data <- readAntares(areas = areas,
@@ -228,8 +264,20 @@ getGlobalData <- function(timestep) {
                               districts = "world", # ça pourrait être une variable etc etc
                               mcYears = NULL,
                               select = variables_of_interest,
-                              timeStep = timestep
+                              timeStep = timestep,
+                             simplify = TRUE
   )
+  # print(global_data)
+  hours <- nb_hours_in_timestep[[timestep]]
+  
+  global_data <- global_data %>%
+    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  
+  # print(global_data)
+  
+  #global_data <- as.antaresDataTable(global_data)
+  # ça n'a pas l'air d'être nécessaire ? 
+   
   # à tester
   # print(antares_data)
   return(global_data)
@@ -251,8 +299,13 @@ geography_lower_tbl <- as_tibble(tolowerVec(geography_tbl))
 continents <- geography_lower_tbl$continent %>% unique() #ça peut pas être global ça ?
 # print(continents)
 
+# NB !!!!
+# On voit des choses étranges genre Asie un plateau qui s'étend sur tout midi.
+# C'est un peu normal, ça s'appelle le décalage horaire !
+# Pour rappel l'Excel de demande s'appelait UTC, c'est pas pour rien !
+
 getContinentalData <- function(timestep) {
-  timestep = "daily"
+  #hours <- nb_hours_in_timestep[[timestep]]
   # districts = getDistricts(NULL)
   # continental_districts <- intersect(districts, continents)
   # mdr c'est débile att
@@ -266,8 +319,14 @@ getContinentalData <- function(timestep) {
                               districts = continental_districts,
                               mcYears = NULL,#"all", # let's see if maybe it's better at averages
                               select = variables_of_interest,
-                              timeStep = timestep
+                              timeStep = timestep,
+                              simplify = TRUE
                               )
+  
+  hours <- nb_hours_in_timestep[[timestep]]
+  continental_data <- continental_data %>%
+    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  
   # print(continental_data)
   return(continental_data)
 } 
@@ -292,7 +351,6 @@ COUNTRIES <- geography_lower_tbl$country %>% unique() #ça peut pas être global
 # depuis le début...
 
 getNationalData <- function(timestep) {
-  timestep = "daily"
   country_areas = getAreas(select = COUNTRIES, #lowercase y avait un pb, verifions que si ca se trouve il FAUT que ce soit global
                            regexpSelect = FALSE)
   country_districts = getDistricts(select = COUNTRIES,
@@ -314,6 +372,11 @@ getNationalData <- function(timestep) {
   #   stop("Columns in 'areas' and 'districts' are not identical.")
   # }
   combined_data <- rbind(areas_data, districts_data)
+  
+  hours <- nb_hours_in_timestep[[timestep]]
+  combined_data <- combined_data %>%
+    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  
   # print(combined_data)
   # Possible qu'il soit reconnu comme un "simple datatable" et non un antaresDataTable
   # de type areas. Si c'est le cas, il y a des fonctions pour interpréter un df en objet antares
@@ -333,7 +396,6 @@ REGIONS <- regions
 # print(regions)
 
 getRegionalData <- function(timestep) {
-  timestep = "daily"
   regional_areas = getAreas(select = regions,
                             regexpSelect = FALSE)
   
@@ -343,6 +405,10 @@ getRegionalData <- function(timestep) {
                               select = variables_of_interest,
                               timeStep = timestep
   )
+  
+  hours <- nb_hours_in_timestep[[timestep]]
+  regional_data <- regional_data %>%
+    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
 
   # print(regional_data)
   return(regional_data)
@@ -1302,6 +1368,58 @@ saveCountryProductionMonotones <- function(nodes,
 
 ################################################################################
 
+saveImportExportRanking <- function(output_dir) {
+                        # timestep = "annual") # does it have any other sense otherwise ?
+  msg = "[MAIN] - Preparing to save import/export ranking of countries..."
+  logMain(msg)
+  
+  national_data <- getNationalData("annual")
+  
+  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  
+  ranking_dir <- file.path(national_dir, "Import-Export Ranking")
+  
+  # Convert data to tibble
+  national_tbl <- as_tibble(national_data)
+  
+  # Create a column for export/import status
+  national_tbl <- national_tbl %>%
+    mutate(EXPORT = -BALANCE,
+           Status = ifelse(BALANCE > 0, "Export", "Import"))
+  # ça n'a aucun sens mais ça marche comme ça
+  
+  # print(national_tbl)
+  
+  # Sort the data by BALANCE in descending order
+  national_tbl <- national_tbl %>%
+    arrange(desc(EXPORT))
+  
+  print(national_tbl, n = 250)
+  
+  # Create the bar plot
+  p <- ggplot(national_tbl, aes(x = reorder(area, EXPORT), y = -EXPORT, fill = Status)) +
+    geom_bar(stat = "identity") +
+    scale_fill_manual(values = c("Export" = "green", "Import" = "red")) +
+    labs(x = "Country", y = "Export (MWh)", title = "Country Export/Import Balance") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  
+  plot_path <- file.path(ranking_dir, "allCountries.png") # ici, peut-être pertinent de faire
+  # seulement quelques pays
+  # par contre faut se décider monsieur : je fais de l'anglais ou du français ?
+  # cf noms de dossiers vs légendes des graphes hehe
+  ggsave(filename = plot_path, plot = p, 
+         width = 2 * width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+         # is a particularly wide graph...
+         dpi = resolution_dpi)
+  
+    msg = "[MAIN] - Import/export ranking of countries has been saved !"
+    logMain(msg)
+}
+
+
+################################################################################
+
 
 emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
 
@@ -1437,30 +1555,40 @@ output_dir <- initializeOutputFolder_v2()
 # Ah puis les graphes du Deane il font des histogrammes par techno, un graphe = un continent...
 # ok... moi je verrais bien une stack colorée en fait mais on peut faire comme le Deane
 
-saveProductionStacks(output_dir,
-                     "hourly",
-                     "2015-01-01",
-                     "2015-01-08"
-)
+# Tiens : est-ce qu'un graphe des plus grands importateurs/exportateurs, 
+# en histogramme décroissant sur les pays, serait pas intéressant d'ailleurs ?
 
-saveProductionStacks(output_dir,
-                     "hourly",
-                     "2015-07-01",
-                     "2015-07-08"
-)
+saveImportExportRanking(output_dir)
+
+# saveProductionStacks(output_dir,
+#                      timestep = "daily"#,
+#                      #timestep = "daily",
+#                      #stack_palette = "productionStackWithBatteryContributions"
+#                      # peut-être aussi sélection de sauvegarder que les continental, world, etc
+# )
+
+# Marre de commenter décommenter, serait temps de fractionner un peu ce code...
+
+# saveProductionStacks(output_dir,
+#                      "hourly",
+#                      "2015-01-01",
+#                      "2015-01-08"
+# )
+# 
+# saveProductionStacks(output_dir,
+#                      "hourly",
+#                      "2015-07-01",
+#                      "2015-07-08"
+# )
 # C'est pas intuitif parce que c'est "exclus". Ecrire incl et excl ou alors retirer un jour dans données écrites
 # tel que le dossier.
 # (Omega chelou parce qu'en vrai de vrai ça fait inclus sur world mais exclus sur continent ????)
 
-saveProductionStacks(output_dir #,
-                     #timestep = "daily",
-                     #stack_palette = "productionStackWithBatteryContributions"
-                     # peut-être aussi sélection de sauvegarder que les continental, world, etc
-)
 
-saveLoadMonotones(output_dir #,
-                     #timestep = "daily"
-)
+
+# saveLoadMonotones(output_dir #,
+#                      #timestep = "daily"
+# )
 
 # Selon l'ordre dans lequel on a envie d'avoir des trucs, on peut aussi faire genre
 # getContinentalGraphs qui fait toutes les continentales (monotones, stacks, etc)
