@@ -91,6 +91,9 @@ source(".\\src\\data\\addNodes.R")
 # }
 
 initializeOutputFolder_v2 <- function(
+    # perhaps include the name of chosen palette (in parameters !) in this folder.
+  # this could help create colorblind-friendly palettes all in one go
+  # instead of multiplying folders and subfolders
     ) {
   output_dir = paste0("./output/results_", study_name, "-sim-",
                       simulation_name
@@ -103,6 +106,10 @@ initializeOutputFolder_v2 <- function(
   if (!dir.exists(graphs_dir)) {
     dir.create(graphs_dir)
   }
+  
+  # On top of a "graphs" folder, make a folder of csvs
+  # (that isn't exactly the raw data... but like antaresRead>tibble>csv
+  # which would make it less of a pain for potential readers)
   
   global_dir <- file.path(graphs_dir, "1 - Global-level graphs")
   if (!dir.exists(global_dir)) {
@@ -842,7 +849,7 @@ saveUnsuppliedAndSpillage <- function(nodes,
                            select = c("UNSP. ENRG", "SPIL. ENRG"),
                            timeStep = timestep
   )
-  msg = "[OUTPUT] - Preparing to save production monotones to output folder..."
+  msg = "[OUTPUT] - Preparing to save load monotones to output folder..."
   logFull(msg)
   country_graphs_dir = file.path(output_folder, "country_graphs")
   nodes_tbl <- getNodesTable(nodes)
@@ -953,15 +960,20 @@ saveGlobalLoadMonotone <- function(output_dir,
   
   glob_tbl_long$energy_source <- factor(glob_tbl_long$energy_source, levels = rev(sources_new))
   
+  # Calculate the percentage of time
+  glob_tbl_long <- glob_tbl_long %>%
+    mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
   
-  p <- ggplot(glob_tbl_long, aes(x = reorder(time, -LOAD))) +
-    geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
-    geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+  p <- ggplot(glob_tbl_long, aes(x = percent_time)) +
+    geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
+    # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+    geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
+    #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
     scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                  "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                  "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                  "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
-    labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = "world energy mix") +
+    labs(x = "Percentage of Time (%)", y = "Production (MWh)", fill = "world energy mix") +
     # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
     theme_minimal() +
     theme(
@@ -1044,15 +1056,20 @@ saveContinentalLoadMonotones <- function(output_dir,
     
     cont_tbl_long$energy_source <- factor(cont_tbl_long$energy_source, levels = rev(sources_new))
     
+    # Calculate the percentage of time
+    cont_tbl_long <- cont_tbl_long %>%
+      mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
-    p <- ggplot(cont_tbl_long, aes(x = reorder(time, -LOAD))) +
-      geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
-      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+    p <- ggplot(cont_tbl_long, aes(x = percent_time)) +
+      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
+      # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+      geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
+      #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
       scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                    "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
-      labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(cont, "energy mix")) +
+      labs(x = "Percentage of Time (%)", y = "Production (MWh)", fill = paste(cont, "energy mix")) +
       # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
       theme_minimal() +
       theme(
@@ -1071,13 +1088,13 @@ saveContinentalLoadMonotones <- function(output_dir,
         axis.text.y = element_text(size = 8)  # Y-axis labels size
       )
     
-    msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", cont, "node...")
+    msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", cont, "node...")
     logFull(msg)
     plot_path <- file.path(load_monot_dir, paste0(cont,"_monotone.png"))
     ggsave(filename = plot_path, plot = p, 
            width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
            dpi = resolution_dpi)
-    msg = paste("[OUTPUT] - The", timestep, "production monotone for", cont, "has been saved!")
+    msg = paste("[OUTPUT] - The", timestep, "load monotone for", cont, "has been saved!")
     logFull(msg)
   }
   
@@ -1145,15 +1162,20 @@ saveNationalLoadMonotones <- function(output_dir,
     
     ctry_tbl_long$energy_source <- factor(ctry_tbl_long$energy_source, levels = rev(sources_new))
     
+    # Calculate the percentage of time
+    ctry_tbl_long <- ctry_tbl_long %>%
+      mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
-    p <- ggplot(ctry_tbl_long, aes(x = reorder(time, -LOAD))) +
-      geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
-      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+    p <- ggplot(ctry_tbl_long, aes(x = percent_time)) +
+      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
+      # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+      geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
+      #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
       scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                    "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
-      labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(ctry, "energy mix")) +
+      labs(x = "Percentage of Time (%)", y = "Production (MWh)", fill = paste(ctry, "energy mix")) +
       # ATTENTION pour l'instant tout est en MWh il me semble
       # c'est pas comme antaresViz où "GWh" est passé dans les unités
       # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
@@ -1240,15 +1262,19 @@ saveRegionalLoadMonotones <- function(output_dir,
     
     regn_tbl_long$energy_source <- factor(regn_tbl_long$energy_source, levels = rev(sources_new))
     
+    # Calculate the percentage of time
+    regn_tbl_long <- regn_tbl_long %>%
+      mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
-    p <- ggplot(regn_tbl_long, aes(x = reorder(time, -LOAD))) +
-      geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
-      geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+    p <- ggplot(regn_tbl_long, aes(x = percent_time)) +
+      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
+      # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
+      geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
       scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                    "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
-      labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(regn, "energy mix")) +
+      labs(x = "Percentage of Time (%)", y = "Production (MWh)", fill = paste(regn, "energy mix")) +
       # ATTENTION pour l'instant tout est en MWh il me semble
       # c'est pas comme antaresViz où "GWh" est passé dans les unités
       # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
@@ -1269,13 +1295,13 @@ saveRegionalLoadMonotones <- function(output_dir,
         axis.text.y = element_text(size = 8)  # Y-axis labels size
       )
     
-    msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", regn, "node...")
+    msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", regn, "node...")
     logFull(msg)
     plot_path <- file.path(load_monot_dir, paste0(regn,"_monotone.png"))
     ggsave(filename = plot_path, plot = p, 
            width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
            dpi = resolution_dpi)
-    msg = paste("[OUTPUT] - The", timestep, "production monotone for", regn, "has been saved!")
+    msg = paste("[OUTPUT] - The", timestep, "load monotone for", regn, "has been saved!")
     logFull(msg)
   }
   
@@ -1384,13 +1410,13 @@ saveLoadMonotones <- function(output_dir,
 #           axis.text.y = element_text(size = 8)  # Y-axis labels size
 #         )
 #       
-#       msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", country, "node...")
+#       msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", country, "node...")
 #       logFull(msg)
 #       plot_path <- file.path(continent_dir, "productionMonotone", paste0(country,"_monotone.png"))
 #       ggsave(filename = plot_path, plot = p, 
 #              width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
 #              dpi = resolution_dpi)
-#       msg = paste("[OUTPUT] - The", timestep, "production monotone for", country, "has been saved!")
+#       msg = paste("[OUTPUT] - The", timestep, "load monotone for", country, "has been saved!")
 #       logFull(msg)
 #     }
 #   }
@@ -1417,7 +1443,7 @@ saveImportExportRanking <- function(output_dir) {
   msg = "[MAIN] - Preparing to save import/export ranking of countries..."
   logMain(msg)
   
-  national_data <- getNationalData("annual")
+  national_data <- getNationalData("annual", FALSE)
   
   national_dir <- file.path(output_dir, "Graphs", "3 - National-level graphs")
   
@@ -1432,32 +1458,49 @@ saveImportExportRanking <- function(output_dir) {
   
   # Create a column for export/import status
   national_tbl <- national_tbl %>%
-    mutate(EXPORT = -BALANCE,
+    mutate(BALANCE_TWH = BALANCE/MWH_IN_TWH,
+           EXPORT_TWH = -BALANCE_TWH,
            Status = ifelse(BALANCE > 0, "Export", "Import"))
   # ça n'a aucun sens mais ça marche comme ça
+  # de manière générale faudrait vrmt faire un truc genre...
+  # "convert antares data to twh" ou un truc comme ça..............
   
   # print(national_tbl)
   
+  # Filter out countries with zero import/export balance
+  national_tbl <- national_tbl %>%
+    filter(BALANCE_TWH != 0)
+  
   # Sort the data by BALANCE in descending order
   national_tbl <- national_tbl %>%
-    arrange(EXPORT)
+    arrange(EXPORT_TWH)
   
   # print(national_tbl, n = 250)
   
-  # Create the bar plot
-  p <- ggplot(national_tbl, aes(x = reorder(area, EXPORT), y = BALANCE, fill = Status)) +
-    geom_bar(stat = "identity") +
+  # Create the bar plot with perfect alignment
+  p <- ggplot(national_tbl, aes(x = reorder(area, EXPORT_TWH), y = BALANCE_TWH, fill = Status)) +
+    geom_bar(stat = "identity", width = 0.8) +  # Adjust width if needed
     scale_fill_manual(values = c("Export" = "green", "Import" = "red")) +
-    labs(x = "Country", y = "Export (MWh)", title = "Country Export/Import Balance") +
+    labs(x = "Country", y = "Export (TWh)", title = "Country Export/Import Balance") +
+    #scale_x_discrete(expand = c(0, 0)) +  # Remove space around the bars
+    scale_y_continuous(sec.axis = dup_axis(name = "Export (TWh)")) +  # Duplicate y-axis on the right
+    geom_text(aes(label = ifelse(abs(BALANCE_TWH) >= 10, round(BALANCE_TWH, 0), round(BALANCE_TWH, 1))),
+              vjust = ifelse(national_tbl$BALANCE_TWH > 0, -0.5, 1.5),  # Position labels above or below the bars
+              hjust = 0.5,  # Center the text horizontally
+              size = 2) +  # Adjust size as needed
+    geom_vline(xintercept = seq(1.5, nrow(national_tbl) - 0.5, by = 1), color = "grey90", linetype = "dotted") +  # Vertical lines for readability
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, margin = margin(t = 0, r = 5, b = 0, l = -5)),  # Adjusting text position
+          axis.ticks.x = element_blank(),  # Remove default ticks to avoid misalignment
+          legend.position = "none",
+          axis.title.y.right = element_text(margin = margin(l = 10)))  # Add space between axis and text
   
   plot_path <- file.path(ranking_dir, "allCountries.png") # ici, peut-être pertinent de faire
   # seulement quelques pays
   # par contre faut se décider monsieur : je fais de l'anglais ou du français ?
   # cf noms de dossiers vs légendes des graphes hehe
   ggsave(filename = plot_path, plot = p, 
-         width = 2 * width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+         width = 1.5 * width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
          # is a particularly wide graph...
          dpi = resolution_dpi)
   
@@ -1942,11 +1985,15 @@ output_dir <- initializeOutputFolder_v2()
 # Tiens : est-ce qu'un graphe des plus grands importateurs/exportateurs, 
 # en histogramme décroissant sur les pays, serait pas intéressant d'ailleurs ?
 
+saveImportExportRanking(output_dir)
+
+saveLoadMonotones(output_dir #,
+                  #timestep = "daily"
+)
+
 saveContinentalGenerationHistograms(output_dir)
 
 saveContinentalEmissionHistograms(output_dir)
-
-saveImportExportRanking(output_dir)
 
 # saveProductionStacks(output_dir,
 #                      timestep = "annual",  # On changera probablement plus souvent stack que dates par contre
@@ -1980,11 +2027,6 @@ saveProductionStacks(output_dir,
 # tel que le dossier.
 # (Omega chelou parce qu'en vrai de vrai ça fait inclus sur world mais exclus sur continent ????)
 
-
-
-# saveLoadMonotones(output_dir #,
-#                      #timestep = "daily"
-# )
 
 # Selon l'ordre dans lequel on a envie d'avoir des trucs, on peut aussi faire genre
 # getContinentalGraphs qui fait toutes les continentales (monotones, stacks, etc)
