@@ -959,10 +959,38 @@ saveGlobalLoadMonotone <- function(output_dir,
     pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production")
   
   glob_tbl_long$energy_source <- factor(glob_tbl_long$energy_source, levels = rev(sources_new))
+
   
   # Calculate the percentage of time
   glob_tbl_long <- glob_tbl_long %>%
     mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
+  # Ah but this is incorrect because it uses long and so it's like ??? Uh??
+  
+  # # A tibble: 148,512 x 5
+  # time                   LOAD energy_source production percent_time
+  # <dttm>                <dbl> <fct>              <dbl>        <dbl>
+  #   1 2015-01-08 13:00:00 3152131 NUCLEAR           369183     0       
+  # 2 2015-01-08 13:00:00 3152131 WIND               66367     0.000673
+  # 3 2015-01-08 13:00:00 3152131 SOLAR              52667     0.00135 
+  # 4 2015-01-08 13:00:00 3152131 GEOTHERMAL         13178     0.00202 
+  # 5 2015-01-08 13:00:00 3152131 HYDRO             551312     0.00269 
+  # 6 2015-01-08 13:00:00 3152131 BIO AND WASTE     107908     0.00337 
+  # 7 2015-01-08 13:00:00 3152131 GAS               468406     0.00404 
+  # 8 2015-01-08 13:00:00 3152131 COAL             1449232     0.00471 
+  # 9 2015-01-08 13:00:00 3152131 OIL                63354     0.00539 
+  # 10 2015-01-08 13:00:00 3152131 OTHER               6903     0.00606 
+  
+  # print(glob_tbl_sorted)
+  # print(glob_tbl_long)
+
+  # Assuming glob_tbl_sorted is already calculated as before
+  max_value <- max(glob_tbl_long$LOAD)
+  min_value <- min(glob_tbl_long$LOAD)
+
+  # Indexes for maximum and minimum positions
+  max_index <- 1  # Since the data is sorted in descending order
+  min_index <- 100 #I mean maybe coz we have percentages ?
+  # Very experimental stuff here
   
   p <- ggplot(glob_tbl_long, aes(x = percent_time)) +
     # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
@@ -990,7 +1018,12 @@ saveGlobalLoadMonotone <- function(output_dir,
       
       axis.text.x = element_text(size = 8), # X-axis labels size
       axis.text.y = element_text(size = 8)  # Y-axis labels size
-    )
+    ) +
+    # Add annotations for the maximum and minimum values
+    annotate("text", x = max_index, y = max_value, label = paste("Peak:", round(max_value, 2)), 
+             vjust = -1, hjust = 0, color = "black", size = 3) +  # Adjust vjust/hjust as needed
+    annotate("text", x = min_index, y = max_value, label = paste("Base:", round(min_value, 2)), # y = min_value before, but not as convenient
+             vjust = 1, hjust = 1, color = "black", size = 3)
 
   plot_path <- file.path(load_monot_dir, "world_monotone.png")
   ggsave(filename = plot_path, plot = p, 
@@ -1488,11 +1521,17 @@ saveImportExportRanking <- function(output_dir) {
               vjust = ifelse(national_tbl$BALANCE_TWH > 0, -0.5, 1.5),  # Position labels above or below the bars
               hjust = 0.5,  # Center the text horizontally
               size = 2) +  # Adjust size as needed
-    geom_vline(xintercept = seq(1.5, nrow(national_tbl) - 0.5, by = 1), color = "grey90", linetype = "dotted") +  # Vertical lines for readability
+    
+    geom_vline(xintercept = seq(1.5, nrow(national_tbl) - 0.5, by = 1), color = "grey90", linetype = "solid") +  # Vertical lines for readability
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1, margin = margin(t = 0, r = 5, b = 0, l = -5)),  # Adjusting text position
           axis.ticks.x = element_blank(),  # Remove default ticks to avoid misalignment
           legend.position = "none",
+          
+          # Make the grid lines dotted
+          panel.grid.major.x = element_line(color = "grey90", linetype = "dotted", size = 0.5),  # Separation lines between bars
+          #panel.grid.major.y = element_line(color = "gray", linetype = "dotted", size = 0.5)   # Horizontal grid lines behind bars
+          
           axis.title.y.right = element_text(margin = margin(l = 10)))  # Add space between axis and text
   
   plot_path <- file.path(ranking_dir, "allCountries.png") # ici, peut-être pertinent de faire
