@@ -260,7 +260,9 @@ getAntaresData <- function(nodes, timestep) {
 
 ##########
 
-getGlobalData <- function(timestep) {
+getGlobalData <- function(timestep, convert_to_MW = TRUE) {  # ou alors : faire des fonctions :
+  # convert_to_MW, convert_to_TWh fin jsp que ce soit des procédés à part que get data
+  
   # ATTENTION J'AI PAS ENCORE DIVISE PAR EUH 24 POUR LE DAILY SELON SI C'EST MACHIN ETC
   # Et de manière générale il faut probablement garder un truc uniforme genre. MWh partout.
   # Sinon ça contribue ptet à rendre graphes difficiles à lire. Quoique : sur les continents on connaît
@@ -273,10 +275,13 @@ getGlobalData <- function(timestep) {
                              simplify = TRUE
   )
   # print(global_data)
-  hours <- nb_hours_in_timestep[[timestep]]
+  if (convert_to_MW) {
+    hours <- nb_hours_in_timestep[[timestep]]
+    
+    global_data <- global_data %>%
+      mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  }
   
-  global_data <- global_data %>%
-    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
   
   # print(global_data)
   
@@ -309,7 +314,7 @@ continents <- geography_lower_tbl$continent %>% unique() #ça peut pas être glo
 # C'est un peu normal, ça s'appelle le décalage horaire !
 # Pour rappel l'Excel de demande s'appelait UTC, c'est pas pour rien !
 
-getContinentalData <- function(timestep) {
+getContinentalData <- function(timestep, convert_to_MW = TRUE) {
   #hours <- nb_hours_in_timestep[[timestep]]
   # districts = getDistricts(NULL)
   # continental_districts <- intersect(districts, continents)
@@ -328,9 +333,12 @@ getContinentalData <- function(timestep) {
                               simplify = TRUE
                               )
   
-  hours <- nb_hours_in_timestep[[timestep]]
-  continental_data <- continental_data %>%
-    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  if (convert_to_MW) {
+    hours <- nb_hours_in_timestep[[timestep]]
+    
+    continental_data <- continental_data %>%
+      mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  }
   
   # print(continental_data)
   return(continental_data)
@@ -355,7 +363,7 @@ COUNTRIES <- geography_lower_tbl$country %>% unique() #ça peut pas être global
 #Should the case be ignored when evaluating the regular expressions ?
 # depuis le début...
 
-getNationalData <- function(timestep) {
+getNationalData <- function(timestep, convert_to_MW = TRUE) {
   country_areas = getAreas(select = COUNTRIES, #lowercase y avait un pb, verifions que si ca se trouve il FAUT que ce soit global
                            regexpSelect = FALSE)
   country_districts = getDistricts(select = COUNTRIES,
@@ -378,9 +386,12 @@ getNationalData <- function(timestep) {
   # }
   combined_data <- rbind(areas_data, districts_data)
   
-  hours <- nb_hours_in_timestep[[timestep]]
-  combined_data <- combined_data %>%
-    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  if (convert_to_MW) {
+    hours <- nb_hours_in_timestep[[timestep]]
+    
+    combined_data <- combined_data %>%
+      mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  }
   
   # print(combined_data)
   # Possible qu'il soit reconnu comme un "simple datatable" et non un antaresDataTable
@@ -400,7 +411,7 @@ regions <- regions_tbl$region %>% unique() #ça peut pas être global ça ?
 REGIONS <- regions
 # print(regions)
 
-getRegionalData <- function(timestep) {
+getRegionalData <- function(timestep, convert_to_MW = TRUE) {
   regional_areas = getAreas(select = regions,
                             regexpSelect = FALSE)
   
@@ -411,9 +422,12 @@ getRegionalData <- function(timestep) {
                               timeStep = timestep
   )
   
-  hours <- nb_hours_in_timestep[[timestep]]
-  regional_data <- regional_data %>%
-    mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  if (convert_to_MW) {
+    hours <- nb_hours_in_timestep[[timestep]]
+    
+    regional_data <- regional_data %>%
+      mutate(across(all_of(variables_of_interest_in_mwh), ~ . / hours))
+  }
 
   # print(regional_data)
   return(regional_data)
@@ -1479,9 +1493,41 @@ HEIGHT_720P = 720
 
 ##############################
 
+# Explicitly load the necessary packages
+library(ggplot2)
+library(tidyverse)
+
+
 deane_result_variables = c("MIX. FUEL", "COAL", "GAS", "MISC. DTG", "H. STOR", "NUCLEAR", "OIL", "SOLAR", "WIND")
+new_deane_result_variables = c("Bio and Waste", "Coal", "Gas", "Geothermal", "Hydro", "Nuclear", "Oil", "Solar", "Wind")
+
+# technology_colors <- c(
+#   "Bio and Waste" = "#006400",  # Dark Green
+#   "Coal" = "#808080",           # Grey
+#   "Gas" = "#FF0000",            # Red
+#   "Geothermal" = "#8B4513",     # SaddleBrown
+#   "Hydro" = "#1E90FF",          # DodgerBlue
+#   "Nuclear" = "#FFD700",        # Gold
+#   "Oil" = "#8B0000",            # DarkRed
+#   "Solar" = "#FFA500",          # Orange
+#   "Wind" = "#4682B4"            # SteelBlue
+# )
+  
+technology_colors <- c(
+    "Bio and Waste" = "darkgreen",
+    "Coal" = "darkred",
+    "Gas" = "red",
+    "Geothermal" = "springgreen",
+    "Hydro" = "blue",
+    "Nuclear" = "yellow",
+    "Oil" = "darkslategray",
+    "Solar" = "orange",
+    "Wind" = "turquoise"
+  )
+
 # Idée : déjà renommer les trucs dans getContinentalData ? psk là il va y avoir MISC DTG
 # alors que je veux avoir écrit bio and waste, geothermal etc
+MWH_IN_TWH = 1000000
 
 saveContinentalGenerationHistograms <- function(output_dir,
                                                 timestep = "annual" # ici je l'ai mm pas utilisé je crois
@@ -1492,39 +1538,111 @@ saveContinentalGenerationHistograms <- function(output_dir,
   msg = "[MAIN] - Preparing to save continental generation histograms..."
   logMain(msg)
   
-  continental_data <- getContinentalData(timestep)
+  continental_data <- getContinentalData(timestep, FALSE)
   continental_tbl <- as_tibble(continental_data)
   print(continental_tbl)
   
   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
   
-  emis_histo_dir <- file.path(continental_dir, "Generation histograms")
+  genr_histo_dir <- file.path(continental_dir, "Generation histograms")
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   
-  continental_unit = "TWh"
+  # continental_unit = "TWh"
+  
+  continental_tbl <- continental_tbl %>%
+    # Rename variables
+    rename(`Bio and Waste` = `MIX. FUEL`,
+           Coal = COAL,
+           Gas = GAS,
+           Geothermal = `MISC. DTG`,
+           Hydro = `H. STOR`,
+           Nuclear = NUCLEAR, 
+           Oil = OIL,
+           Solar = SOLAR,
+           Wind = WIND
+    ) %>%
+    mutate(across(all_of(new_deane_result_variables), ~ . / MWH_IN_TWH)) %>% # convert to TWh
+    select(district, new_deane_result_variables)
+  
+  # print(continental_tbl)
+  
+  # Convert the data to long format
+  continental_long_tbl <- continental_tbl %>%
+    pivot_longer(cols = all_of(new_deane_result_variables), 
+                 names_to = "Technology", 
+                 values_to = "Generation") %>%
+    mutate(Technology = factor(Technology, levels = new_deane_result_variables))
+  
+  # print(continental_long_tbl)
   
   for (cont in continents) {
-    histo_plot <- plot(continental_data,
-                       variable = deane_result_variables,
-                       elements = cont,
-                       mcYear = "average",
-                       type = "barplot",
-                       dateRange = NULL,
-                       aggregate = "none",
-                       interactive = FALSE,
-                       colors = "#334D73",
-                       unit = continental_unit,
-                       main = paste("Generation comparison", cont, "(TWh)") # aie la robustesse
-    )
+    
+    cont_tbl <- continental_long_tbl %>%
+      filter(district == cont)
+    
+    # print(cont_tbl)
+    
+    
+    p <- ggplot(cont_tbl, aes(x = Technology, y = Generation, fill = Technology)) +
+      geom_bar(stat = "identity", position = "dodge", color = "#334D73") +
+      
+      # Add text labels above the bars
+      geom_text(aes(label = round(Generation, 2)), 
+                vjust = -0.5, # Adjusts the vertical position of the text
+                color = "black", 
+                size = 3.5) + # Adjust the size as needed
+      
+      # Assign specific colors to each technology
+      scale_fill_manual(values = technology_colors) +
+      
+      # scale_fill_manual(values = rep("#334D73", length(new_deane_result_variables))) +
+      labs(title = paste("Generation comparison", cont, "(TWh)"),
+           #x = "Technology",
+           y = "TWh") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")
+      # theme(
+      #   legend.position = "right",
+      #   legend.text = element_text(size = 8), # Legend text size
+      #   legend.title = element_text(size = 10), # Legend title size
+      #   legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+      #   legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+      #   legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+      #   legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+      #   
+      #   axis.title.x = element_text(size = 10), # X-axis title size
+      #   axis.title.y = element_text(size = 10), # Y-axis title size
+      #   
+      #   axis.text.x = element_text(size = 8), # X-axis labels size
+      #   axis.text.y = element_text(size = 8)  # Y-axis labels size
+      # )
+    
+    # histo_plot <- plot(continental_data,
+    #                    variable = deane_result_variables,
+    #                    elements = cont,
+    #                    mcYear = "average",
+    #                    type = "barplot",
+    #                    dateRange = NULL,
+    #                    aggregate = "none",
+    #                    interactive = FALSE,
+    #                    colors = "#334D73",
+    #                    unit = continental_unit,
+    #                    main = paste("Generation comparison", cont, "(TWh)") # aie la robustesse
+    # )
     
     msg = paste("[OUTPUT] - Saving generation histograms for", cont, "continent...")
     logFull(msg)
-    png_path = file.path(emis_histo_dir, paste0(cont, "_generation.png"))
-    savePlotAsPng(histo_plot, file = png_path,
-                  width = HEIGHT_720P * 2,
-                  height = HEIGHT_720P
-                  )
+    png_path = file.path(genr_histo_dir, paste0(cont, "_generation.png"))
+    ggsave(filename = png_path, plot = p, 
+           width = 2*HEIGHT_720P/resolution_dpi, height = 2*HEIGHT_720P/resolution_dpi,
+           # is a particularly wide graph...
+           dpi = resolution_dpi)
+    # savePlotAsPng(gener_plot, file = png_path,
+    #               width = HEIGHT_720P * 2,
+    #               height = HEIGHT_720P
+    #               )
     msg = paste("[OUTPUT] - Done saving generation histograms for", cont, "continent !")
     logFull(msg)
   }
@@ -1626,7 +1744,7 @@ output_dir <- initializeOutputFolder_v2()
 
 saveContinentalGenerationHistograms(output_dir)
 
-saveImportExportRanking(output_dir)
+# saveImportExportRanking(output_dir)
 
 # saveProductionStacks(output_dir,
 #                      timestep = "annual",  # On changera probablement plus souvent stack que dates par contre
@@ -1637,12 +1755,12 @@ saveImportExportRanking(output_dir)
 # ptet que des bar plot serait mieux ? un truc à la mano sur ggplot ?
 # là pas si ouf que ça en vrai
 
-saveProductionStacks(output_dir,
-                     timestep = "daily"#,
-                     #timestep = "daily",
-                     #stack_palette = "productionStackWithBatteryContributions"
-                     # peut-être aussi sélection de sauvegarder que les continental, world, etc
-)
+# saveProductionStacks(output_dir,
+#                      timestep = "daily"#,
+#                      #timestep = "daily",
+#                      #stack_palette = "productionStackWithBatteryContributions"
+#                      # peut-être aussi sélection de sauvegarder que les continental, world, etc
+# )
 
 # Marre de commenter décommenter, serait temps de fractionner un peu ce code...
 
