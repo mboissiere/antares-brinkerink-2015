@@ -1392,12 +1392,12 @@ saveImportExportRanking <- function(output_dir) {
   
   # Sort the data by BALANCE in descending order
   national_tbl <- national_tbl %>%
-    arrange(desc(EXPORT))
+    arrange(EXPORT)
   
-  print(national_tbl, n = 250)
+  # print(national_tbl, n = 250)
   
   # Create the bar plot
-  p <- ggplot(national_tbl, aes(x = reorder(area, EXPORT), y = -EXPORT, fill = Status)) +
+  p <- ggplot(national_tbl, aes(x = reorder(area, EXPORT), y = BALANCE, fill = Status)) +
     geom_bar(stat = "identity") +
     scale_fill_manual(values = c("Export" = "green", "Import" = "red")) +
     labs(x = "Country", y = "Export (MWh)", title = "Country Export/Import Balance") +
@@ -1561,11 +1561,20 @@ output_dir <- initializeOutputFolder_v2()
 saveImportExportRanking(output_dir)
 
 # saveProductionStacks(output_dir,
-#                      timestep = "daily"#,
-#                      #timestep = "daily",
-#                      #stack_palette = "productionStackWithBatteryContributions"
-#                      # peut-être aussi sélection de sauvegarder que les continental, world, etc
+#                      timestep = "annual",  # On changera probablement plus souvent stack que dates par contre
+#                      "2015-01-01",
+#                      "2015-12-31",
+#                      "productionStackForAnnual"
 # )
+# ptet que des bar plot serait mieux ? un truc à la mano sur ggplot ?
+# là pas si ouf que ça en vrai
+
+saveProductionStacks(output_dir,
+                     timestep = "daily"#,
+                     #timestep = "daily",
+                     #stack_palette = "productionStackWithBatteryContributions"
+                     # peut-être aussi sélection de sauvegarder que les continental, world, etc
+)
 
 # Marre de commenter décommenter, serait temps de fractionner un peu ce code...
 

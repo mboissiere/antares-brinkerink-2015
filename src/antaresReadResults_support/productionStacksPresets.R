@@ -137,6 +137,44 @@ setProdStackAlias(
 )
 
 
+
+
+
+setProdStackAlias(
+  name = "productionStackForAnnual",
+  # Les tracés noir load et violet production gênent un peu
+  # Et peut-être pour les graphes nationaux il faudrait comparer pays de chaque continent ?
+  # Jsp bref
+  variables = alist(
+    Nucleaire = NUCLEAR,
+    Eolien = WIND,
+    Solaire = SOLAR,
+    Geothermique = `MISC. DTG`,
+    `Hydro lacs` = `H. STOR`,
+    
+    `Bio et dechets` = `MIX. FUEL`,
+    Gaz = GAS,
+    Charbon = COAL,
+    Fioul = OIL,
+    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    
+    `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+    `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+    `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+    `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+    `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+    
+    `Imports/Exports` = -BALANCE,
+    Defaillance = `UNSP. ENRG`
+  ),
+  colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
+             "darkgreen", "red", "darkred", "darkslategray", "lavender",
+             "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
+             "gray", "gray25"
+  )
+)
+
+
 ##########################################
 
 # Ok ici on va essayer de faire comme le précédent mais en dynamique,
