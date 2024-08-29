@@ -42,52 +42,53 @@ source(".\\src\\data\\addNodes.R")
 
 ################################################################################
 
-initializeOutputFolder <- function(
-    #nodes
-    ) {
-  # output_dir = file.path("output", "test")
-  output_dir = paste0("./output/results_", study_name, "-sim-",
-                      simulation_name
-                      )
-  # msg = "[OUTPUT] - Initializing output folder..."
-  # logFull(msg)
-  if (!dir.exists(output_dir)) {
-  dir.create(output_dir)
-  }
- 
-  continents_dir <- file.path(output_dir, "continent_graphs")
-  if (!dir.exists(continents_dir)) {
-    dir.create(continents_dir)
-  }
-
-  countries_dir <- file.path(output_dir, "country_graphs")
-  if (!dir.exists(countries_dir)) {
-    dir.create(countries_dir)
-  }
-  
-  nodes_tbl <- getNodesTable(nodes)
-  continents <- nodes_tbl$continent %>% unique()
-  for (continent in continents) {
-    continent_dir <- file.path(countries_dir, tolower(continent))
-    if (!dir.exists(continent_dir)) {
-      dir.create(continent_dir)
-    }
-    
-    # Possible piste d'amélioration :
-    # faire une arborisation [1] world avec dedans des png des graphes par continent à la deane
-    # puis [6] continents avec dossiers africa, asia etc et ce que j'ai l'habitude de faire 
-    # (en fait des graphes de chaque pays)
-    # ET ! dans chaque pays en fait il y a des régions finalement.
-    # dans les graphes pays, prendre en fait les districts as-chn na-usa etc au lieu des régions
-    # mais au sein de chaque continent en fait faire des dossiers genre
-    # [34] as-chn regions, [5] as-ind regions, [24] na-usa regions, etc
-    # et hop architecture monde -> continent -> pays -> région au fur et à mesure qu'on clique
-    # (avec à chaque fois des dossiers prodStack, prodMonotone, etc)
-    # (j'ai tellement envie de faire stack des exports genre dans quels pays ça part etc...)
-    
-  }
-  return(output_dir)
-}
+# initializeOutputFolder <- function(
+#     #nodes
+#     ) {
+#   # output_dir = file.path("output", "test")
+#   output_dir = paste0("./output/results_", study_name, "-sim-",
+#                       simulation_name
+#                       )
+#   # msg = "[OUTPUT] - Initializing output folder..."
+#   # logFull(msg)
+#   if (!dir.exists(output_dir)) {
+#   dir.create(output_dir)
+#   }
+#   
+#  
+#   continents_dir <- file.path(output_dir, "continent_graphs")
+#   if (!dir.exists(continents_dir)) {
+#     dir.create(continents_dir)
+#   }
+# 
+#   countries_dir <- file.path(output_dir, "country_graphs")
+#   if (!dir.exists(countries_dir)) {
+#     dir.create(countries_dir)
+#   }
+#   
+#   nodes_tbl <- getNodesTable(nodes)
+#   continents <- nodes_tbl$continent %>% unique()
+#   for (continent in continents) {
+#     continent_dir <- file.path(countries_dir, tolower(continent))
+#     if (!dir.exists(continent_dir)) {
+#       dir.create(continent_dir)
+#     }
+#     
+#     # Possible piste d'amélioration :
+#     # faire une arborisation [1] world avec dedans des png des graphes par continent à la deane
+#     # puis [6] continents avec dossiers africa, asia etc et ce que j'ai l'habitude de faire 
+#     # (en fait des graphes de chaque pays)
+#     # ET ! dans chaque pays en fait il y a des régions finalement.
+#     # dans les graphes pays, prendre en fait les districts as-chn na-usa etc au lieu des régions
+#     # mais au sein de chaque continent en fait faire des dossiers genre
+#     # [34] as-chn regions, [5] as-ind regions, [24] na-usa regions, etc
+#     # et hop architecture monde -> continent -> pays -> région au fur et à mesure qu'on clique
+#     # (avec à chaque fois des dossiers prodStack, prodMonotone, etc)
+#     # (j'ai tellement envie de faire stack des exports genre dans quels pays ça part etc...)
+#     
+#   }
+#   return(output_dir)
+# }
 
 initializeOutputFolder_v2 <- function(
     ) {
@@ -98,17 +99,22 @@ initializeOutputFolder_v2 <- function(
   dir.create(output_dir)
   }
   
-  global_dir <- file.path(output_dir, "1 - Global-level graphs")
+  graphs_dir <- file.path(output_dir, "Graphs")
+  if (!dir.exists(graphs_dir)) {
+    dir.create(graphs_dir)
+  }
+  
+  global_dir <- file.path(graphs_dir, "1 - Global-level graphs")
   if (!dir.exists(global_dir)) {
     dir.create(global_dir)
   }
   
-  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  continental_dir <- file.path(graphs_dir, "2 - Continental-level graphs")
   if (!dir.exists(continental_dir)) {
     dir.create(continental_dir)
   }
   
-  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  national_dir <- file.path(graphs_dir, "3 - National-level graphs")
   if (!dir.exists(national_dir)) {
     dir.create(national_dir)
   }
@@ -118,7 +124,7 @@ initializeOutputFolder_v2 <- function(
     dir.create(ranking_dir)
   }
   
-  regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+  regional_dir <- file.path(graphs_dir, "4 - Regional-level graphs")
   if (!dir.exists(regional_dir)) {
     dir.create(regional_dir)
   }
@@ -154,15 +160,18 @@ initializeOutputFolder_v2 <- function(
       dir.create(load_monot_dir)
     }
     
-    emis_histo_dir <- file.path(folder, "Emission histograms (EMPTY)")
+    emis_histo_dir <- file.path(folder, "Emissions histograms")
     if (!dir.exists(emis_histo_dir)) {
       dir.create(emis_histo_dir)
     }
+    # Only in continental for now. Honestly I should just put these
+    # outside of initiation.. initiate should only be for output_dir
     
     genr_histo_dir <- file.path(folder, "Generation histograms")
-    if (!dir.exists(emis_histo_dir)) {
-      dir.create(emis_histo_dir)
+    if (!dir.exists(genr_histo_dir)) {
+      dir.create(genr_histo_dir)
     }
+    # NB : this is actually only implemented in continental so far
   } 
   return(output_dir)
 }
@@ -1540,7 +1549,7 @@ saveContinentalGenerationHistograms <- function(output_dir,
   
   continental_data <- getContinentalData(timestep, FALSE)
   continental_tbl <- as_tibble(continental_data)
-  print(continental_tbl)
+  # print(continental_tbl)
   
   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
   
@@ -1647,87 +1656,243 @@ saveContinentalGenerationHistograms <- function(output_dir,
     logFull(msg)
   }
   
-  msg = "[MAIN] - Done saving continental emissions histograms!"
+  msg = "[MAIN] - Done saving continental generation histograms!"
   logMain(msg)
 }
 
 
-###############################
+########################
+KILOGRAMS_IN_TON = 1000
+# The numbers are off. Perhaps they were percentages.
+# So it's like, producing one MWh gives out also x% of CO2 ?
+# Weird.
+PERCENTAGE = 100
+# But wait, they CANT be percentages, because there are values like 104 and 103...
+# WHAT THE HELL IS GOING ON
+TONS_IN_MEGATON = 1000000 # 10e6
+
+print(emissions_tbl)
 
 saveContinentalEmissionHistograms <- function(output_dir,
-                                            timestep = "annual"# c'est vrai qu'on pourrait en faire d'autres. est-ce utile ?
-                                            # stack_palette = "productionStackWithBatteryContributions"
-                                            # il n'y a pas de palette mais c'est vrai qu'il faudrait faire un stack "par technologie"
-                                            # chose qui n'est pas représentée dans CO2 EMIS. - ah, il faudra faire des calculs !
+                                                timestep = "annual" # ici je l'ai mm pas utilisé je crois
+                                                # ah si dans l'import..
+                                                # c'est vrai qu'on pourrait en faire d'autres. est-ce utile ?
+                                                # This is the Deane-type histogram
 ) {
   msg = "[MAIN] - Preparing to save continental emission histograms..."
   logMain(msg)
   
-  continental_data <- getContinentalData(timestep)
-  # peut-être que là ça prend son sens de mettre en argument le fait de diviser par 8736
-  # genre ici je pense qu'on veut les TWh en brut pour le coup.......
-  continental_tbl <- as_tibble(continental_data)
+  timestep = "annual" #TEMPORARY
+  continental_data <- getContinentalData(timestep, FALSE)
+  continental_tbl <- as_tibble(continental_data) %>%
+    select(district, timeId, time, COAL, GAS, OIL)
   print(continental_tbl)
+  
+  # Step 1: Reshape the continental_tbl to a long format
+  continental_long_tbl <- continental_tbl %>%
+    pivot_longer(cols = c("COAL", "GAS", "OIL"), 
+                 names_to = "fuel_column", 
+                 values_to = "production")
+  
+  # Step 2: Join the two tibbles on the continent and fuel type
+  pollution_tbl <- continental_long_tbl %>%
+    left_join(emissions_tbl, by = c("district" = "continent", "fuel_column"))
+  
+  print(pollution_tbl)
+    
+  # Step 3: Calculate pollution by multiplying production by the production_rate
+  pollution_tbl <- pollution_tbl %>%
+    mutate(pollution = production * production_rate,
+           # pollution_tons = pollution / KILOGRAMS_IN_TON,
+           pollution_percentage = pollution / PERCENTAGE,
+           pollution_megatons = pollution_percentage / TONS_IN_MEGATON)
+  # Still really weird...
+  
+  print(pollution_tbl)
+  
+  # I think production rate is in kgCO2/MWh. Given how high these numbers are.
+  # In the end Deane paper, the results are in MTons (so 100000 Tons)
+  # and they're in the hundreds.
+    
+  # Step 4: Summarize pollution by district, timeId, and time, keeping fuel-wise pollution and total
+  pollution_tbl <- pollution_tbl %>%
+    group_by(district, timeId, time, fuel_column) %>%
+    summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
+  
+  print(pollution_tbl)
+  
+  # Step 5: Add a row for total pollution
+  pollution_tbl <- pollution_tbl %>%
+    bind_rows(
+      pollution_tbl %>%
+        group_by(district, timeId, time) %>%
+        summarise(fuel_column = "Total", pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
+    ) %>%
+    arrange(district, timeId, time, factor(fuel_column, levels = c("COAL", "GAS", "OIL", "Total")))
+  
+  
+  print(pollution_tbl, n = 25)
+  
+  # Step 5: Merge the pollution data back into the original continental_tbl
+  continental_tbl_with_pollution <- continental_tbl %>%
+    left_join(pollution_tbl, by = c("district", "timeId", "time"))
+  
+  # Print the final tibble with the pollution column
+  print(continental_tbl_with_pollution)
   
   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
   
-  emis_histo_dir <- file.path(continental_dir, "Emission histograms")
+  emis_histo_dir <- file.path(continental_dir, "Emissions histograms")
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
-  #print(continents)
   
-  continental_unit = "GWh"
+  # continental_tbl <- continental_tbl %>%
+  #   # Rename variables
+  #   rename(`Bio and Waste` = `MIX. FUEL`,
+  #          Coal = COAL,
+  #          Gas = GAS,
+  #          Geothermal = `MISC. DTG`,
+  #          Hydro = `H. STOR`,
+  #          Nuclear = NUCLEAR, 
+  #          Oil = OIL,
+  #          Solar = SOLAR,
+  #          Wind = WIND
+  #   ) %>%
+  #   mutate(across(all_of(new_deane_result_variables), ~ . / MWH_IN_TWH)) %>% # convert to TWh
+  #   select(district, new_deane_result_variables)
   
-  #for (cont in continents) {
+  print(continental_tbl)
   
-  histo_plot <- plot(continental_data,
-       variable = "CO2 EMIS.",
-       elements = continents,
-       mcYear = "average",
-       type = "barplot",
-       dateRange = NULL, # if NULL, then all data is displayed
-       aggregate = "none",
-       # compare = ,# ah, c'est ptet ça pour les représenter côte à côte
-       interactive = FALSE,
-       colors = "black", # peut être un vecteur, ce qui m'intéresse si on arrive à faire variable par moyen..
-       # mais quel enfer, chaque centrale a son tCO2/MWh différent ?
-       # on pourrait faire pollution (tCO2/MWh), * production du moyen, quitte à faire / EMIS si on veut un pourcentage
-       # mais ça reste assez infernal...
-       # jeter un oeil à CO2_emission dans le PLEXOS et voir comment ça marche, 
-       # iirc il y a une valeur par fuel_group donc Europe_Gas par exemple, ça dépend du continent et de la techno
-       # ceci pourrait être stocké quelque part, dans un tibble peut-être, mais ça reste casse-pieds
-       main = "CO2 emissions (tCO2)"
-       )
+  # Convert the data to long format
+  continental_long_tbl <- continental_tbl %>%
+    pivot_longer(cols = all_of(new_deane_result_variables), 
+                 names_to = "Technology", 
+                 values_to = "Generation") %>%
+    mutate(Technology = factor(Technology, levels = new_deane_result_variables))
   
-    # stack_plot <- prodStack(
-    #   x = continental_data,
-    #   stack = stack_palette,
-    #   areas = cont,
-    #   dateRange = c(start_date, end_date),
-    #   timeStep = timestep,
-    #   main = paste(timestep, "production stack for", cont, "in 2015", continental_unit),
-    #   unit = continental_unit,
-    #   interactive = FALSE
-    # )
-    # msg = paste("[OUTPUT] - Saving", timestep, "production stack for", cont, "continent...")
-    # logFull(msg)
-    png_path = file.path(emis_histo_dir, "co2_emis.png")
-    savePlotAsPng(histo_plot, file = png_path,
-                  width = HEIGHT_720P * 2,
-                  height = HEIGHT_720P
-                  #width = WIDTH, #3*WIDTH,
-                  #height = HEIGHT # 2*HEIGHT)
-                  # les valeurs étaient énormes pour les grpahes daily/hourly
-                  # ça aussi le width_height ça peut changer selon le type de graphe..
-                  # peut etre faire des presets genre WIDTH_720P, WIDTH_4K etc
-    )
-    # msg = paste("[OUTPUT] -", timestep, "production stack for", cont, "has been saved!")
-    # logFull(msg)
-  #}
+  for (cont in continents) {
+    
+    cont_tbl <- continental_long_tbl %>%
+      filter(district == cont)
+    
+    
+    p <- ggplot(cont_tbl, aes(x = Technology, y = Generation, fill = Technology)) +
+      geom_bar(stat = "identity", position = "dodge", color = "#334D73") +
+      
+      # Add text labels above the bars
+      geom_text(aes(label = round(Generation, 2)), 
+                vjust = -0.5, # Adjusts the vertical position of the text
+                color = "black", 
+                size = 3.5) + # Adjust the size as needed
+      
+      # Assign specific colors to each technology
+      scale_fill_manual(values = technology_colors) +
+      
+      labs(title = paste("Generation comparison", cont, "(TWh)"),
+           #x = "Technology",
+           y = "TWh") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            legend.position = "none")
+    
+    msg = paste("[OUTPUT] - Saving generation histograms for", cont, "continent...")
+    logFull(msg)
+    png_path = file.path(emis_histo_dir, paste0(cont, "_emissions.png"))
+    ggsave(filename = png_path, plot = p, 
+           width = 2*HEIGHT_720P/resolution_dpi, height = 2*HEIGHT_720P/resolution_dpi,
+           dpi = resolution_dpi)
+    msg = paste("[OUTPUT] - Done saving emissions histograms for", cont, "continent !")
+    logFull(msg)
+  }
   
   msg = "[MAIN] - Done saving continental emissions histograms!"
   logMain(msg)
 }
+
+# The first graphs produced in Africa are too enthusiastic about Solar.
+# The only way this can be explained is that CSP is indeed too much, and should be
+# incorporated in storage and not directly in the Solar timeseries.
+
+# Il y a également d'importants écarts sur le thermique. Peut-être qu'il faut
+# bel et bien modéliser les pannes comme décidé.
+
+
+###############################
+
+# saveContinentalEmissionHistograms <- function(output_dir,
+#                                             timestep = "annual"# c'est vrai qu'on pourrait en faire d'autres. est-ce utile ?
+#                                             # stack_palette = "productionStackWithBatteryContributions"
+#                                             # il n'y a pas de palette mais c'est vrai qu'il faudrait faire un stack "par technologie"
+#                                             # chose qui n'est pas représentée dans CO2 EMIS. - ah, il faudra faire des calculs !
+# ) {
+#   msg = "[MAIN] - Preparing to save continental emission histograms..."
+#   logMain(msg)
+#   
+#   continental_data <- getContinentalData(timestep)
+#   # peut-être que là ça prend son sens de mettre en argument le fait de diviser par 8736
+#   # genre ici je pense qu'on veut les TWh en brut pour le coup.......
+#   continental_tbl <- as_tibble(continental_data)
+#   print(continental_tbl)
+#   
+#   continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+#   
+#   emis_histo_dir <- file.path(continental_dir, "Emission histograms")
+#   
+#   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+#   #print(continents)
+#   
+#   continental_unit = "GWh"
+#   
+#   #for (cont in continents) {
+#   
+#   histo_plot <- plot(continental_data,
+#        variable = "CO2 EMIS.",
+#        elements = continents,
+#        mcYear = "average",
+#        type = "barplot",
+#        dateRange = NULL, # if NULL, then all data is displayed
+#        aggregate = "none",
+#        # compare = ,# ah, c'est ptet ça pour les représenter côte à côte
+#        interactive = FALSE,
+#        colors = "black", # peut être un vecteur, ce qui m'intéresse si on arrive à faire variable par moyen..
+#        # mais quel enfer, chaque centrale a son tCO2/MWh différent ?
+#        # on pourrait faire pollution (tCO2/MWh), * production du moyen, quitte à faire / EMIS si on veut un pourcentage
+#        # mais ça reste assez infernal...
+#        # jeter un oeil à CO2_emission dans le PLEXOS et voir comment ça marche, 
+#        # iirc il y a une valeur par fuel_group donc Europe_Gas par exemple, ça dépend du continent et de la techno
+#        # ceci pourrait être stocké quelque part, dans un tibble peut-être, mais ça reste casse-pieds
+#        main = "CO2 emissions (tCO2)"
+#        )
+#   
+#     # stack_plot <- prodStack(
+#     #   x = continental_data,
+#     #   stack = stack_palette,
+#     #   areas = cont,
+#     #   dateRange = c(start_date, end_date),
+#     #   timeStep = timestep,
+#     #   main = paste(timestep, "production stack for", cont, "in 2015", continental_unit),
+#     #   unit = continental_unit,
+#     #   interactive = FALSE
+#     # )
+#     # msg = paste("[OUTPUT] - Saving", timestep, "production stack for", cont, "continent...")
+#     # logFull(msg)
+#     png_path = file.path(emis_histo_dir, "co2_emis.png")
+#     savePlotAsPng(histo_plot, file = png_path,
+#                   width = HEIGHT_720P * 2,
+#                   height = HEIGHT_720P
+#                   #width = WIDTH, #3*WIDTH,
+#                   #height = HEIGHT # 2*HEIGHT)
+#                   # les valeurs étaient énormes pour les grpahes daily/hourly
+#                   # ça aussi le width_height ça peut changer selon le type de graphe..
+#                   # peut etre faire des presets genre WIDTH_720P, WIDTH_4K etc
+#     )
+#     # msg = paste("[OUTPUT] -", timestep, "production stack for", cont, "has been saved!")
+#     # logFull(msg)
+#   #}
+#   
+#   msg = "[MAIN] - Done saving continental emissions histograms!"
+#   logMain(msg)
+# }
 
 
 ############################
@@ -1743,6 +1908,8 @@ output_dir <- initializeOutputFolder_v2()
 # en histogramme décroissant sur les pays, serait pas intéressant d'ailleurs ?
 
 saveContinentalGenerationHistograms(output_dir)
+
+saveContinentalEmissionHistograms(output_dir)
 
 # saveImportExportRanking(output_dir)
 
