@@ -965,10 +965,10 @@ saveGlobalLoadMonotone <- function(output_dir,
     mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
   
   p <- ggplot(glob_tbl_long, aes(x = percent_time)) +
-    geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
     # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
     geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
     #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+    geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
     scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                  "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                  "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
@@ -1061,10 +1061,10 @@ saveContinentalLoadMonotones <- function(output_dir,
       mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
     p <- ggplot(cont_tbl_long, aes(x = percent_time)) +
-      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
       #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
       scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
@@ -1167,10 +1167,10 @@ saveNationalLoadMonotones <- function(output_dir,
       mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
     p <- ggplot(ctry_tbl_long, aes(x = percent_time)) +
-      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
       #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
       scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
@@ -1267,9 +1267,9 @@ saveRegionalLoadMonotones <- function(output_dir,
       mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
     p <- ggplot(regn_tbl_long, aes(x = percent_time)) +
-      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
+      geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
       scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
@@ -1990,6 +1990,7 @@ saveImportExportRanking(output_dir)
 saveLoadMonotones(output_dir #,
                   #timestep = "daily"
 )
+# Franchement attention au fait que le oil ressemble beaucoup au unsupplied energy...
 
 saveContinentalGenerationHistograms(output_dir)
 
