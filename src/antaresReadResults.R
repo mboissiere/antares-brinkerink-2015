@@ -119,17 +119,17 @@ initializeOutputFolder_v2 <- function(
     dir.create(national_dir)
   }
   
-  ranking_dir <- file.path(national_dir, "Import-Export Ranking")
-  if (!dir.exists(ranking_dir)) {
-    dir.create(ranking_dir)
-  }
+  # ranking_dir <- file.path(national_dir, "Import-Export Ranking")
+  # if (!dir.exists(ranking_dir)) {
+  #   dir.create(ranking_dir)
+  # }
   
   regional_dir <- file.path(graphs_dir, "4 - Regional-level graphs")
   if (!dir.exists(regional_dir)) {
     dir.create(regional_dir)
   }
   
-  geo_scales_dirs = c(global_dir, continental_dir, national_dir, regional_dir)
+  # geo_scales_dirs = c(global_dir, continental_dir, national_dir, regional_dir)
   
   rawdata_dir <- file.path(output_dir, "Raw data (EMPTY)")
   if (!dir.exists(rawdata_dir)) {
@@ -147,7 +147,7 @@ initializeOutputFolder_v2 <- function(
   # Usage
   # copyOutput(opts, extname, mcYears = "all")
   
-  for (folder in geo_scales_dirs) {
+  # for (folder in geo_scales_dirs) {
     # prod_stack_dir <- file.path(folder, "Production stacks")
     # # ça ça pourrait aussi ce mettre en liste genre, la liste des noms possibles
     # # de trucs qu'on peut faire
@@ -155,24 +155,24 @@ initializeOutputFolder_v2 <- function(
     #   dir.create(prod_stack_dir)
     # }
     # 
-    load_monot_dir <- file.path(folder, "Load monotones")
-    if (!dir.exists(load_monot_dir)) {
-      dir.create(load_monot_dir)
-    }
-    
-    emis_histo_dir <- file.path(folder, "Emissions histograms")
-    if (!dir.exists(emis_histo_dir)) {
-      dir.create(emis_histo_dir)
-    }
+    # load_monot_dir <- file.path(folder, "Load monotones")
+    # if (!dir.exists(load_monot_dir)) {
+    #   dir.create(load_monot_dir)
+    # }
+    # 
+    # emis_histo_dir <- file.path(folder, "Emissions histograms")
+    # if (!dir.exists(emis_histo_dir)) {
+    #   dir.create(emis_histo_dir)
+    # }
     # Only in continental for now. Honestly I should just put these
     # outside of initiation.. initiate should only be for output_dir
-    
-    genr_histo_dir <- file.path(folder, "Generation histograms")
-    if (!dir.exists(genr_histo_dir)) {
-      dir.create(genr_histo_dir)
-    }
+    # 
+    # genr_histo_dir <- file.path(folder, "Generation histograms")
+    # if (!dir.exists(genr_histo_dir)) {
+    #   dir.create(genr_histo_dir)
+    # }
     # NB : this is actually only implemented in continental so far
-  } 
+  # } 
   return(output_dir)
 }
 
@@ -480,7 +480,7 @@ saveGlobalProductionStack <- function(output_dir,
   
   global_data <- getGlobalData(timestep)
   
-  global_dir <- file.path(output_dir, "1 - Global-level graphs")
+  global_dir <- file.path(output_dir, "Graphs", "1 - Global-level graphs")
   
   # prod_stack_dir <- file.path(global_dir, "Production stacks")
   prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
@@ -532,7 +532,7 @@ saveContinentalProductionStacks <- function(output_dir,
   # # Il m'a fait que l'amérique du nord, ch elou
   # print(as_tibble(continental_data))
   
-  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
   
   # prod_stack_dir <- file.path(continental_dir, "Production stacks")
   prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
@@ -587,7 +587,7 @@ saveNationalProductionStacks <- function(output_dir,
   # Il m'a fait que l'amérique du nord, ch elou
   # print(national_data)
   
-  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  national_dir <- file.path(output_dir, "Graphs", "3 - National-level graphs")
   
   # prod_stack_dir <- file.path(national_dir, "Production stacks")
   prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
@@ -660,7 +660,7 @@ saveRegionalProductionStacks <- function(output_dir,
   # # Il m'a fait que l'amérique du nord, ch elou
   # print(as_tibble(continental_data))
   
-  regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+  regional_dir <- file.path(output_dir, "Graphs", "4 - Regional-level graphs")
   
   # prod_stack_dir <- file.path(regional_dir, "Production stacks")
   prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
@@ -912,9 +912,13 @@ saveGlobalLoadMonotone <- function(output_dir,
   global_tbl <- as_tibble(global_data)
   # print(continental_tbl)
   
-  global_dir <- file.path(output_dir, "1 - Global-level graphs")
+  global_dir <- file.path(output_dir, "Graphs", "1 - Global-level graphs")
   
   load_monot_dir <- file.path(global_dir, "Load monotones")
+  
+  if (!dir.exists(load_monot_dir)) {
+    dir.create(load_monot_dir, recursive = TRUE)
+  }
   
   world <- getDistricts(select = "world", regexpSelect = FALSE)
   #print(continents)
@@ -998,9 +1002,13 @@ saveContinentalLoadMonotones <- function(output_dir,
   continental_tbl <- as_tibble(continental_data)
   # print(continental_tbl)
   
-  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
 
   load_monot_dir <- file.path(continental_dir, "Load monotones")
+  
+  if (!dir.exists(load_monot_dir)) {
+    dir.create(load_monot_dir, recursive = TRUE)
+  }
 
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
     #print(continents)
@@ -1093,9 +1101,13 @@ saveNationalLoadMonotones <- function(output_dir,
   
   # print(national_data)
   
-  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  national_dir <- file.path(output_dir, "Graphs", "3 - National-level graphs")
   
   load_monot_dir <- file.path(national_dir, "Load monotones")
+  
+  if (!dir.exists(load_monot_dir)) {
+    dir.create(load_monot_dir, recursive = TRUE)
+  }
   
   countries <- getAreas(select = COUNTRIES, regexpSelect = FALSE)
   districts <- getDistricts(select = COUNTRIES, regexpSelect = FALSE)
@@ -1187,9 +1199,13 @@ saveRegionalLoadMonotones <- function(output_dir,
   regional_data <- getRegionalData(timestep)
   regional_tbl <- as_tibble(regional_data)
   
-  regional_dir <- file.path(output_dir, "4 - Regional-level graphs")
+  regional_dir <- file.path(output_dir, "Graphs", "4 - Regional-level graphs")
   
   load_monot_dir <- file.path(regional_dir, "Load monotones")
+  
+  if (!dir.exists(load_monot_dir)) {
+    dir.create(load_monot_dir, recursive = TRUE)
+  }
   
   regions <- getAreas(select = REGIONS, regexpSelect = FALSE)
   
@@ -1297,89 +1313,89 @@ saveLoadMonotones <- function(output_dir,
 
 #################################
 
-saveCountryProductionMonotones <- function(nodes,
-                                           output_dir,
-                                           timestep = "hourly") {
-  hourly_prod_data <- getAntaresData(nodes, timestep)
-  hourly_prod_tbl <- as_tibble(hourly_prod_data)
-  
-  areas = getAreas(nodes)
-  
-  nodes_tbl <- getNodesTable(nodes)
-  continents <- nodes_tbl$continent %>% unique()
-  for (cnt in continents) {
-    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
-    nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
-    continent_dir <- file.path(output_dir, "country_graphs", cnt)
-    for (country in nodes_in_continent) {
-      area_tbl <- hourly_prod_tbl %>%
-        filter(area == country)
-      
-      area_tbl_sorted <- area_tbl[order(-area_tbl$LOAD), ] %>%
-        select(timeId, time, LOAD, sources)
-      
-      area_tbl_succint <- area_tbl_sorted %>%
-        mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-               IMPORTS = -BALANCE) %>%
-        select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
-        rename(
-          GEOTHERMAL = `MISC. DTG`,
-          HYDRO = `H. STOR`,
-          `BIO AND WASTE` = `MIX. FUEL`,
-          `PSP STOR` = `PSP_closed_withdrawal`,
-          `CHEMICAL STOR` = `Battery_withdrawal`,
-          `THERMAL STOR` = `Other1_withdrawal`,
-          `HYDROGEN STOR` = `Other2_withdrawal`,
-          `COMPRESSED AIR STOR` = `Other3_withdrawal`,
-          UNSUPPLIED = `UNSP. ENRG`
-        )
-      
-      area_tbl_long <- area_tbl_succint %>%
-        select(time, LOAD, sources_new) %>%
-        pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production_mwh")
-      
-      area_tbl_long$energy_source <- factor(area_tbl_long$energy_source, levels = rev(sources_new))
-      
-      # La production est mille fois trop grande, c'est peut-être un problème des mc years...
-      
-      
-      p <- ggplot(area_tbl_long, aes(x = reorder(time, -LOAD))) +
-        geom_bar(aes(y = production_mwh, fill = energy_source), stat = "identity") +
-        geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
-        scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
-                                     "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
-                                     "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
-                                     "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
-        labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(country, "energy mix")) +
-        theme_minimal() +
-        theme(
-          legend.position = "right",
-          legend.text = element_text(size = 8), # Legend text size
-          legend.title = element_text(size = 10), # Legend title size
-          legend.key.size = unit(0.4, "cm"), # Size of the legend keys
-          legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
-          legend.margin = margin(0, 0, 0, 0), # Margin around the legend
-          legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
-          
-          axis.title.x = element_text(size = 10), # X-axis title size
-          axis.title.y = element_text(size = 10), # Y-axis title size
-          
-          axis.text.x = element_text(size = 8), # X-axis labels size
-          axis.text.y = element_text(size = 8)  # Y-axis labels size
-        )
-      
-      msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", country, "node...")
-      logFull(msg)
-      plot_path <- file.path(continent_dir, "productionMonotone", paste0(country,"_monotone.png"))
-      ggsave(filename = plot_path, plot = p, 
-             width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
-             dpi = resolution_dpi)
-      msg = paste("[OUTPUT] - The", timestep, "production monotone for", country, "has been saved!")
-      logFull(msg)
-    }
-  }
-  # faudrait ajouter la défaillance aussi...
-}
+# saveCountryProductionMonotones <- function(nodes,
+#                                            output_dir,
+#                                            timestep = "hourly") {
+#   hourly_prod_data <- getAntaresData(nodes, timestep)
+#   hourly_prod_tbl <- as_tibble(hourly_prod_data)
+#   
+#   areas = getAreas(nodes)
+#   
+#   nodes_tbl <- getNodesTable(nodes)
+#   continents <- nodes_tbl$continent %>% unique()
+#   for (cnt in continents) {
+#     nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
+#     nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
+#     continent_dir <- file.path(output_dir, "country_graphs", cnt)
+#     for (country in nodes_in_continent) {
+#       area_tbl <- hourly_prod_tbl %>%
+#         filter(area == country)
+#       
+#       area_tbl_sorted <- area_tbl[order(-area_tbl$LOAD), ] %>%
+#         select(timeId, time, LOAD, sources)
+#       
+#       area_tbl_succint <- area_tbl_sorted %>%
+#         mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+#                IMPORTS = -BALANCE) %>%
+#         select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+#         rename(
+#           GEOTHERMAL = `MISC. DTG`,
+#           HYDRO = `H. STOR`,
+#           `BIO AND WASTE` = `MIX. FUEL`,
+#           `PSP STOR` = `PSP_closed_withdrawal`,
+#           `CHEMICAL STOR` = `Battery_withdrawal`,
+#           `THERMAL STOR` = `Other1_withdrawal`,
+#           `HYDROGEN STOR` = `Other2_withdrawal`,
+#           `COMPRESSED AIR STOR` = `Other3_withdrawal`,
+#           UNSUPPLIED = `UNSP. ENRG`
+#         )
+#       
+#       area_tbl_long <- area_tbl_succint %>%
+#         select(time, LOAD, sources_new) %>%
+#         pivot_longer(cols = sources_new, names_to = "energy_source", values_to = "production_mwh")
+#       
+#       area_tbl_long$energy_source <- factor(area_tbl_long$energy_source, levels = rev(sources_new))
+#       
+#       # La production est mille fois trop grande, c'est peut-être un problème des mc years...
+#       
+#       
+#       p <- ggplot(area_tbl_long, aes(x = reorder(time, -LOAD))) +
+#         geom_bar(aes(y = production_mwh, fill = energy_source), stat = "identity") +
+#         geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
+#         scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+#                                      "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+#                                      "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
+#                                      "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
+#         labs(x = "Load (in reverse order)", y = "Production (MWh)", fill = paste(country, "energy mix")) +
+#         theme_minimal() +
+#         theme(
+#           legend.position = "right",
+#           legend.text = element_text(size = 8), # Legend text size
+#           legend.title = element_text(size = 10), # Legend title size
+#           legend.key.size = unit(0.4, "cm"), # Size of the legend keys
+#           legend.spacing.x = unit(0.2, "cm"), # Spacing between legend items
+#           legend.margin = margin(0, 0, 0, 0), # Margin around the legend
+#           legend.box.margin = margin(0, 0, 0, 0), # Margin around the legend box
+#           
+#           axis.title.x = element_text(size = 10), # X-axis title size
+#           axis.title.y = element_text(size = 10), # Y-axis title size
+#           
+#           axis.text.x = element_text(size = 8), # X-axis labels size
+#           axis.text.y = element_text(size = 8)  # Y-axis labels size
+#         )
+#       
+#       msg = paste("[OUTPUT] - Saving", timestep, "production monotone for", country, "node...")
+#       logFull(msg)
+#       plot_path <- file.path(continent_dir, "productionMonotone", paste0(country,"_monotone.png"))
+#       ggsave(filename = plot_path, plot = p, 
+#              width = width_pixels/resolution_dpi, height = height_pixels/resolution_dpi,
+#              dpi = resolution_dpi)
+#       msg = paste("[OUTPUT] - The", timestep, "production monotone for", country, "has been saved!")
+#       logFull(msg)
+#     }
+#   }
+#   # faudrait ajouter la défaillance aussi...
+# }
 
 # Next step : continental graphs
 # Setting districts via antaresEditObject and antaresRead sounds like
@@ -1403,9 +1419,13 @@ saveImportExportRanking <- function(output_dir) {
   
   national_data <- getNationalData("annual")
   
-  national_dir <- file.path(output_dir, "3 - National-level graphs")
+  national_dir <- file.path(output_dir, "Graphs", "3 - National-level graphs")
   
   ranking_dir <- file.path(national_dir, "Import-Export Ranking")
+  
+  if (!dir.exists(ranking_dir)) {
+    dir.create(ranking_dir, recursive = TRUE)
+  }
   
   # Convert data to tibble
   national_tbl <- as_tibble(national_data)
@@ -1551,9 +1571,13 @@ saveContinentalGenerationHistograms <- function(output_dir,
   continental_tbl <- as_tibble(continental_data)
   # print(continental_tbl)
   
-  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
   
   genr_histo_dir <- file.path(continental_dir, "Generation histograms")
+  
+  if (!dir.exists(genr_histo_dir)) {
+    dir.create(genr_histo_dir, recursive = TRUE)
+  }
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   
@@ -1671,7 +1695,8 @@ PERCENTAGE = 100
 # WHAT THE HELL IS GOING ON
 TONS_IN_MEGATON = 1000000 # 10e6
 
-print(emissions_tbl)
+
+# print(emissions_tbl)
 
 saveContinentalEmissionHistograms <- function(output_dir,
                                                 timestep = "annual" # ici je l'ai mm pas utilisé je crois
@@ -1682,11 +1707,11 @@ saveContinentalEmissionHistograms <- function(output_dir,
   msg = "[MAIN] - Preparing to save continental emission histograms..."
   logMain(msg)
   
-  timestep = "annual" #TEMPORARY
+  # timestep = "annual" #TEMPORARY
   continental_data <- getContinentalData(timestep, FALSE)
   continental_tbl <- as_tibble(continental_data) %>%
     select(district, timeId, time, COAL, GAS, OIL)
-  print(continental_tbl)
+  # print(continental_tbl)
   
   # Step 1: Reshape the continental_tbl to a long format
   continental_long_tbl <- continental_tbl %>%
@@ -1698,7 +1723,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
   pollution_tbl <- continental_long_tbl %>%
     left_join(emissions_tbl, by = c("district" = "continent", "fuel_column"))
   
-  print(pollution_tbl)
+  # print(pollution_tbl)
     
   # Step 3: Calculate pollution by multiplying production by the production_rate
   pollution_tbl <- pollution_tbl %>%
@@ -1708,7 +1733,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
            pollution_megatons = pollution_percentage / TONS_IN_MEGATON)
   # Still really weird...
   
-  print(pollution_tbl)
+  # print(pollution_tbl)
   
   # I think production rate is in kgCO2/MWh. Given how high these numbers are.
   # In the end Deane paper, the results are in MTons (so 100000 Tons)
@@ -1719,7 +1744,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
     group_by(district, timeId, time, fuel_column) %>%
     summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
   
-  print(pollution_tbl)
+  # print(pollution_tbl)
   
   # Step 5: Add a row for total pollution
   pollution_tbl <- pollution_tbl %>%
@@ -1728,21 +1753,33 @@ saveContinentalEmissionHistograms <- function(output_dir,
         group_by(district, timeId, time) %>%
         summarise(fuel_column = "Total", pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
     ) %>%
-    arrange(district, timeId, time, factor(fuel_column, levels = c("COAL", "GAS", "OIL", "Total")))
+    arrange(district,
+            timeId, time, 
+            factor(fuel_column, levels = c("COAL", "GAS", "OIL", "Total"))) %>%
+    select(district, fuel_column, pollution_megatons)
   
+  # print(pollution_tbl, n = 25)
   
-  print(pollution_tbl, n = 25)
+    # rename(Coal = COAL,
+    #        Gas = GAS,
+    #        Oil = OIL)
   
-  # Step 5: Merge the pollution data back into the original continental_tbl
-  continental_tbl_with_pollution <- continental_tbl %>%
-    left_join(pollution_tbl, by = c("district", "timeId", "time"))
+ 
   
-  # Print the final tibble with the pollution column
-  print(continental_tbl_with_pollution)
+  # # Step 5: Merge the pollution data back into the original continental_tbl
+  # continental_tbl_with_pollution <- continental_tbl %>%
+  #   left_join(pollution_tbl, by = c("district", "timeId", "time"))
+  # 
+  # # Print the final tibble with the pollution column
+  # print(continental_tbl_with_pollution)
   
-  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
   
   emis_histo_dir <- file.path(continental_dir, "Emissions histograms")
+  
+  if (!dir.exists(emis_histo_dir)) {
+    dir.create(emis_histo_dir, recursive = TRUE)
+  }
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   
@@ -1761,41 +1798,39 @@ saveContinentalEmissionHistograms <- function(output_dir,
   #   mutate(across(all_of(new_deane_result_variables), ~ . / MWH_IN_TWH)) %>% # convert to TWh
   #   select(district, new_deane_result_variables)
   
-  print(continental_tbl)
+  # print(continental_tbl)
+  # 
+  # # Convert the data to long format
+  # continental_long_tbl <- continental_tbl %>%
+  #   pivot_longer(cols = all_of(new_deane_result_variables), 
+  #                names_to = "Technology", 
+  #                values_to = "Generation") %>%
+  #   mutate(Technology = factor(Technology, levels = new_deane_result_variables))
   
-  # Convert the data to long format
-  continental_long_tbl <- continental_tbl %>%
-    pivot_longer(cols = all_of(new_deane_result_variables), 
-                 names_to = "Technology", 
-                 values_to = "Generation") %>%
-    mutate(Technology = factor(Technology, levels = new_deane_result_variables))
+  # Ensure 'fuel_column' is a factor and levels are ordered as required
+  pollution_tbl <- pollution_tbl %>%
+    mutate(fuel_column = factor(fuel_column, levels = c("Total", "OIL", "GAS", "COAL")))
+  
+  # print(pollution_tbl)
   
   for (cont in continents) {
     
-    cont_tbl <- continental_long_tbl %>%
+    # Filter the data for the current continent
+    cont_data <- pollution_tbl %>%
       filter(district == cont)
     
-    
-    p <- ggplot(cont_tbl, aes(x = Technology, y = Generation, fill = Technology)) +
-      geom_bar(stat = "identity", position = "dodge", color = "#334D73") +
-      
-      # Add text labels above the bars
-      geom_text(aes(label = round(Generation, 2)), 
-                vjust = -0.5, # Adjusts the vertical position of the text
-                color = "black", 
-                size = 3.5) + # Adjust the size as needed
-      
-      # Assign specific colors to each technology
-      scale_fill_manual(values = technology_colors) +
-      
-      labs(title = paste("Generation comparison", cont, "(TWh)"),
-           #x = "Technology",
-           y = "TWh") +
+    p <- ggplot(cont_data, aes(x = fuel_column, y = pollution_megatons, fill = fuel_column)) +
+      geom_bar(stat = "identity", color = "black") +
+      geom_text(aes(label = round(pollution_megatons, 1)), 
+                vjust = -0.5, size = 3.5, color = "black") +  # Add text labels above bars
+      scale_fill_manual(values = c("Total" = "black", "OIL" = "darkslategray", "GAS" = "red", "COAL" = "darkred")) +
+      labs(title = paste("Pollution by Fuel Type in", cont),
+           x = "Fuel Type",
+           y = "Pollution (Megatons)") +
       theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            legend.position = "none")
+      theme(legend.position = "none")
     
-    msg = paste("[OUTPUT] - Saving generation histograms for", cont, "continent...")
+    msg = paste("[OUTPUT] - Saving emissions histograms for", cont, "continent...")
     logFull(msg)
     png_path = file.path(emis_histo_dir, paste0(cont, "_emissions.png"))
     ggsave(filename = png_path, plot = p, 
@@ -1911,7 +1946,7 @@ saveContinentalGenerationHistograms(output_dir)
 
 saveContinentalEmissionHistograms(output_dir)
 
-# saveImportExportRanking(output_dir)
+saveImportExportRanking(output_dir)
 
 # saveProductionStacks(output_dir,
 #                      timestep = "annual",  # On changera probablement plus souvent stack que dates par contre
@@ -1922,26 +1957,25 @@ saveContinentalEmissionHistograms(output_dir)
 # ptet que des bar plot serait mieux ? un truc à la mano sur ggplot ?
 # là pas si ouf que ça en vrai
 
-# saveProductionStacks(output_dir,
-#                      timestep = "daily"#,
-#                      #timestep = "daily",
-#                      #stack_palette = "productionStackWithBatteryContributions"
-#                      # peut-être aussi sélection de sauvegarder que les continental, world, etc
-# )
+saveProductionStacks(output_dir,
+                     timestep = "daily"#,
+                     #timestep = "daily",
+                     #stack_palette = "productionStackWithBatteryContributions"
+                     # peut-être aussi sélection de sauvegarder que les continental, world, etc
+)
 
 # Marre de commenter décommenter, serait temps de fractionner un peu ce code...
 
-# saveProductionStacks(output_dir,
-#                      "hourly",
-#                      "2015-01-01",
-#                      "2015-01-08"
-# )
-# 
-# saveProductionStacks(output_dir,
-#                      "hourly",
-#                      "2015-07-01",
-#                      "2015-07-08"
-# )
+saveProductionStacks(output_dir,
+                     "hourly",
+                     "2015-01-01",
+                     "2015-01-08"
+)
+
+saveProductionStacks(output_dir,
+                     "hourly",
+                     "2015-07-01",
+                     "2015-07-08")
 # C'est pas intuitif parce que c'est "exclus". Ecrire incl et excl ou alors retirer un jour dans données écrites
 # tel que le dossier.
 # (Omega chelou parce qu'en vrai de vrai ça fait inclus sur world mais exclus sur continent ????)
