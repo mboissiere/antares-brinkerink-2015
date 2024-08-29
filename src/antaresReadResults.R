@@ -1024,6 +1024,11 @@ saveGlobalLoadMonotone <- function(output_dir,
              vjust = -1, hjust = 0, color = "black", size = 3) +  # Adjust vjust/hjust as needed
     annotate("text", x = min_index, y = max_value, label = paste("Base:", round(min_value, 2)), # y = min_value before, but not as convenient
              vjust = 1, hjust = 1, color = "black", size = 3)
+  
+  # One thing is odd. In the load monotone, the peak is at 315..., but in the daily stack,
+  # value doesn't seem to be at 3.1
+  # maybe I would have to get an hourly graph to truly truly verify it. It's not like it's completely stupid.
+  # But this whole "get the daily but divide by 24" might create some averaging shenanigans and confusion.
 
   plot_path <- file.path(load_monot_dir, "world_monotone.png")
   ggsave(filename = plot_path, plot = p, 
@@ -1093,6 +1098,15 @@ saveContinentalLoadMonotones <- function(output_dir,
     cont_tbl_long <- cont_tbl_long %>%
       mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
+    # Assuming glob_tbl_sorted is already calculated as before
+    max_value <- max(cont_tbl_long$LOAD)
+    min_value <- min(cont_tbl_long$LOAD)
+    
+    # Indexes for maximum and minimum positions
+    max_index <- 1  # Since the data is sorted in descending order
+    min_index <- 100 #I mean maybe coz we have percentages ?
+    # Very experimental stuff here
+    
     p <- ggplot(cont_tbl_long, aes(x = percent_time)) +
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
@@ -1119,7 +1133,12 @@ saveContinentalLoadMonotones <- function(output_dir,
         
         axis.text.x = element_text(size = 8), # X-axis labels size
         axis.text.y = element_text(size = 8)  # Y-axis labels size
-      )
+      ) +
+      # Add annotations for the maximum and minimum values
+      annotate("text", x = max_index, y = max_value, label = paste("Peak:", round(max_value, 2)), 
+               vjust = -1, hjust = 0, color = "black", size = 3) +  # Adjust vjust/hjust as needed
+      annotate("text", x = min_index, y = max_value, label = paste("Base:", round(min_value, 2)), # y = min_value before, but not as convenient
+               vjust = 1, hjust = 1, color = "black", size = 3)
     
     msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", cont, "node...")
     logFull(msg)
@@ -1199,6 +1218,15 @@ saveNationalLoadMonotones <- function(output_dir,
     ctry_tbl_long <- ctry_tbl_long %>%
       mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
+    # Assuming glob_tbl_sorted is already calculated as before
+    max_value <- max(ctry_tbl_long$LOAD)
+    min_value <- min(ctry_tbl_long$LOAD)
+    
+    # Indexes for maximum and minimum positions
+    max_index <- 1  # Since the data is sorted in descending order
+    min_index <- 100 #I mean maybe coz we have percentages ?
+    # Very experimental stuff here
+    
     p <- ggplot(ctry_tbl_long, aes(x = percent_time)) +
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
@@ -1227,7 +1255,12 @@ saveNationalLoadMonotones <- function(output_dir,
         
         axis.text.x = element_text(size = 8), # X-axis labels size
         axis.text.y = element_text(size = 8)  # Y-axis labels size
-      )
+      ) +
+      # Add annotations for the maximum and minimum values
+      annotate("text", x = max_index, y = max_value, label = paste("Peak:", round(max_value, 2)), 
+               vjust = -1, hjust = 0, color = "black", size = 3) +  # Adjust vjust/hjust as needed
+      annotate("text", x = min_index, y = max_value, label = paste("Base:", round(min_value, 2)), # y = min_value before, but not as convenient
+               vjust = 1, hjust = 1, color = "black", size = 3)
     
     msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", ctry, "node...")
     logFull(msg)
@@ -1299,6 +1332,15 @@ saveRegionalLoadMonotones <- function(output_dir,
     regn_tbl_long <- regn_tbl_long %>%
       mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
     
+    # Assuming glob_tbl_sorted is already calculated as before
+    max_value <- max(regn_tbl_long$LOAD)
+    min_value <- min(regn_tbl_long$LOAD)
+    
+    # Indexes for maximum and minimum positions
+    max_index <- 1  # Since the data is sorted in descending order
+    min_index <- 100 #I mean maybe coz we have percentages ?
+    # Very experimental stuff here
+    
     p <- ggplot(regn_tbl_long, aes(x = percent_time)) +
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
@@ -1326,7 +1368,12 @@ saveRegionalLoadMonotones <- function(output_dir,
         
         axis.text.x = element_text(size = 8), # X-axis labels size
         axis.text.y = element_text(size = 8)  # Y-axis labels size
-      )
+      ) +
+      # Add annotations for the maximum and minimum values
+      annotate("text", x = max_index, y = max_value, label = paste("Peak:", round(max_value, 2)), 
+               vjust = -1, hjust = 0, color = "black", size = 3) +  # Adjust vjust/hjust as needed
+      annotate("text", x = min_index, y = max_value, label = paste("Base:", round(min_value, 2)), # y = min_value before, but not as convenient
+               vjust = 1, hjust = 1, color = "black", size = 3)
     
     msg = paste("[OUTPUT] - Saving", timestep, "load monotone for", regn, "node...")
     logFull(msg)
