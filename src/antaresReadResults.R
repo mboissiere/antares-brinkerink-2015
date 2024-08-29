@@ -158,6 +158,11 @@ initializeOutputFolder_v2 <- function(
     if (!dir.exists(emis_histo_dir)) {
       dir.create(emis_histo_dir)
     }
+    
+    genr_histo_dir <- file.path(folder, "Generation histograms")
+    if (!dir.exists(emis_histo_dir)) {
+      dir.create(emis_histo_dir)
+    }
   } 
   return(output_dir)
 }
@@ -1472,6 +1477,65 @@ continental_tbl <- as_tibble(continental_data) %>%
 
 HEIGHT_720P = 720
 
+##############################
+
+deane_result_variables = c("MIX. FUEL", "COAL", "GAS", "MISC. DTG", "H. STOR", "NUCLEAR", "OIL", "SOLAR", "WIND")
+# Idée : déjà renommer les trucs dans getContinentalData ? psk là il va y avoir MISC DTG
+# alors que je veux avoir écrit bio and waste, geothermal etc
+
+saveContinentalGenerationHistograms <- function(output_dir,
+                                                timestep = "annual" # ici je l'ai mm pas utilisé je crois
+                                                # ah si dans l'import..
+                                                # c'est vrai qu'on pourrait en faire d'autres. est-ce utile ?
+                                              # This is the Deane-type histogram
+) {
+  msg = "[MAIN] - Preparing to save continental generation histograms..."
+  logMain(msg)
+  
+  continental_data <- getContinentalData(timestep)
+  continental_tbl <- as_tibble(continental_data)
+  print(continental_tbl)
+  
+  continental_dir <- file.path(output_dir, "2 - Continental-level graphs")
+  
+  emis_histo_dir <- file.path(continental_dir, "Generation histograms")
+  
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+  
+  continental_unit = "TWh"
+  
+  for (cont in continents) {
+    histo_plot <- plot(continental_data,
+                       variable = deane_result_variables,
+                       elements = cont,
+                       mcYear = "average",
+                       type = "barplot",
+                       dateRange = NULL,
+                       aggregate = "none",
+                       interactive = FALSE,
+                       colors = "#334D73",
+                       unit = continental_unit,
+                       main = paste("Generation comparison", cont, "(TWh)") # aie la robustesse
+    )
+    
+    msg = paste("[OUTPUT] - Saving generation histograms for", cont, "continent...")
+    logFull(msg)
+    png_path = file.path(emis_histo_dir, paste0(cont, "_generation.png"))
+    savePlotAsPng(histo_plot, file = png_path,
+                  width = HEIGHT_720P * 2,
+                  height = HEIGHT_720P
+                  )
+    msg = paste("[OUTPUT] - Done saving generation histograms for", cont, "continent !")
+    logFull(msg)
+  }
+  
+  msg = "[MAIN] - Done saving continental emissions histograms!"
+  logMain(msg)
+}
+
+
+###############################
+
 saveContinentalEmissionHistograms <- function(output_dir,
                                             timestep = "annual"# c'est vrai qu'on pourrait en faire d'autres. est-ce utile ?
                                             # stack_palette = "productionStackWithBatteryContributions"
@@ -1482,6 +1546,8 @@ saveContinentalEmissionHistograms <- function(output_dir,
   logMain(msg)
   
   continental_data <- getContinentalData(timestep)
+  # peut-être que là ça prend son sens de mettre en argument le fait de diviser par 8736
+  # genre ici je pense qu'on veut les TWh en brut pour le coup.......
   continental_tbl <- as_tibble(continental_data)
   print(continental_tbl)
   
@@ -1557,6 +1623,8 @@ output_dir <- initializeOutputFolder_v2()
 
 # Tiens : est-ce qu'un graphe des plus grands importateurs/exportateurs, 
 # en histogramme décroissant sur les pays, serait pas intéressant d'ailleurs ?
+
+saveContinentalGenerationHistograms(output_dir)
 
 saveImportExportRanking(output_dir)
 
