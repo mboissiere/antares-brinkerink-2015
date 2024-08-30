@@ -93,11 +93,6 @@ saveLoadMonotone <- function(output_dir,
            msg = paste("[MONOT] - The", timestep, "load monotone for", item, "has been saved!")
            logFull(msg)
   }
-  
-  
-  
-  msg = "[MAIN] - Done saving global load monotone!" 
-  logMain(msg)
 }
 
 

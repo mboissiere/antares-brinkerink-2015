@@ -32,8 +32,8 @@ saveGlobalProductionStack <- function(output_dir,
   
   png_path = file.path(prod_stack_dir, "world.png")
   savePlotAsPng(stack_plot, file = png_path,
-                width = prodstack_height,
-                height = prodstack_width)
+                width = prodstack_width,
+                height = prodstack_height)
   
 }
 
@@ -80,8 +80,8 @@ saveContinentalProductionStacks <- function(output_dir,
     logFull(msg)
     png_path = file.path(prod_stack_dir, paste0(cont, ".png"))
     savePlotAsPng(stack_plot, file = png_path,
-                  width = prodstack_height,
-                  height = prodstack_width
+                  width = prodstack_width,
+                  height = prodstack_height
     )
     msg = paste("[STACK] - The", timestep, "production stack for", cont, "from", start_date, "to", end_date, "has been saved!")
     logFull(msg)
@@ -218,7 +218,7 @@ saveAllProductionStacks <- function(output_dir) {
     logMain(msg)
     start_time <- Sys.time()
     
-    saveContinentalProductionStack(output_dir)
+    saveContinentalProductionStacks(output_dir)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "secs"), 2)

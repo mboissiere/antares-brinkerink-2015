@@ -12,8 +12,12 @@ source(".\\src\\antaresReadResults_aux\\RR_utils.R")
 source(".\\src\\antaresReadResults_aux\\getAntaresData.R")
 
 setRam(16)
-importAntaresData()
-output_dir <- initializeOutputFolder(color_palette)
+
+study_info <- importAntaresData()
+study_name <- study_info["study_name"]
+simulation_name <- study_info["simulation_name"]
+
+output_dir <- initializeOutputFolder(study_name, simulation_name, color_palette)
 
 ################################################################################
 ############################## PRODUCTION STACKS ###############################
@@ -21,6 +25,8 @@ output_dir <- initializeOutputFolder(color_palette)
 if (save_production_stacks) {
   source(".\\src\\antaresReadResults_aux\\getProductionStacks.R")
   saveAllProductionStacks(output_dir)
+  
+  # Remember : faut faire daily, et hourly !
 }
 
 

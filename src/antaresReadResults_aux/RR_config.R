@@ -1,6 +1,10 @@
 ################################################################################
 ################################### OBJECTS ####################################
 
+HEIGHT_4K = 2*1080
+DPI_300 = 300
+# Les variables avant les constantes c'est pas le plus malin en vrai...
+
 WORLDS <- "world"
 CONTINENTS <- readRDS(".\\src\\objects\\deane_continents_lst.rds")
 COUNTRIES <- readRDS(".\\src\\objects\\deane_countries_lst.rds")
@@ -9,7 +13,7 @@ REGIONS <- readRDS(".\\src\\objects\\deane_regions_lst.rds")
 ################################################################################
 ################################## VARIABLES ###################################
 
-stack_palette = "productionStackWithBatteryContributions"
+color_palette = "productionStackWithBatteryContributions"
 
 variables_of_interest_areas <- c("SOLAR", "WIND",
                                  "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
@@ -62,8 +66,8 @@ preferred_unit_by_mode <- c(
 
 # Une piste pour pouvoir faire des programmes qui généralisent, mais bon, c'est relou pour l'instant
 
-prodstack_height = HEIGHT_4K
-prodstack_width = 2 * HEIGHT_4K
+prodstack_height <- HEIGHT_4K
+prodstack_width <- 2 * HEIGHT_4K
 
 monotone_height = HEIGHT_4K
 monotone_width = 2 * HEIGHT_4K
@@ -71,9 +75,6 @@ monotone_resolution = DPI_300
 
 ################################################################################
 ################################## CONSTANTS ###################################
-
-HEIGHT_4K = 2*1080
-DPI_300 = 300
 
 NB_HOURS_IN_TIMESTEP <- c(
   hourly = 1,

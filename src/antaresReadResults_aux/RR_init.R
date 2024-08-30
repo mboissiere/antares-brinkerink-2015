@@ -1,7 +1,10 @@
 library(antaresProcessing)
 source("parameters.R")
 
-importAntaresData <- function() {
+importAntaresData <- function(#study_name = IMPORT_STUDY_NAME,
+                              #simulation_name = IMPORT_SIMULATION_NAME
+  ) {
+  # euha aaaha je fais quoi après pour initializer le dossier
   if (!CREATE_STUDY) {
     study_name = IMPORT_STUDY_NAME
     study_path = file.path("input", "antares_presets", study_name,
@@ -23,11 +26,16 @@ importAntaresData <- function() {
     msg = paste("[MAIN] - Opening", simulation_name, "simulation...")
     logMain(msg)
   }
+  sim_info <- c(study_name = study_name,
+                simulation_name = simulation_name)
+  return(sim_info)
 }
 
 ################
 
-initializeOutputFolder <- function(color_palette = "productionStackWithBatteryContributions"
+initializeOutputFolder <- function(study_name = IMPORT_STUDY_NAME, 
+                                   simulation_name = IMPORT_SIMULATION_NAME, 
+                                   color_palette = "productionStackWithBatteryContributions"
 ) {
   output_dir = paste0("./output/results_", 
                       study_name, 

@@ -52,7 +52,7 @@ getContinentalAntaresData <- function(timestep,
 ##########
 
 getNationalAntaresData <- function(timestep,
-                            variables = COMMUN_COLUMNS
+                            variables = COMMON_COLUMNS
                             ) {
   country_areas = getAreas(select = COUNTRIES,
                            regexpSelect = FALSE)
