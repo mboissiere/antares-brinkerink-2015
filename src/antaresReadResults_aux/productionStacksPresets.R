@@ -136,6 +136,42 @@ setProdStackAlias(
   lineColors = c("black", "violetred")
 )
 
+setProdStackAlias(
+  name = "eCO2MixColorsWithBatteryContributions",
+  variables = alist(
+    Nucleaire = NUCLEAR,
+    Eolien = WIND,
+    Solaire = SOLAR,
+    Geothermique = `MISC. DTG`,
+    `Hydro lacs` = `H. STOR`,
+    
+    `Bio et dechets` = `MIX. FUEL`,
+    Gaz = GAS,
+    Charbon = COAL,
+    Fioul = OIL,
+    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    
+    `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+    `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+    `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+    `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+    `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+    
+    `Imports/Exports` = -BALANCE,
+    Defaillance = `UNSP. ENRG`
+  ),
+  colors = c("#E4A701", "#72CBB7", "#D66B0D", "springgreen", "#2672B0", 
+             "#156956", "#F20809", "#A68832", "#80549F", "lavender",
+             "blue", "yellow", "orange", "magenta", "salmon",
+             "#969696", "gray25"
+  ),
+  lines = alist(
+    Consommation = LOAD,
+    Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+  ),
+  lineColors = c("black", "violetred")
+)
+
 
 
 

@@ -50,6 +50,8 @@ NODES = all_deane_nodes_lst
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
+save_production_stacks = TRUE
+
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
