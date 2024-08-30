@@ -51,6 +51,7 @@ NODES = all_deane_nodes_lst
 # print(NODES)
 
 save_production_stacks = TRUE
+save_load_monotones = TRUE
 
 save_global_graphs = TRUE
 save_continental_graphs = TRUE

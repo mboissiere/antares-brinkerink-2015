@@ -1,7 +1,15 @@
 ################################################################################
+################################### OBJECTS ####################################
+
+WORLDS <- "world"
+CONTINENTS <- readRDS(".\\src\\objects\\deane_continents_lst.rds")
+COUNTRIES <- readRDS(".\\src\\objects\\deane_countries_lst.rds")
+REGIONS <- readRDS(".\\src\\objects\\deane_regions_lst.rds")
+
+################################################################################
 ################################## VARIABLES ###################################
 
-color_palette = "productionStackWithBatteryContributions"
+stack_palette = "productionStackWithBatteryContributions"
 
 variables_of_interest_areas <- c("SOLAR", "WIND",
                                  "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
@@ -20,6 +28,39 @@ variables_of_interest_areas <- c("SOLAR", "WIND",
                                  
                                  # (mais j'aimerais grave importer des trucs de links !!)
 )
+
+
+graphs_folder_names_by_mode <- c(
+  global = file.path("Graphs", "1 - Global-level graphs"),
+  continental = file.path("Graphs", "2 - Continental-level graphs"),
+  national = file.path("Graphs", "3 - National-level graphs"),
+  regional = file.path("Graphs", "4 - Regional-level graphs")
+)
+
+data_to_iterate_by_mode <- c(
+  global = WORLDS,
+  continental = CONTINENTS,
+  national = COUNTRIES,
+  regional = REGIONS
+)
+
+boolean_parameter_by_mode <- c(
+  global = save_global_graphs,
+  continental = save_continental_graphs,
+  national = save_national_graphs,
+  regional = save_regional_graphs
+)
+
+# This is starting to be a mess...
+
+preferred_unit_by_mode <- c(
+  global = "TWh",
+  continental = "GWh",
+  national = "MWh",
+  regional = "MWh"
+)
+
+# Une piste pour pouvoir faire des programmes qui généralisent, mais bon, c'est relou pour l'instant
 
 prodstack_height = HEIGHT_4K
 prodstack_width = 2 * HEIGHT_4K
@@ -46,6 +87,7 @@ MWH_IN_GWH = 1000
 MWH_IN_TWH = 1000000
 
 NB_MWH_IN_UNIT <- c(
+  MWh = 1,
   GWh = 1000,
   TWh = 1000000
 )
@@ -89,17 +131,45 @@ COMMON_COLUMNS <- c("SOLAR", "WIND",
                     "CO2 EMIS."
 )
 
+
+ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND", "SOLAR", "H. STOR",
+                           "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                           
+                           "PSP_closed_injection", "PSP_closed_withdrawal",
+                           "Battery_injection", "Battery_withdrawal",
+                           "Other1_injection", "Other1_withdrawal",
+                           "Other2_injection", "Other2_withdrawal",
+                           "Other3_injection", "Other3_withdrawal",
+                           
+                           "BALANCE", "UNSP. ENRG")
+
+RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "SOLAR", "HYDRO",
+                                   "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
+                                   "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
+                                   "IMPORTS", "UNSUPPLIED")
+
+# sources <- c("NUCLEAR", "WIND", "SOLAR", "MISC. DTG", "H. STOR",
+#              "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+#              "PSP_closed_withdrawal", "Battery_withdrawal", "Other1_withdrawal",
+#              "Other2_withdrawal", "Other3_withdrawal",
+#              "BALANCE", "UNSP. ENRG")
+
+# sources_new <- c("NUCLEAR", "WIND", "SOLAR", "GEOTHERMAL", "HYDRO",
+#                  "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
+#                  "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
+#                  "IMPORTS", "UNSUPPLIED")
+
 ########## VARIA #################
 
-geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
-
-tolowerVec <- Vectorize(tolower) # à ranger dans utils en vrai
-geography_lower_tbl <- as_tibble(tolowerVec(geography_tbl))
-
-CONTINENTS <- geography_lower_tbl$continent %>% unique() #ça peut pas être global ça ?
-COUNTRIES <- geography_lower_tbl$country %>% unique()
-
-regions_tbl <- geography_lower_tbl %>%
-  filter(!is.na(region))
-
-REGIONS <- regions_tbl$region %>% unique() #ça peut pas être global ça ?
+# geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
+# 
+# tolowerVec <- Vectorize(tolower) # à ranger dans utils en vrai
+# geography_lower_tbl <- as_tibble(tolowerVec(geography_tbl))
+# 
+# CONTINENTS <- geography_lower_tbl$continent %>% unique() #ça peut pas être global ça ?
+# COUNTRIES <- geography_lower_tbl$country %>% unique()
+# 
+# regions_tbl <- geography_lower_tbl %>%
+#   filter(!is.na(region))
+# 
+# REGIONS <- regions_tbl$region %>% unique() #ça peut pas être global ça ?

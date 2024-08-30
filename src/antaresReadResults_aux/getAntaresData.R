@@ -14,6 +14,12 @@ getGlobalAntaresData <- function(timestep,
   # if (divide_by_hours) {
   #   divideAntaresDataByHours(global_data, variables, timestep)
   # }
+  
+  global_tbl <- as_tibble(global_data)
+  global_tbl <- global_tbl %>%
+    rename(area = district)
+  # This is to facilitate picking an "area" later on.
+  global_data <- as.antaresDataTable(global_tbl, synthesis = TRUE, timeStep = timestep, type = "areas")
   return(global_data)
 }
 
@@ -33,6 +39,12 @@ getContinentalAntaresData <- function(timestep,
                                   timeStep = timestep,
                                   simplify = TRUE
   )
+  
+  continental_tbl <- as_tibble(continental_data)
+  continental_tbl <- continental_tbl %>%
+    rename(area = district)
+  # This is to facilitate picking an "area" later on.
+  continental_data <- as.antaresDataTable(continental_tbl, synthesis = TRUE, timeStep = timestep, type = "areas")
   return(continental_data)
 } 
 
@@ -82,3 +94,23 @@ getRegionalAntaresData <- function(timestep,
   )
   return(regional_data)
 } 
+
+
+
+
+#############
+
+getAntaresDataByMode <- function(timestep, 
+                                 mode,
+                                 variables = COMMON_COLUMNS
+) {
+  antares_data <- case_when(
+    mode == "global" ~ getGlobalAntaresData(timestep, variables),
+    mode == "continental" ~ getContinentalAntaresData(timestep, variables),
+    mode == "national" ~ getNationalAntaresData(timestep, variables),
+    mode == "regional" ~ getRegionalAntaresData(timestep, variables),
+    .default = NULL # maybe return an error here idk
+  )
+  return(antares_data)
+  
+}
