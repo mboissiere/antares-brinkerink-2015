@@ -650,7 +650,7 @@ saveNationalProductionStacks <- function(output_dir,
   msg = "[MAIN] - Done saving national production stacks!" # et l'art du timer, il se perd...
   logMain(msg)
 }
-
+# Le géothermique devrait pas etre tout en bas, avant même éolien et solaire en vrai ?
 
 
 saveRegionalProductionStacks <- function(output_dir,
@@ -774,68 +774,68 @@ saveRegionalProductionStacks <- function(output_dir,
 
 ################################################################################
 
-saveCountryProductionStacks <- function(nodes, 
-                                        output_folder,
-                                        stack_palette = "productionStackWithBatteryContributions",
-                                        timestep = "daily"
-                                        ) {
-  msg = "[OUTPUT] - Preparing to save production stacks to output folder..."
-  logFull(msg)
-  areas = getAreas(nodes)
-  prod_data <- getAntaresData(nodes, timestep)
-  
-  country_graphs_dir = file.path(output_folder, "country_graphs")
-  nodes_tbl <- getNodesTable(nodes)
-  continents <- nodes_tbl$continent %>% unique()
-  for (cnt in continents) {
-    
-    nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
-    nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
-    
-    prod_stack_dir <- file.path(country_graphs_dir, tolower(cnt), "productionStack")
-    # maybe could be part of the global variables / config
-    # but the ones that we don't touch too much unlike parameters
-    
-    unit = "GWh"
-    for (country in nodes_in_continent) {
-      if (stack_palette == "dynamic") {
-        null_variables = list()
-        for (variable in variables_of_interest) {
-          var_in_area_df <- readAntares(areas = country,
-                                        mcYears = "all",
-                                        timeStep = timestep,
-                                        select = variable
-          )[[variable]]
-          df_is_null <- all(var_in_area_df == 0)
-          if (df_is_null) {
-            null_variables <- c(null_variables, variable)
-          }
-        }
-        createFilteredStack(stack_palette, null_variables)
-      }
-      
-      stack_plot <- prodStack(
-        x = prod_data,
-        stack = stack_palette,
-        areas = country,
-        dateRange = c(start_date, end_date),
-        timeStep = timestep,
-        main = paste(timestep, "production stack for", country, "in 2015", unit),
-        unit = unit,
-        interactive = FALSE
-      )
-      msg = paste("[OUTPUT] - Saving", timestep, "production stack for", country, "node...")
-      logFull(msg)
-      png_path = file.path(prod_stack_dir, paste0(country, "_", timestep, ".png"))
-      savePlotAsPng(stack_plot, file = png_path,
-                    width = WIDTH, #3*WIDTH,
-                    height = HEIGHT # 2*HEIGHT)
-                    )
-      msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
-      logFull(msg)
-    }
-  }
-}
+# saveCountryProductionStacks <- function(nodes, 
+#                                         output_folder,
+#                                         stack_palette = "productionStackWithBatteryContributions",
+#                                         timestep = "daily"
+#                                         ) {
+#   msg = "[OUTPUT] - Preparing to save production stacks to output folder..."
+#   logFull(msg)
+#   areas = getAreas(nodes)
+#   prod_data <- getAntaresData(nodes, timestep)
+#   
+#   country_graphs_dir = file.path(output_folder, "country_graphs")
+#   nodes_tbl <- getNodesTable(nodes)
+#   continents <- nodes_tbl$continent %>% unique()
+#   for (cnt in continents) {
+#     
+#     nodes_in_continent_tbl <- nodes_tbl %>% filter(continent == cnt)
+#     nodes_in_continent <- tolower(nodes_in_continent_tbl$node)
+#     
+#     prod_stack_dir <- file.path(country_graphs_dir, tolower(cnt), "productionStack")
+#     # maybe could be part of the global variables / config
+#     # but the ones that we don't touch too much unlike parameters
+#     
+#     unit = "GWh"
+#     for (country in nodes_in_continent) {
+#       if (stack_palette == "dynamic") {
+#         null_variables = list()
+#         for (variable in variables_of_interest) {
+#           var_in_area_df <- readAntares(areas = country,
+#                                         mcYears = "all",
+#                                         timeStep = timestep,
+#                                         select = variable
+#           )[[variable]]
+#           df_is_null <- all(var_in_area_df == 0)
+#           if (df_is_null) {
+#             null_variables <- c(null_variables, variable)
+#           }
+#         }
+#         createFilteredStack(stack_palette, null_variables)
+#       }
+#       
+#       stack_plot <- prodStack(
+#         x = prod_data,
+#         stack = stack_palette,
+#         areas = country,
+#         dateRange = c(start_date, end_date),
+#         timeStep = timestep,
+#         main = paste(timestep, "production stack for", country, "in 2015", unit),
+#         unit = unit,
+#         interactive = FALSE
+#       )
+#       msg = paste("[OUTPUT] - Saving", timestep, "production stack for", country, "node...")
+#       logFull(msg)
+#       png_path = file.path(prod_stack_dir, paste0(country, "_", timestep, ".png"))
+#       savePlotAsPng(stack_plot, file = png_path,
+#                     width = WIDTH, #3*WIDTH,
+#                     height = HEIGHT # 2*HEIGHT)
+#                     )
+#       msg = paste("[OUTPUT] - The", timestep, "production stack for", country, "has been saved!")
+#       logFull(msg)
+#     }
+#   }
+# }
 
 ################################################################################
 # NB : this one doesn't work so far

@@ -21,10 +21,18 @@ variables_of_interest_areas <- c("SOLAR", "WIND",
                                  # (mais j'aimerais grave importer des trucs de links !!)
 )
 
+prodstack_height = HEIGHT_4K
+prodstack_width = 2 * HEIGHT_4K
+
+monotone_height = HEIGHT_4K
+monotone_width = 2 * HEIGHT_4K
+monotone_resolution = DPI_300
+
 ################################################################################
 ################################## CONSTANTS ###################################
 
 HEIGHT_4K = 2*1080
+DPI_300 = 300
 
 NB_HOURS_IN_TIMESTEP <- c(
   hourly = 1,
@@ -80,4 +88,18 @@ COMMON_COLUMNS <- c("SOLAR", "WIND",
                     
                     "CO2 EMIS."
 )
-                           
+
+########## VARIA #################
+
+geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
+
+tolowerVec <- Vectorize(tolower) # à ranger dans utils en vrai
+geography_lower_tbl <- as_tibble(tolowerVec(geography_tbl))
+
+CONTINENTS <- geography_lower_tbl$continent %>% unique() #ça peut pas être global ça ?
+COUNTRIES <- geography_lower_tbl$country %>% unique()
+
+regions_tbl <- geography_lower_tbl %>%
+  filter(!is.na(region))
+
+REGIONS <- regions_tbl$region %>% unique() #ça peut pas être global ça ?

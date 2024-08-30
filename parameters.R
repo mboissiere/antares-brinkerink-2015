@@ -52,6 +52,11 @@ NODES = all_deane_nodes_lst
 
 save_production_stacks = TRUE
 
+save_global_graphs = TRUE
+save_continental_graphs = TRUE
+save_national_graphs = TRUE
+save_regional_graphs = TRUE
+
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
 # c'est les pannes prévues et non prévues sur le thermique...
