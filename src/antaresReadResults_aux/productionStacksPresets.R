@@ -103,10 +103,12 @@ setProdStackAlias(
 setProdStackAlias(
   name = "productionStackWithBatteryContributions",
   variables = alist(
+    Geothermique = `MISC. DTG`,
+    # Est-ce correct tout de même de le mettre en base ?
+    # Souvent c'est de l'autoconso plus qu'un apport au réseau, non ?
     Nucleaire = NUCLEAR,
     Eolien = WIND,
     Solaire = SOLAR,
-    Geothermique = `MISC. DTG`,
     `Hydro lacs` = `H. STOR`,
     
     `Bio et dechets` = `MIX. FUEL`,
@@ -124,7 +126,7 @@ setProdStackAlias(
     `Imports/Exports` = -BALANCE,
     Defaillance = `UNSP. ENRG`
   ),
-  colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
+  colors = c("springgreen", "yellow", "turquoise", "orange", "blue", 
              "darkgreen", "red", "darkred", "darkslategray", "lavender",
              "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
              "gray", "gray25"
@@ -139,10 +141,10 @@ setProdStackAlias(
 setProdStackAlias(
   name = "eCO2MixColorsWithBatteryContributions",
   variables = alist(
+    Geothermique = `MISC. DTG`,
     Nucleaire = NUCLEAR,
     Eolien = WIND,
     Solaire = SOLAR,
-    Geothermique = `MISC. DTG`,
     `Hydro lacs` = `H. STOR`,
     
     `Bio et dechets` = `MIX. FUEL`,
@@ -160,8 +162,9 @@ setProdStackAlias(
     `Imports/Exports` = -BALANCE,
     Defaillance = `UNSP. ENRG`
   ),
-  colors = c("#E4A701", "#72CBB7", "#D66B0D", "springgreen", "#2672B0", 
+  colors = c("springgreen", "#E4A701", "#72CBB7", "#D66B0D", "#2672B0", 
              "#156956", "#F20809", "#A68832", "#80549F", "lavender",
+             # Envisager, éventuellement, de distinguer marémoteur du reste...
              "blue", "yellow", "orange", "magenta", "salmon",
              "#969696", "gray25"
   ),

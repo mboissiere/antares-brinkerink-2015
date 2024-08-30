@@ -272,6 +272,7 @@ getAntaresData <- function(nodes, timestep) {
   } 
 # may seem redundant but saves time on the other variables if known
 # and we might switch often from hourly, to daily, etc
+# hm and yet I don't use it anymore...
 
 
 ##########
@@ -997,7 +998,7 @@ saveGlobalLoadMonotone <- function(output_dir,
     geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
     #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
     geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
-    scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+    scale_fill_manual(values = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "HYDRO" = "blue",
                                  "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                  "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                  "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
@@ -1112,7 +1113,7 @@ saveContinentalLoadMonotones <- function(output_dir,
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
       #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
-      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+      scale_fill_manual(values = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                    "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
@@ -1232,7 +1233,7 @@ saveNationalLoadMonotones <- function(output_dir,
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
       #geom_line(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
-      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+      scale_fill_manual(values = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                    "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
@@ -1345,7 +1346,7 @@ saveRegionalLoadMonotones <- function(output_dir,
       # geom_bar(aes(y = production, fill = energy_source), stat = "identity") +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +  # Stacked area for energy sources
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +  # Load duration curve as a step function
-      scale_fill_manual(values = c("NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "GEOTHERMAL" = "springgreen", "HYDRO" = "blue",
+      scale_fill_manual(values = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "HYDRO" = "blue",
                                    "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
                                    "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                    "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")) +
@@ -2076,6 +2077,11 @@ saveImportExportRanking(output_dir)
 saveLoadMonotones(output_dir #,
                   #timestep = "daily"
 )
+# A faire pour les load monotones : en fait la légende devrait être plus à gauche/droite
+# sinon un exempl avec des pics d'hydro exportés couvre le teste. Il faudrait aller carrément dans les
+# côté des axes
+# avec un texte suffisamment petit pour qu'il mange pas sur la légende non plus
+
 # Franchement attention au fait que le oil ressemble beaucoup au unsupplied energy...
 
 saveContinentalGenerationHistograms(output_dir)

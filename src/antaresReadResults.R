@@ -18,5 +18,7 @@ initializeOutputFolder(color_palette)
 ############################## PRODUCTION STACKS ###############################
 
 if (save_production_stacks) {
+  # Le géothermique devrait pas etre tout en bas, avant même éolien et solaire en vrai ?
+  
   
 }
