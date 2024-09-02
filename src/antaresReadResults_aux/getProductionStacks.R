@@ -213,13 +213,16 @@ saveRegionalProductionStacks <- function(output_dir,
 
 ##########################################
 
-saveAllProductionStacks <- function(output_dir) {
+saveAllProductionStacks <- function(output_dir,
+                                    timestep,
+                                    start_date,
+                                    end_date) {
   if (save_global_graphs) {
     msg = "[MAIN] - Preparing to save global production stack..."
     logMain(msg)
     start_time <- Sys.time()
     
-    saveGlobalProductionStack(output_dir) # à voir si la config je la fais ici ou pas
+    saveGlobalProductionStack(output_dir, timestep, start_date, end_date) # à voir si la config je la fais ici ou pas
     # Ah et c'est vrai que normalement faudrait que je fasse des warnings etc..
     
     end_time <- Sys.time()
@@ -234,7 +237,7 @@ saveAllProductionStacks <- function(output_dir) {
     logMain(msg)
     start_time <- Sys.time()
     
-    saveContinentalProductionStacks(output_dir)
+    saveContinentalProductionStacks(output_dir, timestep, start_date, end_date)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -247,7 +250,7 @@ saveAllProductionStacks <- function(output_dir) {
     logMain(msg)
     start_time <- Sys.time()
     
-    saveNationalProductionStacks(output_dir)
+    saveNationalProductionStacks(output_dir, timestep, start_date, end_date)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "mins"), 2)
@@ -260,7 +263,7 @@ saveAllProductionStacks <- function(output_dir) {
     logMain(msg)
     start_time <- Sys.time()
     
-    saveRegionalProductionStacks(output_dir)
+    saveRegionalProductionStacks(output_dir, timestep, start_date, end_date)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "mins"), 2)

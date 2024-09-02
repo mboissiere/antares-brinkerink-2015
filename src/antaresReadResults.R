@@ -25,11 +25,19 @@ output_dir <- initializeOutputFolder(study_name, simulation_name, color_palette)
 ################################################################################
 ############################## PRODUCTION STACKS ###############################
 
-if (save_production_stacks) {
-  source(".\\src\\antaresReadResults_aux\\getProductionStacks.R")
-  saveAllProductionStacks(output_dir)
+source(".\\src\\antaresReadResults_aux\\getProductionStacks.R") # hm
+# Remember : faut faire daily, et hourly !
+if (save_daily_production_stacks) {
   
-  # Remember : faut faire daily, et hourly !
+  saveAllProductionStacks(output_dir, "daily", "2015-01-01", "2015-12-31")
+  
+}
+
+if (save_hourly_production_stacks) {
+  
+  saveAllProductionStacks(output_dir, "hourly", "2015-01-01", "2015-01-08")
+  saveAllProductionStacks(output_dir, "hourly", "2015-08-01", "2015-08-08")
+  
 }
 
 

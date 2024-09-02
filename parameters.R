@@ -50,7 +50,8 @@ NODES = all_deane_nodes_lst
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_production_stacks = TRUE
+save_daily_production_stacks = TRUE
+save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
 save_load_monotones = TRUE
