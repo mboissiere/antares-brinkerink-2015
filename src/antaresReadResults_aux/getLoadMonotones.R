@@ -19,7 +19,7 @@ saveLoadMonotone <- function(output_dir,
   
   folder_name <- graphs_folder_names_by_mode[[mode]]
   
-  load_monot_dir <- file.path(global_dir, folder_name, "Load monotones")
+  load_monot_dir <- file.path(output_dir, folder_name, "Load monotones")
   
   if (!dir.exists(load_monot_dir)) {
     dir.create(load_monot_dir, recursive = TRUE)

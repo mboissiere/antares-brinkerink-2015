@@ -75,7 +75,7 @@ monotone_width = 2 * HEIGHT_4K
 monotone_resolution = DPI_300
 
 importexport_height <- HEIGHT_4K
-importexport_width <- 2 * HEIGHT_4K # Can be * 1.5 on top, if needed extra width
+importexport_width <- 1.5 * 2 * HEIGHT_4K # Can be * 1.5 on top, if needed extra width
 importexport_resolution <- DPI_300
 
 ################################################################################

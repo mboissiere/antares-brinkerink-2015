@@ -54,7 +54,7 @@ save_daily_production_stacks = TRUE
 save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
-save_load_monotones = TRUE
+save_load_monotones = FALSE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
 save_import_export = TRUE

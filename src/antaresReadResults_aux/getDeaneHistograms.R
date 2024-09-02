@@ -1,23 +1,29 @@
 #####################
 ## GENERATION
 
+# ah oui y a ça psk jsuis un schlag et je le fais localement
+library(ggplot2)
+
 saveContinentalGenerationHistograms <- function(output_dir,
                                                 timestep = "annual"
 ) {
   
   continental_data <- getContinentalAntaresData(timestep)
   continental_tbl <- as_tibble(continental_data)
+  # print(continental_tbl)
   
   folder_name <- graphs_folder_names_by_mode["continental"]
   
-  genr_histo_dir <- file.path(global_dir, folder_name, "Generation histograms")
+  genr_histo_dir <- file.path(output_dir, folder_name, "Generation histograms")
   
   if (!dir.exists(genr_histo_dir)) {
-    dir.create(genr_histo_dir, recursive = TRUE)
+    dir.create(genr_histo_dir)
   }
+  # print(genr_histo_dir)
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
-  
+  # funny that
+  # print(continents)
   
   continental_tbl <- continental_tbl %>%
     # Rename variables
@@ -32,7 +38,7 @@ saveContinentalGenerationHistograms <- function(output_dir,
            Wind = WIND
     ) %>%
     mutate(across(all_of(new_deane_result_variables), ~ . / MWH_IN_TWH)) %>% # convert to TWh
-    select(district, new_deane_result_variables)
+    select(area, new_deane_result_variables)
   
   continental_long_tbl <- continental_tbl %>%
     pivot_longer(cols = all_of(new_deane_result_variables), 
@@ -43,7 +49,7 @@ saveContinentalGenerationHistograms <- function(output_dir,
   for (cont in continents) {
     
     cont_tbl <- continental_long_tbl %>%
-      filter(district == cont)
+      filter(area == cont)
     
     p <- ggplot(cont_tbl, aes(x = Technology, y = Generation, fill = Technology)) +
       geom_bar(stat = "identity", position = "dodge", color = "#334D73") +
@@ -82,7 +88,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
   
   continental_data <- getContinentalAntaresData(timestep)
   continental_tbl <- as_tibble(continental_data) %>%
-    select(district, timeId, time, COAL, GAS, OIL)
+    select(area, timeId, time, COAL, GAS, OIL)
   
   continental_long_tbl <- continental_tbl %>%
     pivot_longer(cols = c("COAL", "GAS", "OIL"), 
@@ -90,7 +96,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
                  values_to = "production")
   
   pollution_tbl <- continental_long_tbl %>%
-    left_join(emissions_tbl, by = c("district" = "continent", "fuel_column"))
+    left_join(emissions_tbl, by = c("area" = "continent", "fuel_column"))
   
   
   pollution_tbl <- pollution_tbl %>%
@@ -99,19 +105,19 @@ saveContinentalEmissionHistograms <- function(output_dir,
            pollution_megatons = pollution_percentage / TONS_IN_MEGATON)
 
   pollution_tbl <- pollution_tbl %>%
-    group_by(district, timeId, time, fuel_column) %>%
+    group_by(area, timeId, time, fuel_column) %>%
     summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
   
   pollution_tbl <- pollution_tbl %>%
     bind_rows(
       pollution_tbl %>%
-        group_by(district, timeId, time) %>%
+        group_by(area, timeId, time) %>%
         summarise(fuel_column = "Total", pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
     ) %>%
-    arrange(district,
+    arrange(area,
             timeId, time, 
             factor(fuel_column, levels = c("COAL", "GAS", "OIL", "Total"))) %>%
-    select(district, fuel_column, pollution_megatons)
+    select(area, fuel_column, pollution_megatons)
   
   continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
   
@@ -130,7 +136,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
   for (cont in continents) {
     
     cont_data <- pollution_tbl %>%
-      filter(district == cont)
+      filter(area == cont)
     
     p <- ggplot(cont_data, aes(x = fuel_column, y = pollution_megatons, fill = fuel_column)) +
       geom_bar(stat = "identity", color = "black") +

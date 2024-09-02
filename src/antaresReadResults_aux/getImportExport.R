@@ -1,10 +1,12 @@
+library(ggplot2)
+
 saveImportExportRanking <- function(output_dir) {
   
   national_data <- getNationalAntaresData("annual")
   
   folder_name <- graphs_folder_names_by_mode["national"]
   
-  ranking_dir <- file.path(global_dir, folder_name, "Import/Export Ranking")
+  ranking_dir <- file.path(output_dir, folder_name, "Import-Export Ranking")
   
   if (!dir.exists(ranking_dir)) {
     dir.create(ranking_dir, recursive = TRUE)

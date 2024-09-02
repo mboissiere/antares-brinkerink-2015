@@ -44,6 +44,8 @@ initializeOutputFolder <- function(study_name = IMPORT_STUDY_NAME,
                       "-palette-",
                       color_palette
   )
+  output_dir <- truncateString(output_dir, 75) # temp number for testing
+  # Can actually be too long for Windows. Maximum is 260, we should find what the max file is.
   
   if (!dir.exists(output_dir)) {
     dir.create(output_dir)

@@ -94,7 +94,7 @@ if (save_deane_histograms) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveContinentalGenerationHistograms(output_dir)
+  saveContinentalEmissionHistograms(output_dir)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
