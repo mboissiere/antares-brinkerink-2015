@@ -29,6 +29,7 @@ source(".\\src\\antaresReadResults_aux\\getProductionStacks.R") # hm
 # Remember : faut faire daily, et hourly !
 if (save_daily_production_stacks) {
   
+  # Mettre ici le log, timer, main, afin de pouvoir écrire "daily/hourly"
   saveAllProductionStacks(output_dir, "daily", "2015-01-01", "2015-12-31")
   
 }
@@ -36,7 +37,7 @@ if (save_daily_production_stacks) {
 if (save_hourly_production_stacks) {
   
   saveAllProductionStacks(output_dir, "hourly", "2015-01-01", "2015-01-08")
-  saveAllProductionStacks(output_dir, "hourly", "2015-08-01", "2015-08-08")
+  saveAllProductionStacks(output_dir, "hourly", "2015-07-01", "2015-07-08")
   
 }
 
@@ -55,7 +56,7 @@ if (save_load_monotones) {
   
   for (mode in MODES) {
     if (boolean_parameter_by_mode[[mode]]) {
-      msg = paste("[MAIN] - Preparing to save", mode, "load monotone...")
+      msg = paste("[MAIN] - Preparing to save", mode, "load monotones...")
       logMain(msg)
       start_time <- Sys.time()
       
@@ -64,13 +65,30 @@ if (save_load_monotones) {
       
       end_time <- Sys.time()
       duration <- round(difftime(end_time, start_time, units = "mins"), 2)
-      msg = paste("[MAIN] - Done saving", mode, " load monotone! (run time :", duration,"min).\n")
+      msg = paste("[MAIN] - Done saving", mode, "load monotones! (run time :", duration,"min).\n")
       logMain(msg)
     }
     
   }
   
 }
+
+# Une recommendation possiblement intéressante de GPT : faire du calcul parallèle
+# pour pouvoir aller plus vite
+
+# # Use parallel processing to save multiple plots concurrently
+# cl <- makeCluster(detectCores() - 1) # Use one less than available cores
+# clusterExport(cl, varlist = c("antares_tbl", "load_monot_dir", "monotone_width", 
+#                               "monotone_height", "monotone_resolution", "unit", 
+#                               "max_value", "min_value", "max_index", "min_index", 
+#                               "renamedProdStackWithBatteries_lst", "data_lst"))
+# 
+# parLapply(cl, data_lst, function(item) { ...
+
+# detectCores()
+# [1] 8
+# (!!)
+
 
 ################################################################################
 ############################### DEANE HISTOGRAMS ###############################

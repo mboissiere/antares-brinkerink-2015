@@ -104,13 +104,19 @@ getAntaresDataByMode <- function(timestep,
                                  mode,
                                  variables = COMMON_COLUMNS
 ) {
-  antares_data <- case_when(
-    mode == "global" ~ getGlobalAntaresData(timestep, variables),
-    mode == "continental" ~ getContinentalAntaresData(timestep, variables),
-    mode == "national" ~ getNationalAntaresData(timestep, variables),
-    mode == "regional" ~ getRegionalAntaresData(timestep, variables),
-    .default = NULL # maybe return an error here idk
-  )
+  if (mode == "global") {
+    antares_data <- getGlobalAntaresData(timestep, variables)
+  }
+  if (mode == "continental") {
+    antares_data <- getContinentalAntaresData(timestep, variables)
+  }
+  if (mode == "national") {
+    antares_data <- getNationalAntaresData(timestep, variables)
+  }
+  if (mode == "regional") {
+    antares_data <- getRegionalAntaresData(timestep, variables)
+  }
+  
   return(antares_data)
   
 }

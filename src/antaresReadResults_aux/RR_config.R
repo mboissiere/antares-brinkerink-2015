@@ -42,7 +42,7 @@ graphs_folder_names_by_mode <- c(
   regional = file.path("Graphs", "4 - Regional-level graphs")
 )
 
-data_to_iterate_by_mode <- c(
+data_to_iterate_by_mode <- list( #c et list rien à voir en fait mdr
   global = WORLDS,
   continental = CONTINENTS,
   national = COUNTRIES,

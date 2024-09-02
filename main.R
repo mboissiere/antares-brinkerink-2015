@@ -26,6 +26,9 @@ logging_module = file.path("src", "logging.R",
                          fsep = .Platform$file.sep)
 source(logging_module)
 
+setupLogging()
+# Ptet mettre des logs aussi genre pour séparer createStudy, readResults...
+
 setRam(16)
 
 # source("parameters.R")

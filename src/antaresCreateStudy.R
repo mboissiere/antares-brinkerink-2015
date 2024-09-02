@@ -12,9 +12,6 @@ createStudy(
   antares_version = antares_version
 )
 
-
-setupLogging()
-
 study_path = file.path(base_path, study_name,
                        fsep = .Platform$file.sep)
 

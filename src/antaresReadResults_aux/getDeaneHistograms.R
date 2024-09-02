@@ -158,6 +158,42 @@ saveContinentalEmissionHistograms <- function(output_dir,
     msg = paste("[OUTPUT] - Done saving emissions histograms for", cont, "continent !")
     logFull(msg)
   }
-  
-  
 }
+
+######
+# New method just dropped pour calculer pollution
+
+# Nicolas : "Ce qu'il est possible de faire (car tu n'auras pas d'évolution d'Antares avant la fin de ton stage)
+# c'est de sortir les données annuelles de production par centrale 
+# ("cluster" dans la terminologie Antares) et les multiplier par le bon coefficient d'émission."
+
+# readAntaresClusters("all", selected = "production", timeStep = "annual", showProgress = TRUE)
+# readClusterDesc()
+
+getPollution <- function() {
+  clusters_info <- readClusterDesc()
+  clusters_info_tbl <- as_tibble(clusters_info)
+  
+  clusters_prod <- readAntaresClusters("all", selected = "production", timeStep = "annual", showProgress = TRUE)
+  clusters_prod_tbl <- as_tibble(clusters_prod)
+  
+  # Deux possibilités ici :
+  # # A tibble: 4,897 x 13
+  # area   group unitcount nominalcapacity min.stable.power marginal.cost startup.cost market.bid.cost cluster                     co2 timeId  time production
+  # <chr>  <chr>     <int>           <dbl>            <dbl>         <dbl>        <dbl>           <dbl> <fct>                     <dbl>  <int> <dbl>      <int>
+  #   1 af-ago Gas           1             12               2.4          76.8         883             76.8 ago_gas_namibe59         0.0509      1  2015          0
+  # faire confiance à co2 (sachant que POUR L'INSTANT je l'ai mal importé, il fallait faire Production Rate x Heat Rate) et juste le sommer (x production)
+  # ou, faire production x heat rate x production rate
+  
+  # de toute façon, je corrigerai bien un jour l'implémentation de co2, autant le faire...
+  
+  
+  clusters_tbl <- clusters_info_tbl %>%
+    left_join(clusters_prod_tbl, by = c("area", "cluster")) %>%
+    select(area, cluster, group, production)
+  
+  return(clusters_tbl)
+}
+
+clusters_tbl <- getPollution()
+print(clusters_tbl)

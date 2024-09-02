@@ -14,7 +14,7 @@ IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION_NAME = "15thmClu_accUCM"
-INCLUDE_DATE_IN_SIMULATION = TRUE
+INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 # Or what if I just want to skip it ?
@@ -50,11 +50,11 @@ NODES = all_deane_nodes_lst
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = TRUE
+save_daily_production_stacks = FALSE
 save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
-save_load_monotones = FALSE
+save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
 save_import_export = TRUE

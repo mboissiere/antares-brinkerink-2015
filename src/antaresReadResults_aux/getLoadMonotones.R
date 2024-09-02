@@ -25,6 +25,8 @@ saveLoadMonotone <- function(output_dir,
     dir.create(load_monot_dir, recursive = TRUE)
   }
   
+  # print(mode)
+  # print(data_to_iterate_by_mode)
   data_lst <- data_to_iterate_by_mode[[mode]]
   
   antares_tbl <- antares_tbl %>%
@@ -35,29 +37,34 @@ saveLoadMonotone <- function(output_dir,
   # bon time to faire un truc d'énorme schlagos
   # (finalement j'ai coupé le truc à la racine, dans getAntaresData)
   
-  antares_tbl_sorted <- antares_tbl[order(-antares_tbl$LOAD), ] %>%
-    select(timeId, time, LOAD, ENERGY_SOURCE_COLUMNS)
-  
-  antares_tbl_succint <- adaptAntaresVariables(antares_tbl_sorted)
-  
-  antares_tbl_long <- antares_tbl_succint %>%
-    select(time, LOAD, RENAMED_ENERGY_SOURCE_COLUMNS) %>%
-    pivot_longer(cols = RENAMED_ENERGY_SOURCE_COLUMNS, names_to = "energy_source", values_to = "production")
-  
-  antares_tbl_long$energy_source <- factor(antares_tbl_long$energy_source, levels = rev(RENAMED_ENERGY_SOURCE_COLUMNS))
-  
-
-  antares_tbl_long <- antares_tbl_long %>%
-    mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
-  
-  max_value <- max(antares_tbl_long$LOAD)
-  min_value <- min(antares_tbl_long$LOAD)
-  
   max_index <- 1
   min_index <- 100
   
   for (item in data_lst) {
-    p <- ggplot(antares_tbl_long, aes(x = percent_time)) +
+    item_tbl <- antares_tbl %>%
+      filter(area == item)
+    
+    item_tbl_sorted <- item_tbl[order(-item_tbl$LOAD), ] %>%
+      select(timeId, time, LOAD, all_of(ENERGY_SOURCE_COLUMNS))
+    
+    item_tbl_succint <- adaptAntaresVariables(item_tbl_sorted)
+    
+    item_tbl_long <- item_tbl_succint %>%
+      # maybe a whole "preprocess data" or something would be nice idk
+      select(time, LOAD, all_of(RENAMED_ENERGY_SOURCE_COLUMNS)) %>%
+      pivot_longer(cols = RENAMED_ENERGY_SOURCE_COLUMNS, names_to = "energy_source", values_to = "production")
+    
+    item_tbl_long$energy_source <- factor(item_tbl_long$energy_source, levels = rev(RENAMED_ENERGY_SOURCE_COLUMNS))
+    
+    
+    item_tbl_long <- item_tbl_long %>%
+      mutate(percent_time = (row_number() - 1) / (n() - 1) * 100)
+    
+    max_value <- max(item_tbl_long$LOAD)
+    min_value <- min(item_tbl_long$LOAD)
+    
+    
+    p <- ggplot(item_tbl_long, aes(x = percent_time)) +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
       scale_fill_manual(values = renamedProdStackWithBatteries_lst) +
