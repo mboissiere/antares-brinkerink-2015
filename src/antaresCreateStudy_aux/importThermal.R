@@ -138,24 +138,34 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
     # select(child_object, `Production Rate`, Price)
     
-  # print(emissions_and_prices_tbl)
+  print(emissions_and_prices_tbl)
 
   emissions_and_prices_tbl <- emissions_and_prices_tbl %>%
     # replace(is.na(.), 0) %>%
     #select(child_object, "Production Rate") %>%
     mutate(fuel_group = child_object,
            fuel_cost = Price,
-           co2_emission = `Production Rate`/1000) %>% # it's in *tons*CO2/MWh in Antares
+           # so ! new studies show production rate is actually in kg/GJ
+           # and heat rate is in GJ/MWh
+           # therefore PR * HR is in kgCO2/MWh
+           # indeed we need to divide by 1000 still, because in Antares it's in tons.
+           #co2_emission = `Production Rate`/1000
+           co2_production_rate = `Production Rate`/1000 # again, in TONS
+           ) %>% # it's in *tons*CO2/MWh in Antares
     # en fait vrmt le production rate c'est quoi ptn
-    select(fuel_group, fuel_cost, co2_emission)
+  
+    select(fuel_group, fuel_cost, co2_production_rate)
 
   # print(thermal_generators_tbl)
   # print(emissions_and_prices_tbl)
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    left_join(emissions_and_prices_tbl, by = "fuel_group") %>%
-    mutate(co2_emission = ifelse(is.na(co2_emission), 0, co2_emission),
-           variable_cost = heat_rate * fuel_cost) %>%
+    left_join(emissions_and_prices_tbl, by = "fuel_group")
+  
+  print(thermal_generators_tbl)
+  
+    # mutate(co2_emission = ifelse(is.na(co2_emission), 0, co2_emission),
+    #        variable_cost = heat_rate * fuel_cost) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
   
   return(thermal_generators_tbl)

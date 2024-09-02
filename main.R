@@ -18,7 +18,7 @@ antaresFunctions_file = file.path("src", "antaresFunctions.R",
 source(antaresFunctions_file)
 # Est-ce qu'on regroupe aussi les noms de modules dans les paramètres ?
 # Est-ce qu'on sépare paramètres, faisant un dossier paramètres ? eh
-addNodes_file = file.path("src", "data", "addNodes.R",
+addNodes_file = file.path("src", "antaresCreateStudy_aux", "addNodes.R",
                           fsep = .Platform$file.sep)
 source(addNodes_file)
 

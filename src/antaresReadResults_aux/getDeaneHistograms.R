@@ -192,6 +192,8 @@ getPollution <- function() {
     left_join(clusters_prod_tbl, by = c("area", "cluster")) %>%
     select(area, cluster, group, production)
   
+  # Gods, I really should just put EVERYTHING in tolower() and it would be soooo much easier.
+  
   return(clusters_tbl)
 }
 

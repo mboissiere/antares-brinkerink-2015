@@ -46,7 +46,7 @@ msg = "[MAIN] - Adding districts...\n"
 logMain(msg)
 start_time <- Sys.time()
 
-source(".\\src\\data\\createDistricts.R")
+source(".\\src\\antaresCreateStudy_aux\\createDistricts.R")
 createGlobalDistrict(NODES)
 createDistrictsFromContinents(NODES)
 createDistrictsFromRegionalNodes(NODES)
@@ -64,7 +64,7 @@ if (GENERATE_LOAD) {
   logMain(msg)
   start_time <- Sys.time()
   
-  importLoad_file = file.path("src", "data", "importLoad.R",
+  importLoad_file = file.path("src", "antaresCreateStudy_aux", "importLoad.R",
                               fsep = .Platform$file.sep)
   source(importLoad_file)
   addLoadToNodes(NODES)
@@ -99,6 +99,7 @@ if (GENERATE_LOAD) {
 
 generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
 generators_tbl <- readRDS(generators_file)
+print(generators_tbl)
 
 batteries_file = ".\\src\\objects\\full_2015_batteries_tbl.rds"
 batteries_tbl <- readRDS(batteries_file)
@@ -128,7 +129,7 @@ if (GENERATE_WIND) {
   start_time <- Sys.time()
   
   if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
-    importWind_file = file.path("src", "data", "importWind.R",
+    importWind_file = file.path("src", "antaresCreateStudy_aux", "importWind.R",
                                 fsep = .Platform$file.sep)
     source(importWind_file)
     addAggregatedWind(NODES, generators_tbl)
@@ -149,7 +150,7 @@ if (GENERATE_SOLAR_PV) {
   start_time <- Sys.time()
   
   if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
-    importSolarPV_file = file.path("src", "data", "importSolarPV.R",
+    importSolarPV_file = file.path("src", "antaresCreateStudy_aux", "importSolarPV.R",
                                    fsep = .Platform$file.sep)
     source(importSolarPV_file)
     addAggregatedSolar(NODES, generators_tbl, GENERATE_SOLAR_CSP)
@@ -169,7 +170,7 @@ if (GENERATE_SOLAR_PV) {
 ################################-= HYDRO IMPORT =-##############################
 
 if (GENERATE_HYDRO) {
-  importHydro_file = file.path("src", "data", "importHydro.R")
+  importHydro_file = file.path("src", "antaresCreateStudy_aux", "importHydro.R")
   source(importHydro_file)
   addHydroStorageToAntares(NODES)
   # Oh dip, and should I start caring about these fast/accurate modes ?
@@ -186,7 +187,7 @@ if (GENERATE_THERMAL) {
   logMain(msg)
   start_time <- Sys.time()
   
-  importThermal_file = file.path("src", "data", "importThermal.R")
+  importThermal_file = file.path("src", "antaresCreateStudy_aux", "importThermal.R")
   source(importThermal_file)
   #print(generators_tbl)
   #print(THERMAL_TYPES)
@@ -229,7 +230,7 @@ if (GENERATE_STORAGE) {
   logMain(msg)
   start_time <- Sys.time()
   
-  importBatteries_file = file.path("src", "data", "importBatteries.R")
+  importBatteries_file = file.path("src", "antaresCreateStudy_aux", "importBatteries.R")
   source(importBatteries_file)
   # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
   # faudrait ptet que je fasse ça pour les batteries en vrai de vrai
@@ -282,7 +283,7 @@ if (GENERATE_LINES) {
   logMain(msg)
   start_time <- Sys.time()
   
-  addLines_file = file.path("src", "data", "addLines.R")
+  addLines_file = file.path("src", "antaresCreateStudy_aux", "addLines.R")
   source(addLines_file)
   addLinesToAntares(NODES, INCLUDE_ZERO_NTC_LINES)
   
