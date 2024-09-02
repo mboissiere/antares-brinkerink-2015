@@ -5,6 +5,18 @@ renamedProdStackWithBatteries_lst = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = 
                                       "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                       "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")
 
+deane_technology_colors <- c(
+  "Bio and Waste" = "darkgreen",
+  "Coal" = "darkred",
+  "Gas" = "red",
+  "Geothermal" = "springgreen",
+  "Hydro" = "blue",
+  "Nuclear" = "yellow",
+  "Oil" = "darkslategray",
+  "Solar" = "orange",
+  "Wind" = "turquoise"
+)
+
 
 ### Prod stack aliases (for AntaresViz)
 

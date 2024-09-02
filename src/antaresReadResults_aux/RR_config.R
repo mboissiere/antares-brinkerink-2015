@@ -1,6 +1,7 @@
 ################################################################################
 ################################### OBJECTS ####################################
 
+HEIGHT_720P = 720
 HEIGHT_4K = 2*1080
 DPI_300 = 300
 # Les variables avant les constantes c'est pas le plus malin en vrai...
@@ -90,6 +91,7 @@ NB_HOURS_IN_TIMESTEP <- c(
 
 MWH_IN_GWH = 1000
 MWH_IN_TWH = 1000000
+TONS_IN_MEGATON = 1000000
 
 NB_MWH_IN_UNIT <- c(
   MWh = 1,
@@ -152,6 +154,26 @@ RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "SOLAR", "HY
                                    "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
                                    "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
                                    "IMPORTS", "UNSUPPLIED")
+
+emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
+
+emissions_tbl <- emissions_data %>%
+  mutate(continent = tolower(continent)) %>%
+  filter(fuel_type != "Oil") %>%
+  mutate(fuel_column = case_when(
+    fuel_type == "Gas" ~ "GAS",
+    fuel_type == "Coal" ~ "COAL",
+    fuel_type == "Oil country level" ~ "OIL",
+    TRUE ~ NA_character_ # In case there are other types not listed
+  )) %>%
+  select(continent, fuel_column, production_rate)
+
+deane_result_variables = c("MIX. FUEL", "COAL", "GAS", "MISC. DTG", "H. STOR", "NUCLEAR", "OIL", "SOLAR", "WIND")
+new_deane_result_variables = c("Bio and Waste", "Coal", "Gas", "Geothermal", "Hydro", "Nuclear", "Oil", "Solar", "Wind")
+# Technically, are these constants or variables ??
+
+
+
 
 # sources <- c("NUCLEAR", "WIND", "SOLAR", "MISC. DTG", "H. STOR",
 #              "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
