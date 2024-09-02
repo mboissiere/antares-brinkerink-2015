@@ -9,6 +9,10 @@ saveGlobalProductionStack <- function(output_dir,
 ) {
   global_data <- getGlobalAntaresData(timestep)
   
+  if (divide_stacks_by_hours) {
+    global_data <- divideAntaresDataByHours(global_data, timestep)
+  }
+  
   global_dir <- file.path(output_dir, "Graphs", "1 - Global-level graphs")
   
   prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
@@ -52,6 +56,10 @@ saveContinentalProductionStacks <- function(output_dir,
   
   
   continental_data <- getContinentalAntaresData(timestep)
+  
+  if (divide_stacks_by_hours) {
+    continental_data <- divideAntaresDataByHours(continental_data, timestep)
+  }
   
   continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
   
@@ -102,6 +110,10 @@ saveNationalProductionStacks <- function(output_dir,
                                          stack_palette = "productionStackWithBatteryContributions"
 ) {
   national_data <- getNationalAntaresData(timestep)
+  
+  if (divide_stacks_by_hours) {
+    national_data <- divideAntaresDataByHours(national_data, timestep)
+  }
   
   
   national_dir <- file.path(output_dir, "Graphs", "3 - National-level graphs")
@@ -157,6 +169,10 @@ saveRegionalProductionStacks <- function(output_dir,
                                          stack_palette = "productionStackWithBatteryContributions"
 ) {
   regional_data <- getRegionalAntaresData(timestep)
+  
+  if (divide_stacks_by_hours) {
+    regional_data <- divideAntaresDataByHours(regional_data, timestep)
+  }
   
   regional_dir <- file.path(output_dir, "Graphs", "4 - Regional-level graphs")
   

@@ -11,6 +11,10 @@ saveLoadMonotone <- function(output_dir,
 ) {
   
   antares_data <- getAntaresDataByMode(timestep, mode)
+  
+  if (divide_monotones_by_hours) {
+    antares_data <- divideAntaresDataByHours(continental_data, timestep)
+  }
   # Argh c'est relou les modes en vraiiii
   antares_tbl <- as_tibble(antares_data)
   

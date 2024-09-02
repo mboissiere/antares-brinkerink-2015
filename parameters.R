@@ -51,7 +51,14 @@ NODES = all_deane_nodes_lst
 # print(NODES)
 
 save_production_stacks = TRUE
+divide_stacks_by_hours = TRUE
+
 save_load_monotones = TRUE
+# divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
+
+save_import_export = TRUE
+
+save_deane_histograms = TRUE
 
 save_global_graphs = TRUE
 save_continental_graphs = TRUE

@@ -4,6 +4,9 @@
 library(antaresViz)
 
 source(".\\src\\logging.R")
+# IMPORTANT !!! LOGS ARENT ACTUALLY BEING SAVED RN
+# there are no logs from after 25/08 despite testing through 30/08
+# I guess non-study-creating runs aren't important enough... We should fix this.
 
 source(".\\src\\antaresReadResults_aux\\colorPalettes.R")
 source(".\\src\\antaresReadResults_aux\\RR_init.R")
@@ -40,6 +43,7 @@ MODES = c("global", "continental", "national", "regional")
 if (save_load_monotones) {
   
   source(".\\src\\antaresReadResults_aux\\getLoadMonotones.R")
+  # Maybe the paths could too be in config or init !
   
   for (mode in MODES) {
     if (boolean_parameter_by_mode[[mode]]) {
@@ -57,5 +61,29 @@ if (save_load_monotones) {
     }
     
   }
+  
+}
+
+################################################################################
+############################### DEANE HISTOGRAMS ###############################
+
+
+################################################################################
+############################## IMPORT/EXPORT RANK ##############################
+
+if (save_import_export) {
+  
+  source(".\\src\\antaresReadResults_aux\\getImportExport.R")
+  
+  msg = "[MAIN] - Preparing to save import/export ranking of countries..."
+  logMain(msg)
+  start_time <- Sys.time()
+  
+  saveImportExportRanking(output_dir)
+  
+  end_time <- Sys.time()
+  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+  msg = paste("[MAIN] - Import/export ranking of countries has been saved ! (run time :", duration,"s).\n")
+  logMain(msg)
   
 }
