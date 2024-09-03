@@ -215,6 +215,7 @@ if (GENERATE_THERMAL) {
   }
   #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)
+  # Deactivated for now
   activateThermalTS()
   
   end_time <- Sys.time()

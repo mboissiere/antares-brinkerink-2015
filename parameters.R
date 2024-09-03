@@ -4,18 +4,21 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_Argentina" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_CHEDEUFRA-yesActivateTS" # pourrait être corrélé à import_study_name en vrai
+# wow, did we cover everything ? i guess CSP as storage is the biggest thing remaining.
+# holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
+
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "Deane_Outage__2024_09_03_13_56_20"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION_NAME = "coalOutageTest"
+LAUNCH_SIMULATION_NAME = "OutageTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 IMPORT_SIMULATION_NAME = "20240903-1205eco-testTSGen" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
@@ -38,7 +41,7 @@ south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
 # NODES = all_deane_nodes_lst
-NODES = "SA-ARG"
+NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
 # NB : toutes les fonctions qui ré-appellent "NODES" en misant dessus / sans faire
 # jsp une intersection avec le jeu de données ou quoi, sont pas si robustes.
@@ -144,7 +147,8 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
-NB_CLUSTERS_THERMAL = 15
+NB_CLUSTERS_THERMAL = 1
+#NB_CLUSTERS_THERMAL = 15
 CLUSTER_NAME_LIMIT = 60
 #faudrait un true ou false
 # CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
@@ -162,6 +166,9 @@ AGGREGATE_BATTERIES = TRUE
 # clusteriser à balle avec un algo de k-means, mais ensuite
 # modéliser les batteries aux 14 units comme séparées si on veut
 # c'est donc pas le même mot à employer que ce qu'on a fait pour le thermique imo
+
+# But honestly. Add clustering to batteries because do we really need fine
+# tuning with like 8 gazillion chemical batteries if their capacities are shit ?
 
 # Everything is here now EXCEPT CSP
 ## Il serait bien de faire un code qui check quelles centrales existent dans ninja

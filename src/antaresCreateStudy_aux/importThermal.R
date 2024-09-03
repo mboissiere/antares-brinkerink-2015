@@ -423,6 +423,10 @@ addThermalToAntares <- function(thermal_generators_tbl) {
 
 antares_solver_path <- ".\\antares\\AntaresWeb\\antares_solver\\antares-8.8-solver.exe"
 
+# Is this really it chief ? Could Argentina work without activateThermalTS ?
+# bc it gives errors when it runs in world.
+# (perhaps I shouldve done writePreproData..)
+
 activateThermalTS <- function() { # this would be better in LaunchSimulation i think
   # (would at least compensate lack of functions)
   # ah but wait no ! i risk wanting to put a CreateStudy on the VM without having done that.
