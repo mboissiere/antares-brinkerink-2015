@@ -99,7 +99,7 @@ if (GENERATE_LOAD) {
 
 generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
 generators_tbl <- readRDS(generators_file)
-print(generators_tbl)
+# print(generators_tbl)
 
 batteries_file = ".\\src\\objects\\full_2015_batteries_tbl.rds"
 batteries_tbl <- readRDS(batteries_file)
@@ -215,6 +215,7 @@ if (GENERATE_THERMAL) {
   }
   #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)
+  activateThermalTS()
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "mins"), 2)

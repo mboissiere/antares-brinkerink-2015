@@ -1,0 +1,24 @@
+INFO [2024-09-03 13:47:13] [MAIN] - Creating Deane_Outage__2024_09_03_13_47_13 study...
+
+INFO [2024-09-03 13:47:13] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-03 13:47:13] [MAIN] - Adding nodes...
+
+INFO [2024-09-03 13:47:18] [MAIN] - Done adding nodes! (run time : 4.96s).
+
+INFO [2024-09-03 13:47:18] [MAIN] - Adding districts...
+
+INFO [2024-09-03 13:47:20] [MAIN] - Done adding districts! (run time : 1.39s).
+
+INFO [2024-09-03 13:47:20] [MAIN] - Adding load data...
+
+INFO [2024-09-03 13:47:23] [MAIN] - Done adding load data! (run time : 2.84s).
+
+INFO [2024-09-03 13:47:23] [MAIN] - Fetching wind data...
+
+INFO [2024-09-03 13:47:23] [MAIN] - Done adding wind data! (run time : 0.38s).
+
+INFO [2024-09-03 13:47:23] [MAIN] - Fetching solar data...
+
+INFO [2024-09-03 13:47:24] [MAIN] - Done adding solar data! (run time : 0.43s).
+
+INFO [2024-09-03 13:47:24] [MAIN] - Beginning hydro implementation...

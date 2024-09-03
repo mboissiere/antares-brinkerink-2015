@@ -16,6 +16,10 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
   aggregated_generators_tbl <- generators_tbl %>%
     # group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
     group_by(node, cluster_type, nominal_capacity, min_stable_power) %>%
+    # waitwaitwait. aggregateEquivalent is for generators who are FUNCTIONALLY THE SAME.
+    # or is it, uh... well we aggregate on nominal capacity and we want bugs to not be there
+    # and we aggregate everything nominal capacity or that depends on it. but. uh.
+    # bit confusing innit. 
   summarize(
     total_units = sum(nb_units),
     combined_names = paste0(
@@ -28,6 +32,8 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     avg_start_cost = mean(start_cost),
     avg_variable_cost = mean(variable_cost),
     avg_co2_emission = mean(co2_emission), 
+    avg_fo_rate = mean(fo_rate),
+    avg_fo_duration = mean(fo_duration),
     .groups = 'drop'
   ) 
   
@@ -36,10 +42,13 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
            nb_units = total_units,
            start_cost = avg_start_cost,
            variable_cost = avg_variable_cost,
-           co2_emission = avg_co2_emission
+           co2_emission = avg_co2_emission,
            # co2_emission dépend vrmt seulement du fuel group pour le coup, un select avant devrait suffir
+           fo_rate = avg_fo_rate,
+           fo_duration = avg_fo_duration
     ) %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, 
+           co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
   
   return(aggregated_generators_tbl)
 }
@@ -218,9 +227,11 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je p
       co2_emission = mean(co2_emission),
       variable_cost = mean(variable_cost), # Include other relevant columns
       start_cost = mean(start_cost),
+      fo_rate = mean(fo_rate),
+      fo_duration = mean(fo_duration),
       .groups = 'drop'
     )
-  print(summary)
+  # print(summary)
   # prints are super interesting to keep track of clustering.
   # perhaps create a seperate clusteringLog ?
   
@@ -263,7 +274,8 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
       clustered_data = map(data, ~ cluster_and_summarize_generators(.x, k = max_clusters, node, cluster_type))
     ) %>%
     unnest(clustered_data) %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, 
+           co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
   # print(thermal_clusters_tbl)
   return(thermal_clusters_tbl)
 }

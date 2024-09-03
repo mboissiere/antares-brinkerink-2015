@@ -1,0 +1,48 @@
+INFO [2024-09-03 15:11:09] [MAIN] - Creating Deane_Argentina__2024_09_03_15_11_08 study...
+
+INFO [2024-09-03 15:11:09] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-03 15:11:10] [MAIN] - Adding nodes...
+
+INFO [2024-09-03 15:11:16] [MAIN] - Done adding nodes! (run time : 6.66s).
+
+INFO [2024-09-03 15:11:16] [MAIN] - Adding districts...
+
+INFO [2024-09-03 15:11:19] [MAIN] - Done adding districts! (run time : 2.42s).
+
+INFO [2024-09-03 15:11:19] [MAIN] - Adding load data...
+
+INFO [2024-09-03 15:11:23] [MAIN] - Done adding load data! (run time : 3.95s).
+
+INFO [2024-09-03 15:11:23] [MAIN] - Fetching wind data...
+
+INFO [2024-09-03 15:11:24] [MAIN] - Done adding wind data! (run time : 1.35s).
+
+INFO [2024-09-03 15:11:25] [MAIN] - Fetching solar data...
+
+INFO [2024-09-03 15:11:25] [MAIN] - Done adding solar data! (run time : 0.66s).
+
+INFO [2024-09-03 15:11:26] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-03 15:11:36] [MAIN] - Done adding hydro!
+INFO [2024-09-03 15:11:36] [MAIN] - Fetching thermal data...
+INFO [2024-09-03 15:11:43] [MAIN] - Aggregating identical generators...
+INFO [2024-09-03 15:11:43] [MAIN] - Running 15-clustering algorithm on generators...
+INFO [2024-09-03 15:11:43] [MAIN] - Done running 15-clustering algorithm on generators!
+
+INFO [2024-09-03 15:12:09] [MAIN] - Done adding thermal data! (run time : 0.55min).
+
+INFO [2024-09-03 15:12:09] [MAIN] - Fetching battery data...
+
+INFO [2024-09-03 15:12:09] [MAIN] - Aggregating identical batteries...
+INFO [2024-09-03 15:12:11] [MAIN] - Done adding battery data! (run time : 0.03min).
+
+INFO [2024-09-03 15:12:11] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-03 15:12:12] [MAIN] - Done adding lines! (run time : 1.17s).
+
+INFO [2024-09-03 15:12:12] [MAIN] - Finished setting up Antares study! (run time : 1.06min).
+ 
+
+INFO [2024-09-03 15:12:12] [MAIN] - Starting coalOutageTest simulation...
+INFO [2024-09-03 15:16:53] [MAIN] - Antares simulation finished! (run time : 4.67min).
+ 
+

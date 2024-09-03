@@ -57,6 +57,23 @@ filterClusters <- function(generators_tbl, thermal_types) {
 # thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
 #
 # print(thermal_generators_tbl)
+library(data.table)
+# Approche 1 :
+# et mettre ça dans les data table
+DEFAULT_FO_DURATION = 1
+DEFAULT_PO_DURATION = 1
+DEFAULT_FO_RATE = 0
+DEFAULT_PO_RATE = 0
+DEFAULT_NPO_MIN = 0
+DEFAULT_NPO_MAX = 0
+
+# Approche 2 :
+daily_zeros <- matrix(0, 365)
+daily_zeros_datatable <- as.data.table(daily_zeros)
+daily_ones <- matrix(1, 365)
+daily_ones_datatable <- as.data.table(daily_ones)
+# Au choix..
+
 
 getThermalPropertiesTable <- function(thermal_generators_tbl) {
   thermal_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
@@ -93,34 +110,40 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
                            "Maintenance Rate", "Mean Time to Repair")) # ah ouais paye ta case-sensitiveness
     # faudrait vraiment séparer les trucs imo genre "include maintenance" etc parce que là tema la fonction...
   
+  # argh le maintenance rate c'est pas vraiment genre... en vrai si ça a l'air similaire pour chaque pays/techno
+  # ouais mais bon oh hein
+  
     # NB : there will be more but we'll take it easy
     # notably, nb units needs to be adressed because it returns vectors given scenarios
 
-  # FOR TESTING
-  generators_tbl <- getGeneratorsFromNodes(c("EU-CHE", "EU-DEU", "EU-FRA"))
-  generators_tbl <- filterFor2015(generators_tbl)
-  generators_tbl <- addGeneralFuelInfo(generators_tbl)
-  thermal_types <- c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
-  thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
-  print(thermal_generators_tbl)
-  print(thermal_properties_tbl)
-  # FOR TESTING
+  # # FOR TESTING
+  # generators_tbl <- getGeneratorsFromNodes(c("EU-CHE", "EU-DEU", "EU-FRA"))
+  # generators_tbl <- filterFor2015(generators_tbl)
+  # generators_tbl <- addGeneralFuelInfo(generators_tbl)
+  # thermal_types <- c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
+  # thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
+  # print(thermal_generators_tbl)
+  # print(thermal_properties_tbl)
+  # # FOR TESTING
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
     left_join(thermal_properties_tbl, by = "generator_name")
   
-  print(thermal_generators_tbl, n = 100)
+  # print(thermal_generators_tbl, n = 100)
 
   thermal_generators_tbl <- thermal_generators_tbl %>%
     pivot_wider(names_from = property, values_from = value) %>%
-    mutate(fo_rate = ifelse(is.na(`Maintenance Rate`), 0, `Maintenance Rate`/100), # Default value in Antares is 0
-           fo_duration = ifelse(is.na(`Mean Time to Repair`), 1, `Mean Time to Repair`/24) # Default value in Antares is 1
+    mutate(fo_rate = ifelse(is.na(`Maintenance Rate`), DEFAULT_FO_RATE, `Maintenance Rate`/100), # Default value in Antares is 0
+           fo_duration = ifelse(is.na(`Mean Time to Repair`), DEFAULT_FO_DURATION, `Mean Time to Repair`/24) # Default value in Antares is 1
            )
+  # Note that FilterFor2015 could take a different approach, implementing the JPN nuclear but disabling them by putting a 1 FO rate
+  # for the year 2015. Just for the year 2015, though....
+  # (why did brinkerink pick this god damn year lmao)
   
-  thermal_generators_test <- thermal_generators_tbl %>%
-    select(generator_name, `Maintenance Rate`, `Mean Time to Repair`, fo_rate, fo_duration)
+  # thermal_generators_test <- thermal_generators_tbl %>%
+  #   select(generator_name, `Maintenance Rate`, `Mean Time to Repair`, fo_rate, fo_duration)
 
-  print(thermal_generators_test)
+  # print(thermal_generators_test)
   # # Y a de l'hydro là-dedans, c'est louche. J'ai fait le left_join pourtant.
   # NN mais j'étais juste un abruti et j'ai mis le truc non filtré
 
@@ -140,7 +163,9 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   #   ! argument non numérique pour un opérateur binaire
     ########## Etonnamment, une valeur qui pop pas pour le jeu de test CHE-DEU-FRA
     # mais qui pop pour le NA-CAN-QC, AF-MAR...
-    select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power, heat_rate)
+    select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, 
+           # min stable factor ?
+           min_stable_power, heat_rate, fo_rate, fo_duration)
 
   # Time to add CO2 emissions (basically why we kept fuel_type now)
   # Attention c'est NA pour le nuc !
@@ -197,9 +222,11 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   # print(thermal_generators_test)
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
+    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, 
+           co2_emission, variable_cost, start_cost,
+           fo_rate, fo_duration)
   
-  # print(thermal_generators_tbl)
+  # print(thermal_generators_tbl, n = 100)
 
   return(thermal_generators_tbl)
 }
@@ -328,7 +355,26 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     #test = paste("CO2 emission for", generator_name, "plant:", co2_emission)
     #print(test)
     list_pollutants = list("co2"= co2_emission) # "nh3"= 0.25, "nox"= 0.45, "pm2_5"= 0.25, "pm5"= 0.25, "pm10"= 0.25, "nmvoc"= 0.25, "so2"= 0.25, "op1"= 0.25, "op2"= 0.25, "op3"= 0.25, "op4"= 0.25, "op5"= NULL)
-
+    
+    fo_rate = thermal_generators_tbl$fo_rate[row]
+    # maybe make an "daily_Antaresize" function which would help w this stuff
+    # like "daily_antares_ts(DEFAULT_FO_RATE) ya get me
+    fo_rate_matrix <- matrix(fo_rate, 365)
+    fo_rate_datatable <- as.data.table(fo_rate_matrix)
+    
+    fo_duration = thermal_generators_tbl$fo_duration[row]
+    fo_duration_matrix <- matrix(fo_duration, 365)
+    fo_duration_datatable <- as.data.table(fo_duration_matrix)
+    
+    prepro_df <- data.frame(
+      fo_duration = fo_duration_datatable,
+      po_duration = daily_ones_datatable,
+      fo_rate = fo_rate_datatable,
+      po_rate = daily_zeros_datatable,
+      npo_min = daily_zeros_datatable,
+      npo_max = daily_zeros_datatable
+    )
+    
     variable_cost = thermal_generators_tbl$variable_cost[row]
     start_cost = thermal_generators_tbl$start_cost[row]
     tryCatch({
@@ -341,6 +387,7 @@ addThermalToAntares <- function(thermal_generators_tbl) {
         min_stable_power = min_stable_power, # Point d'attention : ça s'écrit avec des tirets dans le .ini
         # mais en fait c'est ... euh
         list_pollutants = list_pollutants,
+        prepro_data = prepro_df,
         #...,
         #list_pollutants = NULL,
         #time_series = NULL,
@@ -372,6 +419,19 @@ addThermalToAntares <- function(thermal_generators_tbl) {
         logError(msg)
       })
   }
+}
+
+antares_solver_path <- ".\\antares\\AntaresWeb\\antares_solver\\antares-8.8-solver.exe"
+
+activateThermalTS <- function() { # this would be better in LaunchSimulation i think
+  # (would at least compensate lack of functions)
+  # ah but wait no ! i risk wanting to put a CreateStudy on the VM without having done that.
+  updateGeneralSettings(generate = "thermal")
+  
+  runTsGenerator(
+    path_solver = antares_solver_path,
+    show_output_on_console = TRUE # probably temporary
+  )
 }
 
 # According to rdrr.io documentation, parameters are in similar format to the .ini

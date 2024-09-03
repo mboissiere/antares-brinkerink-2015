@@ -18,6 +18,10 @@ library(tidyr)
 # Importer des fonctions et variables auxilliaires créées dans d'autres scripts
 antaresFunctions_file = file.path("src", "antaresFunctions.R",
                           fsep = .Platform$file.sep)
+# idee : faire un dossier "architecture" autre que parameters mais au mm endroit
+# qui garderait tous les paths. that way, si on change des trucs, il suffit de le modifier là.
+# mais du coup lui on le bouge pas mdr.
+
 source(antaresFunctions_file)
 # Est-ce qu'on regroupe aussi les noms de modules dans les paramètres ?
 # Est-ce qu'on sépare paramètres, faisant un dossier paramètres ? eh
