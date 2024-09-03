@@ -66,14 +66,26 @@ getNationalAntaresData <- function(timestep,
                               timeStep = timestep
   )
   
+  # print(antares_data)
+  # En fait ce procédé peut etre un peu ghetto :
+  # antaresdatatable est un truc à deux entrées (areas et districts) si y a des districts
+  # mais sinon c'est un seul tbl et il comprends pas il dit que c'est null.
   areas_data <- antares_data$areas
   districts_data <- antares_data$districts
+  # print(areas_data)
+  # print(districts_data)
   
-  colnames(districts_data)[colnames(districts_data) == "district"] <- "area"
-
-  combined_data <- rbind(areas_data, districts_data)
+  # print(antares_data)
+  if (is.null(districts_data)) {
+    national_data <- antares_data
+  } else {
+    colnames(districts_data)[colnames(districts_data) == "district"] <- "area"
+    
+    combined_data <- rbind(areas_data, districts_data)
+    
+    national_data <- as.antaresDataTable(combined_data, synthesis = TRUE, timeStep = timestep, type = "areas")
+  }
   
-  national_data <- as.antaresDataTable(combined_data, synthesis = TRUE, timeStep = timestep, type = "areas")
   return(national_data)
 }
 
