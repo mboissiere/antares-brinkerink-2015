@@ -57,6 +57,8 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
           "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
           "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
+# un bon échantillon de test pour maintenance rate, mais pour réajuster les histogrammes
+# il faudra tout mettre ! cf dernier CR
 
 # NB : toutes les fonctions qui ré-appellent "NODES" en misant dessus / sans faire
 # jsp une intersection avec le jeu de données ou quoi, sont pas si robustes.
