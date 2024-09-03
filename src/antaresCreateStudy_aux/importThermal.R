@@ -74,6 +74,11 @@ daily_ones <- matrix(1, 365)
 daily_ones_datatable <- as.data.table(daily_ones)
 # Au choix..
 
+hourly_zeros <- matrix(0, 8760)
+hourly_zeros_datatable <- as.data.table(hourly_zeros)
+hourly_ones <- matrix(1, 8760)
+hourly_ones_datatable <- as.data.table(hourly_ones)
+
 
 getThermalPropertiesTable <- function(thermal_generators_tbl) {
   thermal_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
@@ -375,6 +380,13 @@ addThermalToAntares <- function(thermal_generators_tbl) {
       npo_max = daily_zeros_datatable
     )
     
+    default_modulation <- data.frame(
+      mrg_cost_mod = hourly_ones_datatable,
+      market_bid_mod = hourly_ones_datatable,
+      capacity_mod = hourly_ones_datatable,
+      min_gen_mod = hourly_zeros_datatable
+    )
+    
     variable_cost = thermal_generators_tbl$variable_cost[row]
     start_cost = thermal_generators_tbl$start_cost[row]
     tryCatch({
@@ -388,6 +400,7 @@ addThermalToAntares <- function(thermal_generators_tbl) {
         # mais en fait c'est ... euh
         list_pollutants = list_pollutants,
         prepro_data = prepro_df,
+        prepro_modulation = default_modulation,
         #...,
         #list_pollutants = NULL,
         #time_series = NULL,
@@ -430,7 +443,9 @@ antares_solver_path <- ".\\antares\\AntaresWeb\\antares_solver\\antares-8.8-solv
 activateThermalTS <- function() { # this would be better in LaunchSimulation i think
   # (would at least compensate lack of functions)
   # ah but wait no ! i risk wanting to put a CreateStudy on the VM without having done that.
-  updateGeneralSettings(generate = "thermal")
+  updateGeneralSettings(generate = "thermal",
+                        refreshtimeseries = "thermal")
+  updateInputSettings(import = c("thermal"))
   
   runTsGenerator(
     path_solver = antares_solver_path,

@@ -1,0 +1,24 @@
+INFO [2024-09-03 18:26:17] [MAIN] - Creating v2_test__2024_09_03_18_26_16 study...
+
+INFO [2024-09-03 18:26:17] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-03 18:26:17] [MAIN] - Adding nodes...
+
+INFO [2024-09-03 18:26:30] [MAIN] - Done adding nodes! (run time : 13.23s).
+
+INFO [2024-09-03 18:26:30] [MAIN] - Adding districts...
+
+INFO [2024-09-03 18:26:33] [MAIN] - Done adding districts! (run time : 2.9s).
+
+INFO [2024-09-03 18:26:33] [MAIN] - Adding load data...
+
+INFO [2024-09-03 18:26:41] [MAIN] - Done adding load data! (run time : 8.13s).
+
+INFO [2024-09-03 18:26:41] [MAIN] - Fetching wind data...
+
+INFO [2024-09-03 18:26:45] [MAIN] - Done adding wind data! (run time : 3.81s).
+
+INFO [2024-09-03 18:26:45] [MAIN] - Fetching solar data...
+
+INFO [2024-09-03 18:26:50] [MAIN] - Done adding solar data! (run time : 4.4s).
+
+INFO [2024-09-03 18:26:50] [MAIN] - Beginning hydro implementation...

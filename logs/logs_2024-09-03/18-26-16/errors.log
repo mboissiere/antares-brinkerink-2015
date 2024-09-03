@@ -1,0 +1,13 @@
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for SA-PRY (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for AF-NAM (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for AF-BWA (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for AF-ZWE (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for AF-MOZ (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for AF-SWZ (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:45] [WARN] - Skipped adding wind data for AF-LSO (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:49] [WARN] - Skipped adding solar data for SA-PRY (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:49] [WARN] - Skipped adding solar data for AF-BWA (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:49] [WARN] - Skipped adding solar data for AF-ZWE (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:50] [WARN] - Skipped adding solar data for AF-MOZ (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:50] [WARN] - Skipped adding solar data for AF-SWZ (no generators found in PLEXOS).
+ERROR [2024-09-03 18:26:50] [WARN] - Skipped adding solar data for AF-LSO (no generators found in PLEXOS).

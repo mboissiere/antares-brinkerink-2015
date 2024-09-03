@@ -1,0 +1,43 @@
+INFO [2024-09-03 17:57:02] [MAIN] - Creating yesActTS__2024_09_03_17_57_01 study...
+
+INFO [2024-09-03 17:57:02] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-03 17:57:02] [MAIN] - Adding nodes...
+
+INFO [2024-09-03 17:57:08] [MAIN] - Done adding nodes! (run time : 6.01s).
+
+INFO [2024-09-03 17:57:08] [MAIN] - Adding districts...
+
+INFO [2024-09-03 17:57:11] [MAIN] - Done adding districts! (run time : 2.62s).
+
+INFO [2024-09-03 17:57:11] [MAIN] - Adding load data...
+
+INFO [2024-09-03 17:57:14] [MAIN] - Done adding load data! (run time : 3.64s).
+
+INFO [2024-09-03 17:57:15] [MAIN] - Fetching wind data...
+
+INFO [2024-09-03 17:57:15] [MAIN] - Done adding wind data! (run time : 0.66s).
+
+INFO [2024-09-03 17:57:15] [MAIN] - Fetching solar data...
+
+INFO [2024-09-03 17:57:16] [MAIN] - Done adding solar data! (run time : 0.87s).
+
+INFO [2024-09-03 17:57:17] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-03 17:57:35] [MAIN] - Done adding hydro!
+INFO [2024-09-03 17:57:35] [MAIN] - Fetching thermal data...
+INFO [2024-09-03 17:57:42] [MAIN] - Aggregating identical generators...
+INFO [2024-09-03 17:57:42] [MAIN] - Running 1-clustering algorithm on generators...
+INFO [2024-09-03 17:57:44] [MAIN] - Done running 1-clustering algorithm on generators!
+
+INFO [2024-09-03 17:57:55] [MAIN] - Done adding thermal data! (run time : 0.34min).
+
+INFO [2024-09-03 17:57:55] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-03 17:57:59] [MAIN] - Done adding lines! (run time : 4.04s).
+
+INFO [2024-09-03 17:57:59] [MAIN] - Finished setting up Antares study! (run time : 0.98min).
+ 
+
+INFO [2024-09-03 17:58:00] [MAIN] - Starting OutageTest simulation...
+INFO [2024-09-03 17:58:05] [MAIN] - Antares simulation finished! (run time : 0.08min).
+ 
+

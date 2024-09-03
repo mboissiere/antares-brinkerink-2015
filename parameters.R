@@ -4,7 +4,17 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_CHEDEUFRA-yesActivateTS" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "v2_test" # pourrait être corrélé à import_study_name en vrai
+
+# petite bizarrerie pas bien méchante : seems like ça marche plus en launchsimulation actuellement
+# mais, sur antaresweb ça marche. le test CHE-DEU-FRA avec et sans activateTS notamment, post-maintenance rate.
+# bon.
+
+# i just got bugs of like "oh no prepro doesnt work"... is it just a matter of writing files
+# with a path name limit ????
+# oh my god. yeah it really is just that.
+# ok STOP HAVING LONG NAMES christ
+
 # wow, did we cover everything ? i guess CSP as storage is the biggest thing remaining.
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
@@ -18,11 +28,13 @@ IMPORT_STUDY_NAME = "Deane_Outage__2024_09_03_13_56_20"
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION_NAME = "OutageTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = TRUE
+LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = "20240903-1205eco-testTSGen" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
+# NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
+# là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -41,7 +53,10 @@ south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
 # NODES = all_deane_nodes_lst
-NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+# NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
+          "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
+          "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
 
 # NB : toutes les fonctions qui ré-appellent "NODES" en misant dessus / sans faire
 # jsp une intersection avec le jeu de données ou quoi, sont pas si robustes.
@@ -130,6 +145,7 @@ GENERATE_HYDRO = TRUE
 GENERATE_STORAGE = TRUE
 # i should really say batteries
 # bc storage will be done for csp independantly
+## (will it ?)
 
 # autre subtilité : on pourrait vouloir antaresediter une simulation existante...
 # par exemple là j'ai un big deane world mais je pourrais vouloir changer un truc,
@@ -147,7 +163,7 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
-NB_CLUSTERS_THERMAL = 1
+NB_CLUSTERS_THERMAL = 5
 #NB_CLUSTERS_THERMAL = 15
 CLUSTER_NAME_LIMIT = 60
 #faudrait un true ou false
