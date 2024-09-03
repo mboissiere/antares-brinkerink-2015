@@ -5,6 +5,10 @@
 
 # Nom servant de base pour la classification de l'étude
 study_basename <- "v2_test" # pourrait être corrélé à import_study_name en vrai
+# ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
+# notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
+# et lancer un run monde pour voir comment bougent les histogrammes.
+# lancer rédaction du rapport en parallèle qui plongera les mains dans la doc PLEXOS, etc
 
 # petite bizarrerie pas bien méchante : seems like ça marche plus en launchsimulation actuellement
 # mais, sur antaresweb ça marche. le test CHE-DEU-FRA avec et sans activateTS notamment, post-maintenance rate.
