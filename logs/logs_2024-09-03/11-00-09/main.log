@@ -1,0 +1,9 @@
+INFO [2024-09-03 11:00:10] [MAIN] - Creating Deane_CO2fix__2024_09_03_11_00_09 study...
+
+INFO [2024-09-03 11:00:10] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-03 11:00:10] [MAIN] - Adding nodes...
+
+INFO [2024-09-03 11:00:13] [MAIN] - Done adding nodes! (run time : 2.96s).
+
+INFO [2024-09-03 11:00:13] [MAIN] - Adding districts...
+

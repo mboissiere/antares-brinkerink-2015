@@ -1,7 +1,7 @@
 ########## IMPORTS ##########
 
 # preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
-preprocessNinjaData_module = file.path("src", "data", "preprocessNinjaData.R")
+preprocessNinjaData_module = file.path("src", "antaresCreateStudy_aux", "preprocessNinjaData.R")
 source(preprocessNinjaData_module)
 # # Hm, mais du coup je les importe ici ou seulement dans mon programme au besoin ?
 # # dans le programme peut etre plutot source(importWind)

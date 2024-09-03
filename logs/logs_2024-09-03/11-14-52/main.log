@@ -1,0 +1,26 @@
+INFO [2024-09-03 11:14:52] [MAIN] - Creating Deane_CO2fix__2024_09_03_11_14_52 study...
+
+INFO [2024-09-03 11:14:52] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-03 11:14:53] [MAIN] - Adding nodes...
+
+INFO [2024-09-03 11:14:55] [MAIN] - Done adding nodes! (run time : 2.09s).
+
+INFO [2024-09-03 11:14:55] [MAIN] - Adding districts...
+
+INFO [2024-09-03 11:14:56] [MAIN] - Done adding districts! (run time : 0.86s).
+
+INFO [2024-09-03 11:14:56] [MAIN] - Adding load data...
+
+INFO [2024-09-03 11:14:57] [MAIN] - Done adding load data! (run time : 1.25s).
+
+INFO [2024-09-03 11:14:57] [MAIN] - Fetching wind data...
+
+INFO [2024-09-03 11:14:58] [MAIN] - Done adding wind data! (run time : 0.3s).
+
+INFO [2024-09-03 11:14:58] [MAIN] - Fetching solar data...
+
+INFO [2024-09-03 11:14:58] [MAIN] - Done adding solar data! (run time : 0.27s).
+
+INFO [2024-09-03 11:14:58] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-03 11:15:04] [MAIN] - Done adding hydro!
+INFO [2024-09-03 11:15:04] [MAIN] - Fetching thermal data...

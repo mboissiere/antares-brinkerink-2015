@@ -31,3 +31,6 @@ INFO [2024-09-02 12:55:38] [MAIN] - Preparing to save continental load monotone.
 INFO [2024-09-02 13:15:21] [MAIN] - Done saving continental load monotone! (run time : 19.73 min).
 
 INFO [2024-09-02 13:15:22] [MAIN] - Preparing to save national load monotone...
+INFO [2024-09-02 22:31:30] [MAIN] - Done saving national load monotone! (run time : 556.14 min).
+
+INFO [2024-09-02 22:31:30] [MAIN] - Preparing to save regional load monotone...

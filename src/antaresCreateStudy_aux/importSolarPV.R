@@ -1,6 +1,6 @@
 ########## IMPORTS ##########
 
-preprocessNinjaData_module = file.path("src", "data", "preprocessNinjaData.R")
+preprocessNinjaData_module = file.path("src", "antaresCreateStudy_aux", "preprocessNinjaData.R")
 source(preprocessNinjaData_module)
 library(tidyr)
 

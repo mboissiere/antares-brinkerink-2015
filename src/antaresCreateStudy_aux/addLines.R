@@ -1,4 +1,4 @@
-preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
+preprocessPlexosData_module = file.path("src", "antaresCreateStudy_aux", "preprocessPlexosData.R")
 source(preprocessPlexosData_module)
 
 # Pour l'instant, copier-coller de addNodes, à modifier

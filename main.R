@@ -4,6 +4,9 @@
 # Charger les packages
 library(antaresRead)
 library(antaresEditObject)
+
+library(dplyr)
+library(tidyr)
 # Limite ça le EditObject pourrait être limité au CreateStudy
 # Bon AntaresRead je vois pas comment faire sans mdr
 # Penser à faire comme un requirements.txt genre le truc comme dans logging

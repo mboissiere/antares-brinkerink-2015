@@ -25,6 +25,9 @@ output_dir <- initializeOutputFolder(study_name, simulation_name, color_palette)
 ################################################################################
 ############################## PRODUCTION STACKS ###############################
 
+# Note : "Other/Wav/Sto" which i should understand, often seem to be modelled as free thermal.
+# so maybe it should be on top of Geothermal in the stack actually..
+
 source(".\\src\\antaresReadResults_aux\\getProductionStacks.R") # hm
 # Remember : faut faire daily, et hourly !
 if (save_daily_production_stacks) {

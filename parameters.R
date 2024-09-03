@@ -4,9 +4,9 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Deane_testWorld" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "Deane_CO2fix" # pourrait être corrélé à import_study_name en vrai
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
@@ -19,7 +19,7 @@ LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 
 # if (EXPORT_TO_OUTPUT_FOLDER) {
@@ -37,7 +37,9 @@ north_america_nodes_lst <- readRDS(".\\src\\objects\\north_america_nodes_lst.rds
 south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-NODES = all_deane_nodes_lst
+# NODES = all_deane_nodes_lst
+NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+
 # NB : toutes les fonctions qui ré-appellent "NODES" en misant dessus / sans faire
 # jsp une intersection avec le jeu de données ou quoi, sont pas si robustes.
 # en effet si on a envie de faire tourner deux sessions R en même temps, on peut overwrite
@@ -51,19 +53,20 @@ NODES = all_deane_nodes_lst
 # print(NODES)
 
 save_daily_production_stacks = FALSE
-save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
+save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
 save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
-save_import_export = TRUE
+save_import_export = FALSE
 
-save_deane_histograms = TRUE
+save_deane_histograms = FALSE
+# devrait etre en 1er vu comment c'est rapide
 
-save_global_graphs = TRUE
-save_continental_graphs = TRUE
-save_national_graphs = TRUE
+save_global_graphs = FALSE
+save_continental_graphs = FALSE
+save_national_graphs = FALSE
 save_regional_graphs = TRUE
 
 

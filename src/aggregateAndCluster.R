@@ -14,7 +14,8 @@ source("parameters.R")
 
 aggregateEquivalentGenerators <- function(generators_tbl) {
   aggregated_generators_tbl <- generators_tbl %>%
-    group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
+    # group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
+    group_by(node, cluster_type, nominal_capacity, min_stable_power) %>%
   summarize(
     total_units = sum(nb_units),
     combined_names = paste0(
@@ -26,7 +27,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     ),
     avg_start_cost = mean(start_cost),
     avg_variable_cost = mean(variable_cost),
-    # avg_co2_emission = mean(co2_emission), 
+    avg_co2_emission = mean(co2_emission), 
     .groups = 'drop'
   ) 
   
@@ -35,7 +36,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
            nb_units = total_units,
            start_cost = avg_start_cost,
            variable_cost = avg_variable_cost,
-           # co2_emission = avg_co2_emission
+           co2_emission = avg_co2_emission
            # co2_emission dépend vrmt seulement du fuel group pour le coup, un select avant devrait suffir
     ) %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
@@ -219,7 +220,7 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je p
       start_cost = mean(start_cost),
       .groups = 'drop'
     )
-  # print(summary)
+  print(summary)
   # prints are super interesting to keep track of clustering.
   # perhaps create a seperate clusteringLog ?
   
@@ -292,16 +293,16 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
 cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficiency) { # continent, battery_group)
   # on met en argument tout ce qu'on regarde pas du coup ? tout ce qui st pareil ?
   # faisons avec le moins de redondance pour l'instant.
-  print(paste("df:", node))
-  print(df, n = 25)
+  # print(paste("df:", node))
+  # print(df, n = 25)
   if (nrow(df) > k) {
     clusters <- kmeans(df[, c("max_power", "capacity")], centers = k) # 2-dimensional clustering here !
     df$cluster <- as.factor(clusters$cluster)
   } else {
     df$cluster <- as.factor(1:nrow(df))
   }
-  print(paste("df with clusters:", node))
-  print(df, n = 25)
+  # print(paste("df with clusters:", node))
+  # print(df, n = 25)
   
   summary <- df %>%
     group_by(cluster) %>%
@@ -319,7 +320,7 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       initial_state = 50,
       .groups = 'drop'
     )
-  print(summary)
+  # print(summary)
   
   summary <- summary %>%
     mutate(
@@ -329,7 +330,7 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       cluster_type = cluster_type,
       efficiency = efficiency
     )
-  print(summary)
+  # print(summary)
   
   return(summary %>% select(-node, -cluster_type, -efficiency, -combined_names))  
 }

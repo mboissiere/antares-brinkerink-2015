@@ -13,7 +13,7 @@
 
 # Mdr faut que j'arrête de changer d'avis sur mon implémentation toutes les 30 secondes
 
-preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
+preprocessPlexosData_module = file.path("src", "antaresCreateStudy_aux", "preprocessPlexosData.R")
 source(preprocessPlexosData_module)
 library(tidyr)
 
@@ -32,18 +32,15 @@ library(tidyr)
 # une fonction addCoalCluster ? mais qui garde getThermalGenerators ?
 # ou tant pis on rechange à chaque fois quitte à juste faire la même fonction avec filter
 # ou alors alors, une fonction mère donc cette fonction en est une implémentation filter(variable) ?
-# thermal_types = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
+
 # thermal_types = c("Hard Coal")
 
 filterClusters <- function(generators_tbl, thermal_types) {
   thermal_generators_tbl <- generators_tbl %>%
     filter(cluster_type %in% thermal_types)
-  
+
   return(thermal_generators_tbl)
 }
-
-# thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
-# print(thermal_generators_tbl)
 
 # # nodes <- c("EU-CHE", "EU-DEU", "EU-FRA")
 # nodes <- c("EU-FRA", "AF-MAR", "AS-JPN-CE", "NA-CAN-QC", "OC-NZL", "SA-CHL")
@@ -54,11 +51,11 @@ filterClusters <- function(generators_tbl, thermal_types) {
 # generators_tbl <- addGeneralFuelInfo(generators_tbl)
 
 # print(generators_tbl)
-# 
+#
 # thermal_types = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
 # # thermal_types = c("Nuclear")
 # thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
-# 
+#
 # print(thermal_generators_tbl)
 
 getThermalPropertiesTable <- function(thermal_generators_tbl) {
@@ -76,36 +73,57 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     filter(collection == "Generators") # faudrait vérifier que je fasse bien ce test sur d'autres trucs
     # penser en fait à faire le 2015 filter dès qu'il faut, je le fais pas au niveau des propriétés
   # or c'est justement là que ça cloche
-  
+
   # Enft le problème est que j'ai conçu le truc pour rendre l'enlevage de centrales problématiques
   # dès la partie generators globale, mais du coup elle ne compte qu'à partir du left join.
   # donc, il faut left join avant de pivot_wider sinon ça fait des vecteurs.
   # VAMOS c'était bien ça (misère...)
-  
+
   # print(thermal_properties_tbl)
-  
+
   # thermal_properties_tbl <- apply2015ConstructionFilter(thermal_properties_tbl)
   # thermal_properties_tbl <- apply2015NuclearFilter(thermal_properties_tbl)
-  
+
   thermal_properties_tbl <- thermal_properties_tbl %>%
     select(generator_name, property, value) %>%
     # Ah, it's the capital letters that's causing all the problems.. Was good practice for Ninja
     # but now it's bad practice because we're pulling from the same dataset
     # Oh well
-    filter(property %in% c("Max Capacity", "Start Cost", "Units", "Min Stable Factor", "Heat Rate"))
+    filter(property %in% c("Max Capacity", "Start Cost", "Units", "Min Stable Factor", "Heat Rate", 
+                           "Maintenance Rate", "Mean Time to Repair")) # ah ouais paye ta case-sensitiveness
+    # faudrait vraiment séparer les trucs imo genre "include maintenance" etc parce que là tema la fonction...
+  
     # NB : there will be more but we'll take it easy
     # notably, nb units needs to be adressed because it returns vectors given scenarios
+
+  # FOR TESTING
+  generators_tbl <- getGeneratorsFromNodes(c("EU-CHE", "EU-DEU", "EU-FRA"))
+  generators_tbl <- filterFor2015(generators_tbl)
+  generators_tbl <- addGeneralFuelInfo(generators_tbl)
+  thermal_types <- c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
+  thermal_generators_tbl <- filterClusters(generators_tbl, thermal_types)
+  print(thermal_generators_tbl)
+  print(thermal_properties_tbl)
+  # FOR TESTING
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
     left_join(thermal_properties_tbl, by = "generator_name")
+  
+  print(thermal_generators_tbl, n = 100)
 
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    pivot_wider(names_from = property, values_from = value)
+    pivot_wider(names_from = property, values_from = value) %>%
+    mutate(fo_rate = ifelse(is.na(`Maintenance Rate`), 0, `Maintenance Rate`/100), # Default value in Antares is 0
+           fo_duration = ifelse(is.na(`Mean Time to Repair`), 1, `Mean Time to Repair`/24) # Default value in Antares is 1
+           )
   
-  # print(thermal_generators_tbl)
+  thermal_generators_test <- thermal_generators_tbl %>%
+    select(generator_name, `Maintenance Rate`, `Mean Time to Repair`, fo_rate, fo_duration)
+
+  print(thermal_generators_test)
   # # Y a de l'hydro là-dedans, c'est louche. J'ai fait le left_join pourtant.
   # NN mais j'étais juste un abruti et j'ai mis le truc non filtré
-  
+
   thermal_generators_tbl <- thermal_generators_tbl %>%
     rename(
       nominal_capacity = "Max Capacity",
@@ -123,10 +141,10 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     ########## Etonnamment, une valeur qui pop pas pour le jeu de test CHE-DEU-FRA
     # mais qui pop pour le NA-CAN-QC, AF-MAR...
     select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, min_stable_power, heat_rate)
-  
+
   # Time to add CO2 emissions (basically why we kept fuel_type now)
   # Attention c'est NA pour le nuc !
-  
+
   # Time to add variable cost baybee
   emissions_and_prices_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Fuels") %>%
@@ -137,47 +155,71 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   # print(emissions_and_prices_tbl, n=300)
     pivot_wider(names_from = property, values_from = value) # ptet en faire un objet R global
     # select(child_object, `Production Rate`, Price)
-    
-  print(emissions_and_prices_tbl)
+
+  # print(emissions_and_prices_tbl)
 
   emissions_and_prices_tbl <- emissions_and_prices_tbl %>%
     # replace(is.na(.), 0) %>%
     #select(child_object, "Production Rate") %>%
-    mutate(fuel_group = child_object,
+    rename(fuel_group = child_object,
            fuel_cost = Price,
            # so ! new studies show production rate is actually in kg/GJ
            # and heat rate is in GJ/MWh
            # therefore PR * HR is in kgCO2/MWh
            # indeed we need to divide by 1000 still, because in Antares it's in tons.
            #co2_emission = `Production Rate`/1000
-           co2_production_rate = `Production Rate`/1000 # again, in TONS
-           ) %>% # it's in *tons*CO2/MWh in Antares
+           production_rate = `Production Rate`
+    ) %>%
+           # again, in TONS
+ # it's in *tons*CO2/MWh in Antares
     # en fait vrmt le production rate c'est quoi ptn
-  
-    select(fuel_group, fuel_cost, co2_production_rate)
+
+    select(fuel_group, fuel_cost, production_rate)
 
   # print(thermal_generators_tbl)
   # print(emissions_and_prices_tbl)
-  
+
   thermal_generators_tbl <- thermal_generators_tbl %>%
     left_join(emissions_and_prices_tbl, by = "fuel_group")
+
+  # print(thermal_generators_tbl)
   
-  print(thermal_generators_tbl)
+  thermal_generators_tbl <- thermal_generators_tbl %>%
+    #left_join(emissions_and_prices_tbl, by = "fuel_group") %>% oops, duplicate
+    mutate(co2_production_rate = ifelse(is.na(production_rate), 0, production_rate),
+           variable_cost = heat_rate * fuel_cost,
+           co2_emission_kg = heat_rate * co2_production_rate,
+           co2_emission = co2_emission_kg / 1000)
   
-    # mutate(co2_emission = ifelse(is.na(co2_emission), 0, co2_emission),
-    #        variable_cost = heat_rate * fuel_cost) %>%
+  # thermal_generators_test <- thermal_generators_tbl %>%
+  #   select(generator_name, node, cluster_type, heat_rate, fuel_cost, variable_cost, co2_production_rate, co2_emission_kg, co2_emission)
+  #   
+  # print(thermal_generators_test)
+  
+  thermal_generators_tbl <- thermal_generators_tbl %>%
     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
   
+  # print(thermal_generators_tbl)
+
   return(thermal_generators_tbl)
 }
 
 ###################################
 
+# INFO [2024-09-03 11:04:12] [MAIN] - Aggregating identical generators...
+# Error in `group_by()`:
+#   ! Must group by variables found in `.data`.
+# x Column `co2_emission` is not found.
+
+# This is going to be a bit tricky, because I'm realizing that CO2 emissions are dependant on heat rate
+# eg different per generator, but also I will aggregate them.
+# is the mean CO2 emission of two generators, the emission of the mean CO2 emissions ?
+# Values shouldn't be TOO different, but still..
 
 
 # # Les fonctions qui gèrent les strings sont maintenant dans utils !!
 # source(".\\src\\utils.R")
-# 
+#
 # aggregateEquivalentGenerators <- function(generators_tbl) {
 #   # generators_tbl <- test_thermal_properties # for temporary testing
 #   aggregated_generators_tbl <- generators_tbl %>%
@@ -189,11 +231,11 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #     # (...wait, it's not ? wow, the difference must be SO slight)
 #     # but the moral of the story is : we're gonna clusterize on nominal capacity later on, so let's just aggregate via fuckin nominal capacity
 #     # and i guess for the rest... averages ?
-#     
+#
 #     # ok yea, Sc is a polynomial of C, which iself is MWst/U so it depends on units
 #     # and U is MWt/MWst (MW true / MW standard)
 #     # so, it can vary.
-#     
+#
 #     # en fait, le vrai truc rigoureux de fou je pense, ce serait un mode qui aggregate ce qui est vraiment exactement les mêmes sur chaque paramètre
 #   # puis, faire du clustering non pas sur nominal_capacity mais sur les objets de dimension n qui regroupent toutes les propriétés
 #   # je soupçonne néanmoins que ça soit bcp plus lent.
@@ -212,10 +254,10 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #       # but you wanna know why it's not a priority ? coz AntaresFast doesn't use start cost lmao
 #       avg_variable_cost = mean(variable_cost), # it was detected that variable cost can also change, while running a 20-cluster attempt
 #       # and if that changes, I reckon other things might...
-#       avg_co2_emission = mean(co2_emission), 
+#       avg_co2_emission = mean(co2_emission),
 #       # If I wanted to be very precise, I would probably also keep the min stable FACTOR in memory and divide from the nominal capacity again
 #       .groups = 'drop'
-#     ) 
+#     )
 #   # print(aggregated_generators_tbl)
 #   #%>%
 #   aggregated_generators_tbl <- aggregated_generators_tbl %>%
@@ -226,19 +268,19 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 #            co2_emission = avg_co2_emission
 #            ) %>%
 #     select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, co2_emission, variable_cost, start_cost)
-#   
+#
 #   return(aggregated_generators_tbl)
 # }
-# 
+#
 # test_thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
 # # print(test_thermal_properties, n = 20)
 # print(test_thermal_properties, n = 50)
-# 
+#
 # test_thermal_properties <- aggregateEquivalentGenerators(test_thermal_properties)
 # # print(test_thermal_properties %>% filter(node == "AF-ZAF"), n = 25)
 # # print(test_thermal_properties, n = 100)
 # # print(test_thermal_properties$generator_name[87])
-# 
+#
 # saveRDS(test_thermal_properties, ".\\src\\objects\\thermal_aggregated_tbl.rds")
 # test_thermal_properties <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
 # print(test_thermal_properties)
@@ -270,7 +312,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 
 
 addThermalToAntares <- function(thermal_generators_tbl) {
-  
+
   for (row in 1:nrow(thermal_generators_tbl)) {
     generator_name = thermal_generators_tbl$generator_name[row] # NB : vu que j'extrais puis fait l'index,
     # mieux vaut extraire arrays une fois au début et puis indicer après non ?
@@ -286,7 +328,7 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     #test = paste("CO2 emission for", generator_name, "plant:", co2_emission)
     #print(test)
     list_pollutants = list("co2"= co2_emission) # "nh3"= 0.25, "nox"= 0.45, "pm2_5"= 0.25, "pm5"= 0.25, "pm10"= 0.25, "nmvoc"= 0.25, "so2"= 0.25, "op1"= 0.25, "op2"= 0.25, "op3"= 0.25, "op4"= 0.25, "op5"= NULL)
-    
+
     variable_cost = thermal_generators_tbl$variable_cost[row]
     start_cost = thermal_generators_tbl$start_cost[row]
     tryCatch({
@@ -311,8 +353,8 @@ addThermalToAntares <- function(thermal_generators_tbl) {
         overwrite = TRUE
         #opts = antaresRead::simOptions()
       )
-      
-      # Error in source(importThermal_module) : 
+
+      # Error in source(importThermal_module) :
       #   src/data/importThermal.R:140:26: '=' inattendu(e)
       # 139:         nominalcapacity = nominal_capacity,
       # 140:         min-stable-power =

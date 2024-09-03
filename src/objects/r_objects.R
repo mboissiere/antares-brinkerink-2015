@@ -213,70 +213,70 @@ hourly_ones_datatable <- as.data.table(hourly_ones)
 
 # wow this is so fucking complicated actually ????
 
-source(".\\src\\data\\preprocessPlexosData.R")
-
-generator_fgroup_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
-  filter(parent_class == "Generator" & child_class == "Fuel") %>%
-  rename(generator_name = parent_object,
-         fuel_group = child_object) %>%
-  select(generator_name, fuel_group)
-
-print(generator_fgroup_tbl)
-
-fgroup_ftype_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
-  filter(class == "Fuel") %>%
-  rename(fuel_group = name,
-         fuel_type = category) %>%
-  select(fuel_group, fuel_type)
-
-print(fgroup_ftype_tbl)
-
-node_continent_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
-  filter(class == "Node") %>%
-  rename(node = name,
-         continent = category) %>%
-  select(node, continent)
-
-print(node_continent_tbl)
-
-fgroup_prate_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
-  filter(parent_class == "Emission" & child_class == "Fuel") %>%
-  select(child_object, property, value) %>%
-  pivot_wider(names_from = "property", values_from = "value") %>%
-  rename(fuel_group = child_object,
-         production_rate = `Production Rate`)
-
-print(fgroup_prate_tbl)
-
-generator_node_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
-  filter(parent_class == "Generator" & child_class == "Node") %>%
-  rename(generator_name = parent_object,
-         node = child_object) %>%
-  select(generator_name, node)
-
-print(generator_node_tbl)
-
-# generator_fgroup_tbl
-# fgroup_ftype_tbl
-# fgroup_prate_tbl
-# generator_node_tbl
-# node_continent_tbl
-
-individual_emissions_data_tbl <- generator_node_tbl %>%
-  left_join(generator_fgroup_tbl, by = "generator_name") %>%
-  left_join(fgroup_ftype_tbl, by = "fuel_group") %>%
-  left_join(node_continent_tbl, by = "node") %>%
-  left_join(fgroup_prate_tbl, by = "fuel_group") %>%
-  filter(!is.na(production_rate))
-
-emissions_data_tbl <- individual_emissions_data_tbl %>%
-  select(fuel_type, continent, production_rate) %>%
-  distinct()
-
-saveRDS(emissions_data_tbl, ".\\src\\objects\\emissions_by_continent_fuel.rds")
-emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
-
-print(emissions_data_tbl)
+# source(".\\src\\antaresCreateStudy_aux\\preprocessPlexosData.R")
+# 
+# generator_fgroup_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
+#   filter(parent_class == "Generator" & child_class == "Fuel") %>%
+#   rename(generator_name = parent_object,
+#          fuel_group = child_object) %>%
+#   select(generator_name, fuel_group)
+# 
+# print(generator_fgroup_tbl)
+# 
+# fgroup_ftype_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
+#   filter(class == "Fuel") %>%
+#   rename(fuel_group = name,
+#          fuel_type = category) %>%
+#   select(fuel_group, fuel_type)
+# 
+# print(fgroup_ftype_tbl)
+# 
+# node_continent_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
+#   filter(class == "Node") %>%
+#   rename(node = name,
+#          continent = category) %>%
+#   select(node, continent)
+# 
+# print(node_continent_tbl)
+# 
+# fgroup_prate_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+#   filter(parent_class == "Emission" & child_class == "Fuel") %>%
+#   select(child_object, property, value) %>%
+#   pivot_wider(names_from = "property", values_from = "value") %>%
+#   rename(fuel_group = child_object,
+#          production_rate = `Production Rate`)
+# 
+# print(fgroup_prate_tbl)
+# 
+# generator_node_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
+#   filter(parent_class == "Generator" & child_class == "Node") %>%
+#   rename(generator_name = parent_object,
+#          node = child_object) %>%
+#   select(generator_name, node)
+# 
+# print(generator_node_tbl)
+# 
+# # generator_fgroup_tbl
+# # fgroup_ftype_tbl
+# # fgroup_prate_tbl
+# # generator_node_tbl
+# # node_continent_tbl
+# 
+# individual_emissions_data_tbl <- generator_node_tbl %>%
+#   left_join(generator_fgroup_tbl, by = "generator_name") %>%
+#   left_join(fgroup_ftype_tbl, by = "fuel_group") %>%
+#   left_join(node_continent_tbl, by = "node") %>%
+#   left_join(fgroup_prate_tbl, by = "fuel_group") %>%
+#   filter(!is.na(production_rate))
+# 
+# emissions_data_tbl <- individual_emissions_data_tbl %>%
+#   select(fuel_type, continent, production_rate) %>%
+#   distinct()
+# 
+# saveRDS(emissions_data_tbl, ".\\src\\objects\\emissions_by_continent_fuel.rds")
+# emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
+# 
+# print(emissions_data_tbl)
 
 # Tout ça pour 20 lignes mdr mais c'est la seule façon de le faire rigoureusement..
 

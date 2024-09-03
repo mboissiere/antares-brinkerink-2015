@@ -1,7 +1,7 @@
 library(antaresRead)
 library(antaresEditObject)
 
-source(".\\src\\data\\addNodes.R")
+source(".\\src\\antaresCreateStudy_aux\\addNodes.R")
 
 DEANE_ALL_NODES <- getAllNodes()
 
