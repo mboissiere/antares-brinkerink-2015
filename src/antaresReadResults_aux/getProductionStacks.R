@@ -4,8 +4,8 @@ saveGlobalProductionStack <- function(output_dir,
                                       timestep = "daily",
                                       start_date = "2015-01-01",
                                       end_date = "2015-12-31",
-                                      unit = "TWh",
-                                      stack_palette = "productionStackWithBatteryContributions"
+                                      stack_palette = "productionStackWithBatteryContributions",
+                                      unit = "TWh"
 ) {
   global_data <- getGlobalAntaresData(timestep)
   
@@ -49,8 +49,8 @@ saveContinentalProductionStacks <- function(output_dir,
                                             timestep = "daily",
                                             start_date = "2015-01-01",
                                             end_date = "2015-12-31",
-                                            unit = "GWh",
-                                            stack_palette = "productionStackWithBatteryContributions"
+                                            stack_palette = "productionStackWithBatteryContributions",
+                                            unit = "GWh"
                                             # pour le colorblind check, faire un "colorblindify" pour aperçus
 ) {
   
@@ -106,8 +106,8 @@ saveNationalProductionStacks <- function(output_dir,
                                          timestep = "daily",
                                          start_date = "2015-01-01",
                                          end_date = "2015-12-31",
-                                         unit = "MWh", 
-                                         stack_palette = "productionStackWithBatteryContributions"
+                                         stack_palette = "productionStackWithBatteryContributions",
+                                         unit = "MWh"
 ) {
   national_data <- getNationalAntaresData(timestep)
   
@@ -160,13 +160,19 @@ saveNationalProductionStacks <- function(output_dir,
 
 #######
 
+# NB : un bug a été obtenu sur un run où il n'y avait pas de régions (pas d'USA, pas de BRA, etc)
+# INFO [2024-09-04 16:15:09] [MAIN] - Preparing to save regional production stacks...
+# Error in UseMethod("mutate") : 
+#   pas de méthode pour 'mutate' applicable pour un objet de classe "c('antaresDataList', 'antaresData', 'list')"
+
+# Penser à prendre en compte ce cas de figure, donc (ne serait-ce que par une exception)
 
 saveRegionalProductionStacks <- function(output_dir,
                                          timestep = "daily",
                                          start_date = "2015-01-01",
                                          end_date = "2015-12-31",
-                                         unit = "MWh",
-                                         stack_palette = "productionStackWithBatteryContributions"
+                                         stack_palette = "productionStackWithBatteryContributions",
+                                         unit = "MWh"
 ) {
   regional_data <- getRegionalAntaresData(timestep)
   
@@ -216,13 +222,15 @@ saveRegionalProductionStacks <- function(output_dir,
 saveAllProductionStacks <- function(output_dir,
                                     timestep,
                                     start_date,
-                                    end_date) {
+                                    end_date,
+                                    color_palette) {
+  # make global config variables like DEFAULT_COLOR_PALETTE...
   if (save_global_graphs) {
     msg = "[MAIN] - Preparing to save global production stack..."
     logMain(msg)
     start_time <- Sys.time()
     
-    saveGlobalProductionStack(output_dir, timestep, start_date, end_date) # à voir si la config je la fais ici ou pas
+    saveGlobalProductionStack(output_dir, timestep, start_date, end_date, color_palette) # à voir si la config je la fais ici ou pas
     # Ah et c'est vrai que normalement faudrait que je fasse des warnings etc..
     
     end_time <- Sys.time()
@@ -237,7 +245,7 @@ saveAllProductionStacks <- function(output_dir,
     logMain(msg)
     start_time <- Sys.time()
     
-    saveContinentalProductionStacks(output_dir, timestep, start_date, end_date)
+    saveContinentalProductionStacks(output_dir, timestep, start_date, end_date, color_palette)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -250,7 +258,7 @@ saveAllProductionStacks <- function(output_dir,
     logMain(msg)
     start_time <- Sys.time()
     
-    saveNationalProductionStacks(output_dir, timestep, start_date, end_date)
+    saveNationalProductionStacks(output_dir, timestep, start_date, end_date, color_palette)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "mins"), 2)
@@ -263,7 +271,7 @@ saveAllProductionStacks <- function(output_dir,
     logMain(msg)
     start_time <- Sys.time()
     
-    saveRegionalProductionStacks(output_dir, timestep, start_date, end_date)
+    saveRegionalProductionStacks(output_dir, timestep, start_date, end_date, color_palette)
     
     end_time <- Sys.time()
     duration <- round(difftime(end_time, start_time, units = "mins"), 2)

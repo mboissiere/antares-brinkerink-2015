@@ -24,7 +24,8 @@ study_basename <- "v2testAll" # pourrait être corrélé à import_study_name en
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
 CREATE_STUDY = FALSE
-IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
+# IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
+IMPORT_STUDY_NAME = "v2_test__2024_09_03_18_26_16"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
@@ -33,10 +34,11 @@ IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 LAUNCH_SIMULATION_NAME = "OutageTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
-IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
+# IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
+IMPORT_SIMULATION_NAME = "20240904-0741eco-outageTest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
 # là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
@@ -77,23 +79,23 @@ NODES = all_deane_nodes_lst
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = FALSE
-save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
+save_daily_production_stacks = TRUE
+save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
 save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
-save_import_export = FALSE
+save_import_export = TRUE
 
 save_deane_histograms = FALSE
-save_deane_comparisons = FALSE
+save_deane_comparisons = TRUE
 # devrait etre en 1er vu comment c'est rapide
 
-save_global_graphs = FALSE
+save_global_graphs = TRUE
 save_continental_graphs = TRUE
 save_national_graphs = TRUE
-save_regional_graphs = FALSE
+save_regional_graphs = TRUE
 
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,

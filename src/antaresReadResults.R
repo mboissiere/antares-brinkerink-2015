@@ -33,14 +33,14 @@ source(".\\src\\antaresReadResults_aux\\getProductionStacks.R") # hm
 if (save_daily_production_stacks) {
   
   # Mettre ici le log, timer, main, afin de pouvoir écrire "daily/hourly"
-  saveAllProductionStacks(output_dir, "daily", "2015-01-01", "2015-12-31")
+  saveAllProductionStacks(output_dir, "daily", "2015-01-01", "2015-12-31", color_palette)
   
 }
 
 if (save_hourly_production_stacks) {
   
-  saveAllProductionStacks(output_dir, "hourly", "2015-01-01", "2015-01-08")
-  saveAllProductionStacks(output_dir, "hourly", "2015-07-01", "2015-07-08")
+  saveAllProductionStacks(output_dir, "hourly", "2015-01-01", "2015-01-08", color_palette)
+  saveAllProductionStacks(output_dir, "hourly", "2015-07-01", "2015-07-08", color_palette)
   
 }
 

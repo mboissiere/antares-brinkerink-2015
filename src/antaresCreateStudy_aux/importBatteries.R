@@ -86,7 +86,7 @@ addBatteriesToAntares <- function(batteries_tbl) {
           # est-ce que ça veut dire qu'on peut ajouter des trucs ? eh je le lis pas comme ça
           add_prefix = FALSE
         )
-        msg = paste("[STORAGE] - Adding", battery_name, "battery to", node, "node...")
+        msg = paste("[BATTERY] - Adding", battery_name, "battery to", node, "node...")
         logFull(msg)
       }, error = function(e) {
         msg = paste("[WARN] - Failed to add", battery_name, "battery to", node, "node, skipping...")
@@ -149,7 +149,7 @@ addBatteriesToAntaresAggregated <- function(batteries_tbl) {
         overwrite = TRUE,
         add_prefix = FALSE
       )
-      msg = paste("[STORAGE] - Adding", battery_name, "battery to", node, "node...")
+      msg = paste("[BATTERY] - Adding", battery_name, "battery to", node, "node...")
       logFull(msg)
     }, error = function(e) {
       msg = paste("[WARN] - Failed to add", battery_name, "battery to", node, "node, skipping...")

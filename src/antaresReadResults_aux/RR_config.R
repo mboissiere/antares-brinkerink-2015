@@ -17,7 +17,9 @@ REGIONS <- readRDS(".\\src\\objects\\deane_regions_lst.rds")
 ################################################################################
 ################################## VARIABLES ###################################
 
-color_palette = "productionStackWithBatteryContributions"
+# color_palette = "productionStackWithBatteryContributions"
+color_palette = "eCO2MixColorsWithBatteryContributions"
+
 
 variables_of_interest_areas <- c("SOLAR", "WIND",
                                  "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
