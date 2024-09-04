@@ -346,7 +346,9 @@ saveEmissionsDeaneComparison <- function(output_dir,
     mutate(Type = "PLEXOS")
   
   combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
-    mutate(Type = factor(Type, levels = c("Antares", "PLEXOS")))
+    mutate(fuel = factor(fuel, levels = c("Total", "Oil", "Gas", "Coal")),
+           Type = factor(Type, levels = c("PLEXOS", "Antares"))
+           )
   
   folder_name <- graphs_folder_names_by_mode["continental"]
   genr_histo_dir <- file.path(output_dir, folder_name, "Deane comparisons")
@@ -379,7 +381,7 @@ saveEmissionsDeaneComparison <- function(output_dir,
     logFull(msg)
     png_path = file.path(genr_histo_dir, paste0(cont, "_emissions_comparison.png"))
     ggsave(filename = png_path, plot = p, 
-           width = 4*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
+           width = 2*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
            dpi = DPI_300)
     msg = paste("[DEANE] - Done saving emissions comparisons for", cont, "continent!")
     logFull(msg)
