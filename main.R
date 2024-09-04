@@ -28,6 +28,8 @@ source(antaresFunctions_file)
 addNodes_file = file.path("src", "antaresCreateStudy_aux", "addNodes.R",
                           fsep = .Platform$file.sep)
 source(addNodes_file)
+# Warning ! The bug that struggles to add nodes sometimes is there again!
+# Maybe make a program that restarts everytime a node isn't added ??
 
 logging_module = file.path("src", "logging.R",
                          fsep = .Platform$file.sep)

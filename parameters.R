@@ -57,10 +57,11 @@ south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds
 oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
 # NODES = all_deane_nodes_lst
-# NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
-NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
-          "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
-          "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
+NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+
+# NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
+#           "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
+#           "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
 # un bon échantillon de test pour maintenance rate, mais pour réajuster les histogrammes
 # il faudra tout mettre ! cf dernier CR
 
@@ -148,7 +149,7 @@ GENERATE_SOLAR_CSP = TRUE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
 GENERATE_HYDRO = TRUE
-GENERATE_STORAGE = TRUE
+GENERATE_BATTERIES = TRUE
 # i should really say batteries
 # bc storage will be done for csp independantly
 ## (will it ?)
@@ -169,7 +170,7 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
-NB_CLUSTERS_THERMAL = 5
+NB_CLUSTERS_THERMAL = 10
 #NB_CLUSTERS_THERMAL = 15
 CLUSTER_NAME_LIMIT = 60
 #faudrait un true ou false
@@ -188,7 +189,8 @@ AGGREGATE_BATTERIES = TRUE
 # clusteriser à balle avec un algo de k-means, mais ensuite
 # modéliser les batteries aux 14 units comme séparées si on veut
 # c'est donc pas le même mot à employer que ce qu'on a fait pour le thermique imo
-
+CLUSTER_BATTERIES = TRUE
+NB_CLUSTERS_BATTERIES = 10
 # But honestly. Add clustering to batteries because do we really need fine
 # tuning with like 8 gazillion chemical batteries if their capacities are shit ?
 

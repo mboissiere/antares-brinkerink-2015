@@ -305,16 +305,16 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
 cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficiency) { # continent, battery_group)
   # on met en argument tout ce qu'on regarde pas du coup ? tout ce qui st pareil ?
   # faisons avec le moins de redondance pour l'instant.
-  # print(paste("df:", node))
-  # print(df, n = 25)
+  print(paste("df:", node))
+  print(df, n = 25)
   if (nrow(df) > k) {
     clusters <- kmeans(df[, c("max_power", "capacity")], centers = k) # 2-dimensional clustering here !
     df$cluster <- as.factor(clusters$cluster)
   } else {
     df$cluster <- as.factor(1:nrow(df))
   }
-  # print(paste("df with clusters:", node))
-  # print(df, n = 25)
+  print(paste("df with clusters:", node))
+  print(df, n = 25)
   
   summary <- df %>%
     group_by(cluster) %>%
@@ -332,7 +332,7 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       initial_state = 50,
       .groups = 'drop'
     )
-  # print(summary)
+  print(summary)
   
   summary <- summary %>%
     mutate(
@@ -342,7 +342,7 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       cluster_type = cluster_type,
       efficiency = efficiency
     )
-  # print(summary)
+  print(summary)
   
   return(summary %>% select(-node, -cluster_type, -efficiency, -combined_names))  
 }

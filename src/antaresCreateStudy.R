@@ -228,7 +228,7 @@ if (GENERATE_THERMAL) {
 ################################################################################
 ################################# BATTERY IMPORT ###############################
 
-if (GENERATE_STORAGE) {
+if (GENERATE_BATTERIES) {
   msg = "[MAIN] - Fetching battery data...\n"
   logMain(msg)
   start_time <- Sys.time()
@@ -241,14 +241,23 @@ if (GENERATE_STORAGE) {
     msg = "[MAIN] - Aggregating identical batteries..."
     logMain(msg)
     batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
-    addBatteriesToAntaresAggregated(batteries_tbl)
+    # addBatteriesToAntaresAggregated(batteries_tbl)
     # those two functions shouldn't walk over each other. indeed addAggregated multiplies values by "unit"
     # and aggregateEquivalent puts units to 1 and multiplies the properties directly, unless it detects copycats,
     # in which case it increases the amount of units. things should be fine.
-  } else {
-    addBatteriesToAntares(batteries_tbl)
+  }
+  if (CLUSTER_BATTERIES) {
+    # This log should be within the program instead of out here, in clusteringForGenerators
+    msg = paste0("[MAIN] - Running ", NB_CLUSTERS_BATTERIES, "-clustering algorithm on batteries...")
+    logMain(msg)
+    batteries_tbl <- clusteringForBatteries(batteries_tbl, NB_CLUSTERS_BATTERIES)
+    msg = paste0("[MAIN] - Done running ", NB_CLUSTERS_BATTERIES, "-clustering algorithm on batteries!\n")
+    logMain(msg)
+    #print(thermal_generators_tbl)
   }
   
+  addBatteriesToAntaresAggregated(batteries_tbl)
+  # Are we abandonning the idea of disaggregation ? Or maybe it's a completely other parameter.
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "mins"), 2)

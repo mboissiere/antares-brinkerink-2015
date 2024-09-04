@@ -1,0 +1,56 @@
+INFO [2024-09-04 09:48:08] [MAIN] - Creating v2_test__2024_09_04_09_48_08 study...
+
+INFO [2024-09-04 09:48:08] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-04 09:48:08] [MAIN] - Adding nodes...
+
+INFO [2024-09-04 09:48:10] [MAIN] - Done adding nodes! (run time : 1.64s).
+
+INFO [2024-09-04 09:48:10] [MAIN] - Adding districts...
+
+INFO [2024-09-04 09:48:47] [MAIN] - Creating v2_test__2024_09_04_09_48_47 study...
+
+INFO [2024-09-04 09:48:47] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-04 09:48:47] [MAIN] - Adding nodes...
+
+INFO [2024-09-04 09:48:49] [MAIN] - Done adding nodes! (run time : 1.66s).
+
+INFO [2024-09-04 09:48:49] [MAIN] - Adding districts...
+
+INFO [2024-09-04 09:48:50] [MAIN] - Done adding districts! (run time : 0.78s).
+
+INFO [2024-09-04 09:48:50] [MAIN] - Adding load data...
+
+INFO [2024-09-04 09:48:51] [MAIN] - Done adding load data! (run time : 1.33s).
+
+INFO [2024-09-04 09:48:52] [MAIN] - Fetching wind data...
+
+INFO [2024-09-04 09:48:52] [MAIN] - Done adding wind data! (run time : 0.24s).
+
+INFO [2024-09-04 09:48:52] [MAIN] - Fetching solar data...
+
+INFO [2024-09-04 09:48:52] [MAIN] - Done adding solar data! (run time : 0.26s).
+
+INFO [2024-09-04 09:48:52] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-04 09:48:57] [MAIN] - Done adding hydro!
+INFO [2024-09-04 09:48:57] [MAIN] - Fetching thermal data...
+INFO [2024-09-04 09:48:59] [MAIN] - Aggregating identical generators...
+INFO [2024-09-04 09:48:59] [MAIN] - Running 10-clustering algorithm on generators...
+INFO [2024-09-04 09:48:59] [MAIN] - Done running 10-clustering algorithm on generators!
+
+INFO [2024-09-04 09:49:19] [MAIN] - Done adding thermal data! (run time : 0.37min).
+
+INFO [2024-09-04 09:49:19] [MAIN] - Fetching battery data...
+
+INFO [2024-09-04 09:49:19] [MAIN] - Aggregating identical batteries...
+INFO [2024-09-04 09:49:19] [MAIN] - Running 10-clustering algorithm on batteries...
+INFO [2024-09-04 09:49:20] [MAIN] - Done running 10-clustering algorithm on batteries!
+
+INFO [2024-09-04 09:49:21] [MAIN] - Done adding battery data! (run time : 0.02min).
+
+INFO [2024-09-04 09:49:21] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-04 09:49:22] [MAIN] - Done adding lines! (run time : 1.37s).
+
+INFO [2024-09-04 09:49:22] [MAIN] - Finished setting up Antares study! (run time : 0.58min).
+ 
+
