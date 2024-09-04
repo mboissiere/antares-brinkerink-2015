@@ -101,6 +101,15 @@ addBatteriesToAntares <- function(batteries_tbl) {
 # La deuxième fonction est très proche
 # et j'suis sûr qu'on peut cleanup le code mais euh ouais
 
+# NOTE : it has been found that current categorization of batteries is actually incomplete.
+# In CHE, there are different systems, see the Germany example :
+# Charge efficiency 75 (Flow Battery, Electro-chemical, Vanadium Redox Flow Battery, 
+# Electro-chemical Capacitor, Nickel based Battery, Advanced Lead-acid Battery)
+# Charge efficiency 80 (Lead-acid Battery, Sodium based Battery, Valve Regulated Lead-acid Battery, Sodium-sulfur Battery)
+# Charge efficiency 90 (Lithium-ion Battery, Lithium Ion Titanate Battery)
+# Perhaps a clustering v2 could consider them differently...
+# perhaps try to find prefixes in Objects/description of PLEXOS, considered as a Regex, for a finer "battery type"
+
 addBatteriesToAntaresAggregated <- function(batteries_tbl) {
   
   for (row in 1:nrow(batteries_tbl)) {

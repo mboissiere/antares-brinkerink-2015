@@ -139,6 +139,17 @@ if (save_deane_comparisons) {
   msg = paste("[MAIN] - Done comparing generation values with Deane! (run time :", duration,"s).\n")
   logMain(msg)
   
+  msg = "[MAIN] - Preparing to compare emissions values with Deane..."
+  logMain(msg)
+  start_time <- Sys.time()
+  
+  saveEmissionsDeaneComparison(output_dir)
+  
+  end_time <- Sys.time()
+  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+  msg = paste("[MAIN] - Done comparing emissions values with Deane! (run time :", duration,"s).\n")
+  logMain(msg)
+  
 }
 
 ################################################################################

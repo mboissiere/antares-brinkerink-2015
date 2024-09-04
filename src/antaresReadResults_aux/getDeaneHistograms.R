@@ -168,20 +168,20 @@ saveGenerationDeaneComparison <- function(output_dir,
                 size = 3.5, 
                 position = position_dodge(width = 0.9))+
       
-      scale_fill_manual(values = c("Antares" = "#528491", "PLEXOS" = "#334D73")) +
+      scale_fill_manual(values = c("Antares" = "#00B2FF", "PLEXOS" = "#334D73")) +
       labs(title = paste("Generation comparison", cont, "(TWh)"),
            y = "TWh",
            fill = "Type") +
       theme_minimal() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
     
-    msg = paste("[HISTO] - Saving generation histograms for", cont, "continent...")
+    msg = paste("[DEANE] - Saving generation comparisons for", cont, "continent...")
     logFull(msg)
     png_path = file.path(genr_histo_dir, paste0(cont, "_generation_comparison.png"))
     ggsave(filename = png_path, plot = p, 
            width = 4*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
            dpi = DPI_300)
-    msg = paste("[HISTO] - Done saving generation histograms for", cont, "continent!")
+    msg = paste("[DEANE] - Done saving generation comparisons for", cont, "continent!")
     logFull(msg)
   }
 }
@@ -194,7 +194,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
                                               timestep = "annual"
 ) {
   
-  
+  timestep = "annual"
   continental_data <- getContinentalAntaresData(timestep)
   continental_tbl <- as_tibble(continental_data) %>%
     select(area, timeId, time, COAL, GAS, OIL)
@@ -227,6 +227,8 @@ saveContinentalEmissionHistograms <- function(output_dir,
             timeId, time, 
             factor(fuel_column, levels = c("COAL", "GAS", "OIL", "Total"))) %>%
     select(area, fuel_column, pollution_megatons)
+  
+  # print(pollution_tbl)
   
   continental_dir <- file.path(output_dir, "Graphs", "2 - Continental-level graphs")
   
@@ -269,6 +271,121 @@ saveContinentalEmissionHistograms <- function(output_dir,
   }
 }
 
+##############################
+
+## WITH DEANE COMPARISON
+
+source(".\\src\\antaresReadResults_aux\\getPollutionByFuel.R")
+
+deane_emissions_values_MtCO2 <- tibble(
+  area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
+  Total = c(478, 8734, 1337, 2260, 200, 235),
+  Oil = c(42, 474, 49, 95, 7, 53),
+  Gas = c(160, 1490, 335, 688, 32, 109),
+  Coal = c(276, 6770, 953, 1477, 161, 73)
+)
+
+# scale_fill_manual(values = c("Antares" = "#FFB800", "PLEXOS" = "#336F73"))
+
+# print(deane_emissions_values_MtCO2)
+# And what if I did... per capita
+# because these are hard to interpret with population differences....
+
+deane_emissions_values_MtCO2 <- deane_emissions_values_MtCO2 %>%
+  pivot_longer(cols = c("Coal", "Gas", "Oil", "Total"), 
+               names_to = "fuel", 
+               values_to = "pollution_megatons")
+
+print(deane_emissions_values_MtCO2)
+
+saveEmissionsDeaneComparison <- function(output_dir,
+                                          timestep = "annual",
+                                          theoretical_values = deane_emissions_values_MtCO2
+) {
+  
+  # timestep = "annual"
+  # continental_data <- getContinentalAntaresData(timestep)
+  # continental_tbl <- as_tibble(continental_data) %>%
+  #   # This is your best opportunity to rename, I think. "Total", "Oil", ...
+  #   select(area, timeId, time, COAL, GAS, OIL)
+  msg = "[DEANE] - Computing continental CO2 emissions in Antares study..."
+  logFull(msg)
+  continent_pollution_tbl <- getContinentalPollution()
+  msg = "[DEANE] - Done computing continental CO2 emissions!"
+  logFull(msg)
+  
+  continent_pollution_Mtons_tbl <- continent_pollution_tbl %>%
+    mutate(pollution_megatons = pollution_tons / TONS_IN_MEGATON) %>%
+    select(area, fuel, pollution_megatons)
+  
+  # print(continent_pollution_Mtons_tbl)
+  
+  # continental_long_tbl <- continental_tbl %>%
+  #   pivot_longer(cols = c("COAL", "GAS", "OIL"), 
+  #                names_to = "fuel_column", 
+  #                values_to = "pollution_tons")
+  # # Calculs de pollution : tout est à refaire.
+  
+  # pollution_tbl <- continental_long_tbl %>%
+  #   left_join(emissions_tbl, by = c("area" = "continent", "fuel_column")) %>%
+  #   mutate(pollution_megatons = pollution_tons / TONS_IN_MEGATON) %>%
+  #   group_by(area, timeId, time, fuel_column) %>%
+  #   summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
+  
+  # Combine with theoretical data
+  observed_long_tbl <- continent_pollution_Mtons_tbl %>%
+    select(area, fuel, pollution_megatons) %>%
+    mutate(Type = "Antares")
+  
+  theoretical_long_tbl <- theoretical_values %>%
+    # pivot_longer(cols = c("Coal", "Gas", "Oil", "Total"), 
+    #              names_to = "fuel", 
+    #              values_to = "pollution_megatons") %>%
+    ## that was before, now pivot_longer is already in the theoretical thing.
+    ## i mean, unless we wanna change that.
+    mutate(Type = "PLEXOS")
+  
+  combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
+    mutate(Type = factor(Type, levels = c("Antares", "PLEXOS")))
+  
+  folder_name <- graphs_folder_names_by_mode["continental"]
+  genr_histo_dir <- file.path(output_dir, folder_name, "Deane comparisons")
+  
+  if (!dir.exists(genr_histo_dir)) {
+    dir.create(genr_histo_dir, recursive = TRUE)
+  }
+  
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+  
+  for (cont in continents) {
+    
+    cont_data <- combined_long_tbl %>%
+      filter(area == cont)
+    
+    p <- ggplot(cont_data, aes(x = fuel, y = pollution_megatons, fill = Type)) +
+      geom_bar(stat = "identity", position = "dodge", color = "black") +
+      geom_text(aes(label = round(pollution_megatons, 0)), 
+                vjust = -0.5, size = 3.5, color = "black", 
+                position = position_dodge(width = 0.9)) +
+      scale_fill_manual(values = c("Antares" = "#FFB800", "PLEXOS" = "#336F73")) +
+      labs(title = paste("Pollution by Fuel Type in", cont),
+           x = "Fuel Type",
+           y = "Pollution (Megatons)",
+           fill = "Type") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    msg = paste("[DEANE] - Saving emissions comparisons for", cont, "continent...")
+    logFull(msg)
+    png_path = file.path(genr_histo_dir, paste0(cont, "_emissions_comparison.png"))
+    ggsave(filename = png_path, plot = p, 
+           width = 4*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
+           dpi = DPI_300)
+    msg = paste("[DEANE] - Done saving emissions comparisons for", cont, "continent!")
+    logFull(msg)
+  }
+}
+
 ######
 # New method just dropped pour calculer pollution
 
@@ -278,33 +395,3 @@ saveContinentalEmissionHistograms <- function(output_dir,
 
 # readAntaresClusters("all", selected = "production", timeStep = "annual", showProgress = TRUE)
 # readClusterDesc()
-
-getPollution <- function() {
-  clusters_info <- readClusterDesc()
-  clusters_info_tbl <- as_tibble(clusters_info)
-  
-  clusters_prod <- readAntaresClusters("all", selected = "production", timeStep = "annual", showProgress = TRUE)
-  clusters_prod_tbl <- as_tibble(clusters_prod)
-  
-  # Deux possibilités ici :
-  # # A tibble: 4,897 x 13
-  # area   group unitcount nominalcapacity min.stable.power marginal.cost startup.cost market.bid.cost cluster                     co2 timeId  time production
-  # <chr>  <chr>     <int>           <dbl>            <dbl>         <dbl>        <dbl>           <dbl> <fct>                     <dbl>  <int> <dbl>      <int>
-  #   1 af-ago Gas           1             12               2.4          76.8         883             76.8 ago_gas_namibe59         0.0509      1  2015          0
-  # faire confiance à co2 (sachant que POUR L'INSTANT je l'ai mal importé, il fallait faire Production Rate x Heat Rate) et juste le sommer (x production)
-  # ou, faire production x heat rate x production rate
-  
-  # de toute façon, je corrigerai bien un jour l'implémentation de co2, autant le faire...
-  
-  
-  clusters_tbl <- clusters_info_tbl %>%
-    left_join(clusters_prod_tbl, by = c("area", "cluster")) %>%
-    select(area, cluster, group, production)
-  
-  # Gods, I really should just put EVERYTHING in tolower() and it would be soooo much easier.
-  
-  return(clusters_tbl)
-}
-
-# clusters_tbl <- getPollution()
-# print(clusters_tbl)
