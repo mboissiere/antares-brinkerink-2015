@@ -4,7 +4,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "v2testAll" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "v2_1clu" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
@@ -23,7 +23,7 @@ study_basename <- "v2testAll" # pourrait être corrélé à import_study_name en
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 IMPORT_STUDY_NAME = "v2_test__2024_09_03_18_26_16"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
@@ -38,7 +38,7 @@ LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = "20240904-0741eco-outageTest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
 # là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
@@ -173,8 +173,8 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
-NB_CLUSTERS_THERMAL = 20
-#NB_CLUSTERS_THERMAL = 15
+NB_CLUSTERS_THERMAL = 1
+#NB_CLUSTERS_THERMAL = 20
 CLUSTER_NAME_LIMIT = 60
 #faudrait un true ou false
 # CLUSTER_THERMAL = 5 # cette customisation est ARCHI FAUSSE ET PROVISOIRE
@@ -193,7 +193,8 @@ AGGREGATE_BATTERIES = TRUE
 # modéliser les batteries aux 14 units comme séparées si on veut
 # c'est donc pas le même mot à employer que ce qu'on a fait pour le thermique imo
 CLUSTER_BATTERIES = TRUE
-NB_CLUSTERS_BATTERIES = 10
+NB_CLUSTERS_BATTERIES = 1
+# NB_CLUSTERS_BATTERIES = 10
 # But honestly. Add clustering to batteries because do we really need fine
 # tuning with like 8 gazillion chemical batteries if their capacities are shit ?
 

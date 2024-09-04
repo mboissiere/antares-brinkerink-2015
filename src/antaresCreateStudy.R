@@ -259,7 +259,8 @@ if (GENERATE_BATTERIES) {
       #print(thermal_generators_tbl)
       # batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
       # print(agg_batteries_tbl, n = 50)
-      addBatteriesToAntaresAggregated(agg_batteries_tbl)
+      # addBatteriesToAntaresAggregated(agg_batteries_tbl) 
+      # La ligne qui m'aura coûté des heures..............
       
     }
     addBatteriesToAntaresAggregated(agg_batteries_tbl)

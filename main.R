@@ -35,6 +35,7 @@ logging_module = file.path("src", "logging.R",
                          fsep = .Platform$file.sep)
 source(logging_module)
 
+# c'est environ ici où l'on met le nom du study je pense
 setupLogging()
 # Ptet mettre des logs aussi genre pour séparer createStudy, readResults...
 
