@@ -195,6 +195,15 @@ AGGREGATE_BATTERIES = TRUE
 CLUSTER_BATTERIES = TRUE
 NB_CLUSTERS_BATTERIES = 1
 # NB_CLUSTERS_BATTERIES = 10
+
+# NB : in PLEXOS there are 30658 generators and 1108 batteries.
+# This suggest a 30 to 1 ratio in clustering could be fine honestly.
+# 15-clusters for generators and no clustering for batteries seemed to be a sweetspot for accurate runs.
+# Could we try 30-clusters for generators, and, c'mon let's be nice, 5-clusters for batteries ?
+# I bet accuracy would be pretty sweet, and storage space wouldn't be that insane.
+# (be wary tho : if there were 1/30 batteries, then also the clustering will be 1/30 effective to reduce overall size.)
+
+
 # But honestly. Add clustering to batteries because do we really need fine
 # tuning with like 8 gazillion chemical batteries if their capacities are shit ?
 

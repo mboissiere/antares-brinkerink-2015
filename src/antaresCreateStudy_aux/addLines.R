@@ -83,7 +83,7 @@ addLinesToAntares <- function(nodes,
       ntc_direct = lines_tbl$direct_ntc[row]
       ntc_indirect = lines_tbl$indirect_ntc[row]
       if (!include_zero_ntc & ntc_direct == 0 & ntc_indirect == 0){
-        msg = paste(Sys.time(), "- [LINES] Skipping", from_node, "to", to_node, "link (zero NTC)")
+        msg = paste("[LINES] - Skipping", from_node, "to", to_node, "link (zero NTC)")
         logFull(msg)
       } else {
         ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
