@@ -124,6 +124,23 @@ if (save_deane_histograms) {
   
 }
 
+if (save_deane_comparisons) {
+  
+  source(".\\src\\antaresReadResults_aux\\getDeaneHistograms.R")
+  
+  msg = "[MAIN] - Preparing to compare generation values with Deane..."
+  logMain(msg)
+  start_time <- Sys.time()
+  
+  saveGenerationDeaneComparison(output_dir)
+  
+  end_time <- Sys.time()
+  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+  msg = paste("[MAIN] - Done comparing generation values with Deane! (run time :", duration,"s).\n")
+  logMain(msg)
+  
+}
+
 ################################################################################
 ############################## IMPORT/EXPORT RANK ##############################
 

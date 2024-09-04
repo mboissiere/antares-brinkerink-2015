@@ -1,0 +1,29 @@
+INFO [2024-09-04 10:13:16] [MAIN] - Creating v2_test__2024_09_04_10_13_16 study...
+
+INFO [2024-09-04 10:13:16] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-04 10:13:16] [MAIN] - Adding nodes...
+
+INFO [2024-09-04 10:13:18] [MAIN] - Done adding nodes! (run time : 2.26s).
+
+INFO [2024-09-04 10:13:18] [MAIN] - Adding districts...
+
+INFO [2024-09-04 10:13:19] [MAIN] - Done adding districts! (run time : 0.95s).
+
+INFO [2024-09-04 10:13:19] [MAIN] - Adding load data...
+
+INFO [2024-09-04 10:13:21] [MAIN] - Done adding load data! (run time : 1.53s).
+
+INFO [2024-09-04 10:13:21] [MAIN] - Fetching wind data...
+
+INFO [2024-09-04 10:13:21] [MAIN] - Done adding wind data! (run time : 0.26s).
+
+INFO [2024-09-04 10:13:21] [MAIN] - Fetching solar data...
+
+INFO [2024-09-04 10:13:21] [MAIN] - Done adding solar data! (run time : 0.32s).
+
+INFO [2024-09-04 10:13:21] [MAIN] - Fetching battery data...
+
+INFO [2024-09-04 10:13:22] [MAIN] - Aggregating identical batteries...
+INFO [2024-09-04 10:13:22] [MAIN] - Running 10-clustering algorithm on batteries...
+INFO [2024-09-04 10:13:27] [MAIN] - Done running 10-clustering algorithm on batteries!
+

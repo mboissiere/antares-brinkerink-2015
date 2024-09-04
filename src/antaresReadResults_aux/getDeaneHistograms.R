@@ -78,6 +78,115 @@ saveContinentalGenerationHistograms <- function(output_dir,
   }
 }
 
+##############################
+
+## WITH DEANE COMPARISON
+
+deane_generation_values_twh <- tibble(
+  area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
+  `Bio and Waste` = c(2, 138, 203, 100, 4, 60),
+  Coal = c(255, 6551, 921, 1578, 161, 67),
+  Gas = c(341, 2595, 675, 1634, 60, 222),
+  Geothermal = c(4, 28, 11, 29, 8, 0),
+  Hydro = c(120, 1869, 610, 706, 39, 646),
+  Nuclear = c(12, 623, 971, 944, 0, 22),
+  Oil = c(39, 497, 57, 124, 9, 59),
+  Solar = c(3, 94, 109, 38, 6, 2),
+  Wind = c(8, 240, 305, 229, 14, 27)
+  # Other technologies...
+)
+
+# print(deane_generation_values_twh)
+
+saveGenerationDeaneComparison <- function(output_dir,
+                                          timestep = "annual",
+                                          theoretical_values = deane_generation_values_twh
+) {
+  
+  # Get the observed data
+  continental_data <- getContinentalAntaresData(timestep)
+  continental_tbl <- as_tibble(continental_data)
+  
+  folder_name <- graphs_folder_names_by_mode["continental"]
+  genr_histo_dir <- file.path(output_dir, folder_name, "Deane comparisons")
+  
+  if (!dir.exists(genr_histo_dir)) {
+    dir.create(genr_histo_dir)
+  }
+  
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+  
+  # Rename variables in observed data and calculate values
+  continental_tbl <- continental_tbl %>%
+    rename(`Bio and Waste` = `MIX. FUEL`,
+           Coal = COAL,
+           Gas = GAS,
+           Geothermal = `MISC. DTG`,
+           Hydro = `H. STOR`,
+           Nuclear = NUCLEAR, 
+           Oil = OIL,
+           Solar = SOLAR,
+           Wind = WIND
+    ) %>%
+    mutate(across(all_of(new_deane_result_variables), ~ . / MWH_IN_TWH)) %>%
+    select(area, new_deane_result_variables)
+  
+  # Reshape the observed data into long format
+  observed_long_tbl <- continental_tbl %>%
+    pivot_longer(cols = all_of(new_deane_result_variables), 
+                 names_to = "Technology", 
+                 values_to = "Generation") %>%
+    mutate(Type = "Antares")
+  
+  # Reshape the theoretical data into long format
+  theoretical_long_tbl <- theoretical_values %>%
+    pivot_longer(cols = all_of(new_deane_result_variables), 
+                 names_to = "Technology", 
+                 values_to = "Generation") %>%
+    mutate(Type = "PLEXOS")
+  
+  # # Combine observed and theoretical data
+  # combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl)
+  
+  # Adjust the order of bars by modifying the 'Type' factor levels
+  combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
+    mutate(Type = factor(Type, levels = c("PLEXOS", "Antares")))
+  
+  # Plot generation histograms for each continent
+  for (cont in continents) {
+    
+    cont_tbl <- combined_long_tbl %>%
+      filter(area == cont)
+    
+    p <- ggplot(cont_tbl, aes(x = Technology, y = Generation, fill = Type)) +
+      geom_bar(stat = "identity", position = "dodge", color = "#334D73") +
+      
+      # Round the values displayed in the captions
+      geom_text(aes(label = round(Generation, 0)), 
+                vjust = -0.5, 
+                color = "black", 
+                size = 3.5, 
+                position = position_dodge(width = 0.9))+
+      
+      scale_fill_manual(values = c("Antares" = "#528491", "PLEXOS" = "#334D73")) +
+      labs(title = paste("Generation comparison", cont, "(TWh)"),
+           y = "TWh",
+           fill = "Type") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    msg = paste("[HISTO] - Saving generation histograms for", cont, "continent...")
+    logFull(msg)
+    png_path = file.path(genr_histo_dir, paste0(cont, "_generation_comparison.png"))
+    ggsave(filename = png_path, plot = p, 
+           width = 4*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
+           dpi = DPI_300)
+    msg = paste("[HISTO] - Done saving generation histograms for", cont, "continent!")
+    logFull(msg)
+  }
+}
+
+
 ###############################
 ### EMISSIONS
 
@@ -197,5 +306,5 @@ getPollution <- function() {
   return(clusters_tbl)
 }
 
-clusters_tbl <- getPollution()
-print(clusters_tbl)
+# clusters_tbl <- getPollution()
+# print(clusters_tbl)

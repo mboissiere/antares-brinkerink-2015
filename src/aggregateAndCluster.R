@@ -302,19 +302,25 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
 
 #######################
 
+# mdr c'est un truc de fou j'ai des 26 batteries CHE qqfois alors que je précise pas plus de 10
+# Well i'll be damned : c'est pas une bêtise du programme, il y a des CHE avec des efficacités différentes : 75, 80 et 90
+# et vu qu'on fait des clusters sur le cluster_type mais aussi sur l'efficiency, eh bah checks out en fait.
+# bon, côté nomenclature - le fait que sur Antares y ait 26 batteries, c'est quand même pas ouf.
+# (.....faire d'efficiency une variable et non un truc de tri ? la question se pose.)
+
 cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficiency) { # continent, battery_group)
   # on met en argument tout ce qu'on regarde pas du coup ? tout ce qui st pareil ?
   # faisons avec le moins de redondance pour l'instant.
-  print(paste("df:", node))
-  print(df, n = 25)
+  # print(paste("df:", node))
+  # print(df, n = 25)
   if (nrow(df) > k) {
     clusters <- kmeans(df[, c("max_power", "capacity")], centers = k) # 2-dimensional clustering here !
     df$cluster <- as.factor(clusters$cluster)
   } else {
     df$cluster <- as.factor(1:nrow(df))
   }
-  print(paste("df with clusters:", node))
-  print(df, n = 25)
+  # print(paste("df with clusters:", node))
+  # print(df, n = 25)
   
   summary <- df %>%
     group_by(cluster) %>%
@@ -328,11 +334,11 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       ),
       max_power = mean(max_power), 
       capacity = mean(capacity), 
-      nb_units = sum(units),
+      units = sum(units), # attention qqfois units, qqfois nb_units...
       initial_state = 50,
       .groups = 'drop'
     )
-  print(summary)
+  # print(summary)
   
   summary <- summary %>%
     mutate(
@@ -342,12 +348,15 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       cluster_type = cluster_type,
       efficiency = efficiency
     )
-  print(summary)
+  # print(summary)
   
   return(summary %>% select(-node, -cluster_type, -efficiency, -combined_names))  
 }
 
 clusteringForBatteries <- function(batteries_aggregated_tbl, max_clusters) {
+  # Note : slight incoherence because aggregation of batteries before clustering seems necessary here in argument
+  # But, user can select to disable it..
+  
   # Apply clustering and summarization
   
   # Note : for batteries, you ALWAYS gotta check that the units are 1 first.
@@ -367,7 +376,8 @@ clusteringForBatteries <- function(batteries_aggregated_tbl, max_clusters) {
       clustered_data = map(data, ~ cluster_and_summarize_batteries(.x, k = max_clusters, node, cluster_type, efficiency))
     ) %>%
     unnest(clustered_data) %>%
-    select(battery_name, node, cluster_type, nb_units, capacity, max_power, efficiency, initial_state)
+    select(battery_name, node, cluster_type, units, capacity, max_power, efficiency, initial_state)
+  # print(batteries_clusters_tbl)
   return(batteries_clusters_tbl)
 }
 

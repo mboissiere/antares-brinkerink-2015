@@ -1,0 +1,38 @@
+INFO [2024-09-04 10:02:57] [MAIN] - Creating v2_test__2024_09_04_10_02_57 study...
+
+INFO [2024-09-04 10:02:57] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-04 10:02:57] [MAIN] - Adding nodes...
+
+INFO [2024-09-04 10:02:59] [MAIN] - Done adding nodes! (run time : 1.68s).
+
+INFO [2024-09-04 10:02:59] [MAIN] - Adding districts...
+
+INFO [2024-09-04 10:03:00] [MAIN] - Done adding districts! (run time : 0.87s).
+
+INFO [2024-09-04 10:03:00] [MAIN] - Adding load data...
+
+INFO [2024-09-04 10:03:01] [MAIN] - Done adding load data! (run time : 1.21s).
+
+INFO [2024-09-04 10:03:01] [MAIN] - Fetching wind data...
+
+INFO [2024-09-04 10:03:01] [MAIN] - Done adding wind data! (run time : 0.19s).
+
+INFO [2024-09-04 10:03:01] [MAIN] - Fetching solar data...
+
+INFO [2024-09-04 10:03:02] [MAIN] - Done adding solar data! (run time : 0.25s).
+
+INFO [2024-09-04 10:03:02] [MAIN] - Fetching battery data...
+
+INFO [2024-09-04 10:03:02] [MAIN] - Aggregating identical batteries...
+INFO [2024-09-04 10:03:02] [MAIN] - Running 10-clustering algorithm on batteries...
+INFO [2024-09-04 10:03:05] [MAIN] - Done running 10-clustering algorithm on batteries!
+
+INFO [2024-09-04 10:03:07] [MAIN] - Done adding battery data! (run time : 0.08min).
+
+INFO [2024-09-04 10:03:07] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-04 10:03:08] [MAIN] - Done adding lines! (run time : 1.36s).
+
+INFO [2024-09-04 10:03:08] [MAIN] - Finished setting up Antares study! (run time : 0.19min).
+ 
+

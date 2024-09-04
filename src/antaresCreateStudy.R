@@ -240,23 +240,34 @@ if (GENERATE_BATTERIES) {
   if (AGGREGATE_BATTERIES) {
     msg = "[MAIN] - Aggregating identical batteries..."
     logMain(msg)
-    batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
+    agg_batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
     # addBatteriesToAntaresAggregated(batteries_tbl)
     # those two functions shouldn't walk over each other. indeed addAggregated multiplies values by "unit"
     # and aggregateEquivalent puts units to 1 and multiplies the properties directly, unless it detects copycats,
     # in which case it increases the amount of units. things should be fine.
-  }
-  if (CLUSTER_BATTERIES) {
-    # This log should be within the program instead of out here, in clusteringForGenerators
-    msg = paste0("[MAIN] - Running ", NB_CLUSTERS_BATTERIES, "-clustering algorithm on batteries...")
-    logMain(msg)
-    batteries_tbl <- clusteringForBatteries(batteries_tbl, NB_CLUSTERS_BATTERIES)
-    msg = paste0("[MAIN] - Done running ", NB_CLUSTERS_BATTERIES, "-clustering algorithm on batteries!\n")
-    logMain(msg)
-    #print(thermal_generators_tbl)
+    if (CLUSTER_BATTERIES) {
+      # Je me souviens pourquoi je l'avais pas encore fait : c'est un peu ghetto
+      # la clusterisation sur max_power ET capacity... mais ça peut etre honnete
+      # faire un schéma papier pour me convaincre de comment faire ?
+      
+      # This log should be within the program instead of out here, in clusteringForGenerators
+      msg = paste0("[MAIN] - Running ", NB_CLUSTERS_BATTERIES, "-clustering algorithm on batteries...")
+      logMain(msg)
+      agg_batteries_tbl <- clusteringForBatteries(agg_batteries_tbl, NB_CLUSTERS_BATTERIES)
+      msg = paste0("[MAIN] - Done running ", NB_CLUSTERS_BATTERIES, "-clustering algorithm on batteries!\n")
+      logMain(msg)
+      #print(thermal_generators_tbl)
+      # batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
+      # print(agg_batteries_tbl, n = 50)
+      addBatteriesToAntaresAggregated(agg_batteries_tbl)
+      
+    }
+    addBatteriesToAntaresAggregated(agg_batteries_tbl)
+  } else {
+    addBatteriesToAntares(batteries_tbl)
   }
   
-  addBatteriesToAntaresAggregated(batteries_tbl)
+  
   # Are we abandonning the idea of disaggregation ? Or maybe it's a completely other parameter.
   
   end_time <- Sys.time()
