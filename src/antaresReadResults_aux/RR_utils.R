@@ -36,13 +36,15 @@ adaptAntaresVariables <- function(antares_data_tbl) {
            `HYDROGEN STOR` = Other2_withdrawal - Other2_injection,
            `COMPRESSED AIR STOR` = Other3_withdrawal - Other3_injection,
            
-           IMPORTS = -BALANCE) %>%
+           IMPORTS = -BALANCE,
+           SPILLAGE = -`SPIL. ENRG`
+           ) %>%
     select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
     rename(
       GEOTHERMAL = `MISC. DTG`,
       HYDRO = `H. STOR`,
       `BIO AND WASTE` = `MIX. FUEL`,
-      UNSUPPLIED = `UNSP. ENRG`
+      UNSUPPLIED = `UNSP. ENRG`,
     )
   
   return(renamed_tbl)

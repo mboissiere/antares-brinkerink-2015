@@ -2,7 +2,10 @@
 ################################### OBJECTS ####################################
 
 HEIGHT_720P = 720
+HEIGHT_HD = 1080
 HEIGHT_4K = 2*1080
+DPI_150 = 150
+DPI_200 = 200
 DPI_300 = 300
 # Les variables avant les constantes c'est pas le plus malin en vrai...
 
@@ -22,7 +25,7 @@ variables_of_interest_areas <- c("SOLAR", "WIND",
                                  "H. STOR",
                                  "BALANCE",
                                  "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                                 "UNSP. ENRG",
+                                 "UNSP. ENRG", "SPIL. ENRG",
                                  "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
                                  "Battery_injection", "Battery_withdrawal", "Battery_level",
                                  "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
@@ -70,9 +73,9 @@ preferred_unit_by_mode <- c(
 prodstack_height <- HEIGHT_4K
 prodstack_width <- 2 * HEIGHT_4K
 
-monotone_height = HEIGHT_4K
-monotone_width = 2 * HEIGHT_4K
-monotone_resolution = DPI_300
+monotone_height = HEIGHT_HD
+monotone_width = 2 * HEIGHT_HD
+monotone_resolution = DPI_150
 
 importexport_height <- HEIGHT_4K
 importexport_width <- 1.5 * 2 * HEIGHT_4K # Can be * 1.5 on top, if needed extra width
@@ -128,7 +131,7 @@ COMMON_COLUMNS <- c("SOLAR", "WIND",
                     "H. STOR",
                     "BALANCE",
                     "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                    "UNSP. ENRG",
+                    "UNSP. ENRG", "SPIL. ENRG",
                     "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
                     "Battery_injection", "Battery_withdrawal", "Battery_level",
                     "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
@@ -148,12 +151,12 @@ ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND", "SOLAR", "H. STOR",
                            "Other2_injection", "Other2_withdrawal",
                            "Other3_injection", "Other3_withdrawal",
                            
-                           "BALANCE", "UNSP. ENRG")
+                           "BALANCE", "UNSP. ENRG", "SPIL. ENRG")
 
 RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "SOLAR", "HYDRO",
                                    "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
                                    "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
-                                   "IMPORTS", "UNSUPPLIED")
+                                   "IMPORTS", "UNSUPPLIED", "SPILLAGE")
 
 emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
 

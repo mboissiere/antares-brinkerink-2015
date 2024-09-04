@@ -165,3 +165,13 @@ truncateString <- function(name, max_length = CLUSTER_NAME_LIMIT) {
 
 # Vectorize the truncateString function to handle vectors
 truncateStringVec <- Vectorize(truncateString)
+
+
+# Capitalize the first letter of each word
+capitalize_words <- function(x) {
+  # Split the string into words
+  words <- strsplit(x, " ")[[1]]
+  # Capitalize the first letter of each word and combine them back into a single string
+  capitalized_words <- paste(toupper(substring(words, 1, 1)), substring(words, 2), sep = "", collapse = " ")
+  return(capitalized_words)
+}

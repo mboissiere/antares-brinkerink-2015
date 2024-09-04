@@ -1,9 +1,17 @@
 ### Named lists (for ggplot2)
 
-renamedProdStackWithBatteries_lst = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "HYDRO" = "blue",
-                                      "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray", "OTHER" = "lavender",
+renamedProdStackWithBatteries_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "lavender", "NUCLEAR" = "yellow", "WIND" = "turquoise", "SOLAR" = "orange",  "HYDRO" = "blue",
+                                      "BIO AND WASTE" = "darkgreen", "GAS" = "red", "COAL" = "darkred", "OIL" = "darkslategray",
                                       "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
-                                      "IMPORTS" = "grey", "UNSUPPLIED" = "grey25")
+                                      "IMPORTS" = "grey", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
+
+eCO2MixColors_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "lavender",
+                      "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "SOLAR" = "#D66B0D",  
+                      "HYDRO" = "#D66B0D", "BIO AND WASTE" = "#156956", "GAS" = "#F20809",
+                      "COAL" = "#A68832", "OIL" = "#80549F",
+                      "PSP STOR" = "blue", "CHEMICAL STOR" = "yellow", "THERMAL STOR" = "orange",
+                      "HYDROGEN STOR" = "magenta", "COMPRESSED AIR STOR" = "salmon",
+                      "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
 
 deane_technology_colors <- c(
   "Bio and Waste" = "darkgreen",
@@ -126,6 +134,7 @@ setProdStackAlias(
   name = "productionStackWithBatteryContributions",
   variables = alist(
     Geothermique = `MISC. DTG`,
+    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     # Est-ce correct tout de même de le mettre en base ?
     # Souvent c'est de l'autoconso plus qu'un apport au réseau, non ?
     Nucleaire = NUCLEAR,
@@ -137,7 +146,6 @@ setProdStackAlias(
     Gaz = GAS,
     Charbon = COAL,
     Fioul = OIL,
-    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     
     `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
     `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
@@ -146,12 +154,13 @@ setProdStackAlias(
     `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
     
     `Imports/Exports` = -BALANCE,
-    Defaillance = `UNSP. ENRG`
+    Defaillance = `UNSP. ENRG`,
+    Ecretement = -`SPIL. ENRG`
   ),
-  colors = c("springgreen", "yellow", "turquoise", "orange", "blue", 
-             "darkgreen", "red", "darkred", "darkslategray", "lavender",
+  colors = c("springgreen", "lavender", "yellow", "turquoise", "orange", "blue", 
+             "darkgreen", "red", "darkred", "darkslategray",
              "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
-             "gray", "gray25"
+             "gray", "gray25", "gray25"
   ),
   lines = alist(
     Consommation = LOAD,
@@ -164,6 +173,7 @@ setProdStackAlias(
   name = "eCO2MixColorsWithBatteryContributions",
   variables = alist(
     Geothermique = `MISC. DTG`,
+    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     Nucleaire = NUCLEAR,
     Eolien = WIND,
     Solaire = SOLAR,
@@ -173,7 +183,6 @@ setProdStackAlias(
     Gaz = GAS,
     Charbon = COAL,
     Fioul = OIL,
-    Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     
     `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
     `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
@@ -182,13 +191,14 @@ setProdStackAlias(
     `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
     
     `Imports/Exports` = -BALANCE,
-    Defaillance = `UNSP. ENRG`
+    Defaillance = `UNSP. ENRG`,
+    Ecretement = -`SPIL. ENRG`
   ),
-  colors = c("springgreen", "#E4A701", "#72CBB7", "#D66B0D", "#2672B0", 
-             "#156956", "#F20809", "#A68832", "#80549F", "lavender",
+  colors = c("springgreen", "lavender", "#E4A701", "#72CBB7", "#D66B0D", "#2672B0", 
+             "#156956", "#F20809", "#A68832", "#80549F",
              # Envisager, éventuellement, de distinguer marémoteur du reste...
              "blue", "yellow", "orange", "magenta", "salmon",
-             "#969696", "gray25"
+             "#969696", "gray25", "gray25"
   ),
   lines = alist(
     Consommation = LOAD,

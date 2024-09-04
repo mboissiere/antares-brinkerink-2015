@@ -36,7 +36,7 @@ LAUNCH_SIMULATION = FALSE
 IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
 # là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
@@ -81,13 +81,13 @@ save_daily_production_stacks = FALSE
 save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
-save_load_monotones = FALSE
+save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
 save_import_export = FALSE
 
 save_deane_histograms = FALSE
-save_deane_comparisons = TRUE
+save_deane_comparisons = FALSE
 # devrait etre en 1er vu comment c'est rapide
 
 save_global_graphs = FALSE

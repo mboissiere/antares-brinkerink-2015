@@ -81,6 +81,7 @@ saveContinentalGenerationHistograms <- function(output_dir,
 ##############################
 
 ## WITH DEANE COMPARISON
+source(".\\src\\utils.R")
 
 deane_generation_values_twh <- tibble(
   area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
@@ -108,7 +109,7 @@ saveGenerationDeaneComparison <- function(output_dir,
   continental_tbl <- as_tibble(continental_data)
   
   folder_name <- graphs_folder_names_by_mode["continental"]
-  genr_histo_dir <- file.path(output_dir, folder_name, "Deane comparisons")
+  genr_histo_dir <- file.path(output_dir, folder_name, "Generation histograms")
   
   if (!dir.exists(genr_histo_dir)) {
     dir.create(genr_histo_dir)
@@ -136,21 +137,21 @@ saveGenerationDeaneComparison <- function(output_dir,
     pivot_longer(cols = all_of(new_deane_result_variables), 
                  names_to = "Technology", 
                  values_to = "Generation") %>%
-    mutate(Type = "Antares")
+    mutate(Type = "TWh Antares")
   
   # Reshape the theoretical data into long format
   theoretical_long_tbl <- theoretical_values %>%
     pivot_longer(cols = all_of(new_deane_result_variables), 
                  names_to = "Technology", 
                  values_to = "Generation") %>%
-    mutate(Type = "PLEXOS")
+    mutate(Type = "TWh PLEXOS")
   
   # # Combine observed and theoretical data
   # combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl)
   
   # Adjust the order of bars by modifying the 'Type' factor levels
   combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
-    mutate(Type = factor(Type, levels = c("PLEXOS", "Antares")))
+    mutate(Type = factor(Type, levels = c("TWh PLEXOS", "TWh Antares")))
   
   # Plot generation histograms for each continent
   for (cont in continents) {
@@ -159,7 +160,7 @@ saveGenerationDeaneComparison <- function(output_dir,
       filter(area == cont)
     
     p <- ggplot(cont_tbl, aes(x = Technology, y = Generation, fill = Type)) +
-      geom_bar(stat = "identity", position = "dodge", color = "#334D73") +
+      geom_bar(stat = "identity", position = "dodge", color = "black") +
       
       # Round the values displayed in the captions
       geom_text(aes(label = round(Generation, 0)), 
@@ -168,8 +169,8 @@ saveGenerationDeaneComparison <- function(output_dir,
                 size = 3.5, 
                 position = position_dodge(width = 0.9))+
       
-      scale_fill_manual(values = c("Antares" = "#00B2FF", "PLEXOS" = "#334D73")) +
-      labs(title = paste("Generation comparison", cont, "(TWh)"),
+      scale_fill_manual(values = c("TWh Antares" = "#00B2FF", "TWh PLEXOS" = "#334D73")) +
+      labs(title = paste("Generation comparison", capitalize_words(cont), "(TWh)"),
            y = "TWh",
            fill = "Type") +
       theme_minimal() +
@@ -335,7 +336,7 @@ saveEmissionsDeaneComparison <- function(output_dir,
   # Combine with theoretical data
   observed_long_tbl <- continent_pollution_Mtons_tbl %>%
     select(area, fuel, pollution_megatons) %>%
-    mutate(Type = "Antares")
+    mutate(Type = "CO2 Antares")
   
   theoretical_long_tbl <- theoretical_values %>%
     # pivot_longer(cols = c("Coal", "Gas", "Oil", "Total"), 
@@ -343,15 +344,15 @@ saveEmissionsDeaneComparison <- function(output_dir,
     #              values_to = "pollution_megatons") %>%
     ## that was before, now pivot_longer is already in the theoretical thing.
     ## i mean, unless we wanna change that.
-    mutate(Type = "PLEXOS")
+    mutate(Type = "CO2 PLEXOS")
   
   combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
     mutate(fuel = factor(fuel, levels = c("Total", "Oil", "Gas", "Coal")),
-           Type = factor(Type, levels = c("PLEXOS", "Antares"))
+           Type = factor(Type, levels = c("CO2 PLEXOS", "CO2 Antares"))
            )
   
   folder_name <- graphs_folder_names_by_mode["continental"]
-  genr_histo_dir <- file.path(output_dir, folder_name, "Deane comparisons")
+  genr_histo_dir <- file.path(output_dir, folder_name, "Emissions histograms")
   
   if (!dir.exists(genr_histo_dir)) {
     dir.create(genr_histo_dir, recursive = TRUE)
@@ -369,10 +370,10 @@ saveEmissionsDeaneComparison <- function(output_dir,
       geom_text(aes(label = round(pollution_megatons, 0)), 
                 vjust = -0.5, size = 3.5, color = "black", 
                 position = position_dodge(width = 0.9)) +
-      scale_fill_manual(values = c("Antares" = "#FFB800", "PLEXOS" = "#336F73")) +
-      labs(title = paste("Pollution by Fuel Type in", cont),
-           x = "Fuel Type",
-           y = "Pollution (Megatons)",
+      scale_fill_manual(values = c("CO2 Antares" = "#FFB800", "CO2 PLEXOS" = "#336F73")) +
+      labs(title = paste("Emissions comparison", capitalize_words(cont), "(CO2)"),
+           x = "Fuel",
+           y = "MTon",
            fill = "Type") +
       theme_minimal() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))

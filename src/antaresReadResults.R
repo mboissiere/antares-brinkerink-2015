@@ -96,33 +96,33 @@ if (save_load_monotones) {
 ################################################################################
 ############################### DEANE HISTOGRAMS ###############################
 
-if (save_deane_histograms) {
-  
-  source(".\\src\\antaresReadResults_aux\\getDeaneHistograms.R")
-  
-  msg = "[MAIN] - Preparing to save continental generation histograms..."
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  saveContinentalGenerationHistograms(output_dir)
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste("[MAIN] - Done saving continental generation histograms! (run time :", duration,"s).\n")
-  logMain(msg)
-  
-  msg = "[MAIN] - Preparing to save continental emissions histograms..."
-  logMain(msg)
-  start_time <- Sys.time()
-  
-  saveContinentalEmissionHistograms(output_dir)
-  
-  end_time <- Sys.time()
-  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-  msg = paste("[MAIN] - Done saving continental emissions histograms! (run time :", duration,"s).\n")
-  logMain(msg)
-  
-}
+# if (save_deane_histograms) {
+#   
+#   source(".\\src\\antaresReadResults_aux\\getDeaneHistograms.R")
+#   
+#   msg = "[MAIN] - Preparing to save continental generation histograms..."
+#   logMain(msg)
+#   start_time <- Sys.time()
+#   
+#   saveContinentalGenerationHistograms(output_dir)
+#   
+#   end_time <- Sys.time()
+#   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+#   msg = paste("[MAIN] - Done saving continental generation histograms! (run time :", duration,"s).\n")
+#   logMain(msg)
+#   
+#   msg = "[MAIN] - Preparing to save continental emissions histograms..."
+#   logMain(msg)
+#   start_time <- Sys.time()
+#   
+#   saveContinentalEmissionHistograms(output_dir)
+#   
+#   end_time <- Sys.time()
+#   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+#   msg = paste("[MAIN] - Done saving continental emissions histograms! (run time :", duration,"s).\n")
+#   logMain(msg)
+#   
+# }
 
 if (save_deane_comparisons) {
   
