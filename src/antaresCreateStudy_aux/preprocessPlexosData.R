@@ -168,6 +168,11 @@ addGeneralFuelInfo <- function(generators_tbl) {
     rename(fuel_group = name,
            fuel_type = category)
   
+  # Une mission à faire je pense : refactorer le code pour qu'il fasse genre.
+  # Je prends les trucs. Je fous les wind dans un objet R. Et j'importe que ça.
+  # et ça minimise le temps de calcul. et je teste sur l'Europe.
+  # peut-être que je fais déjà ça ? je sais pas. je sais plus.
+  
   # Adding fuel info to each generator
   generators_fuels_memberships_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
     filter(parent_class == "Generator" & child_class == "Fuel") %>%

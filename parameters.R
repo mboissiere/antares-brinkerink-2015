@@ -4,7 +4,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "v2_1clu" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "v2_20clu" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
@@ -23,9 +23,9 @@ study_basename <- "v2_1clu" # pourrait être corrélé à import_study_name en v
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = TRUE
+CREATE_STUDY = FALSE
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
-IMPORT_STUDY_NAME = "v2_test__2024_09_03_18_26_16"
+IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
@@ -35,10 +35,10 @@ LAUNCH_SIMULATION_NAME = "OutageTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
-IMPORT_SIMULATION_NAME = "20240904-0741eco-outageTest"
+IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
 # là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
@@ -173,7 +173,7 @@ THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil",
 # (ce qui est... très bien !)
 AGGREGATE_THERMAL = TRUE
 CLUSTER_THERMAL = TRUE
-NB_CLUSTERS_THERMAL = 1
+NB_CLUSTERS_THERMAL = 20
 #NB_CLUSTERS_THERMAL = 20
 CLUSTER_NAME_LIMIT = 60
 #faudrait un true ou false
@@ -193,7 +193,7 @@ AGGREGATE_BATTERIES = TRUE
 # modéliser les batteries aux 14 units comme séparées si on veut
 # c'est donc pas le même mot à employer que ce qu'on a fait pour le thermique imo
 CLUSTER_BATTERIES = TRUE
-NB_CLUSTERS_BATTERIES = 1
+NB_CLUSTERS_BATTERIES = 5
 # NB_CLUSTERS_BATTERIES = 10
 
 # NB : in PLEXOS there are 30658 generators and 1108 batteries.

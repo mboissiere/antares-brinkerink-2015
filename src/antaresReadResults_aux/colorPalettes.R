@@ -7,11 +7,23 @@ renamedProdStackWithBatteries_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "l
 
 eCO2MixColors_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "lavender",
                       "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "SOLAR" = "#D66B0D",  
-                      "HYDRO" = "#D66B0D", "BIO AND WASTE" = "#156956", "GAS" = "#F20809",
+                      "HYDRO" = "#2672B0", "BIO AND WASTE" = "#156956", "GAS" = "#F20809",
                       "COAL" = "#A68832", "OIL" = "#80549F",
                       "PSP STOR" = "blue", "CHEMICAL STOR" = "yellow", "THERMAL STOR" = "orange",
                       "HYDROGEN STOR" = "magenta", "COMPRESSED AIR STOR" = "salmon",
                       "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
+
+# eCO2MixFusion_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "lavender",
+#                       "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "SOLAR" = "#D66B0D",  
+#                       "HYDRO" = "blue", "BIO AND WASTE" = "#156956", "GAS" = "#F20809",
+#                       "COAL" = "darkred", "OIL" = "#80549F",
+#                       "PSP STOR" = "darkblue", "CHEMICAL STOR" = "yellow", "THERMAL STOR" = "orange",
+#                       "HYDROGEN STOR" = "magenta", "COMPRESSED AIR STOR" = "salmon",
+#                       "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
+
+# Finalement, darkgreen et tout, c'était pas si mal.....
+# Notamment darkred pour le charbon, quand y a que du charbon je me dis que ça
+# ressemble au jaune du nucléaire en vrai
 
 deane_technology_colors <- c(
   "Bio and Waste" = "darkgreen",
@@ -206,6 +218,45 @@ setProdStackAlias(
   ),
   lineColors = c("black", "violetred")
 )
+
+
+# setProdStackAlias(
+#   name = "eCO2MixFusionColors",
+#   variables = alist(
+#     Geothermique = `MISC. DTG`,
+#     Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+#     Nucleaire = NUCLEAR,
+#     Eolien = WIND,
+#     Solaire = SOLAR,
+#     `Hydro lacs` = `H. STOR`,
+#     
+#     `Bio et dechets` = `MIX. FUEL`,
+#     Gaz = GAS,
+#     Charbon = COAL,
+#     Fioul = OIL,
+#     
+#     `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+#     `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+#     `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+#     `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+#     `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+#     
+#     `Imports/Exports` = -BALANCE,
+#     Defaillance = `UNSP. ENRG`,
+#     Ecretement = -`SPIL. ENRG`
+#   ),
+#   colors = c("springgreen", "lavender", "#E4A701", "#72CBB7", "#D66B0D", "blue", 
+#              "#156956", "#F20809", "#A68832", "darkred",
+#              # Envisager, éventuellement, de distinguer marémoteur du reste...
+#              "blue", "yellow", "orange", "magenta", "salmon",
+#              "#969696", "gray25", "gray25"
+#   ),
+#   lines = alist(
+#     Consommation = LOAD,
+#     Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
+#   ),
+#   lineColors = c("black", "violetred")
+# )
 
 
 

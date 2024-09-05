@@ -1,9 +1,9 @@
 library(dplyr)
 library(tidyr)
 
-all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
-full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
-full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+# all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
+# full_2015_generators_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds")
+# full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
 
 # print(full_2015_generators_tbl)
 # source(".\\src\\data\\importThermal.R")
@@ -280,5 +280,32 @@ hourly_ones_datatable <- as.data.table(hourly_ones)
 
 # Tout ça pour 20 lignes mdr mais c'est la seule façon de le faire rigoureusement..
 
+# wind_clusters_ninja_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/wind_clusters_ninja_tbl.rds")
+# write.table(wind_clusters_ninja_tbl, 
+#             file = ".\\output\\csv\\wind_clusters_ninja_tbl.csv", 
+#             quote = FALSE,
+#             sep = ";", 
+#             dec = ",")
 
 
+#### Let's try and check which things are in Ninja and not in PLEXOS
+
+wind_clusters_ninja_tbl <- readRDS(".\\src\\objects\\wind_clusters_ninja_tbl.rds") %>%
+  select(-DATETIME)
+wind_clusters_plexos_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds") %>%
+  filter(fuel_type == "Wind")
+
+
+# wind_ninja_not_in_plexos_tbl <- wind_clusters_plexos_tbl %>%
+#   filter(!(generator_name %in% colnames(wind_clusters_ninja_tbl))) %>%
+#   select(generator_name)
+
+ninja_wind_lst <- colnames(wind_clusters_ninja_tbl)
+print(ninja_wind_lst)
+
+plexos_wind_lst <- wind_clusters_plexos_tbl$generator_name
+print(plexos_wind_lst)
+
+wind_ninja_not_in_plexos_lst <- setdiff(ninja_wind_lst, plexos_wind_lst)
+
+print(wind_ninja_not_in_plexos_lst)

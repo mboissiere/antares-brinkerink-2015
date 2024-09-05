@@ -213,7 +213,7 @@ saveContinentalEmissionHistograms <- function(output_dir,
     mutate(pollution = production * production_rate,
            pollution_percentage = pollution / 100, # Still really weird...
            pollution_megatons = pollution_percentage / TONS_IN_MEGATON)
-
+  
   pollution_tbl <- pollution_tbl %>%
     group_by(area, timeId, time, fuel_column) %>%
     summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
@@ -297,11 +297,11 @@ deane_emissions_values_MtCO2 <- deane_emissions_values_MtCO2 %>%
                names_to = "fuel", 
                values_to = "pollution_megatons")
 
-print(deane_emissions_values_MtCO2)
+# print(deane_emissions_values_MtCO2)
 
 saveEmissionsDeaneComparison <- function(output_dir,
-                                          timestep = "annual",
-                                          theoretical_values = deane_emissions_values_MtCO2
+                                         timestep = "annual",
+                                         theoretical_values = deane_emissions_values_MtCO2
 ) {
   
   # timestep = "annual"
@@ -349,7 +349,7 @@ saveEmissionsDeaneComparison <- function(output_dir,
   combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
     mutate(fuel = factor(fuel, levels = c("Total", "Oil", "Gas", "Coal")),
            Type = factor(Type, levels = c("CO2 PLEXOS", "CO2 Antares"))
-           )
+    )
   
   folder_name <- graphs_folder_names_by_mode["continental"]
   genr_histo_dir <- file.path(output_dir, folder_name, "Emissions histograms")
@@ -368,7 +368,7 @@ saveEmissionsDeaneComparison <- function(output_dir,
     p <- ggplot(cont_data, aes(x = fuel, y = pollution_megatons, fill = Type)) +
       geom_bar(stat = "identity", position = "dodge", color = "black") +
       geom_text(aes(label = round(pollution_megatons, 0)), 
-                vjust = -0.5, size = 3.5, color = "black", 
+                vjust = -0.5, size = 3, color = "black", 
                 position = position_dodge(width = 0.9)) +
       scale_fill_manual(values = c("CO2 Antares" = "#FFB800", "CO2 PLEXOS" = "#336F73")) +
       labs(title = paste("Emissions comparison", capitalize_words(cont), "(CO2)"),

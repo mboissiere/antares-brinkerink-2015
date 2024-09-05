@@ -1,0 +1,47 @@
+INFO [2024-09-04 22:33:37] [MAIN] - Creating v2_20clu__2024_09_04_22_33_36 study...
+
+INFO [2024-09-04 22:33:37] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-04 22:33:37] [MAIN] - Adding nodes...
+
+INFO [2024-09-04 22:36:52] [MAIN] - Done adding nodes! (run time : 195.47s).
+
+INFO [2024-09-04 22:36:52] [MAIN] - Adding districts...
+
+INFO [2024-09-04 22:37:12] [MAIN] - Done adding districts! (run time : 19.73s).
+
+INFO [2024-09-04 22:37:12] [MAIN] - Adding load data...
+
+INFO [2024-09-04 22:41:39] [MAIN] - Done adding load data! (run time : 266.53s).
+
+INFO [2024-09-04 22:41:39] [MAIN] - Fetching wind data...
+
+INFO [2024-09-04 22:44:14] [MAIN] - Done adding wind data! (run time : 155.28s).
+
+INFO [2024-09-04 22:44:14] [MAIN] - Fetching solar data...
+
+INFO [2024-09-04 22:46:53] [MAIN] - Done adding solar data! (run time : 158.69s).
+
+INFO [2024-09-04 22:46:53] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-04 22:59:43] [MAIN] - Done adding hydro!
+INFO [2024-09-04 22:59:43] [MAIN] - Fetching thermal data...
+INFO [2024-09-04 22:59:45] [MAIN] - Aggregating identical generators...
+INFO [2024-09-04 22:59:46] [MAIN] - Running 20-clustering algorithm on generators...
+INFO [2024-09-04 22:59:54] [MAIN] - Done running 20-clustering algorithm on generators!
+
+INFO [2024-09-05 00:34:31] [MAIN] - Done adding thermal data! (run time : 94.81min).
+
+INFO [2024-09-05 00:34:31] [MAIN] - Fetching battery data...
+
+INFO [2024-09-05 00:34:32] [MAIN] - Aggregating identical batteries...
+INFO [2024-09-05 00:34:32] [MAIN] - Running 5-clustering algorithm on batteries...
+INFO [2024-09-05 00:34:33] [MAIN] - Done running 5-clustering algorithm on batteries!
+
+INFO [2024-09-05 00:51:11] [MAIN] - Done adding battery data! (run time : 16.66min).
+
+INFO [2024-09-05 00:51:11] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-05 00:56:47] [MAIN] - Done adding lines! (run time : 335.84s).
+
+INFO [2024-09-05 00:56:47] [MAIN] - Finished setting up Antares study! (run time : 143.17min).
+ 
+
