@@ -145,7 +145,7 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 GENERATE_LOAD = TRUE
 # GENERATE_REN = FALSE
 
-RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
+RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 
 GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
@@ -161,9 +161,9 @@ GENERATE_SOLAR_CSP = FALSE
 # quoique pas forcément le plus dyslexique ffriendly haha*
 # ça change !
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = FALSE
-GENERATE_HYDRO = FALSE
-GENERATE_BATTERIES = FALSE
+GENERATE_THERMAL = TRUE
+GENERATE_HYDRO = TRUE
+GENERATE_BATTERIES = TRUE
 # i should really say batteries
 # bc storage will be done for csp independantly
 ## (will it ?)
@@ -175,7 +175,7 @@ GENERATE_BATTERIES = FALSE
 # après tout beaucoup de fonctions ont des arguments overwrite...
 # peut-être qu'une districtisation au sein de readResults, ça suffirait pour l'instant...
 
-GENERATE_DISTRICTS = FALSE
+GENERATE_DISTRICTS = TRUE
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
                   "Other", "Other 2", "Other 3", "Other 4") #, "Other 4" is actually useless but isok
 # Nota bene : comme je filoute et met directement (provisoirement) "Other4" ici

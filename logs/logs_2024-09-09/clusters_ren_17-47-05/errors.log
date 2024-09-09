@@ -1,0 +1,2 @@
+ERROR [2024-09-09 17:47:08] [WARN] - Skipped adding wind data for eu-fra (no generators found in PLEXOS).
+ERROR [2024-09-09 17:47:08] [WARN] - Skipped adding solar data for eu-fra (no generators found in PLEXOS).

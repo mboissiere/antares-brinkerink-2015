@@ -75,7 +75,7 @@ createGeographyTable <- function(nodes_lst) { # things would be more robust if t
   return(geography_tbl)
 }
 
-geography_tbl <- createGeographyTable(all_deane_nodes_lst)
+geography_tbl <- createGeographyTable(DEANE_ALL_NODES)
 saveRDS(geography_tbl, ".\\src\\objects\\geography_tbl.rds")
 geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
 # print(geography_tbl, n = 258)
