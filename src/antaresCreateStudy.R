@@ -135,11 +135,15 @@ if (GENERATE_WIND) {
   logMain(msg)
   start_time <- Sys.time()
   
+  importWind_file = file.path("src", "antaresCreateStudy_aux", "importWind.R",
+                              fsep = .Platform$file.sep)
+  source(importWind_file)
+  
   if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
-    importWind_file = file.path("src", "antaresCreateStudy_aux", "importWind.R",
-                                fsep = .Platform$file.sep)
-    source(importWind_file)
     addAggregatedWind(NODES, generators_tbl)
+  } else if (RENEWABLE_GENERATION_MODELLING == "clusters") {
+    # Il faudrait faire crasher plus tôt si jamais ni l'un ni l'autre ptet
+    addWindClusters(NODES)
   }
   
   end_time <- Sys.time()

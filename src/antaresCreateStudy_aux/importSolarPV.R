@@ -55,13 +55,16 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
       msg <- paste("[WARN] - Properties for", generator_name, "generator has not been found in PLEXOS data.")
       logError(msg)
     } else {
-      active_in_2015 <- row$active_in_2015
-      if (!active_in_2015) {
-        msg <- paste("[SOLAR] - Skipped", generator_name, "generator (inactive in 2015).")
-        logFull(msg)
-      } else {
-        node <- row$node
-        if (node %in% nodes) {
+      node <- row$node
+      if (node %in% nodes) {
+        active_in_2015 <- row$active_in_2015
+        if (!active_in_2015) {
+          msg <- paste("[SOLAR] - Skipped", generator_name, "generator (inactive in 2015).")
+          logFull(msg)
+          } else {
+          # Solution très imparfaite car on va quand même se manger
+          # les centrales désactivées d'autres pays... Filtrer avant est quand même
+          # plus simple...
           nominal_capacity <- row$nominal_capacity
           nb_units <- row$nb_units
           cf_ts <- solarpv_cf_ts_tbl[[generator_name]]

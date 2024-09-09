@@ -1,0 +1,26 @@
+INFO [2024-09-09 17:27:14] [MAIN] - Creating clusters_ren__2024_09_09_17_27_14 study...
+
+INFO [2024-09-09 17:27:14] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-09 17:27:14] [MAIN] - Adding nodes...
+
+INFO [2024-09-09 17:27:15] [MAIN] - Done adding nodes! (run time : 1s).
+
+INFO [2024-09-09 17:27:15] [MAIN] - Adding load data...
+
+INFO [2024-09-09 17:27:16] [MAIN] - Done adding load data! (run time : 0.97s).
+
+INFO [2024-09-09 17:27:16] [MAIN] - Fetching wind data...
+
+INFO [2024-09-09 17:31:00] [MAIN] - Done adding wind data! (run time : 224.05s).
+
+INFO [2024-09-09 17:31:00] [MAIN] - Fetching solar data...
+
+INFO [2024-09-09 17:39:08] [MAIN] - Done adding solar data! (run time : 487.89s).
+
+INFO [2024-09-09 17:39:08] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-09 17:39:09] [MAIN] - Done adding lines! (run time : 0.28s).
+
+INFO [2024-09-09 17:39:09] [MAIN] - Finished setting up Antares study! (run time : 11.91min).
+ 
+

@@ -84,6 +84,32 @@ if (REGENERATE_OBJECTS | !file.exists(solarpv_2015_properties_path)) {
   saveRDS(object = solarpv_2015_properties_tbl,
           file = solarpv_2015_properties_path)
 }
+
+
+wind_2015_properties_name = "wind_2015_properties_tbl.rds"
+wind_2015_properties_path <- file.path(OBJECTS_PATH, wind_2015_properties_name)
+if (REGENERATE_OBJECTS | !file.exists(wind_2015_properties_path)) {
+  wind_generators_properties_tbl <- base_generators_properties_tbl %>% filter(plexos_fuel_type == "Wind")
+  
+  # print(wind_generators_properties_tbl)
+  # Could be useful to save also
+  
+  ninja_wind_generators_lst <- colnames(wind_cf_ts_tbl %>% select(-datetime))
+  wind_2015_properties_tbl <- tibble(generator_name = ninja_wind_generators_lst) %>%
+    full_join(wind_generators_properties_tbl, by = "generator_name") %>%
+    # filter(active_in_2015 == TRUE)
+    ## En fait faire ça enlève les NA... garder les NA peut être bien pour les printer.
+    
+    # print(solarpv_2015_properties_tbl)
+    
+    select(generator_name, node, nominal_capacity, nb_units, antares_cluster_type, active_in_2015)
+  
+  saveRDS(object = wind_2015_properties_tbl,
+          file = wind_2015_properties_path)
+}
+
+# print(wind_2015_properties_tbl, n = 4000)
+
 # print(solarpv_2015_properties_tbl)
 
 # > print(new_solarpv_capacity_tbl, n = 100)

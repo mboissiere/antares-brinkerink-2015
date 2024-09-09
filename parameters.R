@@ -58,7 +58,7 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 # oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-NODES = c("eu-che", "eu-deu", "eu-fra")
+NODES = "eu-fra"
 # NODES = deane_europe_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
@@ -147,7 +147,7 @@ GENERATE_LOAD = TRUE
 
 RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
 
-GENERATE_WIND = FALSE
+GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
 # Technically my PV implementation is very bad because if I had
 # solar PV off (which i never do) then I wouldn't have CSP either.

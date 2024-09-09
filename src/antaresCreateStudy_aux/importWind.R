@@ -54,6 +54,77 @@ getWindPropertiesTable <- function(generators_tbl) {
 # 
 # print(wind_generators_tbl)
 
+#########
+
+addWindClusters <- function(nodes = all_deane_nodes_lst#,
+                               #filter_for_2015 = TRUE
+) {
+  wind_2015_properties_tbl <- readRDS(wind_2015_properties_path)
+  # NB : en soi, le test un peu chiant à base de "active_in_2015", ne concerne que le nuc japonais.
+  # genre, pour le reste, on pourrait déjà faire le check via commission-date et donc déjà avoir
+  # une fonction généralisable à n'importe quelle année (pourvu qu'on ait le load, bien sûr..)
+  wind_cf_ts_tbl <- readRDS(wind_cf_ts_path)
+  # ACKSHUALLY filter should be applied here. there should be "filter nodes" etc before
+  # fusing the Ninja and PLEXOS stuff and keeping NA.
+  # else, putting a "node in nodes" here would erase the NA and we would lose juicy data
+  # (of course, we want to lose it, but still, the logs are better documentation now.)
+  
+  # print(solarpv_2015_properties_tbl)
+  for (k in 1:nrow(wind_2015_properties_tbl)) {
+    row <- wind_2015_properties_tbl[k,]
+    # print(row)
+    generator_name <- row$generator_name
+    if (is.na(row$nominal_capacity)) {
+      msg <- paste("[WARN] - Properties for", generator_name, "generator has not been found in PLEXOS data.")
+      logError(msg)
+    } else {
+      node <- row$node
+      if (node %in% nodes) {
+        active_in_2015 <- row$active_in_2015
+        if (!active_in_2015) {
+          msg <- paste("[WIND] - Skipped", generator_name, "generator (inactive in 2015).")
+          logFull(msg)
+        } else {
+          nominal_capacity <- row$nominal_capacity
+          nb_units <- row$nb_units
+          cluster_type <- row$antares_cluster_type
+          cf_ts <- wind_cf_ts_tbl[[generator_name]]
+          if (is.null(cf_ts)) {
+            msg <- paste("[WARN] - Timeseries for", generator_name, "generator has not been found in Ninja data.")
+            logError(msg)
+          } else {
+            tryCatch({
+              # msg <- paste("[SOLAR] - Adding", generator_name, "generator to", node, "area...")
+              # logFull(msg)
+              createClusterRES(
+                area = node,
+                cluster_name = generator_name,
+                group = cluster_type,
+                time_series = cf_ts,
+                nominalcapacity = nominal_capacity,
+                unitcount = nb_units,
+                ts_interpretation = "production-factor",
+                add_prefix = FALSE
+              )
+              msg <- paste("[WIND] - Successfully added", generator_name, "generator to", node, "area!")
+              logFull(msg)
+            }, error = function(e) {
+              msg <- paste("[WARN] - Failed to add", generator_name, "to", node, "area, for unknown reasons.")
+              logError(msg)
+            })
+            
+          }
+        }
+        
+      }
+      
+    }
+    
+  }
+}
+
+######
+
 
 addAggregatedWind <- function(nodes,
                               generators_tbl # Avoir une valeur par défaut ? Pas important ?

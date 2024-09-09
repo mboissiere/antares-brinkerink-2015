@@ -167,7 +167,7 @@ addVoLLToNodes <- function(nodes_tbl) {
     # Quoique non c'est pas fidèle au fait de faire Comme Deane(TM) au début.
     # ....mais bon.....
     mutate(
-      continent = child_object,
+      continent = tolower(child_object),
       voll = value #* 1000 # Nicolas a dit on évite de multiplier !
     ) %>%
     select(continent, voll)

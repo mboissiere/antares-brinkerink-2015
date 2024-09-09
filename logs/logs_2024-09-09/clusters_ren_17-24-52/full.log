@@ -1,0 +1,238 @@
+INFO [2024-09-09 17:24:52] [MAIN] - Creating clusters_ren__2024_09_09_17_24_52 study...
+
+INFO [2024-09-09 17:24:52] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-09 17:24:52] [MAIN] - Adding nodes...
+
+INFO [2024-09-09 17:24:53] [NODES] - Adding eu-fra node...
+INFO [2024-09-09 17:24:54] [MAIN] - Done adding nodes! (run time : 1.55s).
+
+INFO [2024-09-09 17:24:54] [MAIN] - Adding load data...
+
+INFO [2024-09-09 17:24:54] [LOAD] - Adding eu-fra load data...
+INFO [2024-09-09 17:24:55] [MAIN] - Done adding load data! (run time : 1s).
+
+INFO [2024-09-09 17:24:55] [MAIN] - Fetching wind data...
+
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_angical1132 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_assuruii1187 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_assuruv1188 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_assuruvii1189 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_auramangueira1204 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_auramangueira1205 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_auramangueira1206 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_auramangueira1207 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_auramirimiv1208 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_baixadofeij1230 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_baixadofeij1231 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_baixadofeij1232 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_baixadofeij1233 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_bandadecouro1239 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_baranasii1244 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_borgo1319 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_cacimbas11416 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_caetit1419 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_caititu1426 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_calango11432 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_calango21433 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_calango31434 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_calango41435 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_calango51436 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_calango61437 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_campodosvento1456 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_campodosvento1458 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_campodosvento1459 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_coqueirinho1662 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_corrupio1673 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_damascena1723 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_estrela1825 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_inhambu2061 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_itaremai2092 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_itaremaii2093 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_itaremaiii2094 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_itaremaix2095 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_itaremav2096 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_lanchinha2198 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_macambirai2252 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_macambiraii2253 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_malhadinha12264 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ouroverde2459 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_parqueelico2510 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_parqueelico2512 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_parqueelico2513 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_pelado2560 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_pelourinho2561 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_pontal2a2616 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_pontal3b2618 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_portododelta2636 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_santamnica2884 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_santamnicai2885 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_santarsula2897 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_santanai2900 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_santanaii2902 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_serradesantan2936 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_serradesantan2937 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_serradesantan2938 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_serradoespinh2939 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_tamandumirim3082 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_teiu3103 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_testabrancai3119 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_testabrancaii3120 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventoformoso3226 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdecampo3228 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeguar3230 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3232 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3240 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3241 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3243 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3244 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3246 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanta3248 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3257 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3258 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3259 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3260 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3261 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3262 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3263 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3264 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3265 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3266 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3267 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdesanto3268 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3273 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3274 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3275 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3276 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3277 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3278 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3279 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3280 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3281 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdeso3282 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdetiang3284 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdetiang3285 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdomorro3286 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdoparaz3288 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_ventosdosert3289 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_verace343298 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_vilaamazonasv3322 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_vilapari3323 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_vilaparii3324 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped bra_win_vilapariii3325 generator (inactive in 2015).
+INFO [2024-09-09 17:24:56] [SOLAR] - Skipped est_win_virtsuii8610 generator (inactive in 2015).
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_ablaincourtpre8826 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_ablainzevelle8827 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_achietlegrand8828 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_adriers8829 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_agenville8831 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_airaines8837 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_airan8838 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_allaire8848 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_allanche8849 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_allery8853 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_allibaudires8854 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_allondrellela8855 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_allonnes8856 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_alluyes8857 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_ally8858 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_amanty8861 generator to eu-fra area!
+INFO [2024-09-09 17:24:57] [SOLAR] - Successfully added fra_win_ambon8864 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_ambonville8865 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_ambricourt8866 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_amelcourt8868 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_anoux8875 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_ansauvillers8876 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_ansebertrand8877 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_antoign8879 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_arconcey8885 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_ardin8886 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_ardouval8887 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_arfons8889 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_artemps8904 generator to eu-fra area!
+INFO [2024-09-09 17:24:58] [SOLAR] - Successfully added fra_win_assac8908 generator to eu-fra area!
+INFO [2024-09-09 17:24:59] [SOLAR] - Successfully added fra_win_assigny8909 generator to eu-fra area!
+INFO [2024-09-09 17:24:59] [SOLAR] - Successfully added fra_win_aubigny8915 generator to eu-fra area!
+INFO [2024-09-09 17:24:59] [SOLAR] - Successfully added fra_win_audrieu8918 generator to eu-fra area!
+INFO [2024-09-09 17:24:59] [SOLAR] - Successfully added fra_win_aumelas8919 generator to eu-fra area!
+INFO [2024-09-09 17:24:59] [SOLAR] - Successfully added fra_win_aussacvadalle8925 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_autremencourt8928 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_avantlsmarc8932 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_avesnesenbray8933 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_avignonetlaura8935 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_ayssnes8940 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_bais8958 generator to eu-fra area!
+INFO [2024-09-09 17:25:00] [SOLAR] - Successfully added fra_win_baissey8959 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_balaz8960 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_bambiderstroff8961 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_barby8967 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_barre8969 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_bassu8971 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_baudigncourt8974 generator to eu-fra area!
+INFO [2024-09-09 17:25:01] [SOLAR] - Successfully added fra_win_baudreville8975 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_bazocheslesga8977 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beaucaire8978 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beauchamps8981 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beaudignies8982 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beaufou8983 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beaurevoir8986 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beausemblant8987 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beausite8988 generator to eu-fra area!
+INFO [2024-09-09 17:25:02] [SOLAR] - Successfully added fra_win_beauval8989 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_beauvilliers8990 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_benet8997 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_bernaysaintma9002 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_bertignolles9003 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_beuveille9010 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_beuvraignes9011 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_beuzeccapsizu9012 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_biesles9015 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_bignan9016 generator to eu-fra area!
+INFO [2024-09-09 17:25:03] [SOLAR] - Successfully added fra_win_binas9018 generator to eu-fra area!
+INFO [2024-09-09 17:25:04] [SOLAR] - Successfully added fra_win_blignylesec9023 generator to eu-fra area!
+INFO [2024-09-09 17:25:04] [SOLAR] - Successfully added fra_win_boisvillelasa9025 generator to eu-fra area!
+INFO [2024-09-09 17:25:04] [SOLAR] - Successfully added fra_win_bollne9026 generator to eu-fra area!
+INFO [2024-09-09 17:25:04] [SOLAR] - Successfully added fra_win_bonnet9032 generator to eu-fra area!
+INFO [2024-09-09 17:25:04] [SOLAR] - Successfully added fra_win_bonneuillesea9035 generator to eu-fra area!
+INFO [2024-09-09 17:25:04] [SOLAR] - Successfully added fra_win_bonnires9037 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bonvillers9038 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bouberssurcan9043 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bougainville9044 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bouillancourte9045 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bouin9048 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_boulaymoselle9049 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bourbriac9051 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bourgneufenre9057 generator to eu-fra area!
+INFO [2024-09-09 17:25:05] [SOLAR] - Successfully added fra_win_bourthes9060 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_bousbach9061 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_boutavent9064 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_bovesurbarb9067 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_brachy9071 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_braillycorneho9072 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_bremsurmer9077 generator to eu-fra area!
+INFO [2024-09-09 17:25:06] [SOLAR] - Successfully added fra_win_bressuire9080 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_breteuil9082 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_brissyhamgic9090 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_broquis9093 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_brusque9096 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_bussiresaint9098 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_cabrespine9122 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_caix9124 generator to eu-fra area!
+INFO [2024-09-09 17:25:07] [SOLAR] - Successfully added fra_win_calenzana9128 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_callengeville9130 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_cambernon9134 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_cambonetsalve9135 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_campbon9137 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_campigny9138 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_camplong9139 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_campnac9140 generator to eu-fra area!
+INFO [2024-09-09 17:25:08] [SOLAR] - Successfully added fra_win_candas9142 generator to eu-fra area!
+INFO [2024-09-09 17:25:09] [SOLAR] - Successfully added fra_win_canet9143 generator to eu-fra area!
+INFO [2024-09-09 17:25:09] [SOLAR] - Successfully added fra_win_cast9153 generator to eu-fra area!
+INFO [2024-09-09 17:25:09] [SOLAR] - Successfully added fra_win_castanetlehau9154 generator to eu-fra area!
+INFO [2024-09-09 17:25:09] [SOLAR] - Successfully added fra_win_castelnaupga9158 generator to eu-fra area!
+INFO [2024-09-09 17:25:09] [SOLAR] - Successfully added fra_win_caudebronde9171 generator to eu-fra area!
+INFO [2024-09-09 17:25:09] [SOLAR] - Successfully added fra_win_caulires9172 generator to eu-fra area!
+INFO [2024-09-09 17:25:10] [SOLAR] - Successfully added fra_win_caurel9173 generator to eu-fra area!
+INFO [2024-09-09 17:25:10] [SOLAR] - Successfully added fra_win_cellessurbell9179 generator to eu-fra area!
+INFO [2024-09-09 17:25:10] [SOLAR] - Successfully added fra_win_cerisires9181 generator to eu-fra area!
+INFO [2024-09-09 17:25:10] [SOLAR] - Successfully added fra_win_cernon9183 generator to eu-fra area!
