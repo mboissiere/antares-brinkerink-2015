@@ -145,10 +145,10 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 GENERATE_LOAD = TRUE
 # GENERATE_REN = FALSE
 
-RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
+RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
 
-GENERATE_WIND = TRUE
-GENERATE_SOLAR_PV = TRUE
+GENERATE_WIND = FALSE
+GENERATE_SOLAR_PV = FALSE
 # Technically my PV implementation is very bad because if I had
 # solar PV off (which i never do) then I wouldn't have CSP either.
 # But this is fiiiiiiiiiiiiine right.
@@ -163,7 +163,7 @@ GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
 GENERATE_HYDRO = TRUE
-GENERATE_BATTERIES = TRUE
+GENERATE_BATTERIES = FALSE
 # i should really say batteries
 # bc storage will be done for csp independantly
 ## (will it ?)

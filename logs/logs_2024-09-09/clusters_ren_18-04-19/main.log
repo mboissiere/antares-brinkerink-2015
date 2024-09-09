@@ -1,0 +1,31 @@
+INFO [2024-09-09 18:04:20] [MAIN] - Creating clusters_ren__2024_09_09_18_04_20 study...
+
+INFO [2024-09-09 18:04:20] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-09 18:04:20] [MAIN] - Adding nodes...
+
+INFO [2024-09-09 18:04:21] [MAIN] - Done adding nodes! (run time : 1.14s).
+
+INFO [2024-09-09 18:04:21] [MAIN] - Adding districts...
+
+INFO [2024-09-09 18:04:22] [MAIN] - Done adding districts! (run time : 0.61s).
+
+INFO [2024-09-09 18:04:22] [MAIN] - Adding load data...
+
+INFO [2024-09-09 18:04:22] [MAIN] - Done adding load data! (run time : 0.81s).
+
+INFO [2024-09-09 18:04:22] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-09 18:04:24] [MAIN] - Done adding hydro!
+INFO [2024-09-09 18:04:24] [MAIN] - Fetching thermal data...
+INFO [2024-09-09 18:04:26] [MAIN] - Aggregating identical generators...
+INFO [2024-09-09 18:04:26] [MAIN] - Running 20-clustering algorithm on generators...
+INFO [2024-09-09 18:04:26] [MAIN] - Done running 20-clustering algorithm on generators!
+
+INFO [2024-09-09 18:04:36] [MAIN] - Done adding thermal data! (run time : 0.19min).
+
+INFO [2024-09-09 18:04:36] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-09 18:04:36] [MAIN] - Done adding lines! (run time : 0.28s).
+
+INFO [2024-09-09 18:04:36] [MAIN] - Finished setting up Antares study! (run time : 0.27min).
+ 
+

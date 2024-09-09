@@ -37,7 +37,7 @@ library(tidyr)
 
 filterClusters <- function(generators_tbl, thermal_types) {
   thermal_generators_tbl <- generators_tbl %>%
-    filter(cluster_type %in% thermal_types)
+    filter(antares_cluster_type %in% thermal_types)
 
   return(thermal_generators_tbl)
 }
@@ -90,8 +90,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
     # Caused by error in `generator_name %in% generator_names_to_remove`:
     # ! objet 'generator_name' introuvable
     # Il faudra sérieusement que j'ai une structure claire à mon code........
-    rename(generator_name = child_object) %>%
-    mutate(generator_name = toupper(generator_name)) %>%
+    mutate(generator_name = tolower(child_object)) %>%
     filter(collection == "Generators") # faudrait vérifier que je fasse bien ce test sur d'autres trucs
     # penser en fait à faire le 2015 filter dès qu'il faut, je le fais pas au niveau des propriétés
   # or c'est justement là que ça cloche
@@ -132,6 +131,8 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   # # FOR TESTING
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
+    filter(active_in_2015) %>% #eh oui, il est là le check maintenant
+    # (il faudra vraiment que ce soit qqch de clair dans les paramètres n'empeche)
     left_join(thermal_properties_tbl, by = "generator_name")
   
   # print(thermal_generators_tbl, n = 100)
@@ -154,9 +155,9 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
 
   thermal_generators_tbl <- thermal_generators_tbl %>%
     rename(
-      nominal_capacity = "Max Capacity",
+      # nominal_capacity = "Max Capacity", ## already imported now
       start_cost = "Start Cost",
-      nb_units = "Units",
+      # nb_units = "Units",
       min_stable_factor = "Min Stable Factor",
       heat_rate = "Heat Rate"
     ) %>%
@@ -168,7 +169,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   #   ! argument non numérique pour un opérateur binaire
     ########## Etonnamment, une valeur qui pop pas pour le jeu de test CHE-DEU-FRA
     # mais qui pop pour le NA-CAN-QC, AF-MAR...
-    select(generator_name, node, fuel_group, cluster_type, nominal_capacity, start_cost, nb_units, 
+    select(generator_name, node, plexos_fuel_group, antares_cluster_type, nominal_capacity, start_cost, nb_units, 
            # min stable factor ?
            min_stable_power, heat_rate, fo_rate, fo_duration)
 
@@ -191,7 +192,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   emissions_and_prices_tbl <- emissions_and_prices_tbl %>%
     # replace(is.na(.), 0) %>%
     #select(child_object, "Production Rate") %>%
-    rename(fuel_group = child_object,
+    rename(plexos_fuel_group = child_object,
            fuel_cost = Price,
            # so ! new studies show production rate is actually in kg/GJ
            # and heat rate is in GJ/MWh
@@ -204,13 +205,13 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
  # it's in *tons*CO2/MWh in Antares
     # en fait vrmt le production rate c'est quoi ptn
 
-    select(fuel_group, fuel_cost, production_rate)
+    select(plexos_fuel_group, fuel_cost, production_rate)
 
   # print(thermal_generators_tbl)
   # print(emissions_and_prices_tbl)
 
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    left_join(emissions_and_prices_tbl, by = "fuel_group")
+    left_join(emissions_and_prices_tbl, by = "plexos_fuel_group")
 
   # print(thermal_generators_tbl)
   
@@ -227,7 +228,7 @@ getThermalPropertiesTable <- function(thermal_generators_tbl) {
   # print(thermal_generators_test)
   
   thermal_generators_tbl <- thermal_generators_tbl %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, 
+    select(generator_name, node, antares_cluster_type, nominal_capacity, nb_units, min_stable_power, 
            co2_emission, variable_cost, start_cost,
            fo_rate, fo_duration)
   

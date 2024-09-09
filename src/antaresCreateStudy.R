@@ -208,7 +208,9 @@ if (GENERATE_THERMAL) {
   source(importThermal_file)
   #print(generators_tbl)
   #print(THERMAL_TYPES)
-  thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
+  thermal_generators_tbl <- filterClusters(base_generators_properties_tbl, THERMAL_TYPES) %>%
+    filter(node %in% NODES)
+  # Quel immense bordel tout de même....;
   #print(thermal_generators_tbl)
   #print(thermal_generators_tbl)
   thermal_generators_tbl <- getThermalPropertiesTable(thermal_generators_tbl)

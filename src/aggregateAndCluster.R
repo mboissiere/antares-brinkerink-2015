@@ -15,7 +15,7 @@ source("parameters.R")
 aggregateEquivalentGenerators <- function(generators_tbl) {
   aggregated_generators_tbl <- generators_tbl %>%
     # group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
-    group_by(node, cluster_type, nominal_capacity, min_stable_power) %>%
+    group_by(node, antares_cluster_type, nominal_capacity, min_stable_power) %>%
     # waitwaitwait. aggregateEquivalent is for generators who are FUNCTIONALLY THE SAME.
     # or is it, uh... well we aggregate on nominal capacity and we want bugs to not be there
     # and we aggregate everything nominal capacity or that depends on it. but. uh.
@@ -47,7 +47,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
            fo_rate = avg_fo_rate,
            fo_duration = avg_fo_duration
     ) %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, 
+    select(generator_name, node, antares_cluster_type, nominal_capacity, nb_units, min_stable_power, 
            co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
   
   return(aggregated_generators_tbl)
@@ -104,7 +104,7 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
   # print(aggregated_batteries_tbl, n = 50)
   
   aggregated_batteries_tbl <- aggregated_batteries_tbl %>%
-    group_by(node, cluster_type, continent, battery_group, max_power, efficiency, capacity) %>% 
+    group_by(node, antares_cluster_type, continent, battery_group, max_power, efficiency, capacity) %>% 
     # efficiency should be redundant with cluster type
     # and so is continent, battery group... technically this function isn't very robust because it's not even sure these columns exist
     # (again, i lose some levels of abstraction by preprocessing data then saving it to objects then reading it...)
@@ -133,7 +133,7 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
            # capacity =  total_capacity,
            initial_state = 50, # it's always 50 # dunno if we should keep it as a percentage or not in tibble but eh
     ) %>%
-    select(battery_name, continent, node, battery_group, cluster_type, units, capacity, max_power, efficiency, initial_state)
+    select(battery_name, continent, node, battery_group, antares_cluster_type, units, capacity, max_power, efficiency, initial_state)
   
   return(aggregated_batteries_tbl)
 }
@@ -187,7 +187,7 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
 
 ######################
 
-cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je pourrais ici, si je veux,
+cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) { # je pourrais ici, si je veux,
   # filtrer tout ce sur quoi je fais pas du clustering (donc co2_emission...)
   # pour le remettre plus tard
   # attention pas min_stable_power car min_stable_power peut changer avec la capacity.
@@ -240,7 +240,7 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je p
       generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
       node = node, # the lines seem silly, but they're actually deeply necessary
       # for accessing node and cluster type within the nested df, and aggregate
-      cluster_type = cluster_type
+      antares_cluster_type = antares_cluster_type
     )
   # ERROR [2024-08-21 00:42:08] [WARN] - Failed to add DEU_OIL_BRUNSBTTEL11000_WILMERSDORF11818_CAPACITY  generator to EU-DEU node, skipping...
   # à chaque fois il faut faire gaffe à l'espace à la fin, c'est putain de sûr
@@ -248,7 +248,7 @@ cluster_and_summarize_generators <- function(df, k, node, cluster_type) { # je p
   # genre regarder si j'ai eu ça en oil la dernière fois.
   # print(summary)
   
-  return(summary %>% select(-node, -cluster_type, -combined_names))  
+  return(summary %>% select(-node, -antares_cluster_type, -combined_names))  
 }
 
 # Possible truc que je pourrais faire pour la transparence du clustering tout ça :
@@ -268,13 +268,13 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
   # Apply clustering and summarization
   # print(thermal_aggregated_tbl)
   thermal_clusters_tbl <- thermal_aggregated_tbl %>%
-    group_by(node, cluster_type) %>%
+    group_by(node, antares_cluster_type) %>%
     nest() %>%
     mutate(
-      clustered_data = map(data, ~ cluster_and_summarize_generators(.x, k = max_clusters, node, cluster_type))
+      clustered_data = map(data, ~ cluster_and_summarize_generators(.x, k = max_clusters, node, antares_cluster_type))
     ) %>%
     unnest(clustered_data) %>%
-    select(generator_name, node, cluster_type, nominal_capacity, nb_units, min_stable_power, 
+    select(generator_name, node, antares_cluster_type, nominal_capacity, nb_units, min_stable_power, 
            co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
   # print(thermal_clusters_tbl)
   return(thermal_clusters_tbl)
@@ -308,7 +308,7 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
 # bon, côté nomenclature - le fait que sur Antares y ait 26 batteries, c'est quand même pas ouf.
 # (.....faire d'efficiency une variable et non un truc de tri ? la question se pose.)
 
-cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficiency) { # continent, battery_group)
+cluster_and_summarize_batteries <- function(df, k, node, antares_cluster_type, efficiency) { # continent, battery_group)
   # on met en argument tout ce qu'on regarde pas du coup ? tout ce qui st pareil ?
   # faisons avec le moins de redondance pour l'instant.
   # print(paste("df:", node))
@@ -345,12 +345,12 @@ cluster_and_summarize_batteries <- function(df, k, node, cluster_type, efficienc
       battery_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
       node = node, # the lines seem silly, but they're actually deeply necessary
       # for accessing node and cluster type within the nested df, and aggregate
-      cluster_type = cluster_type,
+      antares_cluster_type = antares_cluster_type,
       efficiency = efficiency
     )
   # print(summary)
   
-  return(summary %>% select(-node, -cluster_type, -efficiency, -combined_names))  
+  return(summary %>% select(-node, -antares_cluster_type, -efficiency, -combined_names))  
 }
 
 clusteringForBatteries <- function(batteries_aggregated_tbl, max_clusters) {
@@ -370,13 +370,13 @@ clusteringForBatteries <- function(batteries_aggregated_tbl, max_clusters) {
   #
   #....
   batteries_clusters_tbl <- batteries_aggregated_tbl %>%
-    group_by(node, cluster_type, efficiency) %>%
+    group_by(node, antares_cluster_type, efficiency) %>%
     nest() %>%
     mutate(
-      clustered_data = map(data, ~ cluster_and_summarize_batteries(.x, k = max_clusters, node, cluster_type, efficiency))
+      clustered_data = map(data, ~ cluster_and_summarize_batteries(.x, k = max_clusters, node, antares_cluster_type, efficiency))
     ) %>%
     unnest(clustered_data) %>%
-    select(battery_name, node, cluster_type, units, capacity, max_power, efficiency, initial_state)
+    select(battery_name, node, antares_cluster_type, units, capacity, max_power, efficiency, initial_state)
   # print(batteries_clusters_tbl)
   return(batteries_clusters_tbl)
 }

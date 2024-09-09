@@ -11,13 +11,13 @@ library(tidyr)
 #   filter(fuel_type == "Hydro")
 
 getHydroGeneratorsProperties <- function() {
-  hydro_generators_tbl <- full_2015_generators_tbl %>%
-    filter(fuel_type == "Hydro") %>%
+  hydro_generators_tbl <- base_generators_properties_tbl %>%
+    filter(plexos_fuel_type == "Hydro") %>%
     select(generator_name, node)
   
   hydro_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Generators") %>%
-    mutate(generator_name = toupper(child_object)) %>%
+    mutate(generator_name = tolower(child_object)) %>%
     select(generator_name, property, value)
   
   hydro_generators_tbl <- hydro_generators_tbl %>%
@@ -57,6 +57,7 @@ addHydroStorageToAntares <- function(nodes) {
   hydro_countries_2015 <- readRDS(".\\src\\objects\\hydro_monthly_production_countries_2015_tbl.rds")
   
   hydro_countries_2015 <- hydro_countries_2015 %>%
+    mutate(node = tolower(node)) %>%
     filter(node %in% nodes)
   
   for (row in 1:nrow(hydro_countries_2015)) {
