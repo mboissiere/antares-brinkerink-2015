@@ -61,6 +61,10 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 NODES = all_deane_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
+
+REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
+# if false, will check if they exist, and only recreate them if they don't.
+
 # NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
 #           "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
 #           "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
@@ -234,6 +238,7 @@ ADD_VOLL = TRUE
 INCLUDE_ZERO_NTC_LINES = FALSE
 
 PRINT_FULL_LOG_TO_CONSOLE = TRUE
+# bientôt le clustering log
 
 
 #### Todo: centralize but separate in different categories

@@ -15,6 +15,8 @@ getSolarPVPropertiesTable <- function(generators_tbl) {
   
   properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(property %in% c("Max Capacity", "Units")) %>%
+    # Honnêtement, un generators_tbl avec Max Capacity et Units pourrait être global,
+    # vu comment c'est utile pour absolument tout.
     rename(generator_name = child_object) %>%
     mutate(generator_name = toupper(generator_name)) %>%
     select(generator_name, property, value)
@@ -31,6 +33,8 @@ getSolarPVPropertiesTable <- function(generators_tbl) {
   return(solar_pv_properties_tbl)
 }
 
+# Serait-il temps de faire un générateur d'objets, qui les fait la première fois
+# et sinon les réutilise ?
 
 addAggregatedSolar <- function(nodes,
                                generators_tbl,

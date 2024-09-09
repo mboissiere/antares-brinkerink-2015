@@ -301,12 +301,13 @@ wind_clusters_plexos_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.r
 #   select(generator_name)
 
 ninja_wind_lst <- colnames(wind_clusters_ninja_tbl)
-print(ninja_wind_lst)
+# print(ninja_wind_lst)
 
 plexos_wind_lst <- wind_clusters_plexos_tbl$generator_name
-print(plexos_wind_lst)
+# print(plexos_wind_lst)
 
 wind_ninja_not_in_plexos_lst <- setdiff(ninja_wind_lst, plexos_wind_lst)
+wind_plexos_not_in_ninja_lst <- setdiff(plexos_wind_lst, ninja_wind_lst)
 
 ####
 
@@ -317,17 +318,24 @@ solar_clusters_plexos_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.
 
 
 ninja_solar_lst <- colnames(solar_clusters_ninja_tbl)
-print(ninja_solar_lst)
+# print(ninja_solar_lst)
 
 plexos_solar_lst <- solar_clusters_plexos_tbl$generator_name
-print(plexos_solar_lst)
+# print(plexos_solar_lst)
 
 solar_ninja_not_in_plexos_lst <- setdiff(ninja_solar_lst, plexos_solar_lst)
+solar_plexos_not_in_ninja_lst <- setdiff(plexos_solar_lst, ninja_solar_lst)
 
 ####
 
 print("Turbines in Ninja but not in PLEXOS:")
 print(wind_ninja_not_in_plexos_lst)
 
+print("Turbines in PLEXOS but not in Ninja:")
+print(wind_plexos_not_in_ninja_lst)
+
 print("Panels in Ninja but not in PLEXOS:")
 print(solar_ninja_not_in_plexos_lst)
+
+print("Panels in PLEXOS but not in Ninja:")
+print(solar_plexos_not_in_ninja_lst)

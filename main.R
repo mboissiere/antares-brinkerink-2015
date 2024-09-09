@@ -42,6 +42,10 @@ setupLogging(study_basename)
 
 setRam(16)
 
+# Ok je suis paumé actuellement mais la suite c'est :
+# faire un run clusters qui fait un parcours dans Ninja et lance une exception quand y a un pb,
+# et lancer ce run au plus vite. comme ça je vois les trucs qui n'y sont pas.
+
 # source("parameters.R")
 
 if (EXPORT_TO_OUTPUT_FOLDER) {

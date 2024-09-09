@@ -33,7 +33,7 @@ apply2015ConstructionFilter <- function(generators_tbl) {
     filter(scenario == "{Object}Exclude 2016-2019 Generators") %>%
     pull(child_object) %>%
     unique() %>%
-    toupper()
+    tolower()
   
   generators_tbl <- generators_tbl %>%
     filter(!generator_name %in% generator_names_to_remove)
@@ -48,7 +48,7 @@ apply2015NuclearFilter <- function(generators_tbl) {
     filter(memo == "With the exception of JPN_Nuc_Sendai13837 no active nuclear generators in Japan by 2015 due to Fukushima accident. https://en.wikipedia.org/wiki/Nuclear_power_in_Japan") %>%
     pull(child_object) %>%
     unique() %>%
-    toupper()
+    tolower()
   
   generators_tbl <- generators_tbl %>%
     filter(!generator_name %in% generator_names_to_remove)
@@ -136,7 +136,7 @@ getGeneratorsFromNodes <- function(nodes) {
   
   # Forcing capital letters on generator names to avoid discrepancies with Ninja dataset
   generators_tbl <- generators_tbl %>%
-    mutate(generator_name = toupper(generator_name))
+    mutate(generator_name = tolower(generator_name))
   
   # Keep only nodes of interest
   generators_tbl <- generators_tbl %>%
@@ -150,6 +150,7 @@ getGeneratorsFromNodes <- function(nodes) {
 # print(example)
 
 filterFor2015 <- function(generators_tbl) {
+  # This should be a parameter !!
   # Optional for 2015: removing data for generators built after 2015
   # Could be enabled/disabled via boolean, for example when setting horizon as 2015
   # or, could be in main code
@@ -157,6 +158,11 @@ filterFor2015 <- function(generators_tbl) {
   # Optional for 2015: removing data for JPN nuclear reactors, offline in 2015
   generators_tbl <- apply2015NuclearFilter(generators_tbl)
 }
+# Peut-être faire une colonne "was in 2015" dans un base_generators_tbl
+# et comme ça filtrer plus loin sera simple.
+# Ou même inclure le commission date en réussissant à le convertir sachant que
+# le nuclear filter est différent.
+
 # 
 # example <- filterFor2015(example)
 # print(example)
@@ -179,7 +185,7 @@ addGeneralFuelInfo <- function(generators_tbl) {
     rename(generator_name = parent_object,
            fuel_group = child_object) %>%
     # Forcing capital letters on generator names as is convention now
-    mutate(generator_name = toupper(generator_name)) %>%
+    mutate(generator_name = tolower(generator_name)) %>%
     select(generator_name, fuel_group)
   
   generators_tbl <- generators_tbl %>%

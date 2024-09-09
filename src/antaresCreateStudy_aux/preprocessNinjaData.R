@@ -25,7 +25,7 @@ getTableFromNinja <- function(ninja_data_path) {
                     check.names = FALSE
   )
   # Forcing capital letters on generator names to avoid discrepancies with PLEXOS dataset
-  names(tbl) <- toupper(names(tbl))
+  names(tbl) <- tolower(names(tbl))
   
   # Removing potential duplicates
   duplicate_columns <- which(duplicated(names(tbl)))
