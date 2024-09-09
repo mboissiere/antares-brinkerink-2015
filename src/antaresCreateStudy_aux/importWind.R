@@ -55,7 +55,6 @@ getWindPropertiesTable <- function(generators_tbl) {
 # print(wind_generators_tbl)
 
 
-
 addAggregatedWind <- function(nodes,
                               generators_tbl # Avoir une valeur par défaut ? Pas important ?
                               ) {

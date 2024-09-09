@@ -7,7 +7,7 @@ library(dplyr) # To be commented if the main script has that
 NINJA_PATH = file.path(".", "input", "dataverse_files")
 
 WIND_DATA_PATH = file.path(NINJA_PATH, "Renewables.ninja.wind.output.Full.adjusted.txt")
-PV_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Solar.farms.output.full.adjusted.txt")
+SOLARPV_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Solar.farms.output.full.adjusted.txt")
 CSP_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Csp.output.full.adjusted.txt")
 
 
@@ -24,17 +24,18 @@ getTableFromNinja <- function(ninja_data_path) {
                     encoding = "UTF-8",
                     check.names = FALSE
   )
-  # Forcing capital letters on generator names to avoid discrepancies with PLEXOS dataset
+  # Forcing column names to lowercase to avoid discrepancies with PLEXOS dataset
   names(tbl) <- tolower(names(tbl))
   
   # Removing potential duplicates
   duplicate_columns <- which(duplicated(names(tbl)))
   if (length(duplicate_columns) > 0) {
-    msg = paste("[WARN] - The following columns were found as duplicates in input data :", duplicate_columns)
+    duplicate_column_names <- names(tbl)[duplicate_columns]
+    msg = paste("[WARN] - The following columns were found as duplicates in input data:", 
+                paste(duplicate_column_names, collapse = ", "))
     logError(msg)
-    # Now that I don't rebuild the dataset from scratch, this will be useless / never show up
-    # but still.
-    tbl <- tbl[ , -duplicate_columns]
+    logError("[WARN] - Duplicates have been removed in import.")
+    tbl <- tbl[, -duplicate_columns]
   }
   tbl <- as_tibble(tbl)
   return(tbl)

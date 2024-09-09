@@ -36,6 +36,67 @@ getSolarPVPropertiesTable <- function(generators_tbl) {
 # Serait-il temps de faire un générateur d'objets, qui les fait la première fois
 # et sinon les réutilise ?
 
+addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
+                               #filter_for_2015 = TRUE
+                               ) {
+  solarpv_2015_properties_tbl <- readRDS(solarpv_2015_properties_path)
+  solarpv_cf_ts_tbl <- readRDS(solarpv_cf_ts_path)
+  # ACKSHUALLY filter should be applied here. there should be "filter nodes" etc before
+  # fusing the Ninja and PLEXOS stuff and keeping NA.
+  # else, putting a "node in nodes" here would erase the NA and we would lose juicy data
+  # (of course, we want to lose it, but still, the logs are better documentation now.)
+  
+  # print(solarpv_2015_properties_tbl)
+  for (k in 1:nrow(solarpv_2015_properties_tbl)) {
+    row <- solarpv_2015_properties_tbl[k,]
+    generator_name <- row$generator_name
+    if (is.na(row$nominal_capacity)) {
+      msg <- paste("[WARN] - Properties for", generator_name, "generator has not been found in PLEXOS data.")
+      logError(msg)
+    } else {
+      active_in_2015 <- row$active_in_2015
+      if (!active_in_2015) {
+        msg <- paste("[SOLAR] - Skipped", generator_name, "generator (inactive in 2015).")
+        logFull(msg)
+      } else {
+        node <- row$node
+        if (node in nodes) {
+          nominal_capacity <- row$nominal_capacity
+          nb_units <- row$nb_units
+          cf_ts <- solarpv_cf_ts_tbl[[generator_name]]
+          if (is.null(cf_ts)) {
+            msg <- paste("[WARN] - Timeseries for", generator_name, "generator has not been found in Ninja data.")
+            logError(msg)
+          } else {
+            tryCatch({
+              msg <- paste("[SOLAR] - Adding", generator_name, "generator to", node, "area...")
+              logFull(msg)
+              createClusterRES(
+                area = node,
+                cluster_name = generator_name,
+                group = "Solar PV",
+                time_series = cf_ts,
+                nominalcapacity = nominal_capacity,
+                unitcount = nb_units,
+                ts_interpretation = "production-factor"
+              )
+              msg <- paste("[SOLAR] - Successfully added", generator_name, "generator to", node, "area!")
+              logFull(msg)
+            }, error = function(e) {
+              msg <- paste("[WARN] - Failed to add", generator_name, "to", node, "area, for unknown reasons.")
+              logError(msg)
+            })
+            
+          }
+        }
+        
+      }
+      
+    }
+    
+  }
+}
+
 addAggregatedSolar <- function(nodes,
                                generators_tbl,
                                add_csp #= IMPORT_CSP # default value AND adding in main

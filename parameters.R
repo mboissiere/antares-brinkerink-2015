@@ -61,6 +61,9 @@ oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 NODES = all_deane_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
+# ptet faire un paramètre "catchExceptions" pour pouvoir genre.
+# activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
+
 
 REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
