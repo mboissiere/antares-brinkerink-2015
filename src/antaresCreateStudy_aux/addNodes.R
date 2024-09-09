@@ -47,13 +47,16 @@ DEFAULT_SCALING_FACTOR = 25
 
 
 getAllNodes <- function() {
-  nodes_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
+  nodes_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>%
     filter(class == "Node") %>%
-    select(name)
+    mutate(node = tolower(name)) %>%
+    select(node)
   
-  nodes_lst <- nodes_tbl$name
+  nodes_lst <- nodes_tbl$node
   return(nodes_lst)
 }
+
+# print(getAllNodes())
 
 # generateNodesString <- function(deane_vector) {
 #   str <- "c("
@@ -67,23 +70,26 @@ getAllNodes <- function() {
 # getNodes, addAttributes, addColor ?
 
 getNodesTable <- function(nodes) {
-  nodes_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
+  nodes_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>%
     filter(class == "Node") %>%
-    rename(
-      node = name,
-      continent = category) %>%
+    mutate(
+      node = tolower(name),
+      continent = tolower(category)) %>%
     select(node, continent) %>%
     filter(node %in% nodes)
   return(nodes_tbl)
 }
+
+# print(getNodesTable(europe_nodes_lst))
 # print(generateNodesString(getNodesFromContinents("Europe")))
 
 getNodesFromContinents <- function(continents) {
-  nodes_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
+  nodes_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>%
     filter(class == "Node" & category %in% continents) %>%
-    select(name)
+    mutate(node = tolower(name)) %>%
+    select(node)
   
-  nodes_lst <- nodes_tbl$name
+  nodes_lst <- nodes_tbl$node
   return(nodes_lst)
 }
 
@@ -115,8 +121,8 @@ addLatLonToNodes <- function(nodes_tbl) {
   attributes_tbl <- getTableFromPlexos(ATTRIBUTES_PATH) %>%
     filter(class == "Node") %>%
     pivot_wider(names_from = attribute, values_from = value) %>%
-    rename(
-      node = name,
+    mutate(
+      node = tolower(name),
       lat = Latitude,
       lon = Longitude
     ) %>%
@@ -140,12 +146,12 @@ addAntaresColorToNodes <- function(nodes_tbl) {
   
   nodes_tbl <- nodes_tbl %>%
     mutate(antares_color = case_when(
-      grepl("Africa", continent) ~ antaresOrange,
-      grepl("Asia", continent) ~ antaresRed,
-      grepl("Europe", continent) ~ antaresBlue,
-      grepl("North America", continent) ~ antaresGreen,
-      grepl("Oceania", continent) ~ antaresFuchsia,
-      grepl("South America", continent) ~ antaresYellow,
+      grepl("africa", continent) ~ antaresOrange,
+      grepl("asia", continent) ~ antaresRed,
+      grepl("europe", continent) ~ antaresBlue,
+      grepl("north america", continent) ~ antaresGreen,
+      grepl("oceania", continent) ~ antaresFuchsia,
+      grepl("south america", continent) ~ antaresYellow,
       TRUE ~ NA_character_  # There normally shouldn't be any
     )) %>%
     return(nodes_tbl)

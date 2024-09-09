@@ -10,6 +10,21 @@ if (REGENERATE_OBJECTS | !file.exists(deane_all_nodes_path)) {
           file = deane_all_nodes_path)
 }
 
+deane_europe_nodes_name <- "deane_europe_nodes_lst.rds"
+deane_europe_nodes_path <- file.path(OBJECTS_PATH, deane_europe_nodes_name)
+if (REGENERATE_OBJECTS | !file.exists(deane_europe_nodes_path)) {
+  source(addNodes_module)
+  deane_europe_nodes_lst <- getNodesFromContinents("Europe")
+  # So far, AllNodes isn't tolowered.
+  saveRDS(object = deane_europe_nodes_lst,
+          file = deane_europe_nodes_path)
+}
+
+
+
+# Great !! We just need to make the generation of objects conditional
+# (no need for useless ones) so like, just put it in a generate... function
+# and also to put logs so that we have some visibility of it happening.
 
 base_generators_properties_name = "base_generators_properties_tbl.rds"
 base_generators_properties_path <- file.path(OBJECTS_PATH, base_generators_properties_name)
@@ -69,7 +84,7 @@ if (REGENERATE_OBJECTS | !file.exists(solarpv_2015_properties_path)) {
   saveRDS(object = solarpv_2015_properties_tbl,
           file = solarpv_2015_properties_path)
 }
-print(solarpv_2015_properties_tbl)
+# print(solarpv_2015_properties_tbl)
 
 # > print(new_solarpv_capacity_tbl, n = 100)
 # # A tibble: 6,191 x 5

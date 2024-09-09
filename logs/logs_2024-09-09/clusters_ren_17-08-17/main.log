@@ -1,0 +1,13 @@
+INFO [2024-09-09 17:08:17] [MAIN] - Creating clusters_ren__2024_09_09_17_08_17 study...
+
+INFO [2024-09-09 17:08:17] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-09 17:08:18] [MAIN] - Adding nodes...
+
+INFO [2024-09-09 17:08:20] [MAIN] - Done adding nodes! (run time : 2.23s).
+
+INFO [2024-09-09 17:08:20] [MAIN] - Adding load data...
+
+INFO [2024-09-09 17:08:21] [MAIN] - Done adding load data! (run time : 1.14s).
+
+INFO [2024-09-09 17:08:21] [MAIN] - Fetching solar data...
+

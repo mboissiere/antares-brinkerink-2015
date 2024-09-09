@@ -16,6 +16,10 @@ load_table <- read.table(
   check.names = FALSE
   )
 
+load_tbl <- as_tibble(load_table) %>%
+  rename_with(tolower)
+# print(load_tbl)
+
 # quid d'avoir un truc plus matriciel qui comme le Wind/Solar maintenant,
 # relève des warnings à faire sur "attention node inexistant"
 # (en fait non impossible car nature car getAllNodes part des nodes du PLEXOS
@@ -24,7 +28,8 @@ load_table <- read.table(
 addLoadToNodes <- function(nodes #= DEANE_NODES_ALL
                            ) {
   for (node in nodes) {
-    load_ts <- load_table[[node]]
+    # Ce serait bien de faire depuis Ninja, et de print un warning "not found"
+    load_ts <- load_tbl[[node]]
     msg = paste("[LOAD] - Adding", node, "load data...")
     logFull(msg)
     tryCatch({

@@ -1,0 +1,9 @@
+INFO [2024-09-09 16:41:03] [MAIN] - Creating clusters_ren__2024_09_09_16_41_03 study...
+
+INFO [2024-09-09 16:41:03] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-09 16:41:03] [MAIN] - Adding nodes...
+
+INFO [2024-09-09 16:41:05] [MAIN] - Done adding nodes! (run time : 1.29s).
+
+INFO [2024-09-09 16:41:05] [MAIN] - Adding districts...
+

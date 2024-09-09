@@ -49,6 +49,7 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
   # print(solarpv_2015_properties_tbl)
   for (k in 1:nrow(solarpv_2015_properties_tbl)) {
     row <- solarpv_2015_properties_tbl[k,]
+    # print(row)
     generator_name <- row$generator_name
     if (is.na(row$nominal_capacity)) {
       msg <- paste("[WARN] - Properties for", generator_name, "generator has not been found in PLEXOS data.")
@@ -60,7 +61,7 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
         logFull(msg)
       } else {
         node <- row$node
-        if (node in nodes) {
+        if (node %in% nodes) {
           nominal_capacity <- row$nominal_capacity
           nb_units <- row$nb_units
           cf_ts <- solarpv_cf_ts_tbl[[generator_name]]
@@ -69,8 +70,8 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
             logError(msg)
           } else {
             tryCatch({
-              msg <- paste("[SOLAR] - Adding", generator_name, "generator to", node, "area...")
-              logFull(msg)
+              # msg <- paste("[SOLAR] - Adding", generator_name, "generator to", node, "area...")
+              # logFull(msg)
               createClusterRES(
                 area = node,
                 cluster_name = generator_name,
@@ -78,7 +79,8 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
                 time_series = cf_ts,
                 nominalcapacity = nominal_capacity,
                 unitcount = nb_units,
-                ts_interpretation = "production-factor"
+                ts_interpretation = "production-factor",
+                add_prefix = FALSE
               )
               msg <- paste("[SOLAR] - Successfully added", generator_name, "generator to", node, "area!")
               logFull(msg)

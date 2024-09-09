@@ -9,6 +9,16 @@ library(dplyr)
 library(tidyr)
 
 source("architecture.R")
+# Error in file(file, "rt") : impossible d'ouvrir la connexion
+# De plus : Warning messages:
+# 1: Parameter 'horizon' is missing or inconsistent with 'january.1st' and 'leapyear'. Assume correct year is 2018.
+# To avoid this warning message in future simulations, open the study with Antares and go to the simulation tab, put a valid year number in the cell 'horizon' and use consistent values for parameters 'Leap year' and '1st january'. 
+# 2: In file(file, "rt") :
+#   impossible d'ouvrir le fichier 'C:/Users/boissieremat/Documents/GitHub/antares-brinkerink-2015/src/objects' : Permission denied
+
+# I'm going to lose my goddamn mind
+
+# system("chmod u+r src/objects")
 
 # Limite ça le EditObject pourrait être limité au CreateStudy
 # Bon AntaresRead je vois pas comment faire sans mdr

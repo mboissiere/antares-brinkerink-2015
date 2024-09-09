@@ -51,21 +51,22 @@ PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 EXPORT_TO_OUTPUT_FOLDER = TRUE
 
 all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
-europe_nodes_lst <- readRDS(".\\src\\objects\\europe_nodes_lst.rds")
+deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # africa_nodes_lst <- readRDS(".\\src\\objects\\africa_nodes_lst.rds")
 # asia_nodes_lst <- readRDS(".\\src\\objects\\asia_nodes_lst.rds")
 # north_america_nodes_lst <- readRDS(".\\src\\objects\\north_america_nodes_lst.rds")
 # south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 # oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-NODES = europe_nodes_lst
+NODES = c("eu-che", "eu-deu", "eu-fra")
+# NODES = deane_europe_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
 # ptet faire un paramètre "catchExceptions" pour pouvoir genre.
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
 
 
-REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
+REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
 
 # NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
@@ -174,7 +175,7 @@ GENERATE_BATTERIES = FALSE
 # après tout beaucoup de fonctions ont des arguments overwrite...
 # peut-être qu'une districtisation au sein de readResults, ça suffirait pour l'instant...
 
-GENERATE_DISTRICTS = TRUE
+GENERATE_DISTRICTS = FALSE
 THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil", 
                   "Other", "Other 2", "Other 3", "Other 4") #, "Other 4" is actually useless but isok
 # Nota bene : comme je filoute et met directement (provisoirement) "Other4" ici

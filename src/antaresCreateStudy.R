@@ -44,19 +44,22 @@ logMain(msg)
 ################################################################################
 ############################### DISTRICT CREATION ##############################
 
-msg = "[MAIN] - Adding districts...\n"
-logMain(msg)
-start_time <- Sys.time()
+if (GENERATE_DISTRICTS) {
+  msg = "[MAIN] - Adding districts...\n"
+  logMain(msg)
+  start_time <- Sys.time()
+  
+  source(".\\src\\antaresCreateStudy_aux\\createDistricts.R")
+  createGlobalDistrict(NODES)
+  createDistrictsFromContinents(NODES)
+  createDistrictsFromRegionalNodes(NODES)
+  
+  end_time <- Sys.time()
+  duration <- round(difftime(end_time, start_time, units = "secs"), 2)
+  msg = paste0("[MAIN] - Done adding districts! (run time : ", duration,"s).\n")
+  logMain(msg)
+}
 
-source(".\\src\\antaresCreateStudy_aux\\createDistricts.R")
-createGlobalDistrict(NODES)
-createDistrictsFromContinents(NODES)
-createDistrictsFromRegionalNodes(NODES)
-
-end_time <- Sys.time()
-duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-msg = paste0("[MAIN] - Done adding districts! (run time : ", duration,"s).\n")
-logMain(msg)
 
 ################################################################################
 ################################## LOAD IMPORT #################################
@@ -99,22 +102,24 @@ if (GENERATE_LOAD) {
 # msg = paste0("[MAIN] - Done gathering generator data! (run time : ", duration,"s).\n")
 # logMain(msg)
 
-generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
-generators_tbl <- readRDS(generators_file)
-# print(generators_tbl)
+# To be reactivated probably :
 
-batteries_file = ".\\src\\objects\\full_2015_batteries_tbl.rds"
-batteries_tbl <- readRDS(batteries_file)
-
-## Oooh okay I see what's going on. We should filter it over countries now.
-# For example if we have three points, but then don't alter generators_tbl
-# until the thermal clusters, then it'll try to import stuff from all around the world.
-
-generators_tbl <- generators_tbl %>%
-  filter(node %in% NODES)
-
-batteries_tbl <- batteries_tbl %>%
-  filter(node %in% NODES)
+# generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
+# generators_tbl <- readRDS(generators_file)
+# # print(generators_tbl)
+# 
+# batteries_file = ".\\src\\objects\\full_2015_batteries_tbl.rds"
+# batteries_tbl <- readRDS(batteries_file)
+# 
+# ## Oooh okay I see what's going on. We should filter it over countries now.
+# # For example if we have three points, but then don't alter generators_tbl
+# # until the thermal clusters, then it'll try to import stuff from all around the world.
+# 
+# generators_tbl <- generators_tbl %>%
+#   filter(node %in% NODES)
+# 
+# batteries_tbl <- batteries_tbl %>%
+#   filter(node %in% NODES)
 
 # This might cause confusion over how we worked with wind_aggregated before.
 # Now we jsut import wind_aggregated and don't do anything over it
