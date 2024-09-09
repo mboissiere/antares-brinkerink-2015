@@ -24,6 +24,8 @@ updateAllSettings()
 # En vrai là je pourrais mettre des petits prints genre "added machin"
 # Au vu des messages d'erreur ça a l'air d'être "thermal" le problème
 
+source(generateObjects_module)
+
 ################################################################################
 ################################# AREA CREATION ################################
 
@@ -149,11 +151,17 @@ if (GENERATE_SOLAR_PV) {
   logMain(msg)
   start_time <- Sys.time()
   
+  importSolarPV_file = file.path("src", "antaresCreateStudy_aux", "importSolarPV.R",
+                                 fsep = .Platform$file.sep)
+  source(importSolarPV_file)
+  # On pourrait encore fragmenter en import de fonctions pour aggregated et clusters.
+  # Histoire de limiter appels mémoire.
+  
   if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
-    importSolarPV_file = file.path("src", "antaresCreateStudy_aux", "importSolarPV.R",
-                                   fsep = .Platform$file.sep)
-    source(importSolarPV_file)
     addAggregatedSolar(NODES, generators_tbl, GENERATE_SOLAR_CSP)
+  } else if (RENEWABLE_GENERATION_MODELLING == "clusters") {
+    # Il faudrait faire crasher plus tôt si jamais ni l'un ni l'autre ptet
+    addSolarPVClusters(NODES)
   }
   
   end_time <- Sys.time()

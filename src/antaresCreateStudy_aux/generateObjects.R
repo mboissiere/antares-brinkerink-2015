@@ -1,4 +1,4 @@
-source("architecture.R")
+# source("architecture.R")
 
 deane_all_nodes_name <- "deane_all_nodes_lst.rds"
 deane_all_nodes_path <- file.path(OBJECTS_PATH, deane_all_nodes_name)

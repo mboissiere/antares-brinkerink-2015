@@ -7,6 +7,9 @@ library(antaresEditObject)
 
 library(dplyr)
 library(tidyr)
+
+source("architecture.R")
+
 # Limite ça le EditObject pourrait être limité au CreateStudy
 # Bon AntaresRead je vois pas comment faire sans mdr
 # Penser à faire comme un requirements.txt genre le truc comme dans logging
