@@ -308,4 +308,26 @@ print(plexos_wind_lst)
 
 wind_ninja_not_in_plexos_lst <- setdiff(ninja_wind_lst, plexos_wind_lst)
 
+####
+
+solar_clusters_ninja_tbl <- readRDS(".\\src\\objects\\solar_clusters_ninja_tbl.rds") %>%
+  select(-DATETIME)
+solar_clusters_plexos_tbl <- readRDS(".\\src\\objects\\full_2015_generators_tbl.rds") %>%
+  filter(fuel_type == "Solar")
+
+
+ninja_solar_lst <- colnames(solar_clusters_ninja_tbl)
+print(ninja_solar_lst)
+
+plexos_solar_lst <- solar_clusters_plexos_tbl$generator_name
+print(plexos_solar_lst)
+
+solar_ninja_not_in_plexos_lst <- setdiff(ninja_solar_lst, plexos_solar_lst)
+
+####
+
+print("Turbines in Ninja but not in PLEXOS:")
 print(wind_ninja_not_in_plexos_lst)
+
+print("Panels in Ninja but not in PLEXOS:")
+print(solar_ninja_not_in_plexos_lst)

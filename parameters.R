@@ -135,7 +135,10 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 # that's how the .txt files in antares are
 
 GENERATE_LOAD = TRUE
-GENERATE_REN = FALSE
+# GENERATE_REN = FALSE
+
+RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
+
 GENERATE_WIND = TRUE
 GENERATE_SOLAR_PV = TRUE
 # Technically my PV implementation is very bad because if I had
@@ -355,8 +358,6 @@ nb_MCyears = 10 # entier, nombre d'années Monte-Carlo
 
 # ajouter la partie configuration, qui contient notamment TS management,
 # dans le grand excel qui résume les variables Antares
-
-RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 
 
 # zones = c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA")

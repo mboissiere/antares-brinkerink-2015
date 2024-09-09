@@ -26,8 +26,9 @@ createDayDirectory <- function() {
 }
 
 # Function to create the simulation directory
-createSimulationDirectory <- function(day_dir) {
-  sim_dir <- paste0(day_dir, "/", format(Sys.time(), "%H-%M-%S"))
+createSimulationDirectory <- function(day_dir, study_name) {
+  folder_name = paste0(study_name, "_", format(Sys.time(), "%H-%M-%S"))
+  sim_dir <- file.path(day_dir, folder_name)
   dir.create(sim_dir)
   return(sim_dir)
 }
@@ -59,9 +60,9 @@ setupLoggers <- function(sim_dir) {
   flog.threshold(ERROR, name = "errors_console")
 }
 
-setupLogging <- function() {
+setupLogging <- function(study_name = "") {
   day_dir <- createDayDirectory()
-  sim_dir <- createSimulationDirectory(day_dir)
+  sim_dir <- createSimulationDirectory(day_dir, study_name)
   setupLoggers(sim_dir)
 }
 

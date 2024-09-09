@@ -32,12 +32,13 @@ source(addNodes_file)
 # Maybe make a program that restarts everytime a node isn't added ??
 
 logging_module = file.path("src", "logging.R",
-                         fsep = .Platform$file.sep)
+                           fsep = .Platform$file.sep)
 source(logging_module)
 
 # c'est environ ici où l'on met le nom du study je pense
-setupLogging()
+setupLogging(study_basename)
 # Ptet mettre des logs aussi genre pour séparer createStudy, readResults...
+# Le mettre dans main permet de faire un truc uniforme à tous les dossiers.
 
 setRam(16)
 
