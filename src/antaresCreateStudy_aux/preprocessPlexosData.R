@@ -124,14 +124,14 @@ getGeneratorsFromNodes <- function(nodes) {
   generators_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>%
     filter(class == "Generator") %>%
     select(name, category) %>%
-    rename(generator_name = name,
-           continent = category)
+    mutate(generator_name = tolower(name),
+           continent = tolower(category))
   
   # Adding country/node info to each generator
   generators_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
     filter(parent_class == "Generator" & child_class == "Node") %>%
-    rename(generator_name = parent_object,
-           node = child_object) %>%
+    mutate(generator_name = tolower(parent_object),
+           node = tolower(child_object)) %>%
     left_join(generators_tbl, by = "generator_name")
   
   # Keep only nodes of interest
@@ -139,11 +139,11 @@ getGeneratorsFromNodes <- function(nodes) {
     filter(node %in% nodes) %>%
     select(generator_name, continent, node)
   
-  # Forcing capital letters on generator names to avoid discrepancies with Ninja dataset
-  generators_tbl <- generators_tbl %>%
-    mutate(generator_name = tolower(generator_name),
-           continent = tolower(continent),
-           node = tolower(node))
+  # # Forcing capital letters on generator names to avoid discrepancies with Ninja dataset
+  # generators_tbl <- generators_tbl %>%
+  #   mutate(generator_name = tolower(generator_name),
+  #          continent = tolower(continent),
+  #          node = tolower(node))
   # and actually on more stuff to never worry about capitalization, antares uses small letters anyway
   
   return(generators_tbl)

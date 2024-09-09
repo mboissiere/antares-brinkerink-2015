@@ -10,6 +10,8 @@ if (REGENERATE_OBJECTS | !file.exists(deane_all_nodes_path)) {
           file = deane_all_nodes_path)
 }
 
+deane_all_nodes_lst <- readRDS(deane_all_nodes_path)
+
 deane_europe_nodes_name <- "deane_europe_nodes_lst.rds"
 deane_europe_nodes_path <- file.path(OBJECTS_PATH, deane_europe_nodes_name)
 if (REGENERATE_OBJECTS | !file.exists(deane_europe_nodes_path)) {
@@ -107,6 +109,106 @@ if (REGENERATE_OBJECTS | !file.exists(wind_2015_properties_path)) {
   saveRDS(object = wind_2015_properties_tbl,
           file = wind_2015_properties_path)
 }
+
+###########
+# Territory of aggregation
+
+# dans l'utilisation finale, ce serait bien d'avoir en fin de truc genre
+# si jamais on importe les objets qui sont déjà crées, un log qui dit
+# "importing already existing aggregated ninja table.." machin histoire
+# de suivre
+# et aussi de log si on crée bien sûr
+
+# print(wind_cf_ts_tbl)
+# print(wind_2015_properties_tbl, n = 100)
+
+# wind_ninja_not_in_plexos_lst <- wind_2015_properties_tbl %>%
+#   filter(is.na(nominal_capacity)) %>%
+#   pull(generator_name)
+# 
+# # print(wind_ninja_not_in_plexos_lst)
+
+getAggregatedTSFromClusters <- function(nodes, properties_tbl, timeseries_tbl) {
+  # Mais il serait bien de mettre tout de même qqch comme :
+  # "were not in PLEXOS : ..."
+  # au lieu de tout crouncher
+  # nodes <- deane_europe_nodes_lst
+  # properties_tbl <- wind_2015_properties_tbl
+  # timeseries_tbl <- wind_cf_ts_tbl
+  
+  not_in_plexos_lst <- properties_tbl %>%
+    filter(is.na(nominal_capacity)) %>%
+    pull(generator_name)
+  
+  msg = paste("[WARN] - The following generators have Ninja timeseries, but no PLEXOS properties:", not_in_plexos_lst)
+  logError(msg)
+  logError("[WARN] - They will not be imported into the simulation.")
+  
+  properties_tbl <- properties_tbl %>%
+    filter(active_in_2015) %>%
+    mutate(nominal_capacity = nominal_capacity * nb_units) %>%
+    select(generator_name, node, nominal_capacity)
+  
+  # print(properties_tbl)
+  # print(timeseries_tbl)
+  
+  product_tbl <- timeseries_tbl %>%
+    gather(key = "generator_name", value = "capacity_factor", -datetime) 
+  
+  product_tbl <- product_tbl %>%
+    left_join(properties_tbl, by = "generator_name") %>%
+    filter(node %in% nodes)
+  
+  product_tbl <- product_tbl %>%
+    mutate(power_output = nominal_capacity * capacity_factor / 100)
+  # peut etre que pour lecture des données, faudrait mettre _mw ? ou bien dire dans doc..
+  
+  product_tbl <- product_tbl %>%
+    select(datetime, node, power_output)
+  
+  # print(product_tbl)
+  
+  aggregated_tbl <- product_tbl %>%
+    group_by(datetime, node) %>%
+    summarize(node_power_output = sum(power_output, na.rm = FALSE), .groups = 'drop')
+  
+  aggregated_tbl <- aggregated_tbl %>%
+    pivot_wider(names_from = node, values_from = node_power_output)
+  
+  # print(aggregated_tbl)
+  return(aggregated_tbl)
+}
+
+# nodes <- deane_europe_nodes_lst
+# properties_tbl <- wind_2015_properties_tbl
+# timeseries_tbl <- wind_cf_ts_tbl
+
+wind_2015_aggregated_name = "wind_2015_aggregated_tbl.rds"
+wind_2015_aggregated_path <- file.path(OBJECTS_PATH, wind_2015_aggregated_name)
+if (REGENERATE_OBJECTS | !file.exists(wind_2015_aggregated_path)) {
+  wind_2015_aggregated_tbl <- getAggregatedTSFromClusters(deane_all_nodes_lst,
+                                                          wind_2015_properties_tbl,
+                                                          wind_cf_ts_tbl)
+  
+  
+  saveRDS(object = wind_2015_aggregated_tbl,
+          file = wind_2015_aggregated_path)
+}
+
+solarpv_2015_aggregated_name = "solarpv_2015_aggregated_tbl.rds"
+solarpv_2015_aggregated_path <- file.path(OBJECTS_PATH, solarpv_2015_aggregated_name)
+if (REGENERATE_OBJECTS | !file.exists(solarpv_2015_aggregated_path)) {
+  solarpv_2015_aggregated_tbl <- getAggregatedTSFromClusters(deane_all_nodes_lst,
+                                                             solarpv_2015_properties_tbl,
+                                                             solarpv_cf_ts_tbl)
+  
+  
+  saveRDS(object = solarpv_2015_aggregated_tbl,
+          file = solarpv_2015_aggregated_path)
+}
+
+print(wind_2015_aggregated_tbl)
+print(solarpv_2015_aggregated_tbl)
 
 # print(wind_2015_properties_tbl, n = 4000)
 

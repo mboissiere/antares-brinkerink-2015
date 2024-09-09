@@ -66,7 +66,7 @@ NODES = "eu-fra"
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
 
 
-REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
+REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
 
 # NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
