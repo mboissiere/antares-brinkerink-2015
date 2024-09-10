@@ -54,6 +54,10 @@ source(addNodes_file)
 logging_module = file.path("src", "logging.R",
                            fsep = .Platform$file.sep)
 source(logging_module)
+# Nota bene: pb de robustesse, veut absolument solarpv meme quand desactivé
+# peut etre que bug dans aggregated venait d'un select anticipé et le groupby
+# pouvait fusionner deux productions exactement identiques (mais ça expliquerait pas hausse...)
+
 
 # c'est environ ici où l'on met le nom du study je pense
 setupLogging(study_basename)

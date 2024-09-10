@@ -68,6 +68,19 @@ saveAggregatedWindTable <- function(nodes, #properties_tbl, cf_ts_tbl,
               )
 }
 
+# Le moyen de vérif pour cluRES sinon c'est de faire un AntaresRead à partir des données
+# qu'il y a
+# (ce qui est ptet plus robuste, même, pour faire un -input data)
+
+# Essayer en deux façons différentes configurable, un avec facteur de charge et un avec production brute
+# pour les clusters ? et voir si le readInputTS de AntaresRead lit bien la chose
+
+# Nota bene : j'ai actuellement un export de csv qui est nul et faux alors qu'en interne
+# ça se passe bien
+
+####
+
+
 # saveRenewablesTables <- function(nodes, base_properties_tbl, folder_dir) {
 #   properties_tbl <- base_properties_tbl %>%
 #     filter(active_in_2015 & node %in% nodes) %>%
