@@ -163,61 +163,61 @@ getAggregatedTSFromClusters <- function(nodes, properties_tbl, timeseries_tbl) {
     mutate(nominal_capacity = nominal_capacity * nb_units) %>%
     select(generator_name, node, nominal_capacity)
   
-  print(properties_tbl)
-  print(timeseries_tbl)
+  # print(properties_tbl)
+  # print(timeseries_tbl)
   
   product_tbl <- timeseries_tbl %>%
     gather(key = "generator_name", value = "capacity_factor", -datetime) 
   
-  print(product_tbl)
+  # print(product_tbl)
   
   product_tbl <- product_tbl %>%
     left_join(properties_tbl, by = "generator_name") %>%
     filter(node %in% nodes)
   
-  print(product_tbl)
+  # print(product_tbl)
   
   product_tbl <- product_tbl %>%
     mutate(power_output = nominal_capacity * capacity_factor / 100)
   # peut etre que pour lecture des données, faudrait mettre _mw ? ou bien dire dans doc..
   
-  print("Production table:")
-  print(product_tbl)
-  
-  # Calculate the sum of the "power_output" column
-  total_power_output <- product_tbl %>% 
-    summarise(total_power_output = sum(power_output))
-  
-  print("Total production:")
-  print(total_power_output)
-  
-  filtered_power <- product_tbl %>% 
-    filter(!grepl("capacity scaler$", generator_name))
-  
-  print("Production table without capacity scalers:")
-  print(filtered_power)
-  
-  filtered_power_output <- filtered_power %>%
-    summarise(filtered_power_output = sum(power_output))
-  
-  print("Total production without capacity scalers:")
-  print(filtered_power_output)
-  
-  # product_tbl <- product_tbl %>%
-  #   select(datetime, node, power_output)
-  
+  # print("Production table:")
   # print(product_tbl)
-  
+  # 
+  # # Calculate the sum of the "power_output" column
+  # total_power_output <- product_tbl %>% 
+  #   summarise(total_power_output = sum(power_output))
+  # 
+  # # print("Total production:")
+  # # print(total_power_output)
+  # 
+  # filtered_power <- product_tbl %>% 
+  #   filter(!grepl("capacity scaler$", generator_name))
+  # 
+  # # print("Production table without capacity scalers:")
+  # # print(filtered_power)
+  # 
+  # filtered_power_output <- filtered_power %>%
+  #   summarise(filtered_power_output = sum(power_output))
+  # 
+  # # print("Total production without capacity scalers:")
+  # # print(filtered_power_output)
+  # 
+  # # product_tbl <- product_tbl %>%
+  # #   select(datetime, node, power_output)
+  # 
+  # # print(product_tbl)
+  # 
   aggregated_tbl <- product_tbl %>%
     group_by(datetime, node) %>%
     summarize(node_power_output = sum(power_output, na.rm = FALSE), .groups = 'drop')
   
-  print(aggregated_tbl)
+  # print(aggregated_tbl)
   
   aggregated_tbl <- aggregated_tbl %>%
     pivot_wider(names_from = node, values_from = node_power_output)
   
-  print(aggregated_tbl)
+  # print(aggregated_tbl)
   return(aggregated_tbl)
 }
 
@@ -225,8 +225,8 @@ getAggregatedTSFromClusters <- function(nodes, properties_tbl, timeseries_tbl) {
 # properties_tbl <- wind_2015_properties_tbl
 # timeseries_tbl <- wind_cf_ts_tbl*
 
-getAggregatedTSFromClusters(deane_europe_nodes_lst, wind_2015_properties_tbl, wind_cf_ts_tbl)
-getAggregatedTSFromClusters(deane_asia_nodes_lst, wind_2015_properties_tbl, wind_cf_ts_tbl)
+# getAggregatedTSFromClusters(deane_europe_nodes_lst, wind_2015_properties_tbl, wind_cf_ts_tbl)
+# getAggregatedTSFromClusters(deane_asia_nodes_lst, wind_2015_properties_tbl, wind_cf_ts_tbl)
 
 
 wind_2015_aggregated_name = "wind_2015_aggregated_tbl.rds"

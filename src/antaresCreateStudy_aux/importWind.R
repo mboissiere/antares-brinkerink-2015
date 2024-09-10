@@ -86,7 +86,7 @@ addWindClusters <- function(nodes = all_deane_nodes_lst#,
           logFull(msg)
         } else {
           nominal_capacity <- row$nominal_capacity
-          nb_units <- row$nb_units
+          nb_units <- as.integer(row$nb_units)
           cluster_type <- row$antares_cluster_type
           cf_ts <- wind_cf_ts_tbl[[generator_name]]
           if (is.null(cf_ts)) {

@@ -4,13 +4,13 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "EU_aggtest" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "EU_clutest" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
 # lancer rédaction du rapport en parallèle qui plongera les mains dans la doc PLEXOS, etc
 
-RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "cluster
+RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
 
 # Et si... on essayait sans les capacity scalers ?
 # Vu qu'il y en a bcp en Europe
@@ -38,7 +38,7 @@ IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION_NAME = "renewableTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
 # Or what if I just want to skip it ?
@@ -147,11 +147,11 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 # one extra reason that it's coherent to do tolower instead of toupper:
 # that's how the .txt files in antares are
 
-GENERATE_LOAD = FALSE
+GENERATE_LOAD = TRUE
 # GENERATE_REN = FALSE
 
 GENERATE_WIND = TRUE
-GENERATE_SOLAR_PV = FALSE
+GENERATE_SOLAR_PV = TRUE
 # Technically my PV implementation is very bad because if I had
 # solar PV off (which i never do) then I wouldn't have CSP either.
 # But this is fiiiiiiiiiiiiine right.
