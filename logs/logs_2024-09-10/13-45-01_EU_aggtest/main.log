@@ -1,0 +1,34 @@
+INFO [2024-09-10 13:45:02] [MAIN] - Creating EU_aggtest__2024_09_10_13_45_02 study...
+
+INFO [2024-09-10 13:45:02] [MAIN] - Initializing output folder...
+INFO [2024-09-10 13:45:02] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-10 13:45:02] [MAIN] - Adding nodes...
+
+INFO [2024-09-10 13:45:23] [MAIN] - Done adding nodes! (run time : 20.71s).
+
+INFO [2024-09-10 13:45:23] [MAIN] - Adding districts...
+
+INFO [2024-09-10 13:45:25] [MAIN] - Done adding districts! (run time : 1.77s).
+
+INFO [2024-09-10 13:45:25] [MAIN] - Adding load data...
+
+INFO [2024-09-10 13:45:40] [MAIN] - Done adding load data! (run time : 15.12s).
+
+INFO [2024-09-10 13:45:40] [MAIN] - Fetching wind data...
+
+INFO [2024-09-10 13:45:50] [WIND] - Saving aggregated wind data to output folder...
+INFO [2024-09-10 13:46:12] [WIND] - Done saving aggregated wind data to output folder!
+INFO [2024-09-10 13:46:13] [MAIN] - Done adding wind data! (run time : 32.8s).
+
+INFO [2024-09-10 13:46:13] [MAIN] - Fetching solar data...
+
+INFO [2024-09-10 13:46:24] [MAIN] - Done adding solar data! (run time : 11.01s).
+
+INFO [2024-09-10 13:46:24] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-10 13:46:58] [MAIN] - Done adding lines! (run time : 34.22s).
+
+INFO [2024-09-10 13:46:58] [MAIN] - Finished setting up Antares study! (run time : 1.94min).
+ 
+
+INFO [2024-09-10 13:46:58] [MAIN] - Starting renewableTest simulation...

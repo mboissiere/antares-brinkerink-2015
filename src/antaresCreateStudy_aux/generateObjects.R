@@ -181,7 +181,8 @@ getAggregatedTSFromClusters <- function(nodes, properties_tbl, timeseries_tbl) {
 
 # nodes <- deane_europe_nodes_lst
 # properties_tbl <- wind_2015_properties_tbl
-# timeseries_tbl <- wind_cf_ts_tbl
+# timeseries_tbl <- wind_cf_ts_tbl*
+
 
 wind_2015_aggregated_name = "wind_2015_aggregated_tbl.rds"
 wind_2015_aggregated_path <- file.path(OBJECTS_PATH, wind_2015_aggregated_name)
@@ -189,6 +190,15 @@ if (REGENERATE_OBJECTS | !file.exists(wind_2015_aggregated_path)) {
   wind_2015_aggregated_tbl <- getAggregatedTSFromClusters(deane_all_nodes_lst,
                                                           wind_2015_properties_tbl,
                                                           wind_cf_ts_tbl)
+  # Quel enfer, je crée une fonction qui permet de filtrer par nodes, mais finalement
+  # j'en fais une pour chaque node que je sauvegarde, et puis ensuite je filtre sur les nodes ?
+  
+  # Je crois qu'à terme il faudrait que les objets ce soit :
+  # on garde que les nodes qui nous intéressent à chaque fois, non ?
+  # pourquoi stocker des robjects et des csv trop grands si jamais un jour on ne s'intéresse qu'aux nodes ?
+  
+  # en vrai non. objects est un accélérateur de processus donc faut des globaux.
+  # mais les sorties csv qu'on met dans un output folder, ça oui, pas une miette qui dépasse.
   
   
   saveRDS(object = wind_2015_aggregated_tbl,

@@ -1,0 +1,33 @@
+INFO [2024-09-10 13:37:04] [MAIN] - Creating EU_aggtest__2024_09_10_13_37_04 study...
+
+INFO [2024-09-10 13:37:05] [MAIN] - Initializing output folder...
+INFO [2024-09-10 13:37:06] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-10 13:37:06] [MAIN] - Adding nodes...
+
+INFO [2024-09-10 13:37:28] [MAIN] - Done adding nodes! (run time : 22.37s).
+
+INFO [2024-09-10 13:37:28] [MAIN] - Adding districts...
+
+INFO [2024-09-10 13:37:31] [MAIN] - Done adding districts! (run time : 2.1s).
+
+INFO [2024-09-10 13:37:31] [MAIN] - Adding load data...
+
+INFO [2024-09-10 13:37:46] [MAIN] - Done adding load data! (run time : 14.95s).
+
+INFO [2024-09-10 13:37:46] [MAIN] - Fetching wind data...
+
+INFO [2024-09-10 13:37:55] [WIND] - Saving aggregated wind data to output folder...
+INFO [2024-09-10 13:38:27] [WIND] - Done saving aggregated wind data to output folder!
+INFO [2024-09-10 13:38:27] [MAIN] - Done adding wind data! (run time : 41.34s).
+
+INFO [2024-09-10 13:38:27] [MAIN] - Fetching solar data...
+
+INFO [2024-09-10 13:38:35] [MAIN] - Done adding solar data! (run time : 8.5s).
+
+INFO [2024-09-10 13:38:36] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-10 13:39:09] [MAIN] - Done adding lines! (run time : 33.05s).
+
+INFO [2024-09-10 13:39:09] [MAIN] - Finished setting up Antares study! (run time : 2.08min).
+ 
+

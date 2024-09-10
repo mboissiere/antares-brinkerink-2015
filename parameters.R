@@ -4,13 +4,13 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "EU_cluRES" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "EU_aggtest" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
 # lancer rédaction du rapport en parallèle qui plongera les mains dans la doc PLEXOS, etc
 
-RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
+RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 
 # petite bizarrerie pas bien méchante : seems like ça marche plus en launchsimulation actuellement
 # mais, sur antaresweb ça marche. le test CHE-DEU-FRA avec et sans activateTS notamment, post-maintenance rate.
@@ -35,12 +35,12 @@ IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
 LAUNCH_SIMULATION_NAME = "renewableTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = FALSE
+LAUNCH_SIMULATION = TRUE
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
 # là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm

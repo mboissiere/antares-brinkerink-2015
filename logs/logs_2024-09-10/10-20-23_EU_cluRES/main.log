@@ -15,3 +15,16 @@ INFO [2024-09-10 10:20:55] [MAIN] - Done adding load data! (run time : 13.63s).
 
 INFO [2024-09-10 10:20:55] [MAIN] - Fetching wind data...
 
+INFO [2024-09-10 10:44:30] [MAIN] - Done adding wind data! (run time : 1414.43s).
+
+INFO [2024-09-10 10:44:30] [MAIN] - Fetching solar data...
+
+INFO [2024-09-10 11:42:58] [MAIN] - Done adding solar data! (run time : 3508.72s).
+
+INFO [2024-09-10 11:42:58] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-10 11:43:29] [MAIN] - Done adding lines! (run time : 30.27s).
+
+INFO [2024-09-10 11:43:29] [MAIN] - Finished setting up Antares study! (run time : 83.09min).
+ 
+

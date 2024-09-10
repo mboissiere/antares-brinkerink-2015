@@ -20,7 +20,7 @@ study_info <- importAntaresData()
 study_name <- study_info["study_name"]
 simulation_name <- study_info["simulation_name"]
 
-output_dir <- initializeOutputFolder(study_name, simulation_name, color_palette)
+output_dir <- initializeOutputFolderSimulation(study_name, simulation_name, color_palette)
 
 
 ################################################################################

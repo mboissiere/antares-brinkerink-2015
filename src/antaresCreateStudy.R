@@ -3,8 +3,14 @@
 ## Création d'une nouvelle étude
 study_name <- generateName(study_basename)
 
+
+
 # Pour faire une estimation de la durée totale
 total_start_time <- Sys.time()
+
+
+msg = paste("[MAIN] - Creating", study_name, "study...\n")
+logMain(msg)
 
 createStudy(
   path = base_path,
@@ -15,8 +21,24 @@ createStudy(
 study_path = file.path(base_path, study_name,
                        fsep = .Platform$file.sep)
 
-msg = paste("[MAIN] - Creating", study_name, "study...\n")
+
+msg = paste("[MAIN] - Initializing output folder...")
 logMain(msg)
+source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
+output_folder <- initializeOutputFolderStudy(study_name)
+study_folder <- file.path(output_folder, STUDY_DATA_FOLDER_NAME)
+# et vu que maintenant on a un output folder... ne serait-il pas temps d'y mettre
+# les logs ?
+# à terme, peut-être un dossier "config" qui regroupera des logging.R, des initialisations de dossier,
+# et peut-être même des variables un peu biscornues ??
+# NB : chaque nouveau "main" devra recréer un nouveau dossier de logs pour le RUN
+# mais ça peut atterrir dans un même dossier study si jamais on ne fait que lancer/lire
+# des simulations et que CREATE_STUDY est false
+# Un dossier "Antares logs" oh comme c'est alphabétique et entre input et output !
+# On pourrait nommer le dossier master "study-" au lieu de "results" mais détail
+# D'ailleurs pour une meilleur organisation du dossier output, ne faudrait-il pas mettre
+# le datetime avant le nom de l'étude ?
+
 msg = paste("[MAIN] - Unit commitment mode :", toupper(UNIT_COMMITMENT_MODE))
 logMain(msg)
 
@@ -141,6 +163,11 @@ if (GENERATE_WIND) {
   
   if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
     addAggregatedWind(NODES, generators_tbl)
+    msg = "[WIND] - Saving aggregated wind data to output folder..."
+    logMain(msg)
+    saveAggregatedWindTable(NODES, study_folder)
+    msg = "[WIND] - Done saving aggregated wind data to output folder!"
+    logMain(msg)
   } else if (RENEWABLE_GENERATION_MODELLING == "clusters") {
     # Il faudrait faire crasher plus tôt si jamais ni l'un ni l'autre ptet
     addWindClusters(NODES)

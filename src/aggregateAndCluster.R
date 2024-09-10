@@ -6,6 +6,9 @@ library(purrr) # vérifier si c'est utile ça et pourquoi
 source(".\\src\\utils.R")
 source("parameters.R")
 
+# Quand j'y pense... Un shoulder method doit être long au début, mais une fois
+# que le nb optimal de cluster est trouvé... on peut le stocker dans un rds !
+
 
 # batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
 # print(batteries_tbl)
