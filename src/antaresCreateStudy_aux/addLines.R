@@ -12,13 +12,14 @@ library(tidyr)
 getAllLines <- function() {
   lines_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
     filter(parent_class == "Line") %>%
-    select(parent_object, collection, child_object) %>%
+    # select(parent_object, collection, child_object) %>%
     pivot_wider(names_from = collection, values_from = child_object) %>%
-  rename(
+  mutate(
     line = parent_object,
-    node_from = "Node From",
-    node_to = "Node To"
-    )
+    node_from = tolower(`Node From`),
+    node_to = tolower(`Node To`)
+    ) %>%
+  select(line, node_from, node_to)
   
   return(lines_tbl)
 }
@@ -30,14 +31,19 @@ getLinesFromNodes <- function(nodes) {
   lines_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
     filter(parent_class == "Line") %>%
     select(parent_object, collection, child_object) %>%
+    mutate(child_object = tolower(child_object)) %>%
+  # print(lines_tbl)
     filter(child_object %in% nodes) %>%
     pivot_wider(names_from = collection, values_from = child_object) %>%
-    rename(
+    mutate(
       line = parent_object,
-      node_from = "Node From",
-      node_to = "Node To"
+      node_from = tolower(`Node From`),
+      node_to = tolower(`Node To`)
     ) %>%
+    select(line, node_from, node_to) %>%
     drop_na()
+  
+  return(lines_tbl)
 }
 
 # nodes_test <- c("EU-CHE", "EU-DEU", "EU-FRA")
@@ -76,7 +82,9 @@ addLinesToAntares <- function(nodes,
                               ) {
   tryCatch({
     lines_tbl <- getLinesFromNodes(nodes)
+    # print(lines_tbl)
     lines_tbl <- addNTCsToLines(lines_tbl)
+    # print(lines_tbl)
     for (row in 1:nrow(lines_tbl)) {
       from_node = lines_tbl$node_from[row]
       to_node = lines_tbl$node_to[row]

@@ -8,6 +8,13 @@ library(antaresEditObject)
 library(dplyr)
 library(tidyr)
 
+# Peut etre qu'actuel desir de JY et Nicolas de faire un calcul de vérif à la main,
+# peut être l'occasion d'exporter des données genre. 
+# de faire un dossier csvs dans un dossier output pour avoir la transparence.
+# quitte à ce qu'on fasse finalement dossier-nom-etude-yymmddhhmss/
+# et avec dedans : /input_data ou /study_data, et /simulation_data
+# puisqu'il faudrait pouvoir avoir le 1er même si la simulation a échoué
+
 source("architecture.R")
 # Error in file(file, "rt") : impossible d'ouvrir la connexion
 # De plus : Warning messages:

@@ -6,10 +6,13 @@
 
 source(".\\src\\antaresCreateStudy_aux\\addNodes.R")
 
-nodes_tbl <- getNodesTable(all_deane_nodes_lst) %>%
+deane_all_nodes_lst <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/deane_all_nodes_lst.rds")
+
+nodes_tbl <- getNodesTable(deane_all_nodes_lst) %>%
   mutate(area = tolower(node),
          continent = tolower(continent) # encore une fois, faudrait le faire depuis le début...
          ) %>%
+  # Là du coup c'est ptet redondant ?
   select(area, continent)
 # print(nodes_tbl)
   

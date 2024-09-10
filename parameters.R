@@ -4,11 +4,13 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "clusters_ren" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "EU_cluRES" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
 # lancer rédaction du rapport en parallèle qui plongera les mains dans la doc PLEXOS, etc
+
+RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
 
 # petite bizarrerie pas bien méchante : seems like ça marche plus en launchsimulation actuellement
 # mais, sur antaresweb ça marche. le test CHE-DEU-FRA avec et sans activateTS notamment, post-maintenance rate.
@@ -31,7 +33,7 @@ IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION_NAME = "OutageTest"
+LAUNCH_SIMULATION_NAME = "renewableTest"
 INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
@@ -58,15 +60,15 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 # oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-NODES = "eu-fra"
-# NODES = deane_europe_nodes_lst
+# NODES = "eu-fra"
+NODES = deane_europe_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
 # ptet faire un paramètre "catchExceptions" pour pouvoir genre.
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
 
 
-REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
+REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
 
 # NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
@@ -94,10 +96,10 @@ divide_stacks_by_hours = TRUE
 save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
-save_import_export = TRUE
+save_import_export = FALSE
 
-save_deane_histograms = FALSE
-save_deane_comparisons = TRUE
+# save_deane_histograms = FALSE # deprecated jcrois
+save_deane_comparisons = FALSE
 # devrait etre en 1er vu comment c'est rapide
 
 save_global_graphs = TRUE
@@ -145,10 +147,8 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 GENERATE_LOAD = TRUE
 # GENERATE_REN = FALSE
 
-RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
-
-GENERATE_WIND = FALSE
-GENERATE_SOLAR_PV = FALSE
+GENERATE_WIND = TRUE
+GENERATE_SOLAR_PV = TRUE
 # Technically my PV implementation is very bad because if I had
 # solar PV off (which i never do) then I wouldn't have CSP either.
 # But this is fiiiiiiiiiiiiine right.
@@ -161,8 +161,9 @@ GENERATE_SOLAR_CSP = FALSE
 # quoique pas forcément le plus dyslexique ffriendly haha*
 # ça change !
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = TRUE
-GENERATE_HYDRO = TRUE
+GENERATE_THERMAL = FALSE
+# there should also be a log like... "not importing thermal"
+GENERATE_HYDRO = FALSE
 GENERATE_BATTERIES = FALSE
 # i should really say batteries
 # bc storage will be done for csp independantly

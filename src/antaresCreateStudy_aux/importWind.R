@@ -150,7 +150,7 @@ addAggregatedWind <- function(nodes,
     # #nodes = c("EU-CHE", "EU-DEU", "EU-FRA")
     
     
-    wind_aggregated_file <- ".\\src\\objects\\wind_aggregated_ninja_tbl.rds"
+    wind_aggregated_file <- ".\\src\\objects\\wind_2015_aggregated_tbl.rds"
     wind_aggregated_TS <- readRDS(wind_aggregated_file)
     for (node in nodes) {
       wind_ts <- wind_aggregated_TS[[node]]

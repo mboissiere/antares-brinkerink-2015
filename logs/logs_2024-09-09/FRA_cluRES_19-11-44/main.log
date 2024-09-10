@@ -1,0 +1,36 @@
+INFO [2024-09-09 19:11:45] [MAIN] - Creating FRA_cluRES__2024_09_09_19_11_44 study...
+
+INFO [2024-09-09 19:11:45] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-09 19:11:45] [MAIN] - Adding nodes...
+
+INFO [2024-09-09 19:11:47] [MAIN] - Done adding nodes! (run time : 1.98s).
+
+INFO [2024-09-09 19:11:47] [MAIN] - Adding districts...
+
+INFO [2024-09-09 19:11:48] [MAIN] - Done adding districts! (run time : 1.04s).
+
+INFO [2024-09-09 19:11:48] [MAIN] - Adding load data...
+
+INFO [2024-09-09 19:11:49] [MAIN] - Done adding load data! (run time : 1.66s).
+
+INFO [2024-09-09 19:11:49] [MAIN] - Fetching wind data...
+
+INFO [2024-09-09 19:16:25] [MAIN] - Done adding wind data! (run time : 276.07s).
+
+INFO [2024-09-09 19:16:26] [MAIN] - Fetching solar data...
+
+INFO [2024-09-09 19:25:52] [MAIN] - Done adding solar data! (run time : 566.63s).
+
+INFO [2024-09-09 19:25:52] [MAIN] - Beginning hydro implementation...
+INFO [2024-09-09 19:25:54] [MAIN] - Done adding hydro!
+INFO [2024-09-09 19:25:54] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-09 19:25:54] [MAIN] - Done adding lines! (run time : 0.25s).
+
+INFO [2024-09-09 19:25:54] [MAIN] - Finished setting up Antares study! (run time : 14.17min).
+ 
+
+INFO [2024-09-09 19:25:54] [MAIN] - Starting renewableTest simulation...
+INFO [2024-09-09 19:26:09] [MAIN] - Antares simulation finished! (run time : 0.25min).
+ 
+

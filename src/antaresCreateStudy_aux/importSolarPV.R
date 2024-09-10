@@ -111,7 +111,7 @@ addAggregatedSolar <- function(nodes,
     # solar_pv_generators_tbl <- getSolarPVPropertiesTable(generators_tbl)
     # solar_pv_aggregated_TS <- aggregateGeneratorTimeSeries(solar_pv_generators_tbl, PV_DATA_PATH)
     
-    solar_aggregated_file <- ".\\src\\objects\\solar_aggregated_ninja_tbl.rds"
+    solar_aggregated_file <- ".\\src\\objects\\solarpv_2015_aggregated_tbl.rds"
     solar_aggregated_TS <- readRDS(solar_aggregated_file)
     # print(solar_aggregated_TS) # ok phew its the production, if it was capacity factors i woulda died
     

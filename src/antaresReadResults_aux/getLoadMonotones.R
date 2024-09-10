@@ -67,7 +67,7 @@ saveLoadMonotone <- function(output_dir,
     p <- ggplot(item_tbl_long, aes(x = percent_time)) +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
-      scale_fill_manual(values = eCO2MixColors_lst) + # note : this should be
+      scale_fill_manual(values = eCO2MixFusion_lst) + # note : this should be
       # easily configurable
       labs(x = "% of time", y = paste0("Production (", unit, ")"), fill = paste(item, "energy mix")) +
       # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...

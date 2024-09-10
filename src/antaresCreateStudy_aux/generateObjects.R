@@ -140,9 +140,9 @@ getAggregatedTSFromClusters <- function(nodes, properties_tbl, timeseries_tbl) {
     filter(is.na(nominal_capacity)) %>%
     pull(generator_name)
   
-  msg = paste("[WARN] - The following generators have Ninja timeseries, but no PLEXOS properties:", not_in_plexos_lst)
+  msg = paste("[WARN] - The following generators have Ninja timeseries, but no PLEXOS properties:", paste(not_in_plexos_lst, collapse = ", "))
   logError(msg)
-  logError("[WARN] - They will not be imported into the simulation.")
+  logError("[WARN] - Nominal capacities are unknown, so they cannot be imported into the simulation.")
   
   properties_tbl <- properties_tbl %>%
     filter(active_in_2015) %>%
@@ -207,8 +207,8 @@ if (REGENERATE_OBJECTS | !file.exists(solarpv_2015_aggregated_path)) {
           file = solarpv_2015_aggregated_path)
 }
 
-print(wind_2015_aggregated_tbl)
-print(solarpv_2015_aggregated_tbl)
+# print(wind_2015_aggregated_tbl)
+# print(solarpv_2015_aggregated_tbl)
 
 # print(wind_2015_properties_tbl, n = 4000)
 

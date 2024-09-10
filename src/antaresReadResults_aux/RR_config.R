@@ -18,7 +18,8 @@ REGIONS <- readRDS(".\\src\\objects\\deane_regions_lst.rds")
 ################################## VARIABLES ###################################
 
 # color_palette = "productionStackWithBatteryContributions"
-color_palette = "eCO2MixColorsWithBatteryContributions"
+color_palette = "eCO2MixFusionStack"
+# NB : the palette list for load monotones isn't in config atm
 
 
 variables_of_interest_areas <- c("SOLAR", "WIND",

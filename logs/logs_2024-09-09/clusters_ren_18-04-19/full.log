@@ -12109,3 +12109,375 @@ INFO [2024-09-09 18:59:35] [WARN] - The following generators have Ninja timeseri
 INFO [2024-09-09 18:59:35] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: hti_sol_capacity scaler
 INFO [2024-09-09 18:59:35] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sur_sol_capacity scaler
 INFO [2024-09-09 18:59:35] [WARN] - They will not be imported into the simulation.
+INFO [2024-09-09 19:03:03] [WARN] - The following columns were found as duplicates in input data: usa_win_marshallwind325524
+INFO [2024-09-09 19:03:03] [WARN] - Duplicates have been removed in import.
+INFO [2024-09-09 19:03:47] [WARN] - The following columns were found as duplicates in input data: cze_sol_ochozsolarpow8235, cze_sol_starojicklho8320, fra_sol_saintbenot10365, deu_sol_lefchfeldnord11432, ita_sol_bellpowersolar13383, ita_sol_nicolettosolar13492, mar_sol_centralesolair14453, prt_sol_acil115435, prt_sol_coruche215559, prt_sol_coruche215559, prt_sol_coruche215559, prt_sol_malhadavelha215646, prt_sol_heliosevosol15611, prt_sol_seixal215773, prt_sol_solcativante515817, prt_sol_trajouce115856, esp_sol_termesol5017428, gbr_sol_bransholmesola18612, gbr_sol_danesfarmex18953, gbr_sol_bunnshillsol18658, gbr_sol_grovesolarpar19300, gbr_sol_highfieldsfarm19395, gbr_sol_kettonsolarfa19520, gbr_sol_kinmel1cic19543, gbr_sol_knottingleya19554, gbr_sol_averhillfarm18413, gbr_sol_pingryfarmp20127, gbr_sol_landnorthofc19594, gbr_sol_portofbarry20147, gbr_sol_rollsroycefil20246, gbr_sol_coltishall118844, gbr_sol_blatchworthy18562, gbr_sol_landtothenor19662, gbr_sol_landtotheeas19661, usa_sol_adelantosolar20947, usa_sol_archdioceseof21196, usa_sol_baltimorecity21358, usa_sol_baltimorecity21358, usa_sol_baltimorecity21358, usa_sol_bethlehemeas21528, usa_sol_csufnutwoodso22000, usa_sol_baltimorecity21358, usa_sol_coronusadelant22594, usa_sol_division122954, usa_sol_division122954, usa_sol_grassland12s23955, usa_sol_baltimorecity21358, usa_sol_brownesolarll21817, usa_sol_indysolaril24543, usa_sol_jerseygardens24713, usa_sol_ketteringsolar24887, usa_sol_blackrockmatri21617, usa_sol_musgraveeasts25986, usa_sol_dennison22888, usa_sol_onseteastsola26415, usa_sol_phoenixairport26753, usa_sol_rebruceville127054, usa_sol_rebruceville127054, usa_sol_recamelotllc27057, usa_sol_rekammerer127064, usa_sol_rekammerer127064, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_ramona127111, usa_sol_rodeosolarc227346, usa_sol_santafespring27610, usa_sol_baltimorecity21358, usa_sol_goldenfieldss23854, usa_sol_brownesolarll21817, usa_sol_summernorthso28267, usa_sol_summernorthso28267, usa_sol_summernorthso28267, usa_sol_summernorthso28267, usa_sol_sunecps1llc28291, usa_sol_rosehill27374, usa_sol_uastpi28693, usa_sol_valleycenter128825, usa_sol_oldwardoursol26385, usa_sol_westportma129237
+INFO [2024-09-09 19:03:47] [WARN] - Duplicates have been removed in import.
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: afg_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ago_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: alb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: are_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: arm_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-be_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ch_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-hk_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ma_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ti_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind-ea_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind-ne_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: jpn-ho_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: jpn-ky_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: jpn-ok_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-ce_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-fe_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-mv_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-nw_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-si_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-so_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-ur_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ata_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aze_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bdi_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ben_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bfa_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bgd_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bhr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bih_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: blr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bol_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: brn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: btn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bwa_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: caf_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: civ_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cmr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cod_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cog_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cub_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: dji_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: dza_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: eri_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esh_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: fji_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gab_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gbr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: geo_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gha_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gin_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gmb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gnb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gnq_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gtm_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: guf_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: idn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: irq_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: isl_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: isr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: jam_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ken_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kgz_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: khm_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kos_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kwt_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lao_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lbn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lbr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lby_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lka_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lso_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mda_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mdg_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mkd_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mli_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mmr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mne_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mng_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: moz_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mrt_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mus_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mwi_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mys_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-ab_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-ar_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-bc_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-mb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-nl_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-no_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-on_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-qc_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-sk_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: nam_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-ak_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-fr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-gu_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-ha_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-me_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-pr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-sa_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-sc_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-se_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-sv_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ner_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: nga_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: npl_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-nt_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-ql_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-sa_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-sw_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-ta_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-vi_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-wa_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: omn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: pak_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: png_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: prk_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: prt_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: pry_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: qat_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rwa_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-cn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-cw_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-nw_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-se_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-we_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sau_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sdn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sen_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sgp_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sle_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: slv_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: srb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: svk_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: svn_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: swz_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: syr_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tgo_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tha_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tjk_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tkm_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tto_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tza_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: uga_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ury_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: uzb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: yem_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zaf_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zmb_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zwe_win_capacity scaler
+INFO [2024-09-09 19:04:01] [WARN] - They will not be imported into the simulation.
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus_sol_liddellsolart507
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn_sol_datangdelingha5184
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn_sol_gansudunhuang5424
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn_sol_innermongolia6200
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn_sol_qinghaigonghe6862
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: deu_sol_jlichsolar11342
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind_sol_acmesolartowe12089
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind_sol_ananthapurme12115
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind_sol_dhursar12280
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind_sol_godawari12325
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: isr_sol_ashalimsun13316
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mar_sol_centralesolair14452
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mar_sol_centralesolair14453
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zaf_sol_bokpoortsolar16619
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zaf_sol_kaxusolarpowe16651
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zaf_sol_kathusolarpar16654
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zaf_sol_khisolarpower16657
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_andasol316855
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_aste1a16863
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_astexol216864
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_casablanca16896
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_centralsolart16906
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_centraltermoso16907
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_consollorellan16924
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_extresol116966
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_heliosi16986
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_ladehesa16996
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_laflorida16997
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_larisca17001
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_majadas17030
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_manchasol217032
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_plantasolarte17364
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_plantasolarte17366
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_plantasolarte17367
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_plantatermosol17368
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_pstlebrijai17376
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_pstpalmadelr17377
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_pstsolacor117378
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_puertoerrado217382
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_solaben317415
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_soluzguzman17416
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_termesol5017428
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_termosolarborg17430
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tha_sol_thaisolarpowe18083
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: are_sol_shams18306
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_crescentdunes22676
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_genesissolare23759
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_mojavesolarpr25826
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_sierrasuntower27811
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_solanagenerati27908
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esp_sol_termosol217429
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mar_sol_centralesolair14454
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_ivanpah124635
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_ivanpah224636
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_ivanpah324637
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_nevadasolaron26112
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsiii27448
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsiv27449
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsix27450
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsv27451
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsvi27452
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsvii27453
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa_sol_segsviii27454
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: afg_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: alb_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: arg_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: arm_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ch_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-em_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-fu_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-gd_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-gu_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-gx_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-he_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-hk_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-hn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ji_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-jx_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-li_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ma_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-sc_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-sx_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-ti_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-tj_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: chn-zh_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ind-ne_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-ce_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-fe_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-mv_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-nw_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-si_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-so_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rus-ur_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ata_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bdi_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ben_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bfa_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bhr_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bih_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: blr_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: brn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: btn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bwa_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: caf_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: civ_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cmr_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cod_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cog_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: col_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: cri_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: dji_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: dom_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: eri_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: esh_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: est_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: fji_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gab_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: geo_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gha_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gin_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gmb_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gnb_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gnq_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: gtm_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: guy_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: idn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: irl_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: irn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: isl_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: jam_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kaz_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kgz_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kos_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: kwt_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lao_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lbn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lbr_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lby_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lka_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lso_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: lva_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mar_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mda_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mdg_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mli_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mne_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mng_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: moz_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mrt_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mus_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mwi_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-ab_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-ar_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-bc_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-mb_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-nl_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-no_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-qc_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: can-sk_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-ak_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-me_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-mw_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-rm_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-sa_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-sn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: usa-sw_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ner_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: nic_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-ta_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus-vi_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: omn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: pak_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: png_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: prk_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: pry_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: qat_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: rwa_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-cn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-cw_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-ne_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-nw_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-se_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-so_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: bra-we_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sdn_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sle_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: swz_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: syr_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tgo_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tjk_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tkm_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tto_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tza_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ury_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: uzb_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: ven_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: vnm_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zaf_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zmb_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: zwe_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: som_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tcd_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: tls_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: mlt_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: blz_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: hti_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: sur_sol_capacity scaler
+INFO [2024-09-09 19:04:24] [WARN] - They will not be imported into the simulation.
+INFO [2024-09-09 19:05:17] [WARN] - The following columns were found as duplicates in input data: usa_win_marshallwind325524
+INFO [2024-09-09 19:05:17] [WARN] - Duplicates have been removed in import.
+INFO [2024-09-09 19:05:55] [WARN] - The following columns were found as duplicates in input data: cze_sol_ochozsolarpow8235, cze_sol_starojicklho8320, fra_sol_saintbenot10365, deu_sol_lefchfeldnord11432, ita_sol_bellpowersolar13383, ita_sol_nicolettosolar13492, mar_sol_centralesolair14453, prt_sol_acil115435, prt_sol_coruche215559, prt_sol_coruche215559, prt_sol_coruche215559, prt_sol_malhadavelha215646, prt_sol_heliosevosol15611, prt_sol_seixal215773, prt_sol_solcativante515817, prt_sol_trajouce115856, esp_sol_termesol5017428, gbr_sol_bransholmesola18612, gbr_sol_danesfarmex18953, gbr_sol_bunnshillsol18658, gbr_sol_grovesolarpar19300, gbr_sol_highfieldsfarm19395, gbr_sol_kettonsolarfa19520, gbr_sol_kinmel1cic19543, gbr_sol_knottingleya19554, gbr_sol_averhillfarm18413, gbr_sol_pingryfarmp20127, gbr_sol_landnorthofc19594, gbr_sol_portofbarry20147, gbr_sol_rollsroycefil20246, gbr_sol_coltishall118844, gbr_sol_blatchworthy18562, gbr_sol_landtothenor19662, gbr_sol_landtotheeas19661, usa_sol_adelantosolar20947, usa_sol_archdioceseof21196, usa_sol_baltimorecity21358, usa_sol_baltimorecity21358, usa_sol_baltimorecity21358, usa_sol_bethlehemeas21528, usa_sol_csufnutwoodso22000, usa_sol_baltimorecity21358, usa_sol_coronusadelant22594, usa_sol_division122954, usa_sol_division122954, usa_sol_grassland12s23955, usa_sol_baltimorecity21358, usa_sol_brownesolarll21817, usa_sol_indysolaril24543, usa_sol_jerseygardens24713, usa_sol_ketteringsolar24887, usa_sol_blackrockmatri21617, usa_sol_musgraveeasts25986, usa_sol_dennison22888, usa_sol_onseteastsola26415, usa_sol_phoenixairport26753, usa_sol_rebruceville127054, usa_sol_rebruceville127054, usa_sol_recamelotllc27057, usa_sol_rekammerer127064, usa_sol_rekammerer127064, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_remckenzie127070, usa_sol_ramona127111, usa_sol_rodeosolarc227346, usa_sol_santafespring27610, usa_sol_baltimorecity21358, usa_sol_goldenfieldss23854, usa_sol_brownesolarll21817, usa_sol_summernorthso28267, usa_sol_summernorthso28267, usa_sol_summernorthso28267, usa_sol_summernorthso28267, usa_sol_sunecps1llc28291, usa_sol_rosehill27374, usa_sol_uastpi28693, usa_sol_valleycenter128825, usa_sol_oldwardoursol26385, usa_sol_westportma129237
+INFO [2024-09-09 19:05:55] [WARN] - Duplicates have been removed in import.
+INFO [2024-09-09 19:06:10] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: afg_win_capacity scaler, ago_win_capacity scaler, alb_win_capacity scaler, are_win_capacity scaler, arm_win_capacity scaler, chn-be_win_capacity scaler, chn-ch_win_capacity scaler, chn-hk_win_capacity scaler, chn-ma_win_capacity scaler, chn-ti_win_capacity scaler, ind-ea_win_capacity scaler, ind-ne_win_capacity scaler, jpn-ho_win_capacity scaler, jpn-ky_win_capacity scaler, jpn-ok_win_capacity scaler, rus-ce_win_capacity scaler, rus-fe_win_capacity scaler, rus-mv_win_capacity scaler, rus-nw_win_capacity scaler, rus-si_win_capacity scaler, rus-so_win_capacity scaler, rus-ur_win_capacity scaler, ata_win_capacity scaler, aze_win_capacity scaler, bdi_win_capacity scaler, ben_win_capacity scaler, bfa_win_capacity scaler, bgd_win_capacity scaler, bhr_win_capacity scaler, bih_win_capacity scaler, blr_win_capacity scaler, bol_win_capacity scaler, brn_win_capacity scaler, btn_win_capacity scaler, bwa_win_capacity scaler, caf_win_capacity scaler, civ_win_capacity scaler, cmr_win_capacity scaler, cod_win_capacity scaler, cog_win_capacity scaler, cub_win_capacity scaler, dji_win_capacity scaler, dza_win_capacity scaler, eri_win_capacity scaler, esh_win_capacity scaler, fji_win_capacity scaler, gab_win_capacity scaler, gbr_win_capacity scaler, geo_win_capacity scaler, gha_win_capacity scaler, gin_win_capacity scaler, gmb_win_capacity scaler, gnb_win_capacity scaler, gnq_win_capacity scaler, gtm_win_capacity scaler, guf_win_capacity scaler, idn_win_capacity scaler, irq_win_capacity scaler, isl_win_capacity scaler, isr_win_capacity scaler, jam_win_capacity scaler, ken_win_capacity scaler, kgz_win_capacity scaler, khm_win_capacity scaler, kos_win_capacity scaler, kwt_win_capacity scaler, lao_win_capacity scaler, lbn_win_capacity scaler, lbr_win_capacity scaler, lby_win_capacity scaler, lka_win_capacity scaler, lso_win_capacity scaler, mda_win_capacity scaler, mdg_win_capacity scaler, mkd_win_capacity scaler, mli_win_capacity scaler, mmr_win_capacity scaler, mne_win_capacity scaler, mng_win_capacity scaler, moz_win_capacity scaler, mrt_win_capacity scaler, mus_win_capacity scaler, mwi_win_capacity scaler, mys_win_capacity scaler, can-ab_win_capacity scaler, can-ar_win_capacity scaler, can-bc_win_capacity scaler, can-mb_win_capacity scaler, can-nl_win_capacity scaler, can-no_win_capacity scaler, can-on_win_capacity scaler, can-qc_win_capacity scaler, can-sk_win_capacity scaler, nam_win_capacity scaler, usa-ak_win_capacity scaler, usa-fr_win_capacity scaler, usa-gu_win_capacity scaler, usa-ha_win_capacity scaler, usa-me_win_capacity scaler, usa-pr_win_capacity scaler, usa-sa_win_capacity scaler, usa-sc_win_capacity scaler, usa-se_win_capacity scaler, usa-sv_win_capacity scaler, ner_win_capacity scaler, nga_win_capacity scaler, npl_win_capacity scaler, aus-nt_win_capacity scaler, aus-ql_win_capacity scaler, aus-sa_win_capacity scaler, aus-sw_win_capacity scaler, aus-ta_win_capacity scaler, aus-vi_win_capacity scaler, aus-wa_win_capacity scaler, omn_win_capacity scaler, pak_win_capacity scaler, png_win_capacity scaler, prk_win_capacity scaler, prt_win_capacity scaler, pry_win_capacity scaler, qat_win_capacity scaler, rwa_win_capacity scaler, bra-cn_win_capacity scaler, bra-cw_win_capacity scaler, bra-nw_win_capacity scaler, bra-se_win_capacity scaler, bra-we_win_capacity scaler, sau_win_capacity scaler, sdn_win_capacity scaler, sen_win_capacity scaler, sgp_win_capacity scaler, sle_win_capacity scaler, slv_win_capacity scaler, srb_win_capacity scaler, svk_win_capacity scaler, svn_win_capacity scaler, swz_win_capacity scaler, syr_win_capacity scaler, tgo_win_capacity scaler, tha_win_capacity scaler, tjk_win_capacity scaler, tkm_win_capacity scaler, tto_win_capacity scaler, tza_win_capacity scaler, uga_win_capacity scaler, ury_win_capacity scaler, uzb_win_capacity scaler, yem_win_capacity scaler, zaf_win_capacity scaler, zmb_win_capacity scaler, zwe_win_capacity scaler
+INFO [2024-09-09 19:06:10] [WARN] - Nominal capacities are unknown, so they cannot be imported into the simulation.
+INFO [2024-09-09 19:06:27] [WARN] - The following generators have Ninja timeseries, but no PLEXOS properties: aus_sol_liddellsolart507, chn_sol_datangdelingha5184, chn_sol_gansudunhuang5424, chn_sol_innermongolia6200, chn_sol_qinghaigonghe6862, deu_sol_jlichsolar11342, ind_sol_acmesolartowe12089, ind_sol_ananthapurme12115, ind_sol_dhursar12280, ind_sol_godawari12325, isr_sol_ashalimsun13316, mar_sol_centralesolair14452, mar_sol_centralesolair14453, zaf_sol_bokpoortsolar16619, zaf_sol_kaxusolarpowe16651, zaf_sol_kathusolarpar16654, zaf_sol_khisolarpower16657, esp_sol_andasol316855, esp_sol_aste1a16863, esp_sol_astexol216864, esp_sol_casablanca16896, esp_sol_centralsolart16906, esp_sol_centraltermoso16907, esp_sol_consollorellan16924, esp_sol_extresol116966, esp_sol_heliosi16986, esp_sol_ladehesa16996, esp_sol_laflorida16997, esp_sol_larisca17001, esp_sol_majadas17030, esp_sol_manchasol217032, esp_sol_plantasolarte17364, esp_sol_plantasolarte17366, esp_sol_plantasolarte17367, esp_sol_plantatermosol17368, esp_sol_pstlebrijai17376, esp_sol_pstpalmadelr17377, esp_sol_pstsolacor117378, esp_sol_puertoerrado217382, esp_sol_solaben317415, esp_sol_soluzguzman17416, esp_sol_termesol5017428, esp_sol_termosolarborg17430, tha_sol_thaisolarpowe18083, are_sol_shams18306, usa_sol_crescentdunes22676, usa_sol_genesissolare23759, usa_sol_mojavesolarpr25826, usa_sol_sierrasuntower27811, usa_sol_solanagenerati27908, esp_sol_termosol217429, mar_sol_centralesolair14454, usa_sol_ivanpah124635, usa_sol_ivanpah224636, usa_sol_ivanpah324637, usa_sol_nevadasolaron26112, usa_sol_segsiii27448, usa_sol_segsiv27449, usa_sol_segsix27450, usa_sol_segsv27451, usa_sol_segsvi27452, usa_sol_segsvii27453, usa_sol_segsviii27454, afg_sol_capacity scaler, alb_sol_capacity scaler, arg_sol_capacity scaler, arm_sol_capacity scaler, chn-ch_sol_capacity scaler, chn-em_sol_capacity scaler, chn-fu_sol_capacity scaler, chn-gd_sol_capacity scaler, chn-gu_sol_capacity scaler, chn-gx_sol_capacity scaler, chn-he_sol_capacity scaler, chn-hk_sol_capacity scaler, chn-hn_sol_capacity scaler, chn-ji_sol_capacity scaler, chn-jx_sol_capacity scaler, chn-li_sol_capacity scaler, chn-ma_sol_capacity scaler, chn-sc_sol_capacity scaler, chn-sx_sol_capacity scaler, chn-ti_sol_capacity scaler, chn-tj_sol_capacity scaler, chn-zh_sol_capacity scaler, ind-ne_sol_capacity scaler, rus-ce_sol_capacity scaler, rus-fe_sol_capacity scaler, rus-mv_sol_capacity scaler, rus-nw_sol_capacity scaler, rus-si_sol_capacity scaler, rus-so_sol_capacity scaler, rus-ur_sol_capacity scaler, ata_sol_capacity scaler, bdi_sol_capacity scaler, ben_sol_capacity scaler, bfa_sol_capacity scaler, bhr_sol_capacity scaler, bih_sol_capacity scaler, blr_sol_capacity scaler, brn_sol_capacity scaler, btn_sol_capacity scaler, bwa_sol_capacity scaler, caf_sol_capacity scaler, civ_sol_capacity scaler, cmr_sol_capacity scaler, cod_sol_capacity scaler, cog_sol_capacity scaler, col_sol_capacity scaler, cri_sol_capacity scaler, dji_sol_capacity scaler, dom_sol_capacity scaler, eri_sol_capacity scaler, esh_sol_capacity scaler, est_sol_capacity scaler, fji_sol_capacity scaler, gab_sol_capacity scaler, geo_sol_capacity scaler, gha_sol_capacity scaler, gin_sol_capacity scaler, gmb_sol_capacity scaler, gnb_sol_capacity scaler, gnq_sol_capacity scaler, gtm_sol_capacity scaler, guy_sol_capacity scaler, idn_sol_capacity scaler, irl_sol_capacity scaler, irn_sol_capacity scaler, isl_sol_capacity scaler, jam_sol_capacity scaler, kaz_sol_capacity scaler, kgz_sol_capacity scaler, kos_sol_capacity scaler, kwt_sol_capacity scaler, lao_sol_capacity scaler, lbn_sol_capacity scaler, lbr_sol_capacity scaler, lby_sol_capacity scaler, lka_sol_capacity scaler, lso_sol_capacity scaler, lva_sol_capacity scaler, mar_sol_capacity scaler, mda_sol_capacity scaler, mdg_sol_capacity scaler, mli_sol_capacity scaler, mne_sol_capacity scaler, mng_sol_capacity scaler, moz_sol_capacity scaler, mrt_sol_capacity scaler, mus_sol_capacity scaler, mwi_sol_capacity scaler, can-ab_sol_capacity scaler, can-ar_sol_capacity scaler, can-bc_sol_capacity scaler, can-mb_sol_capacity scaler, can-nl_sol_capacity scaler, can-no_sol_capacity scaler, can-qc_sol_capacity scaler, can-sk_sol_capacity scaler, usa-ak_sol_capacity scaler, usa-me_sol_capacity scaler, usa-mw_sol_capacity scaler, usa-rm_sol_capacity scaler, usa-sa_sol_capacity scaler, usa-sn_sol_capacity scaler, usa-sw_sol_capacity scaler, ner_sol_capacity scaler, nic_sol_capacity scaler, aus-ta_sol_capacity scaler, aus-vi_sol_capacity scaler, omn_sol_capacity scaler, pak_sol_capacity scaler, png_sol_capacity scaler, prk_sol_capacity scaler, pry_sol_capacity scaler, qat_sol_capacity scaler, rwa_sol_capacity scaler, bra-cn_sol_capacity scaler, bra-cw_sol_capacity scaler, bra-ne_sol_capacity scaler, bra-nw_sol_capacity scaler, bra-se_sol_capacity scaler, bra-so_sol_capacity scaler, bra-we_sol_capacity scaler, sdn_sol_capacity scaler, sle_sol_capacity scaler, swz_sol_capacity scaler, syr_sol_capacity scaler, tgo_sol_capacity scaler, tjk_sol_capacity scaler, tkm_sol_capacity scaler, tto_sol_capacity scaler, tza_sol_capacity scaler, ury_sol_capacity scaler, uzb_sol_capacity scaler, ven_sol_capacity scaler, vnm_sol_capacity scaler, zaf_sol_capacity scaler, zmb_sol_capacity scaler, zwe_sol_capacity scaler, som_sol_capacity scaler, tcd_sol_capacity scaler, tls_sol_capacity scaler, mlt_sol_capacity scaler, blz_sol_capacity scaler, hti_sol_capacity scaler, sur_sol_capacity scaler
+INFO [2024-09-09 19:06:27] [WARN] - Nominal capacities are unknown, so they cannot be imported into the simulation.

@@ -1,0 +1,30 @@
+INFO [2024-09-10 10:09:50] [MAIN] - Creating EU_aggRES__2024_09_10_10_09_50 study...
+
+INFO [2024-09-10 10:09:50] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-10 10:09:50] [MAIN] - Adding nodes...
+
+INFO [2024-09-10 10:10:05] [MAIN] - Done adding nodes! (run time : 15.35s).
+
+INFO [2024-09-10 10:10:05] [MAIN] - Adding districts...
+
+INFO [2024-09-10 10:10:07] [MAIN] - Done adding districts! (run time : 1.13s).
+
+INFO [2024-09-10 10:10:07] [MAIN] - Adding load data...
+
+INFO [2024-09-10 10:10:17] [MAIN] - Done adding load data! (run time : 9.95s).
+
+INFO [2024-09-10 10:10:17] [MAIN] - Fetching wind data...
+
+INFO [2024-09-10 10:10:23] [MAIN] - Done adding wind data! (run time : 6.38s).
+
+INFO [2024-09-10 10:10:23] [MAIN] - Fetching solar data...
+
+INFO [2024-09-10 10:10:30] [MAIN] - Done adding solar data! (run time : 6.79s).
+
+INFO [2024-09-10 10:10:30] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-10 10:10:30] [MAIN] - Done adding lines! (run time : 0.42s).
+
+INFO [2024-09-10 10:10:30] [MAIN] - Finished setting up Antares study! (run time : 0.67min).
+ 
+

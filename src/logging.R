@@ -27,7 +27,9 @@ createDayDirectory <- function() {
 
 # Function to create the simulation directory
 createSimulationDirectory <- function(day_dir, study_name) {
-  folder_name = paste0(study_name, "_", format(Sys.time(), "%H-%M-%S"))
+  folder_name = paste0(format(Sys.time(), "%H-%M-%S"), "_", study_name)
+  # Better for sorting by chronological order!
+  
   sim_dir <- file.path(day_dir, folder_name)
   dir.create(sim_dir)
   return(sim_dir)
