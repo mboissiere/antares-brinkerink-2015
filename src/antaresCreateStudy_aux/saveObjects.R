@@ -4,27 +4,29 @@ STUDY_DATA_FOLDER_NAME = "Antares input - Study data"
 SIMUS_DATA_FOLDER_NAME = "Antares output - Simulations data"
 
 initializeOutputFolderStudy <- function(study_name = IMPORT_STUDY_NAME) {
-  folder_dir <- paste0("./output/results_", 
-                      study_name)
   
   # output_dir <- truncateString(output_dir, 75) # temp number for testing
   # Can actually be too long for Windows. Maximum is 260, we should find what the max file is.
+  study_folder_name <- paste0("results_", study_name)
+  study_folder_name <- truncateString(study_folder_name, 25)
   
-  if (!dir.exists(folder_dir)) {
-    dir.create(folder_dir)
+  study_folder_dir <- file.path("output", study_folder_name)
+  
+  if (!dir.exists(study_folder_dir)) {
+    dir.create(study_folder_dir)
   }
   
-  study_input_dir <- file.path(folder_dir, STUDY_DATA_FOLDER_NAME)
+  study_input_dir <- file.path(study_folder_dir, STUDY_DATA_FOLDER_NAME)
   if (!dir.exists(study_input_dir)) {
     dir.create(study_input_dir)
   }
   
-  simus_output_dir <- file.path(folder_dir, SIMUS_DATA_FOLDER_NAME)
+  simus_output_dir <- file.path(study_folder_dir, SIMUS_DATA_FOLDER_NAME)
   if (!dir.exists(simus_output_dir)) {
     dir.create(simus_output_dir)
   }
   
-  return(folder_dir)
+  return(study_folder_dir)
 }
 
 ##############
@@ -35,8 +37,8 @@ source(".\\src\\antaresCreateStudy_aux\\generateObjects.R") # Provisoire pour le
 # library(dplyr)
 # library(tidyr)
 
-# wind_2015_properties_tbl <- readRDS(wind_2015_properties_path)
-# wind_cf_ts_tbl <- readRDS(wind_cf_ts_path)
+wind_2015_properties_tbl <- readRDS(wind_2015_properties_path)
+wind_cf_ts_tbl <- readRDS(wind_cf_ts_path)
 # print(wind_2015_properties_tbl)
 # print(wind_cf_ts_tbl)
 # # ah mais faut filtrer pour les trucs qui pop ici...

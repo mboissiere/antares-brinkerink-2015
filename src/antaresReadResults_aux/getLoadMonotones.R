@@ -30,7 +30,12 @@ saveLoadMonotone <- function(output_dir,
   data_lst <- data_to_iterate_by_mode[[mode]]
   
   antares_tbl <- antares_tbl %>%
-    filter(area %in% data_lst)
+    filter(area %in% data_lst) %>%
+    filter(!grepl("^(as-|na-)", area)) # PROVISOIRE
+    # filter(area >= "as-isr") # PROVISOIRE
+  # Ici mettre un truc provisoire pour skip Afrique que j'ai déjà
+  # EN VRAI IMPLEMENTER UNE FONCTION POUR SELECTIONNER AREA
+  
   # Argh c'est relou les modes en vraiiii x2
   # là ça changeait entre area et district.......
   

@@ -7,9 +7,12 @@ library(dplyr) # To be commented if the main script has that
 NINJA_PATH = file.path(".", "input", "dataverse_files")
 
 WIND_DATA_PATH = file.path(NINJA_PATH, "Renewables.ninja.wind.output.Full.adjusted.txt")
+# WIND_DATA_PATH = file.path(NINJA_PATH, "Renewables.ninja.wind.output.Full.txt")
 SOLARPV_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Solar.farms.output.full.adjusted.txt")
+# SOLARPV_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Solar.farms.output.full.txt")
 CSP_DATA_PATH = file.path(NINJA_PATH, "renewables.ninja.Csp.output.full.adjusted.txt")
-
+# c'est vrai qu'on a toujours pas le CSP intégré dans le mode clusters,
+# ni en mode batteries
 
 # Et un ptit print de log main "preprocessing Wind data..." pour faire patienter l'utilisateur, en vrai.
 # datetime - [CATEGORY] machin c'est la meilleure nomenclature en vrai

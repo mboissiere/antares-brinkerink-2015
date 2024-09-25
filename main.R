@@ -2,45 +2,13 @@
 ## Les objets sont typiquement déjà définis dans les fichiers auxilliaires
 
 # Charger les packages
-library(antaresRead)
-library(antaresEditObject)
-
-library(dplyr)
-library(tidyr)
-
-# Peut etre qu'actuel desir de JY et Nicolas de faire un calcul de vérif à la main,
-# peut être l'occasion d'exporter des données genre. 
-# de faire un dossier csvs dans un dossier output pour avoir la transparence.
-# quitte à ce qu'on fasse finalement dossier-nom-etude-yymmddhhmss/
-# et avec dedans : /input_data ou /study_data, et /simulation_data
-# puisqu'il faudrait pouvoir avoir le 1er même si la simulation a échoué
+source("requirements.R")
 
 source("architecture.R")
-# Error in file(file, "rt") : impossible d'ouvrir la connexion
-# De plus : Warning messages:
-# 1: Parameter 'horizon' is missing or inconsistent with 'january.1st' and 'leapyear'. Assume correct year is 2018.
-# To avoid this warning message in future simulations, open the study with Antares and go to the simulation tab, put a valid year number in the cell 'horizon' and use consistent values for parameters 'Leap year' and '1st january'. 
-# 2: In file(file, "rt") :
-#   impossible d'ouvrir le fichier 'C:/Users/boissieremat/Documents/GitHub/antares-brinkerink-2015/src/objects' : Permission denied
-
-# I'm going to lose my goddamn mind
-
-# system("chmod u+r src/objects")
-
-# Limite ça le EditObject pourrait être limité au CreateStudy
-# Bon AntaresRead je vois pas comment faire sans mdr
-# Penser à faire comme un requirements.txt genre le truc comme dans logging
-# si pas packages alors les installer, et dire dans le README "au pire localement"
-
-# Demander d'ailleurs si on peut virer "antares" du Gitignore
-# pour démocratiser AntaresWeb (mais vu que c'est Nicolas qui me l'a filé...)
 
 # Importer des fonctions et variables auxilliaires créées dans d'autres scripts
 antaresFunctions_file = file.path("src", "antaresFunctions.R",
                           fsep = .Platform$file.sep)
-# idee : faire un dossier "architecture" autre que parameters mais au mm endroit
-# qui garderait tous les paths. that way, si on change des trucs, il suffit de le modifier là.
-# mais du coup lui on le bouge pas mdr.
 
 source(antaresFunctions_file)
 # Est-ce qu'on regroupe aussi les noms de modules dans les paramètres ?

@@ -5,6 +5,10 @@ renamedProdStackWithBatteries_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "l
                                       "PSP STOR" = "darkblue", "CHEMICAL STOR" = "goldenrod", "THERMAL STOR" = "burlywood", "HYDROGEN STOR" = "darkmagenta", "COMPRESSED AIR STOR" = "salmon",
                                       "IMPORTS" = "grey", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
 
+
+
+
+
 eCO2MixColors_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "lavender",
                       "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "SOLAR" = "#D66B0D",  
                       "HYDRO" = "#2672B0", "BIO AND WASTE" = "#156956", "GAS" = "#F20809",

@@ -1,0 +1,35 @@
+INFO [2024-09-10 21:29:07] [MAIN] - Creating EU_clutest__2024_09_10_21_29_07 study...
+
+INFO [2024-09-10 21:29:07] [MAIN] - Initializing output folder...
+INFO [2024-09-10 21:29:07] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-09-10 21:29:07] [MAIN] - Adding nodes...
+
+INFO [2024-09-10 21:29:09] [MAIN] - Done adding nodes! (run time : 1.57s).
+
+INFO [2024-09-10 21:29:09] [MAIN] - Adding districts...
+
+INFO [2024-09-10 21:29:10] [MAIN] - Done adding districts! (run time : 0.86s).
+
+INFO [2024-09-10 21:29:10] [MAIN] - Adding load data...
+
+INFO [2024-09-10 21:29:11] [MAIN] - Done adding load data! (run time : 1.06s).
+
+INFO [2024-09-10 21:29:11] [MAIN] - Fetching wind data...
+
+INFO [2024-09-10 21:29:14] [MAIN] - Done adding wind data! (run time : 3.51s).
+
+INFO [2024-09-10 21:29:14] [MAIN] - Fetching solar data...
+
+INFO [2024-09-10 21:29:27] [MAIN] - Done adding solar data! (run time : 12.34s).
+
+INFO [2024-09-10 21:29:27] [MAIN] - Adding lines between areas...
+
+INFO [2024-09-10 21:29:28] [MAIN] - Done adding lines! (run time : 1.17s).
+
+INFO [2024-09-10 21:29:28] [MAIN] - Finished setting up Antares study! (run time : 0.35min).
+ 
+
+INFO [2024-09-10 21:29:28] [MAIN] - Starting renewableTest simulation...
+INFO [2024-09-10 21:29:37] [MAIN] - Antares simulation finished! (run time : 0.14min).
+ 
+

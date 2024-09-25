@@ -66,8 +66,8 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
           # les centrales désactivées d'autres pays... Filtrer avant est quand même
           # plus simple...
           nominal_capacity <- row$nominal_capacity
-          nb_units <- row$nb_units
-          cf_ts <- solarpv_cf_ts_tbl[[generator_name]]
+          nb_units <- as.integer(row$nb_units)
+          cf_ts <- solarpv_cf_ts_tbl[[generator_name]]/100
           if (is.null(cf_ts)) {
             msg <- paste("[WARN] - Timeseries for", generator_name, "generator has not been found in Ninja data.")
             logError(msg)

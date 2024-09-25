@@ -4,13 +4,14 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "EU_clutest" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "EU_full_agg" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
 # lancer rédaction du rapport en parallèle qui plongera les mains dans la doc PLEXOS, etc
 
-RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
+RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
+# le test full.adjusted v full pourrait tenir en une ligne dans architecture.R, dans un monde meilleur
 
 # Et si... on essayait sans les capacity scalers ?
 # Vu qu'il y en a bcp en Europe
@@ -28,22 +29,26 @@ RENEWABLE_GENERATION_MODELLING = "clusters" # "aggregated" ou "clusters"
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = TRUE
+CREATE_STUDY = FALSE
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
+# IMPORT_STUDY_NAME = "EU_clutest__2024_09_10_21_29_47"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
 # "ah t'as chargé l'asie ? mais tu veux regarder les nodes de l'europe cong"
 
 # IMPORT_STUDY_NAME = "Deane_Beta_EU__2024_08_08_15_48_17" #"deaneEurope_minimal" # quand je ferai des presets
-LAUNCH_SIMULATION_NAME = "renewableTest"
+LAUNCH_SIMULATION_NAME = "acc_test"
 INCLUDE_DATE_IN_SIMULATION = FALSE
-LAUNCH_SIMULATION = TRUE
+LAUNCH_SIMULATION = FALSE
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
+# IMPORT_SIMULATION_NAME = "20240905-0707eco-20240910-2240eco-renewabletest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
+# svp avancer sur export des résultats en tableau et sur division des CF par 100 en clusters
+
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
 # là où il faut puisque là on pioche dans antares_presets et forcément il trouve r
 PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
@@ -63,7 +68,7 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # south_america_nodes_lst <- readRDS(".\\src\\objects\\south_america_nodes_lst.rds")
 # oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
-# NODES = "eu-fra"
+# NODES = "eu-ita"
 NODES = deane_europe_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 
@@ -71,8 +76,13 @@ NODES = deane_europe_nodes_lst
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
 
 
-REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
+REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
+
+# Je crois que cette feature merde parce qu'il y a un loop infini de saveObjects
+# qui appelle generate et vice versa
+# ah quoique ptet c juste long
+
 
 # NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
 #           "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
@@ -92,21 +102,21 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = FALSE
-save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
+save_daily_production_stacks = TRUE
+save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
 save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
-save_import_export = FALSE
+save_import_export = TRUE
 
 # save_deane_histograms = FALSE # deprecated jcrois
-save_deane_comparisons = FALSE
+save_deane_comparisons = TRUE
 # devrait etre en 1er vu comment c'est rapide
 
-save_global_graphs = FALSE
-save_continental_graphs = FALSE
+save_global_graphs = TRUE
+save_continental_graphs = TRUE
 save_national_graphs = TRUE
 save_regional_graphs = TRUE
 

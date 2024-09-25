@@ -50,7 +50,7 @@ initializeOutputFolderSimulation <- function(study_name = IMPORT_STUDY_NAME,
                       "-palette-",
                       color_palette
   )
-  sim_folder_name <- truncateString(sim_folder_name, 50)
+  sim_folder_name <- truncateString(sim_folder_name, 25)
   sim_dir <- file.path(simus_folder_dir, sim_folder_name)
   
   if (!dir.exists(sim_dir)) {

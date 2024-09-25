@@ -88,7 +88,7 @@ addWindClusters <- function(nodes = all_deane_nodes_lst#,
           nominal_capacity <- row$nominal_capacity
           nb_units <- as.integer(row$nb_units)
           cluster_type <- row$antares_cluster_type
-          cf_ts <- wind_cf_ts_tbl[[generator_name]]
+          cf_ts <- wind_cf_ts_tbl[[generator_name]]/100
           if (is.null(cf_ts)) {
             msg <- paste("[WARN] - Timeseries for", generator_name, "generator has not been found in Ninja data.")
             logError(msg)
