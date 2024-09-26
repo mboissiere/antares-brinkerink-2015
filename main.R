@@ -3,6 +3,12 @@
 
 # Charger les packages
 source("requirements.R")
+# ptet plutôt faire des :
+# createStudyrequirements, etc comme RR_init et RR_config
+# et faire une fonction dans utils qui sait installer
+# ça reste un peu mon rêve secret de faire un code qui s'exécute à partir 
+# d'un Excel de configuration façon TiTAN...
+# ou bien un libreoffice/framacalc si on aime le logiciel libre en vrai :)
 
 source("architecture.R")
 
@@ -114,22 +120,6 @@ if (READ_RESULTS) {
 
 ################################################################################
 # Commentaires variés
-
-# Ca existe de stocker des objets R qqpart ?
-# Ca peut diminuer le temps de fetch renewables.ninja, surtout quand on a peu de points.
-# Mais, c'est peut-être plus risqué en un sens, je sais pas.
-# Dans input un dossier "Robjects" ou quoi ça pourrait le faire.
-
-# D'après stackoverflow :
-#   You can use saveRDS and readRDS functions:
-#     
-#     library(tibble)
-#   test <- tibble(a= list(c(1,2), c(3,4)))
-#   saveRDS(test, "c:/test.rds")
-#   test_2 <- readRDS("c:/test.rds"))
-# identical(test, test_2)
-# In the readr package there are read_rds and write_rds functions, which even allow compression to be set.
-
 
 # if (ADD_VOLL) {
 #   addVoLL_module = file.path("src", "data", "addVoLL.R")

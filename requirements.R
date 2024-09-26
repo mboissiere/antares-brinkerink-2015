@@ -4,6 +4,7 @@
 
 ## First specify the packages of interest
 packages = c("antaresRead", "antaresEditObject", "dplyr", "tidyr",
+             "futile.logger",
              "antaresViz")
 # AntaresViz c'est plus discutable mais vazy
 

@@ -3,6 +3,11 @@ if (!require("futile.logger")) {
   install.packages("futile.logger")
 }
 library(futile.logger)
+# ah bah tiens tu devrais etre dans requirements toi
+
+# A FAIRE : une sauvegarde des logs dans le dossier d'output.
+# les études en vrai garder le YYMMDD mais en plus court.
+# les simulations... normalement on change le nom qd mm
 
 source("parameters.R")
 
@@ -41,6 +46,9 @@ setupLoggers <- function(sim_dir) {
   flog.appender(appender.file(paste0(sim_dir, "/full.log")), name = "full")
   flog.appender(appender.file(paste0(sim_dir, "/errors.log")), name = "errors")
   flog.appender(appender.file(paste0(sim_dir, "/main.log")), name = "main")
+  # Changer "full" en "detailed"
+  # et séparer un "clustering" qui vraiment serait trop long pour le full imo
+  # en vrai si c'est ok... juste si on print pas le tableau cinq fois à chaque fois...
   
   # Console appenders
   if (PRINT_FULL_LOG_TO_CONSOLE) {

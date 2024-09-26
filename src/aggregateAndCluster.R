@@ -53,6 +53,13 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     select(generator_name, node, antares_cluster_type, nominal_capacity, nb_units, min_stable_power, 
            co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
   
+  msg = paste("[CLUSTERING] - Aggregated the functionally similar generators", 
+              combined_names, 
+              "into one generator :", 
+              generator_name)
+  logFull(msg)
+  # Faire un log "aggregated functionally similar" ET "clustered into"
+  
   return(aggregated_generators_tbl)
 }
 

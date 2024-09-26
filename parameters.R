@@ -4,7 +4,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "EU_full_agg" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "varia_test" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
@@ -29,7 +29,13 @@ RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
+# Faire un paramètre genre "duplicate to input" qui copie preset dans input
+# au lieu de le garder seulement dans antares
+# voire, réussir à ne plus passer par le dossier antares (mais j'y crois peu..)
+# une notice README pourrait préciser espace mémoire qu'il faut pour un dossier antares
+# continent/monde, d'abord vide puis avec une simulation....
+
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 # IMPORT_STUDY_NAME = "EU_clutest__2024_09_10_21_29_47"
@@ -46,7 +52,7 @@ IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
 # IMPORT_SIMULATION_NAME = "20240905-0707eco-20240910-2240eco-renewabletest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 # svp avancer sur export des résultats en tableau et sur division des CF par 100 en clusters
 
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
