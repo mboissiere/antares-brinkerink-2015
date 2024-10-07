@@ -4,7 +4,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Other1 fix threePoints"#"WorldT20B5 w hurdles 1"
+study_basename <- "Other1 fix threePoints 4"#"WorldT20B5 w hurdles 1"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...

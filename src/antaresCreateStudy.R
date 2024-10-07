@@ -303,12 +303,14 @@ if (GENERATE_BATTERIES) {
   source(importBatteries_file)
   batteries_tbl <- full_2015_batteries_tbl %>% # Donc on utilise des objets on est d'acc ?
     filter(node %in% NODES)
+  # print(batteries_tbl)
   # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
   # faudrait ptet que je fasse ça pour les batteries en vrai de vrai
   if (AGGREGATE_BATTERIES) {
     msg = "[MAIN] - Aggregating identical batteries..."
     logMain(msg)
     agg_batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
+    # print(agg_batteries_tbl)
     # addBatteriesToAntaresAggregated(batteries_tbl)
     # those two functions shouldn't walk over each other. indeed addAggregated multiplies values by "unit"
     # and aggregateEquivalent puts units to 1 and multiplies the properties directly, unless it detects copycats,
@@ -331,6 +333,7 @@ if (GENERATE_BATTERIES) {
       # La ligne qui m'aura coûté des heures..............
       
     }
+    # print(agg_batteries_tbl)
     addBatteriesToAntaresAggregated(agg_batteries_tbl)
   } else {
     addBatteriesToAntares(batteries_tbl)

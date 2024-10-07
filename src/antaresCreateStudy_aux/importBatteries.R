@@ -113,7 +113,7 @@ addBatteriesToAntares <- function(batteries_tbl) {
   for (row in 1:nrow(batteries_tbl)) {
     
     node = batteries_tbl$node[row]
-    cluster_type = batteries_tbl$cluster_type[row]
+    cluster_type = batteries_tbl$antares_cluster_type[row]
     
     units = batteries_tbl$units[row]
     # à partir de là vu qu'il y a pas de "units" je peux faire plusieurs approches
@@ -212,7 +212,9 @@ addBatteriesToAntaresAggregated <- function(batteries_tbl) {
   for (row in 1:nrow(batteries_tbl)) {
     battery_name = batteries_tbl$battery_name[row]
     node = batteries_tbl$node[row]
-    cluster_type = batteries_tbl$cluster_type[row]
+    cluster_type = batteries_tbl$antares_cluster_type[row]
+    # Ah oui j'ai oublié de changer antares_cluster_type ici parce que ya
+    # DEUX FONCTIONS QUI SONT QUASI IDENTIQUES
     
     units = batteries_tbl$units[row]
     max_power = batteries_tbl$max_power[row]

@@ -1,0 +1,46 @@
+INFO [2024-10-07 16:19:10] [MAIN] - Creating Other1 fix threePoints 3 study...
+
+INFO [2024-10-07 16:19:11] [MAIN] - Initializing output folder...
+INFO [2024-10-07 16:19:12] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-10-07 16:19:12] [MAIN] - Adding nodes...
+
+INFO [2024-10-07 16:19:14] [MAIN] - Done adding nodes! (run time : 1.56s).
+
+INFO [2024-10-07 16:19:14] [MAIN] - Adding districts...
+
+INFO [2024-10-07 16:19:15] [MAIN] - Done adding districts! (run time : 0.79s).
+
+INFO [2024-10-07 16:19:15] [MAIN] - Adding load data...
+
+INFO [2024-10-07 16:19:16] [MAIN] - Done adding load data! (run time : 1.08s).
+
+INFO [2024-10-07 16:19:16] [MAIN] - Fetching wind data...
+
+INFO [2024-10-07 16:19:16] [WIND] - Saving aggregated wind data to output folder...
+INFO [2024-10-07 16:19:27] [WIND] - Done saving aggregated wind data to output folder!
+INFO [2024-10-07 16:19:27] [MAIN] - Done adding wind data! (run time : 10.98s).
+
+INFO [2024-10-07 16:19:27] [MAIN] - Fetching solar data...
+
+INFO [2024-10-07 16:19:27] [MAIN] - Done adding solar data! (run time : 0.26s).
+
+INFO [2024-10-07 16:19:27] [MAIN] - Beginning hydro implementation...
+INFO [2024-10-07 16:19:34] [MAIN] - Done adding hydro!
+INFO [2024-10-07 16:19:34] [MAIN] - Fetching thermal data...
+INFO [2024-10-07 16:20:10] [MAIN] - Done adding thermal data! (run time : 0.61min).
+
+INFO [2024-10-07 16:20:10] [MAIN] - Fetching battery data...
+
+INFO [2024-10-07 16:20:10] [MAIN] - Aggregating identical batteries...
+INFO [2024-10-07 16:20:10] [MAIN] - Running 5-clustering algorithm on batteries...
+INFO [2024-10-07 16:20:11] [MAIN] - Done running 5-clustering algorithm on batteries!
+
+INFO [2024-10-07 16:20:19] [MAIN] - Done adding battery data! (run time : 0.15min).
+
+INFO [2024-10-07 16:20:19] [MAIN] - Adding lines between areas...
+
+INFO [2024-10-07 16:20:21] [MAIN] - Done adding lines! (run time : 1.63s).
+
+INFO [2024-10-07 16:20:21] [MAIN] - Finished setting up Antares study! (run time : 1.17min).
+ 
+

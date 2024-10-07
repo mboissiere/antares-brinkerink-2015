@@ -351,7 +351,7 @@ addThermalToAntares <- function(thermal_generators_tbl) {
     # mieux vaut extraire arrays une fois au début et puis indicer après non ?
     # je crois que c'est négligeable as fuck mais jsp
     node = thermal_generators_tbl$node[row]
-    cluster_type = thermal_generators_tbl$cluster_type[row]
+    cluster_type = thermal_generators_tbl$antares_cluster_type[row]
     nominal_capacity = thermal_generators_tbl$nominal_capacity[row]
     nb_units = thermal_generators_tbl$nb_units[row]
     min_stable_power = thermal_generators_tbl$min_stable_power[row]
