@@ -172,6 +172,8 @@ createGlobalDistrict <- function(nodes #,
                  )
   msg = "[DISTRICTS] - Done creating global district!"
   logFull(msg)
+  # mettre une exception "could not create, skipping" parce que si les nodes et
+  # le district existent déjà, y a une erreur qui fait planter le truc
   }
 
 ################################################################################

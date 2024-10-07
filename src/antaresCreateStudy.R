@@ -1,7 +1,12 @@
 ################################################################################
 
 ## Création d'une nouvelle étude
-study_name <- generateName(study_basename)
+if (INCLUDE_DATE_IN_STUDY) {
+  study_name <- generateName(study_basename)
+} else {
+  study_name <- study_basename
+}
+
 
 
 
@@ -27,6 +32,10 @@ logMain(msg)
 source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
 output_folder <- initializeOutputFolderStudy(study_name)
 study_folder <- file.path(output_folder, STUDY_DATA_FOLDER_NAME)
+# EN PAUSE, MAIS Y REVENIR PLUS TARD
+
+
+
 # et vu que maintenant on a un output folder... ne serait-il pas temps d'y mettre
 # les logs ?
 # à terme, peut-être un dossier "config" qui regroupera des logging.R, des initialisations de dossier,
@@ -143,6 +152,13 @@ if (GENERATE_LOAD) {
 # batteries_tbl <- batteries_tbl %>%
 #   filter(node %in% NODES)
 
+# Wesh cette dépendance là ^^ c'est trop
+# d'autant plus que dans le object generator attention full_batteries machin il est pas bien implémenté.
+# genre il faut encore que je drag and drop depuis archive pour comprendre le délire. Donc
+# REFACTORER CA PLEASE
+
+# d'autant plus qu'il y a encore les nodes en majuscules OH LA LA BORDELE
+
 # This might cause confusion over how we worked with wind_aggregated before.
 # Now we jsut import wind_aggregated and don't do anything over it
 # whereas bfeore we had left_joins with only appropriate nodes to save time ?
@@ -244,26 +260,30 @@ if (GENERATE_THERMAL) {
   #print(thermal_generators_tbl)
   
   if (AGGREGATE_THERMAL) { # c'est hyper moche comme structure et provisoire mais ouais
-    msg = "[MAIN] - Aggregating identical generators..."
-    logMain(msg)
+    msg = "[THERMAL] - Aggregating identical generators..."
+    logFull(msg)
     thermal_generators_tbl <- aggregateEquivalentGenerators(thermal_generators_tbl)
     #print(thermal_generators_tbl)
   }
   # Pour l'instant, si il y a clusters thermal mais pas aggregate thermal, il y a un bug, par construction
   if (CLUSTER_THERMAL) {
     # This log should be within the program instead of out here, in clusteringForGenerators
-    msg = paste0("[MAIN] - Running ", NB_CLUSTERS_THERMAL, "-clustering algorithm on generators...")
-    logMain(msg)
+    msg = paste0("[THERMAL] - Running ", NB_CLUSTERS_THERMAL, "-clustering algorithm on generators...")
+    logFull(msg)
     thermal_generators_tbl <- clusteringForGenerators(thermal_generators_tbl, NB_CLUSTERS_THERMAL)
-    msg = paste0("[MAIN] - Done running ", NB_CLUSTERS_THERMAL, "-clustering algorithm on generators!\n")
-    logMain(msg)
+    msg = paste0("[THERMAL] - Done running ", NB_CLUSTERS_THERMAL, "-clustering algorithm on generators!\n")
+    logFull(msg)
     #print(thermal_generators_tbl)
   }
   #print(thermal_generators_tbl)
   addThermalToAntares(thermal_generators_tbl)
   # Deactivated for now ? idk
   # seems useful actually.
+  msg = "[THERMAL] - Generating timeseries for maintenance of thermal generators..."
+  logFull(msg)
   activateThermalTS()
+  msg = "[THERMAL] - Done generating maintenance timeseries!"
+  logFull(msg)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "mins"), 2)

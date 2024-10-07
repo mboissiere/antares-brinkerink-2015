@@ -10,3 +10,4 @@ preprocessPlexosData_module = file.path(CREATESTUDY_AUX_PATH, "preprocessPlexosD
 preprocessNinjaData_module = file.path(CREATESTUDY_AUX_PATH, "preprocessNinjaData.R")
 addNodes_module = file.path(CREATESTUDY_AUX_PATH, "addNodes.R")
 generateObjects_module = file.path(CREATESTUDY_AUX_PATH, "generateObjects.R")
+importBatteries_module = file.path(CREATESTUDY_AUX_PATH, "importBatteries.R")

@@ -4,7 +4,30 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "EU_hurdl" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "combined_names batteries test1"
+  # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
+INCLUDE_DATE_IN_STUDY = FALSE
+# Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
+# ça overwrite déjà en fait. Tout seul.
+
+# bug actuel : si je prends un nom qui existe déjà et que après il dit "peut pas ajouter noeud, skipping"
+# ensuite il n'arrive pas à faire un global district
+
+# INFO [2024-10-07 11:02:51] [NODES] - Adding eu-swe node...
+# ERROR [2024-10-07 11:02:51] [WARN] - Could not create node eu-swe - skipping and continuing...
+# INFO [2024-10-07 11:02:51] [NODES] - Adding eu-ukr node...
+# ERROR [2024-10-07 11:02:51] [WARN] - Could not create node eu-ukr - skipping and continuing...
+# INFO [2024-10-07 11:02:51] [MAIN] - Done adding nodes! (run time : 2.24s).
+# 
+# INFO [2024-10-07 11:02:51] [MAIN] - Adding districts...
+# 
+# INFO [2024-10-07 11:02:51] [DISTRICTS] - Creating global district...
+# Error in createDistrict(name = "world", add_area = all_areas, output = TRUE) : 
+#   Invalid area in 'add_area'
+# De plus : Warning message:
+#   Parameter 'horizon' is missing or inconsistent with 'january.1st' and 'leapyear'. Assume correct year is 2018.
+# To avoid this warning message in future simulations, open the study with Antares and go to the simulation tab, put a valid year number in the cell 'horizon' and use consistent values for parameters 'Leap year' and '1st january'. 
+
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
@@ -72,7 +95,7 @@ EXPORT_TO_OUTPUT_FOLDER = TRUE
 INCLUDE_HURDLE_COSTS = TRUE
 HURDLE_COST = 0.1
 
-all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
+deane_all_nodes_lst <- readRDS(".\\src\\objects\\deane_all_nodes_lst.rds")
 deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # africa_nodes_lst <- readRDS(".\\src\\objects\\africa_nodes_lst.rds")
 # asia_nodes_lst <- readRDS(".\\src\\objects\\asia_nodes_lst.rds")
@@ -81,8 +104,10 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # oceania_nodes_lst <- readRDS(".\\src\\objects\\oceania_nodes_lst.rds")
 
 # NODES = "eu-ita"
-NODES = deane_europe_nodes_lst
+# NODES = deane_europe_nodes_lst
+# NODES = deane_all_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
+NODES = c("eu-che", "eu-deu", "eu-fra")
 
 # ptet faire un paramètre "catchExceptions" pour pouvoir genre.
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
@@ -174,8 +199,8 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 GENERATE_LOAD = TRUE
 # GENERATE_REN = FALSE
 
-GENERATE_WIND = TRUE
-GENERATE_SOLAR_PV = TRUE
+GENERATE_WIND = FALSE
+GENERATE_SOLAR_PV = FALSE
 # Technically my PV implementation is very bad because if I had
 # solar PV off (which i never do) then I wouldn't have CSP either.
 # But this is fiiiiiiiiiiiiine right.
@@ -188,7 +213,7 @@ GENERATE_SOLAR_CSP = FALSE
 # quoique pas forcément le plus dyslexique ffriendly haha*
 # ça change !
 GENERATE_LINES = TRUE
-GENERATE_THERMAL = FALSE
+GENERATE_THERMAL = TRUE
 # there should also be a log like... "not importing thermal"
 GENERATE_HYDRO = FALSE
 GENERATE_BATTERIES = FALSE

@@ -1,4 +1,4 @@
-# source("architecture.R")
+source("architecture.R")
 
 deane_all_nodes_name <- "deane_all_nodes_lst.rds"
 deane_all_nodes_path <- file.path(OBJECTS_PATH, deane_all_nodes_name)
@@ -59,6 +59,19 @@ if (REGENERATE_OBJECTS | !file.exists(base_generators_properties_path)) {
 # Un approfondissement qui serait bien pour MATER : un "getGeneratorTable" qui prendrait "year" en argument
 # et, avec des données de durée de vie des centrales, filtrerait sur "commmission_date" (avec l'exception nucléaire pour 2015)
 # tout en virant des centrales trop anciennes.
+
+# Bon, batteries time
+# Mais en fait... tout cette phase là on pourrait pas la skip aussi si on n'importe pas les batteries ??
+batteries_table_name = "full_2015_batteries_tbl.rds"
+batteries_table_path <- file.path(OBJECTS_PATH, batteries_table_name)
+if (GENERATE_BATTERIES & (REGENERATE_OBJECTS | !file.exists(batteries_table_path))) {
+  source(importBatteries_module)
+  full_2015_batteries_tbl <- generateBatteriesTable(deane_all_nodes_lst)
+  saveRDS(object = full_2015_batteries_tbl,
+          file = batteries_table_path)
+}
+
+##
 
 wind_cf_ts_name = "wind_cf_ts_tbl.rds"
 wind_cf_ts_path <- file.path(OBJECTS_PATH, wind_cf_ts_name)

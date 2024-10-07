@@ -16,6 +16,8 @@ source("parameters.R")
 
 
 aggregateEquivalentGenerators <- function(generators_tbl) {
+  # print("generators_tbl :")
+  # print(generators_tbl)
   aggregated_generators_tbl <- generators_tbl %>%
     # group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
     group_by(node, antares_cluster_type, nominal_capacity, min_stable_power) %>%
@@ -39,6 +41,8 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     avg_fo_duration = mean(fo_duration),
     .groups = 'drop'
   ) 
+  # print("aggregated_generators_tbl :")
+  # print(aggregated_generators_tbl)
   
   aggregated_generators_tbl <- aggregated_generators_tbl %>%
     mutate(generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
@@ -52,11 +56,18 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     ) %>%
     select(generator_name, node, antares_cluster_type, nominal_capacity, nb_units, min_stable_power, 
            co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
+  # print("aggregated_generators_tbl :")
+  # print(aggregated_generators_tbl)
   
-  msg = paste("[CLUSTERING] - Aggregated the functionally similar generators", 
-              combined_names, 
-              "into one generator :", 
-              generator_name)
+  # msg = paste("[CLUSTERING] - Aggregated the functionally similar generators", 
+  #             combined_names, 
+  #             "into one generator :", 
+  #             generator_name)
+  # C'est vraiment, vraiment pas aussi simple que ça vu qu'on fait du vectoriel....
+  # Il est pas impossible que cette feature on dise tant pis pour le aggregated.
+  # Et sur le clustered à la rigueur pk pas.
+  
+  msg = "[CLUSTERING] - Aggregated functionally identical generators (same nominal capacity) together!"
   logFull(msg)
   # Faire un log "aggregated functionally similar" ET "clustered into"
   
@@ -137,6 +148,31 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
     ),
     .groups = 'drop'
   ) 
+  
+  combined_names_lst <- summary %>% pull(combined_names)
+  # print(combined_names_lst)
+  generator_name_lst <- summary %>% pull(generator_name)
+  # print(generator_name_lst)
+  n_clusters <- length(combined_names_lst) # Not always k, can be less than
+  # print(n_clusters)
+  
+  for (j in 1:n_clusters) {
+    combined_names_j <- combined_names_lst[j]
+    # C'est un bon premier truc. Ce serait un peu mieux en fait si on avait pas pris
+    # combined names et donc on a pas le deu_bio_machin_truc_bidule, mais qu'on avait vraiment
+    # la liste des trucs originaux : deu_bio_machin, deu_bio_truc...
+    # Bon, mais c'est déjà un bon premier truc qui fait à peu près ce que je veux, on verra plus tard si j'ai
+    # le temps d'améliorer
+    generator_name_j <- generator_name_lst[j]
+    if (combined_names_j != generator_name_j) {
+      msg = paste("[CLUSTERING] - Clustered the similar generators",
+                  combined_names_j,
+                  "into one generator :",
+                  generator_name_j)
+      logFull(msg)
+    }
+  }
+  
   aggregated_batteries_tbl <- aggregated_batteries_tbl %>%
     mutate(battery_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
            units = total_units,
@@ -206,13 +242,14 @@ cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) 
   # print("df:")
   # print(df)
   # Check if the number of rows is greater than k
-  if (nrow(df) > k) {
+  initial_number <- nrow(df)
+  if (initial_number > k) {
     # Perform k-means clustering on the aggregated data's nominal_capacity
     clusters <- kmeans(df$nominal_capacity, centers = k)
     df$cluster <- as.factor(clusters$cluster)
   } else {
     # If there are fewer rows than k, each row becomes its own cluster
-    df$cluster <- as.factor(1:nrow(df))
+    df$cluster <- as.factor(1:initial_number)
   }
   # print("df with clusters")
   # print(df)
@@ -241,6 +278,7 @@ cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) 
       fo_duration = mean(fo_duration),
       .groups = 'drop'
     )
+  # print("summary:")
   # print(summary)
   # prints are super interesting to keep track of clustering.
   # perhaps create a seperate clusteringLog ?
@@ -256,7 +294,36 @@ cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) 
   # à chaque fois il faut faire gaffe à l'espace à la fin, c'est putain de sûr
   # notons que ça veut dire que ptet le clustering a plusieurs choix et que mon algo est non-déterministe...
   # genre regarder si j'ai eu ça en oil la dernière fois.
+  # print("summary:")
   # print(summary)
+  
+  combined_names_lst <- summary %>% pull(combined_names)
+  # print(combined_names_lst)
+  generator_name_lst <- summary %>% pull(generator_name)
+  # print(generator_name_lst)
+  n_clusters <- length(combined_names_lst) # Not always k, can be less than
+  # print(n_clusters)
+  
+  for (j in 1:n_clusters) {
+    combined_names_j <- combined_names_lst[j]
+    # C'est un bon premier truc. Ce serait un peu mieux en fait si on avait pas pris
+    # combined names et donc on a pas le deu_bio_machin_truc_bidule, mais qu'on avait vraiment
+    # la liste des trucs originaux : deu_bio_machin, deu_bio_truc...
+    # Bon, mais c'est déjà un bon premier truc qui fait à peu près ce que je veux, on verra plus tard si j'ai
+    # le temps d'améliorer
+    generator_name_j <- generator_name_lst[j]
+    if (combined_names_j != generator_name_j) {
+      msg = paste("[CLUSTERING] - Clustered the similar generators",
+                  combined_names_j,
+                  "into one generator :",
+                  generator_name_j)
+      logFull(msg)
+    }
+  }
+  
+  # if (initial_number > k) {
+    
+  # }
   
   return(summary %>% select(-node, -antares_cluster_type, -combined_names))  
 }
@@ -359,6 +426,33 @@ cluster_and_summarize_batteries <- function(df, k, node, antares_cluster_type, e
       efficiency = efficiency
     )
   # print(summary)
+  
+  combined_names_lst <- summary %>% pull(combined_names)
+  # print(combined_names_lst)
+  battery_name_lst <- summary %>% pull(battery_name)
+  # print(generator_name_lst)
+  n_clusters <- length(combined_names_lst) # Not always k, can be less than
+  # print(n_clusters)
+  
+  for (j in 1:n_clusters) {
+    combined_names_j <- combined_names_lst[j]
+    # C'est un bon premier truc. Ce serait un peu mieux en fait si on avait pas pris
+    # combined names et donc on a pas le deu_bio_machin_truc_bidule, mais qu'on avait vraiment
+    # la liste des trucs originaux : deu_bio_machin, deu_bio_truc...
+    # Bon, mais c'est déjà un bon premier truc qui fait à peu près ce que je veux, on verra plus tard si j'ai
+    # le temps d'améliorer
+    battery_name_j <- battery_name_lst[j]
+    if (combined_names_j != battery_name_j) {
+      msg = paste("[BATTERIES] - Clustered the similar batteries",
+                  # Différence entre ici BATTERIES et là-bas [CLUSTERING] mais en vrai
+                  # le tag CLUSTERING présent dans deux process différents serait chelou
+                  combined_names_j,
+                  "into one battery :",
+                  battery_name_j)
+      logFull(msg)
+    }
+  }
+  
   
   return(summary %>% select(-node, -antares_cluster_type, -efficiency, -combined_names))  
 }
