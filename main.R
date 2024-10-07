@@ -12,6 +12,15 @@ source("requirements.R")
 
 source("architecture.R")
 
+# Ce serait bien de faire un truc qui permet de modifier une étude.
+# peut etre createStudy, et launchSimulation devient genre edit...Study jsp
+# mais là je suis freiné de devoir touuut recréer alors que je veux juste changer
+# des hurdle costs, pour voir si le spillage reste en europe et en le soustrayant
+# on retrouve bien deane
+
+# approche TiTANesque aussi de faire une copie des choses et de travailler dessus...
+# sachant que je pourrais vouloir lancer un run et changer le code en parallèle...
+
 # Importer des fonctions et variables auxilliaires créées dans d'autres scripts
 antaresFunctions_file = file.path("src", "antaresFunctions.R",
                           fsep = .Platform$file.sep)

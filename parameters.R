@@ -4,13 +4,17 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "varia_test" # pourrait être corrélé à import_study_name en vrai
+study_basename <- "EU_hurdl" # pourrait être corrélé à import_study_name en vrai
 # ouais donc mission faire derniers ajustements (retirer CSP ou l'implémenter diff,
 # notamment... jsp si y a d'autres trucs ? clusteriser batteries ?)
 # et lancer un run monde pour voir comment bougent les histogrammes.
 # lancer rédaction du rapport en parallèle qui plongera les mains dans la doc PLEXOS, etc
 
 RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
+
+# en gros faudrait faire create/editStudy avec des overwrite de partout
+# et "create" devient aussi bien "overwrite" quand on coche/décoche dans le Excel
+
 # le test full.adjusted v full pourrait tenir en une ligne dans architecture.R, dans un monde meilleur
 
 # Et si... on essayait sans les capacity scalers ?
@@ -65,6 +69,8 @@ PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 #   dans le gitignore)
 # }
 EXPORT_TO_OUTPUT_FOLDER = TRUE
+INCLUDE_HURDLE_COSTS = TRUE
+HURDLE_COST = 0.1
 
 all_deane_nodes_lst <- readRDS(".\\src\\objects\\all_deane_nodes_lst.rds")
 deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")

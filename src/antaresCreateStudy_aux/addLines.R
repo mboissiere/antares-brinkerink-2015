@@ -90,6 +90,23 @@ addLinesToAntares <- function(nodes,
       to_node = lines_tbl$node_to[row]
       ntc_direct = lines_tbl$direct_ntc[row]
       ntc_indirect = lines_tbl$indirect_ntc[row]
+      if (INCLUDE_HURDLE_COSTS) {
+        propertiesLinkOptions(hurdles_cost = TRUE)
+      } else {
+        propertiesLinkOptions(hurdles_cost = FALSE)
+      }
+      # Sous-opti car crée de la mémoire (les TS hurdle costs) quand on les utilise pas
+      # mais en même temps pour l'instant nous empêche de bug si dataLink_df n'existe pas
+        hurdle_cost_direct_ts = rep(HURDLE_COST, 8760)
+        hurdle_cost_indirect_ts = rep(HURDLE_COST, 8760)
+        impedances_ts = rep(0, 8760)
+        loop_flow_ts = rep(0, 8760)
+        pst_min_ts = rep(0, 8760)
+        pst_max_ts = rep(0, 8760)
+        dataLink_df = data.frame(hurdle_cost_direct_ts, hurdle_cost_indirect_ts,
+                                 impedances_ts, loop_flow_ts,
+                                 pst_min_ts, pst_max_ts)
+      }
       if (!include_zero_ntc & ntc_direct == 0 & ntc_indirect == 0){
         msg = paste("[LINES] - Skipping", from_node, "to", to_node, "link (zero NTC)")
         logFull(msg)
@@ -100,7 +117,8 @@ addLinesToAntares <- function(nodes,
           createLink(
             from = from_node,
             to = to_node,
-            tsLink = ts_link
+            tsLink = ts_link,
+            dataLink = dataLink_df
           )
           msg = paste("[LINES] - Adding", from_node, "to", to_node, "line...")
           logFull(msg)

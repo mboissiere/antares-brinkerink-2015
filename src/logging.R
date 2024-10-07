@@ -9,6 +9,10 @@ library(futile.logger)
 # les études en vrai garder le YYMMDD mais en plus court.
 # les simulations... normalement on change le nom qd mm
 
+# Je pense que pour faire ça, il va clairement falloir mettre le
+# createOutputFolder dans main/ utils
+# au lieu de le limiter à un truc de readresults
+
 source("parameters.R")
 
 # NB : Initially thought logs could be in a "output" package of the function
