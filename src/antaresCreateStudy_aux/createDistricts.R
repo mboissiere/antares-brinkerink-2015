@@ -105,7 +105,7 @@ createDistrictsFromRegionalNodes <- function(nodes #,
     
     district_name <- tolower(district)
     nodes_in_district <- tolower(district_tbl$node)
-    msg = paste("[DISTRICTS] - Creating", district_name, "district from regional nodes...")
+    msg = paste("[DISTRICTS] - Creating", district_name, "national district from regional nodes...")
     logFull(msg)
     createDistrict(name = district_name,
                    #caption, comments
@@ -113,7 +113,7 @@ createDistrictsFromRegionalNodes <- function(nodes #,
                    output = TRUE #,
                    # opts = study_opts
                    )
-    msg = paste("[DISTRICTS] - Done creating", district_name, "district!")
+    msg = paste("[DISTRICTS] - Done creating", district_name, "national district!")
     logFull(msg)
     
     # print(district_name)

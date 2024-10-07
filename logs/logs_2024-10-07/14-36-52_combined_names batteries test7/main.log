@@ -1,0 +1,34 @@
+INFO [2024-10-07 14:36:53] [MAIN] - Creating combined_names batteries test7 study...
+
+INFO [2024-10-07 14:36:53] [MAIN] - Initializing output folder...
+INFO [2024-10-07 14:36:54] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-10-07 14:36:54] [MAIN] - Adding nodes...
+
+INFO [2024-10-07 14:36:56] [MAIN] - Done adding nodes! (run time : 1.87s).
+
+INFO [2024-10-07 14:36:56] [MAIN] - Adding districts...
+
+INFO [2024-10-07 14:36:57] [MAIN] - Done adding districts! (run time : 0.86s).
+
+INFO [2024-10-07 14:36:57] [MAIN] - Adding load data...
+
+INFO [2024-10-07 14:36:58] [MAIN] - Done adding load data! (run time : 1.03s).
+
+INFO [2024-10-07 14:36:58] [MAIN] - Fetching thermal data...
+INFO [2024-10-07 14:37:30] [MAIN] - Done adding thermal data! (run time : 0.53min).
+
+INFO [2024-10-07 14:37:30] [MAIN] - Fetching battery data...
+
+INFO [2024-10-07 14:37:30] [MAIN] - Aggregating identical batteries...
+INFO [2024-10-07 14:37:30] [MAIN] - Running 5-clustering algorithm on batteries...
+INFO [2024-10-07 14:37:30] [MAIN] - Done running 5-clustering algorithm on batteries!
+
+INFO [2024-10-07 14:37:38] [MAIN] - Done adding battery data! (run time : 0.13min).
+
+INFO [2024-10-07 14:37:38] [MAIN] - Adding lines between areas...
+
+INFO [2024-10-07 14:37:39] [MAIN] - Done adding lines! (run time : 1.21s).
+
+INFO [2024-10-07 14:37:39] [MAIN] - Finished setting up Antares study! (run time : 0.78min).
+ 
+

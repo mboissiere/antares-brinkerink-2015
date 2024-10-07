@@ -67,6 +67,7 @@ batteries_table_path <- file.path(OBJECTS_PATH, batteries_table_name)
 if (GENERATE_BATTERIES & (REGENERATE_OBJECTS | !file.exists(batteries_table_path))) {
   source(importBatteries_module)
   full_2015_batteries_tbl <- generateBatteriesTable(deane_all_nodes_lst)
+  print("generated abtteries table")
   saveRDS(object = full_2015_batteries_tbl,
           file = batteries_table_path)
 }

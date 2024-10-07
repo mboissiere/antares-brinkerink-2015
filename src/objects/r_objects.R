@@ -89,100 +89,100 @@ hourly_ones_datatable <- as.data.table(hourly_ones)
 # preprocessPlexosData_module = file.path("src", "data", "preprocessPlexosData.R")
 # source(preprocessPlexosData_module)
 # 
-batteries_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
-  # Initialization of batteries table with only generator names and continent of origin
-  filter(class == "Battery") %>%
-  select(name, category) %>%
-  rename(battery_name = name,
-         continent = category)
-
-# Adding country/node info to each battery
-batteries_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
-  filter(parent_class == "Battery" & child_class == "Node") %>%
-  rename(battery_name = parent_object,
-         node = child_object) %>%
-  left_join(batteries_tbl, by = "battery_name")
-
-# No need for mutating the battery names to uppercase, because no Ninja dataset.
-
-batteries_tbl <- batteries_tbl %>%
-  select(battery_name, continent, node)
-
-battery_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
-  filter(collection == "Batteries") %>% #& scenario == "{Object}Include All Storage") %>%
-  # No bueno, le include all storage est que sur units et du coup ça fait disparaitre le reste
-  # Mais comment sélectionner le bon units du coup...
-  filter(!(property == "Units" & scenario != "{Object}Include All Storage")) %>%
-  # Bien, mais ça suffit pas : il y a une duplication sur "Max Power" là où
-  # il y a à la fois includePHS et include all storage
-  # le plus simple est de virer les include PHS (même si ça veut pas dire qu'on
-  # exclut les PHS, ça vaut bien de le rendre clair ptet)
-  filter(!(property == "Max Power" & scenario == "{Object}Include PHS")) %>%
-  rename(battery_name = child_object)
-
-batteries_tbl <- batteries_tbl %>%
-  left_join(battery_properties_tbl, by = "battery_name") %>%
-  select(battery_name, continent, node, property, value)
-
-batteries_tbl <- batteries_tbl %>%
-  pivot_wider(names_from = property, values_from = value) %>%
-  mutate(
-    units = Units,
-    #capacity = 1000 * `Capacity`,
-    capacity = Capacity,
-    max_power = `Max Power`,
-    initial_state = `Initial SoC`,
-    efficiency = `Charge Efficiency`
-  )
-# In supplementary material, capacity is actually written to be in GWh !
-# Though I should try to produce a document to double check.
-
-full_2015_batteries_tbl <- batteries_tbl
-print(full_2015_batteries_tbl)
-
-# Note : I might have to manually make categories for THE, CHE, PHS etc etc...
-# Oh wait, there it is actually, since I want to filter by PHS
-
-# Define a function to extract the middle string from the battery_name
-extract_middle_string <- function(battery_name) {
-  return(substr(battery_name, 5, 7))
-}
-
-# Add the battery_group column to the tibble
-full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
-  mutate(battery_group = case_when(
-    extract_middle_string(battery_name) == "CHE" ~ "Chemical Battery",
-    extract_middle_string(battery_name) == "THE" ~ "Thermal",
-    extract_middle_string(battery_name) == "PHS" ~ "Pumped Hydro Storage",
-    extract_middle_string(battery_name) == "HYD" ~ "Hydrogen",
-    extract_middle_string(battery_name) == "CAE" ~ "Compressed Air Energy",
-    TRUE ~ NA_character_ # In case there are other types not listed
-  )) %>%
-  select(battery_name, continent, node, battery_group, units, capacity, max_power, initial_state, efficiency)
-
-# This is the part where we add Antares cluster types and it sucks
-# because it's just gonna be "Other" a bunch
-# Also, we have no way of getting intakes, so all "open-loop" PHS
-# will just be taken as closed-loop
-full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
-  mutate(cluster_type = case_when(
-    battery_group == "Pumped Hydro Storage" ~ "PSP_closed",
-    battery_group == "Chemical Battery" ~ "Battery",
-    battery_group == "Thermal" ~ "Other1",
-    battery_group == "Hydrogen" ~ "Other2",
-    battery_group == "Compressed Air Energy" ~ "Other3",
-    TRUE ~ NA_character_ # In case there are other types not listed
-  )) %>%
-  select(battery_name, continent, node, battery_group, cluster_type, units, capacity, max_power, initial_state, efficiency)
-
-
+# batteries_tbl <- getTableFromPlexos(OBJECTS_PATH) %>%
+#   # Initialization of batteries table with only generator names and continent of origin
+#   filter(class == "Battery") %>%
+#   select(name, category) %>%
+#   rename(battery_name = name,
+#          continent = category)
+# 
+# # Adding country/node info to each battery
+# batteries_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
+#   filter(parent_class == "Battery" & child_class == "Node") %>%
+#   rename(battery_name = parent_object,
+#          node = child_object) %>%
+#   left_join(batteries_tbl, by = "battery_name")
+# 
+# # No need for mutating the battery names to uppercase, because no Ninja dataset.
+# 
+# batteries_tbl <- batteries_tbl %>%
+#   select(battery_name, continent, node)
+# 
+# battery_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
+#   filter(collection == "Batteries") %>% #& scenario == "{Object}Include All Storage") %>%
+#   # No bueno, le include all storage est que sur units et du coup ça fait disparaitre le reste
+#   # Mais comment sélectionner le bon units du coup...
+#   filter(!(property == "Units" & scenario != "{Object}Include All Storage")) %>%
+#   # Bien, mais ça suffit pas : il y a une duplication sur "Max Power" là où
+#   # il y a à la fois includePHS et include all storage
+#   # le plus simple est de virer les include PHS (même si ça veut pas dire qu'on
+#   # exclut les PHS, ça vaut bien de le rendre clair ptet)
+#   filter(!(property == "Max Power" & scenario == "{Object}Include PHS")) %>%
+#   rename(battery_name = child_object)
+# 
+# batteries_tbl <- batteries_tbl %>%
+#   left_join(battery_properties_tbl, by = "battery_name") %>%
+#   select(battery_name, continent, node, property, value)
+# 
+# batteries_tbl <- batteries_tbl %>%
+#   pivot_wider(names_from = property, values_from = value) %>%
+#   mutate(
+#     units = Units,
+#     #capacity = 1000 * `Capacity`,
+#     capacity = Capacity,
+#     max_power = `Max Power`,
+#     initial_state = `Initial SoC`,
+#     efficiency = `Charge Efficiency`
+#   )
+# # In supplementary material, capacity is actually written to be in GWh !
+# # Though I should try to produce a document to double check.
+# 
+# full_2015_batteries_tbl <- batteries_tbl
 # print(full_2015_batteries_tbl)
-
-saveRDS(full_2015_batteries_tbl, file = ".\\src\\objects\\full_2015_batteries_tbl.rds")
-full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
-print(full_2015_batteries_tbl)
-full_2015_batteries_tbl <- batteries_tbl
-print(full_2015_batteries_tbl)
+# 
+# # Note : I might have to manually make categories for THE, CHE, PHS etc etc...
+# # Oh wait, there it is actually, since I want to filter by PHS
+# 
+# # Define a function to extract the middle string from the battery_name
+# extract_middle_string <- function(battery_name) {
+#   return(substr(battery_name, 5, 7))
+# }
+# 
+# # Add the battery_group column to the tibble
+# full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
+#   mutate(battery_group = case_when(
+#     extract_middle_string(battery_name) == "CHE" ~ "Chemical Battery",
+#     extract_middle_string(battery_name) == "THE" ~ "Thermal",
+#     extract_middle_string(battery_name) == "PHS" ~ "Pumped Hydro Storage",
+#     extract_middle_string(battery_name) == "HYD" ~ "Hydrogen",
+#     extract_middle_string(battery_name) == "CAE" ~ "Compressed Air Energy",
+#     TRUE ~ NA_character_ # In case there are other types not listed
+#   )) %>%
+#   select(battery_name, continent, node, battery_group, units, capacity, max_power, initial_state, efficiency)
+# 
+# # This is the part where we add Antares cluster types and it sucks
+# # because it's just gonna be "Other" a bunch
+# # Also, we have no way of getting intakes, so all "open-loop" PHS
+# # will just be taken as closed-loop
+# full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
+#   mutate(cluster_type = case_when(
+#     battery_group == "Pumped Hydro Storage" ~ "PSP_closed",
+#     battery_group == "Chemical Battery" ~ "Battery",
+#     battery_group == "Thermal" ~ "Other1",
+#     battery_group == "Hydrogen" ~ "Other2",
+#     battery_group == "Compressed Air Energy" ~ "Other3",
+#     TRUE ~ NA_character_ # In case there are other types not listed
+#   )) %>%
+#   select(battery_name, continent, node, battery_group, cluster_type, units, capacity, max_power, initial_state, efficiency)
+# 
+# 
+# # print(full_2015_batteries_tbl)
+# 
+# saveRDS(full_2015_batteries_tbl, file = ".\\src\\objects\\full_2015_batteries_tbl.rds")
+# full_2015_batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
+# print(full_2015_batteries_tbl)
+# full_2015_batteries_tbl <- batteries_tbl
+# print(full_2015_batteries_tbl)
 
 #############
 

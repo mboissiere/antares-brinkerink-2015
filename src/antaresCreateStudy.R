@@ -301,6 +301,8 @@ if (GENERATE_BATTERIES) {
   
   importBatteries_file = file.path("src", "antaresCreateStudy_aux", "importBatteries.R")
   source(importBatteries_file)
+  batteries_tbl <- full_2015_batteries_tbl %>% # Donc on utilise des objets on est d'acc ?
+    filter(node %in% NODES)
   # thermal_generators_tbl <- filterClusters(generators_tbl, THERMAL_TYPES)
   # faudrait ptet que je fasse ça pour les batteries en vrai de vrai
   if (AGGREGATE_BATTERIES) {

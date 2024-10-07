@@ -17,13 +17,16 @@ generateBatteriesTable <- function(nodes = deane_all_nodes_lst) {
     rename(battery_name = name,
            continent = category)
   
+  # print(batteries_tbl)
+  
   # Adding country/node info to each battery
   batteries_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
     filter(parent_class == "Battery" & child_class == "Node") %>%
     rename(battery_name = parent_object,
            node = child_object) %>%
-    mutate(node = tolower(node))
+    mutate(node = tolower(node)) %>%
     left_join(batteries_tbl, by = "battery_name")
+  
   
   # No need for mutating the battery names to uppercase, because no Ninja dataset.
   

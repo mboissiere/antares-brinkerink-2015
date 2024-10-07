@@ -149,30 +149,6 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
     .groups = 'drop'
   ) 
   
-  combined_names_lst <- summary %>% pull(combined_names)
-  # print(combined_names_lst)
-  generator_name_lst <- summary %>% pull(generator_name)
-  # print(generator_name_lst)
-  n_clusters <- length(combined_names_lst) # Not always k, can be less than
-  # print(n_clusters)
-  
-  for (j in 1:n_clusters) {
-    combined_names_j <- combined_names_lst[j]
-    # C'est un bon premier truc. Ce serait un peu mieux en fait si on avait pas pris
-    # combined names et donc on a pas le deu_bio_machin_truc_bidule, mais qu'on avait vraiment
-    # la liste des trucs originaux : deu_bio_machin, deu_bio_truc...
-    # Bon, mais c'est déjà un bon premier truc qui fait à peu près ce que je veux, on verra plus tard si j'ai
-    # le temps d'améliorer
-    generator_name_j <- generator_name_lst[j]
-    if (combined_names_j != generator_name_j) {
-      msg = paste("[CLUSTERING] - Clustered the similar generators",
-                  combined_names_j,
-                  "into one generator :",
-                  generator_name_j)
-      logFull(msg)
-    }
-  }
-  
   aggregated_batteries_tbl <- aggregated_batteries_tbl %>%
     mutate(battery_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
            units = total_units,
@@ -428,19 +404,11 @@ cluster_and_summarize_batteries <- function(df, k, node, antares_cluster_type, e
   # print(summary)
   
   combined_names_lst <- summary %>% pull(combined_names)
-  # print(combined_names_lst)
   battery_name_lst <- summary %>% pull(battery_name)
-  # print(generator_name_lst)
-  n_clusters <- length(combined_names_lst) # Not always k, can be less than
-  # print(n_clusters)
+  n_clusters <- length(combined_names_lst)
   
   for (j in 1:n_clusters) {
     combined_names_j <- combined_names_lst[j]
-    # C'est un bon premier truc. Ce serait un peu mieux en fait si on avait pas pris
-    # combined names et donc on a pas le deu_bio_machin_truc_bidule, mais qu'on avait vraiment
-    # la liste des trucs originaux : deu_bio_machin, deu_bio_truc...
-    # Bon, mais c'est déjà un bon premier truc qui fait à peu près ce que je veux, on verra plus tard si j'ai
-    # le temps d'améliorer
     battery_name_j <- battery_name_lst[j]
     if (combined_names_j != battery_name_j) {
       msg = paste("[BATTERIES] - Clustered the similar batteries",

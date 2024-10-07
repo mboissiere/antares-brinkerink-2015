@@ -4,7 +4,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "combined_names batteries test1"
+study_basename <- "Other1 fix threePoints"#"WorldT20B5 w hurdles 1"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -199,8 +199,10 @@ UNIT_COMMITMENT_MODE = "accurate" # "fast" or "accurate"
 GENERATE_LOAD = TRUE
 # GENERATE_REN = FALSE
 
-GENERATE_WIND = FALSE
-GENERATE_SOLAR_PV = FALSE
+GENERATE_WIND = TRUE
+# Nota bene : il mouline sur le vent (haha) même pour trois points
+# donc je pense qu'il réimporte des trucs là genre GenerateObjects style
+GENERATE_SOLAR_PV = TRUE
 # Technically my PV implementation is very bad because if I had
 # solar PV off (which i never do) then I wouldn't have CSP either.
 # But this is fiiiiiiiiiiiiine right.
@@ -215,8 +217,8 @@ GENERATE_SOLAR_CSP = FALSE
 GENERATE_LINES = TRUE
 GENERATE_THERMAL = TRUE
 # there should also be a log like... "not importing thermal"
-GENERATE_HYDRO = FALSE
-GENERATE_BATTERIES = FALSE
+GENERATE_HYDRO = TRUE
+GENERATE_BATTERIES = TRUE
 # i should really say batteries
 # bc storage will be done for csp independantly
 ## (will it ?)
