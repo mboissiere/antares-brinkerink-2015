@@ -90,13 +90,22 @@ addLinesToAntares <- function(nodes,
       to_node = lines_tbl$node_to[row]
       ntc_direct = lines_tbl$direct_ntc[row]
       ntc_indirect = lines_tbl$indirect_ntc[row]
+      
       if (INCLUDE_HURDLE_COSTS) {
-        propertiesLinkOptions(hurdles_cost = TRUE)
+        propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = TRUE)
       } else {
-        propertiesLinkOptions(hurdles_cost = FALSE)
+        propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = FALSE)
       }
-      # Sous-opti car crée de la mémoire (les TS hurdle costs) quand on les utilise pas
-      # mais en même temps pour l'instant nous empêche de bug si dataLink_df n'existe pas
+      
+      if (!include_zero_ntc & ntc_direct == 0 & ntc_indirect == 0){
+        msg = paste("[LINES] - Skipping", from_node, "to", to_node, "link (zero NTC)")
+        logFull(msg)
+      } else {
+        ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
+        # d'après l'architecture TiTAN là je devrais faire un fichier avec genre NB_HRS_IN_YEAR = 8760 mdr
+        
+        # Sous-opti car crée de la mémoire (les TS hurdle costs) quand on les utilise pas
+        # mais en même temps pour l'instant nous empêche de bug si dataLink_df n'existe pas
         hurdle_cost_direct_ts = rep(HURDLE_COST, 8760)
         hurdle_cost_indirect_ts = rep(HURDLE_COST, 8760)
         impedances_ts = rep(0, 8760)
@@ -106,17 +115,12 @@ addLinesToAntares <- function(nodes,
         dataLink_df = data.frame(hurdle_cost_direct_ts, hurdle_cost_indirect_ts,
                                  impedances_ts, loop_flow_ts,
                                  pst_min_ts, pst_max_ts)
-      }
-      if (!include_zero_ntc & ntc_direct == 0 & ntc_indirect == 0){
-        msg = paste("[LINES] - Skipping", from_node, "to", to_node, "link (zero NTC)")
-        logFull(msg)
-      } else {
-        ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
-        # d'après l'architecture TiTAN là je devrais faire un fichier avec genre NB_HRS_IN_YEAR = 8760 mdr
+        
         tryCatch({
           createLink(
             from = from_node,
             to = to_node,
+            propertiesLink = propertiesLink_lst,
             tsLink = ts_link,
             dataLink = dataLink_df
           )

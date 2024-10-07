@@ -88,8 +88,10 @@ NODES = deane_europe_nodes_lst
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
 
 
-REGENERATE_OBJECTS = TRUE # if true, will recreate all R objects.
+REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
+# bug actuel : il regénère les objects genre 3 fois. j'ai 3 fois le "oui euh found duplicates"
+# ce qui est insupportable mdrrr
 
 # Je crois que cette feature merde parce qu'il y a un loop infini de saveObjects
 # qui appelle generate et vice versa

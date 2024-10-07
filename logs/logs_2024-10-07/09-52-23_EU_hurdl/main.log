@@ -1,0 +1,33 @@
+INFO [2024-10-07 09:52:23] [MAIN] - Creating EU_hurdl__2024_10_07_09_52_23 study...
+
+INFO [2024-10-07 09:52:23] [MAIN] - Initializing output folder...
+INFO [2024-10-07 09:52:24] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-10-07 09:52:25] [MAIN] - Adding nodes...
+
+INFO [2024-10-07 09:52:36] [MAIN] - Done adding nodes! (run time : 11.83s).
+
+INFO [2024-10-07 09:52:36] [MAIN] - Adding districts...
+
+INFO [2024-10-07 09:52:38] [MAIN] - Done adding districts! (run time : 1.18s).
+
+INFO [2024-10-07 09:52:38] [MAIN] - Adding load data...
+
+INFO [2024-10-07 09:52:50] [MAIN] - Done adding load data! (run time : 12.76s).
+
+INFO [2024-10-07 09:52:50] [MAIN] - Fetching wind data...
+
+INFO [2024-10-07 09:52:58] [WIND] - Saving aggregated wind data to output folder...
+INFO [2024-10-07 09:53:12] [WIND] - Done saving aggregated wind data to output folder!
+INFO [2024-10-07 09:53:12] [MAIN] - Done adding wind data! (run time : 21.97s).
+
+INFO [2024-10-07 09:53:12] [MAIN] - Fetching solar data...
+
+INFO [2024-10-07 09:53:19] [MAIN] - Done adding solar data! (run time : 7.12s).
+
+INFO [2024-10-07 09:53:20] [MAIN] - Adding lines between areas...
+
+INFO [2024-10-07 09:53:48] [MAIN] - Done adding lines! (run time : 28.67s).
+
+INFO [2024-10-07 09:53:48] [MAIN] - Finished setting up Antares study! (run time : 1.42min).
+ 
+
