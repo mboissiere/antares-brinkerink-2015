@@ -14,6 +14,13 @@ source(".\\src\\antaresReadResults_aux\\RR_config.R")
 source(".\\src\\antaresReadResults_aux\\RR_utils.R")
 source(".\\src\\antaresReadResults_aux\\getAntaresData.R")
 
+# ERREUR CRUCIALE :
+# la création d'objets et entre autres d'output folder est dans saveObjects que j'ai foutu dans createStudy je crois
+# donc, l'output folder ne se crée pas si on a uniquement configuré un readResults parce que
+# la simu a déjà existé ailleurs..
+# EDIT : à peu près fix mais y a quand même un Graphs séparé alors que ça devrait être
+# une dichotomie Study data / Simulations data
+
 setRam(16)
 
 study_info <- importAntaresData()
@@ -62,7 +69,7 @@ if (save_deane_comparisons) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveGenerationDeaneComparison(output_dir)
+  saveGenerationDeaneComparison(output_folder)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -73,7 +80,7 @@ if (save_deane_comparisons) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveEmissionsDeaneComparison(output_dir)
+  saveEmissionsDeaneComparison(output_folder)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -93,7 +100,7 @@ if (save_import_export) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveImportExportRanking(output_dir)
+  saveImportExportRanking(output_folder)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -113,14 +120,14 @@ source(".\\src\\antaresReadResults_aux\\getProductionStacks.R") # hm
 if (save_daily_production_stacks) {
   
   # Mettre ici le log, timer, main, afin de pouvoir écrire "daily/hourly"
-  saveAllProductionStacks(output_dir, "daily", "2015-01-01", "2015-12-31", color_palette)
+  saveAllProductionStacks(output_folder, "daily", "2015-01-01", "2015-12-31", color_palette)
   
 }
 
 if (save_hourly_production_stacks) {
   
-  saveAllProductionStacks(output_dir, "hourly", "2015-01-01", "2015-01-08", color_palette)
-  saveAllProductionStacks(output_dir, "hourly", "2015-07-01", "2015-07-08", color_palette)
+  saveAllProductionStacks(output_folder, "hourly", "2015-01-01", "2015-01-08", color_palette)
+  saveAllProductionStacks(output_folder, "hourly", "2015-07-01", "2015-07-08", color_palette)
   
 }
 
@@ -144,7 +151,7 @@ if (save_load_monotones) {
       start_time <- Sys.time()
       
       unit <- preferred_unit_by_mode[[mode]]
-      saveLoadMonotone(output_dir, mode, unit) 
+      saveLoadMonotone(output_folder, mode, unit) 
       
       end_time <- Sys.time()
       duration <- round(difftime(end_time, start_time, units = "mins"), 2)

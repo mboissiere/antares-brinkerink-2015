@@ -251,6 +251,8 @@ if (GENERATE_THERMAL) {
   source(importThermal_file)
   #print(generators_tbl)
   #print(THERMAL_TYPES)
+  base_generators_properties_tbl <- readRDS(base_generators_properties_path)
+  # pk y a cette dépendance ici j'ai juré
   thermal_generators_tbl <- filterClusters(base_generators_properties_tbl, THERMAL_TYPES) %>%
     filter(node %in% NODES)
   # Quel immense bordel tout de même....;
@@ -301,6 +303,7 @@ if (GENERATE_BATTERIES) {
   
   importBatteries_file = file.path("src", "antaresCreateStudy_aux", "importBatteries.R")
   source(importBatteries_file)
+  full_2015_batteries_tbl <- readRDS(batteries_table_path)
   batteries_tbl <- full_2015_batteries_tbl %>% # Donc on utilise des objets on est d'acc ?
     filter(node %in% NODES)
   # print(batteries_tbl)

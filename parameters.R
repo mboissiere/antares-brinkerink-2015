@@ -4,7 +4,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "Other1 fix threePoints 4"#"WorldT20B5 w hurdles 1"
+study_basename <- "WorldT20B5 UniformVoLL v1"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -64,7 +64,7 @@ CREATE_STUDY = TRUE
 # continent/monde, d'abord vide puis avec une simulation....
 
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
-IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
+IMPORT_STUDY_NAME = "WorldT20B5 w hurdles v4"  # "v2_20clu__2024_09_04_22_33_36"
 # IMPORT_STUDY_NAME = "EU_clutest__2024_09_10_21_29_47"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
@@ -75,7 +75,7 @@ LAUNCH_SIMULATION_NAME = "acc_test"
 INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
-IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
+IMPORT_SIMULATION_NAME =  "20241008-0629eco-accurateUCM" # "20240905-0707eco-world_vOutages_accurateUCM"
 # IMPORT_SIMULATION_NAME = "20240905-0707eco-20240910-2240eco-renewabletest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
@@ -94,6 +94,7 @@ PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 EXPORT_TO_OUTPUT_FOLDER = TRUE
 INCLUDE_HURDLE_COSTS = TRUE
 HURDLE_COST = 0.1
+UNIFORM_VOLL = TRUE
 
 deane_all_nodes_lst <- readRDS(".\\src\\objects\\deane_all_nodes_lst.rds")
 deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
@@ -107,7 +108,7 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # NODES = deane_europe_nodes_lst
 # NODES = deane_all_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
-NODES = c("eu-che", "eu-deu", "eu-fra")
+# NODES = c("eu-che", "eu-deu", "eu-fra")
 
 # ptet faire un paramètre "catchExceptions" pour pouvoir genre.
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
@@ -123,9 +124,9 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # ah quoique ptet c juste long
 
 
-# NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
-#           "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
-#           "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
+NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
+          "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
+          "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
 # un bon échantillon de test pour maintenance rate, mais pour réajuster les histogrammes
 # il faudra tout mettre ! cf dernier CR
 

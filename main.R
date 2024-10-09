@@ -55,12 +55,18 @@ setRam(16)
 
 # source("parameters.R")
 
-if (EXPORT_TO_OUTPUT_FOLDER) {
-  output_dir <- paste0("./output/", generateName("run"))
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir)
-  }
-}
+msg = paste("[MAIN] - Initializing output folder...")
+logMain(msg)
+source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
+output_folder <- initializeOutputFolderStudy(study_name)
+study_folder <- file.path(output_folder, STUDY_DATA_FOLDER_NAME)
+
+# if (EXPORT_TO_OUTPUT_FOLDER) {
+#   output_dir <- paste0("./output/", generateName("run"))
+#   if (!dir.exists(output_dir)) {
+#     dir.create(output_dir)
+#   }
+# }
 # apparemment le format h5 sert à compresser tout ça ?
 # # Convert your study in h5 format
 # writeAntaresH5(path = mynewpath)

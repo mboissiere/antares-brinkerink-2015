@@ -204,7 +204,12 @@ addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
     area_lon = nodes_tbl$lon[row]
     area_color = nodes_tbl$antares_color[row]
     if (add_voll) {
-      area_voll = nodes_tbl$voll[row]
+      if (UNIFORM_VOLL) {
+        area_voll = 130
+        
+      } else {
+        area_voll = nodes_tbl$voll[row]
+      }
     }
     
     x = area_lon * scaling_factor

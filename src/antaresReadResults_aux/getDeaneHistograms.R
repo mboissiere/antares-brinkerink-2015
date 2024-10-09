@@ -17,7 +17,7 @@ saveContinentalGenerationHistograms <- function(output_dir,
   genr_histo_dir <- file.path(output_dir, folder_name, "Generation histograms")
   
   if (!dir.exists(genr_histo_dir)) {
-    dir.create(genr_histo_dir)
+    dir.create(genr_histo_dir, recursive = TRUE)
   }
   # print(genr_histo_dir)
   
@@ -112,7 +112,7 @@ saveGenerationDeaneComparison <- function(output_dir,
   genr_histo_dir <- file.path(output_dir, folder_name, "Generation histograms")
   
   if (!dir.exists(genr_histo_dir)) {
-    dir.create(genr_histo_dir)
+    dir.create(genr_histo_dir, recursive = TRUE)
   }
   
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
