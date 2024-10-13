@@ -82,6 +82,7 @@ if (save_deane_comparisons) {
   start_time <- Sys.time()
   
   saveEmissionsDeaneComparison(output_dir)
+  saveWorldEmissionsDeaneComparison(output_dir)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)

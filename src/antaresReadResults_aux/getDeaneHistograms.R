@@ -213,15 +213,15 @@ saveWorldGenerationDeaneComparison <- function(output_dir,
   continental_data <- getContinentalAntaresData(timestep)
   continental_tbl <- as_tibble(continental_data)
   
-  print(continental_tbl)
+  # print(continental_tbl)
   
   global_data <- getGlobalAntaresData(timestep)
   global_tbl <- as_tibble(global_data)
   
-  print(global_tbl)
+  # print(global_tbl)
   
   global_and_continents_tbl <- bind_rows(global_tbl, continental_tbl)
-  print(global_and_continents_tbl)
+  # print(global_and_continents_tbl)
   
   folder_name <- graphs_folder_names_by_mode["global"]
   genr_histo_dir <- file.path(output_dir, folder_name, "Generation histograms")
@@ -321,7 +321,8 @@ saveWorldGenerationDeaneComparison <- function(output_dir,
            y = "TWh",
            fill = "Type") +
       theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            panel.grid.major.x = element_blank())  # Remove vertical grid lines
     
     msg = "[DEANE] - Saving generation comparisons for the world..."
     logFull(msg)
@@ -548,114 +549,62 @@ plexos_world_emission_values_twh <- tibble(
 )
 
 
-saveWorldGenerationDeaneComparison <- function(output_dir,
+saveWorldEmissionsDeaneComparison <- function(output_dir,
                                                timestep = "annual",
                                                benchmark_values = benchmark_world_emission_values_twh,
                                                plexos_values = plexos_world_emission_values_twh
 ) {
   
-  # Get the observed data
-  continental_data <- getContinentalAntaresData(timestep)
-  continental_tbl <- as_tibble(continental_data)
+  msg = "[DEANE] - Computing world CO2 emissions in Antares study..."
+  logFull(msg)
+  world_pollution_tbl <- getGlobalPollution()
+  msg = "[DEANE] - Done computing world CO2 emissions!"
+  logFull(msg)
   
-  print(continental_tbl)
   
-  global_data <- getGlobalAntaresData(timestep)
-  global_tbl <- as_tibble(global_data)
-  
-  print(global_tbl)
-  
-  global_and_continents_tbl <- bind_rows(global_tbl, continental_tbl)
-  print(global_and_continents_tbl)
+  # columns "area" and "pollution_tons"
   
   folder_name <- graphs_folder_names_by_mode["global"]
   emis_histo_dir <- file.path(output_dir, folder_name, "Emissions histograms")
+  
+  antares_pollution_tbl <- world_pollution_tbl %>%
+    mutate(total_emissions_mtco2 = pollution_tons / TONS_IN_MEGATON) %>%
+    select(area, total_emissions_mtco2)
+  
+  # Combine with theoretical data
+  
+  antares_long_tbl <- antares_pollution_tbl %>%
+    select(area, total_emissions_mtco2) %>%
+    mutate(Type = "CO2 Antares")
+  
+  benchmark_long_tbl <- benchmark_values %>%
+    mutate(Type = "CO2 Benchmark")
+  
+  plexos_long_tbl <- plexos_values %>%
+    mutate(Type = "CO2 PLEXOS")
+  
+  combined_long_tbl <- bind_rows(benchmark_long_tbl, plexos_long_tbl, antares_long_tbl) %>%
+    mutate(Type = factor(Type, levels = c("CO2 Benchmark", "CO2 PLEXOS", "CO2 Antares")))
+  
+  
+  print(combined_long_tbl)
   
   if (!dir.exists(emis_histo_dir)) {
     dir.create(emis_histo_dir, recursive = TRUE)
   }
   
-  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
-  
-  # Rename variables in observed data and calculate values
-  global_and_continents_tbl <- global_and_continents_tbl %>%
-    # rename(`Bio and Waste` = `MIX. FUEL`,
-    #        Coal = COAL,
-    #        Gas = GAS,
-    #        Geothermal = `MISC. DTG`,
-    #        Hydro = `H. STOR`,
-    #        Nuclear = NUCLEAR, 
-    #        Oil = OIL,
-    #        Solar = SOLAR,
-    #        Wind = WIND
-    # ) %>%
-    mutate(total_generation =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL 
-           + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-           total_generation_twh = total_generation / MWH_IN_TWH) %>%
-    select(area, total_generation_twh)
-  
-  # print(global_and_continents_tbl)
-  
-  global_and_continents_tbl <- global_and_continents_tbl %>%
-    mutate(area = recode(area, 
-                         "world" = "Global", 
-                         "africa" = "Africa", 
-                         "asia" = "Asia", 
-                         "europe" = "Europe", 
-                         "north america" = "North America", 
-                         "oceania" = "Oceania", 
-                         "south america" = "South America")) %>%
-    arrange(desc(total_generation_twh))
-  
-  # print(global_and_continents_tbl)
-  
-  # Reshape the theoretical data into long format
-  benchmark_long_tbl <- benchmark_values %>%
-    pivot_longer(cols = total_generation_twh, 
-                 names_to = "All Technologies", 
-                 values_to = "Generation") %>%
-    mutate(Type = "TWh Benchmark")
-  
-  # Reshape the theoretical data into long format
-  plexos_long_tbl <- plexos_values %>%
-    pivot_longer(cols = total_generation_twh, 
-                 names_to = "All Technologies", 
-                 values_to = "Generation") %>%
-    mutate(Type = "TWh PLEXOS")
-  
-  # Reshape the observed data into long format
-  antares_long_tbl <- global_and_continents_tbl %>%
-    pivot_longer(cols = total_generation_twh, 
-                 names_to = "All Technologies", 
-                 values_to = "Generation") %>%
-    mutate(Type = "TWh Antares")
-  
-  # # Combine observed and theoretical data
-  # combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl)
-  
-  # Adjust the order of bars by modifying the 'Type' factor levels
-  combined_long_tbl <- bind_rows(benchmark_long_tbl, plexos_long_tbl, antares_long_tbl) %>%
-    mutate(Type = factor(Type, levels = c("TWh Benchmark", "TWh PLEXOS", "TWh Antares")))
-  
-  # print(combined_long_tbl)
-  
-  # Plot generation histograms for each continent
-  
-  # # Reorder 'area' based on the 'Generation' values in descending order
-  # Needs forcats package
-  # combined_long_tbl <- combined_long_tbl %>%
-  #   mutate(area = fct_reorder(area, Generation, .desc = TRUE))
+  # continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   
   # Reorder 'area' based on 'Generation' in descending order without using forcats
   combined_long_tbl <- combined_long_tbl %>%
-    mutate(area = factor(area, levels = unique(area[order(-Generation)])))
+    mutate(area = factor(area, levels = unique(area[order(-total_emissions_mtco2)])))
   
   
-  p <- ggplot(combined_long_tbl, aes(x = area, y = Generation, fill = Type)) +
+  p <- ggplot(combined_long_tbl, aes(x = area, y = total_emissions_mtco2, fill = Type)) +
     geom_bar(stat = "identity", position = "dodge", color = "black") +
     
     # Round the values displayed in the captions
-    geom_text(aes(label = round(Generation, 0)), 
+    geom_text(aes(label = round(total_emissions_mtco2, 0)), 
               vjust = -0.5, 
               color = "black", 
               size = 2.5, 
@@ -667,7 +616,9 @@ saveWorldGenerationDeaneComparison <- function(output_dir,
          y = "Mton",
          fill = "Type") +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          panel.grid.major.x = element_blank())  # Remove vertical grid lines
+  
   
   msg = "[DEANE] - Saving emissions comparisons for the world..."
   logFull(msg)
