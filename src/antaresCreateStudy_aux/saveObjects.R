@@ -4,6 +4,7 @@ STUDY_DATA_FOLDER_NAME = "Antares input - Study data"
 SIMUS_DATA_FOLDER_NAME = "Antares output - Simulations data"
 
 initializeOutputFolderStudy <- function(study_name = IMPORT_STUDY_NAME) {
+  # EUH PK C'EST IMPORT STUDY NAME PAR DEFAUT ALORS QUE CA PEUT ETRE UN CREATE STUDY........
   
   # output_dir <- truncateString(output_dir, 75) # temp number for testing
   # Can actually be too long for Windows. Maximum is 260, we should find what the max file is.

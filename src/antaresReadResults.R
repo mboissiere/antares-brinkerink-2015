@@ -69,7 +69,8 @@ if (save_deane_comparisons) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveGenerationDeaneComparison(output_folder)
+  saveGenerationDeaneComparison(output_dir)
+  saveWorldGenerationDeaneComparison(output_dir)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -80,7 +81,7 @@ if (save_deane_comparisons) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveEmissionsDeaneComparison(output_folder)
+  saveEmissionsDeaneComparison(output_dir)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -100,7 +101,7 @@ if (save_import_export) {
   logMain(msg)
   start_time <- Sys.time()
   
-  saveImportExportRanking(output_folder)
+  saveImportExportRanking(output_dir)
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -120,14 +121,14 @@ source(".\\src\\antaresReadResults_aux\\getProductionStacks.R") # hm
 if (save_daily_production_stacks) {
   
   # Mettre ici le log, timer, main, afin de pouvoir écrire "daily/hourly"
-  saveAllProductionStacks(output_folder, "daily", "2015-01-01", "2015-12-31", color_palette)
+  saveAllProductionStacks(output_dir, "daily", "2015-01-01", "2015-12-31", color_palette)
   
 }
 
 if (save_hourly_production_stacks) {
   
-  saveAllProductionStacks(output_folder, "hourly", "2015-01-01", "2015-01-08", color_palette)
-  saveAllProductionStacks(output_folder, "hourly", "2015-07-01", "2015-07-08", color_palette)
+  saveAllProductionStacks(output_dir, "hourly", "2015-01-01", "2015-01-08", color_palette)
+  saveAllProductionStacks(output_dir, "hourly", "2015-07-01", "2015-07-08", color_palette)
   
 }
 
@@ -151,7 +152,7 @@ if (save_load_monotones) {
       start_time <- Sys.time()
       
       unit <- preferred_unit_by_mode[[mode]]
-      saveLoadMonotone(output_folder, mode, unit) 
+      saveLoadMonotone(output_dir, mode, unit) 
       
       end_time <- Sys.time()
       duration <- round(difftime(end_time, start_time, units = "mins"), 2)

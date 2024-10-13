@@ -187,6 +187,152 @@ saveGenerationDeaneComparison <- function(output_dir,
   }
 }
 
+#########
+# A ECHELLE MONDE MTN
+
+# Je pourrais accoler benchmark aussi en vrai..
+
+benchmark_world_generation_values_twh <- tibble(
+  area = c("Global", "Asia", "North America", "Europe", "South America", "Africa", "Oceania"),
+  total_generation_twh = c(24267, 12880, 5389, 3873, 1143, 774, 297)
+)
+
+deane_world_generation_values_twh <- tibble(
+  area = c("Global", "Asia", "North America", "Europe", "South America", "Africa", "Oceania"),
+  total_generation_twh = c(24092, 12636, 5386, 3874, 1111, 784, 301)
+)
+
+
+saveWorldGenerationDeaneComparison <- function(output_dir,
+                                          timestep = "annual",
+                                          benchmark_values = benchmark_world_generation_values_twh,
+                                          plexos_values = deane_world_generation_values_twh
+) {
+  
+  # Get the observed data
+  continental_data <- getContinentalAntaresData(timestep)
+  continental_tbl <- as_tibble(continental_data)
+  
+  print(continental_tbl)
+  
+  global_data <- getGlobalAntaresData(timestep)
+  global_tbl <- as_tibble(global_data)
+  
+  print(global_tbl)
+  
+  global_and_continents_tbl <- bind_rows(global_tbl, continental_tbl)
+  print(global_and_continents_tbl)
+  
+  folder_name <- graphs_folder_names_by_mode["global"]
+  genr_histo_dir <- file.path(output_dir, folder_name, "Generation histograms")
+  
+  if (!dir.exists(genr_histo_dir)) {
+    dir.create(genr_histo_dir, recursive = TRUE)
+  }
+  
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+  
+  # Rename variables in observed data and calculate values
+  global_and_continents_tbl <- global_and_continents_tbl %>%
+    # rename(`Bio and Waste` = `MIX. FUEL`,
+    #        Coal = COAL,
+    #        Gas = GAS,
+    #        Geothermal = `MISC. DTG`,
+    #        Hydro = `H. STOR`,
+    #        Nuclear = NUCLEAR, 
+    #        Oil = OIL,
+    #        Solar = SOLAR,
+    #        Wind = WIND
+    # ) %>%
+    mutate(total_generation =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL 
+           + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+           total_generation_twh = total_generation / MWH_IN_TWH) %>%
+    select(area, total_generation_twh)
+  
+  # print(global_and_continents_tbl)
+  
+  global_and_continents_tbl <- global_and_continents_tbl %>%
+    mutate(area = recode(area, 
+                         "world" = "Global", 
+                         "africa" = "Africa", 
+                         "asia" = "Asia", 
+                         "europe" = "Europe", 
+                         "north america" = "North America", 
+                         "oceania" = "Oceania", 
+                         "south america" = "South America")) %>%
+    arrange(desc(total_generation_twh))
+  
+  # print(global_and_continents_tbl)
+  
+  # Reshape the theoretical data into long format
+  benchmark_long_tbl <- benchmark_values %>%
+    pivot_longer(cols = total_generation_twh, 
+                 names_to = "All Technologies", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh Benchmark")
+  
+  # Reshape the theoretical data into long format
+  plexos_long_tbl <- plexos_values %>%
+    pivot_longer(cols = total_generation_twh, 
+                 names_to = "All Technologies", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh PLEXOS")
+  
+  # Reshape the observed data into long format
+  antares_long_tbl <- global_and_continents_tbl %>%
+    pivot_longer(cols = total_generation_twh, 
+                 names_to = "All Technologies", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh Antares")
+  
+  # # Combine observed and theoretical data
+  # combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl)
+  
+  # Adjust the order of bars by modifying the 'Type' factor levels
+  combined_long_tbl <- bind_rows(benchmark_long_tbl, plexos_long_tbl, antares_long_tbl) %>%
+    mutate(Type = factor(Type, levels = c("TWh Benchmark", "TWh PLEXOS", "TWh Antares")))
+  
+  # print(combined_long_tbl)
+  
+  # Plot generation histograms for each continent
+  
+  # # Reorder 'area' based on the 'Generation' values in descending order
+  # Needs forcats package
+  # combined_long_tbl <- combined_long_tbl %>%
+  #   mutate(area = fct_reorder(area, Generation, .desc = TRUE))
+  
+  # Reorder 'area' based on 'Generation' in descending order without using forcats
+  combined_long_tbl <- combined_long_tbl %>%
+    mutate(area = factor(area, levels = unique(area[order(-Generation)])))
+  
+    
+    p <- ggplot(combined_long_tbl, aes(x = area, y = Generation, fill = Type)) +
+      geom_bar(stat = "identity", position = "dodge", color = "black") +
+      
+      # Round the values displayed in the captions
+      geom_text(aes(label = round(Generation, 0)), 
+                vjust = -0.5, 
+                color = "black", 
+                size = 2.5, 
+                position = position_dodge(width = 0.9))+
+      
+      scale_fill_manual(values = c("TWh Benchmark" = "#117C10", "TWh PLEXOS" = "#334D73", "TWh Antares" = "#00B2FF")) +
+      labs(title = "Generation comparison (TWh)",
+           y = "TWh",
+           fill = "Type") +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    msg = "[DEANE] - Saving generation comparisons for the world..."
+    logFull(msg)
+    png_path = file.path(genr_histo_dir, "world_generation_comparison.png")
+    ggsave(filename = png_path, plot = p, 
+           width = 4*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
+           dpi = DPI_300)
+    msg = "[DEANE] - Done saving generation comparisons for the world!"
+    logFull(msg)
+  }
+
 
 ###############################
 ### EMISSIONS
@@ -387,6 +533,150 @@ saveEmissionsDeaneComparison <- function(output_dir,
     msg = paste("[DEANE] - Done saving emissions comparisons for", cont, "continent!")
     logFull(msg)
   }
+}
+
+### world time babey
+
+benchmark_world_emission_values_twh <- tibble(
+  area = c("Global", "Asia", "North America", "Europe", "Africa", "South America", "Oceania"),
+  total_emissions_mtco2 = c(13421, 8896, 2263, 1302, 497, 265, 197)
+)
+
+plexos_world_emission_values_twh <- tibble(
+  area = c("Global", "Asia", "North America", "Europe", "Africa", "South America", "Oceania"),
+  total_emissions_mtco2 = c(13244, 8734, 2260, 1337, 478, 235, 200)
+)
+
+
+saveWorldGenerationDeaneComparison <- function(output_dir,
+                                               timestep = "annual",
+                                               benchmark_values = benchmark_world_emission_values_twh,
+                                               plexos_values = plexos_world_emission_values_twh
+) {
+  
+  # Get the observed data
+  continental_data <- getContinentalAntaresData(timestep)
+  continental_tbl <- as_tibble(continental_data)
+  
+  print(continental_tbl)
+  
+  global_data <- getGlobalAntaresData(timestep)
+  global_tbl <- as_tibble(global_data)
+  
+  print(global_tbl)
+  
+  global_and_continents_tbl <- bind_rows(global_tbl, continental_tbl)
+  print(global_and_continents_tbl)
+  
+  folder_name <- graphs_folder_names_by_mode["global"]
+  emis_histo_dir <- file.path(output_dir, folder_name, "Emissions histograms")
+  
+  if (!dir.exists(emis_histo_dir)) {
+    dir.create(emis_histo_dir, recursive = TRUE)
+  }
+  
+  continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+  
+  # Rename variables in observed data and calculate values
+  global_and_continents_tbl <- global_and_continents_tbl %>%
+    # rename(`Bio and Waste` = `MIX. FUEL`,
+    #        Coal = COAL,
+    #        Gas = GAS,
+    #        Geothermal = `MISC. DTG`,
+    #        Hydro = `H. STOR`,
+    #        Nuclear = NUCLEAR, 
+    #        Oil = OIL,
+    #        Solar = SOLAR,
+    #        Wind = WIND
+    # ) %>%
+    mutate(total_generation =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL 
+           + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+           total_generation_twh = total_generation / MWH_IN_TWH) %>%
+    select(area, total_generation_twh)
+  
+  # print(global_and_continents_tbl)
+  
+  global_and_continents_tbl <- global_and_continents_tbl %>%
+    mutate(area = recode(area, 
+                         "world" = "Global", 
+                         "africa" = "Africa", 
+                         "asia" = "Asia", 
+                         "europe" = "Europe", 
+                         "north america" = "North America", 
+                         "oceania" = "Oceania", 
+                         "south america" = "South America")) %>%
+    arrange(desc(total_generation_twh))
+  
+  # print(global_and_continents_tbl)
+  
+  # Reshape the theoretical data into long format
+  benchmark_long_tbl <- benchmark_values %>%
+    pivot_longer(cols = total_generation_twh, 
+                 names_to = "All Technologies", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh Benchmark")
+  
+  # Reshape the theoretical data into long format
+  plexos_long_tbl <- plexos_values %>%
+    pivot_longer(cols = total_generation_twh, 
+                 names_to = "All Technologies", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh PLEXOS")
+  
+  # Reshape the observed data into long format
+  antares_long_tbl <- global_and_continents_tbl %>%
+    pivot_longer(cols = total_generation_twh, 
+                 names_to = "All Technologies", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh Antares")
+  
+  # # Combine observed and theoretical data
+  # combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl)
+  
+  # Adjust the order of bars by modifying the 'Type' factor levels
+  combined_long_tbl <- bind_rows(benchmark_long_tbl, plexos_long_tbl, antares_long_tbl) %>%
+    mutate(Type = factor(Type, levels = c("TWh Benchmark", "TWh PLEXOS", "TWh Antares")))
+  
+  # print(combined_long_tbl)
+  
+  # Plot generation histograms for each continent
+  
+  # # Reorder 'area' based on the 'Generation' values in descending order
+  # Needs forcats package
+  # combined_long_tbl <- combined_long_tbl %>%
+  #   mutate(area = fct_reorder(area, Generation, .desc = TRUE))
+  
+  # Reorder 'area' based on 'Generation' in descending order without using forcats
+  combined_long_tbl <- combined_long_tbl %>%
+    mutate(area = factor(area, levels = unique(area[order(-Generation)])))
+  
+  
+  p <- ggplot(combined_long_tbl, aes(x = area, y = Generation, fill = Type)) +
+    geom_bar(stat = "identity", position = "dodge", color = "black") +
+    
+    # Round the values displayed in the captions
+    geom_text(aes(label = round(Generation, 0)), 
+              vjust = -0.5, 
+              color = "black", 
+              size = 2.5, 
+              position = position_dodge(width = 0.9))+
+    
+    # "CO2 Antares" = "#FFB800", "CO2 PLEXOS" = "#336F73"
+    scale_fill_manual(values = c("CO2 Benchmark" = "#B93333", "CO2 PLEXOS" = "#336F73", "CO2 Antares" = "#FFB800")) +
+    labs(title = "Emissions comparison (CO2)",
+         y = "Mton",
+         fill = "Type") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  msg = "[DEANE] - Saving emissions comparisons for the world..."
+  logFull(msg)
+  png_path = file.path(emis_histo_dir, "world_emissions_comparison.png")
+  ggsave(filename = png_path, plot = p, 
+         width = 4*HEIGHT_720P/DPI_300, height = 2*HEIGHT_720P/DPI_300,
+         dpi = DPI_300)
+  msg = "[DEANE] - Done saving emissions comparisons for the world!"
+  logFull(msg)
 }
 
 ######

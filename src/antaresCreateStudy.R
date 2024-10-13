@@ -27,9 +27,9 @@ study_path = file.path(base_path, study_name,
                        fsep = .Platform$file.sep)
 
 
-msg = paste("[MAIN] - Initializing output folder...")
-logMain(msg)
-source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
+# msg = paste("[MAIN] - Initializing output folder...")
+# logMain(msg)
+# source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
 output_folder <- initializeOutputFolderStudy(study_name)
 study_folder <- file.path(output_folder, STUDY_DATA_FOLDER_NAME)
 # EN PAUSE, MAIS Y REVENIR PLUS TARD

@@ -2,9 +2,16 @@
 
 # Objets en snake_case, fonctions en camelCase
 
+# UTILISER LES OBJECTS POUR FAIRE UNE COPIE DES PARAMETRES ET LE STOCKER ET
+# TRAVAILLER LA DESSUS. ON GOD.
+# PARCE QUE SINON IMPOSSIBILITE DE MODIF PARAMETRES POUR LANCER DEUX ETUDES DIFF
+# ex une uniform voll + hurdle costs. les hurdle costs vont se mettre à la toute fin
+# sur la création des lignes donc ça va être pendant que je rompiche si je lance la nuit.
+# Et jsute NODES en fait qui est appelé à tout bout de champ.
+
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "WorldT20B5 UniformVoLL v1"
+study_basename <- "WorldT20B5 UnifVoLL_hurdles v3"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -56,7 +63,7 @@ RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = TRUE
+CREATE_STUDY = FALSE
 # Faire un paramètre genre "duplicate to input" qui copie preset dans input
 # au lieu de le garder seulement dans antares
 # voire, réussir à ne plus passer par le dossier antares (mais j'y crois peu..)
@@ -64,7 +71,8 @@ CREATE_STUDY = TRUE
 # continent/monde, d'abord vide puis avec une simulation....
 
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
-IMPORT_STUDY_NAME = "WorldT20B5 w hurdles v4"  # "v2_20clu__2024_09_04_22_33_36"
+# IMPORT_STUDY_NAME = "WorldT20B5 UniformVoLL v3" # "WorldT20B5 w hurdles v4"  # 
+IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 # IMPORT_STUDY_NAME = "EU_clutest__2024_09_10_21_29_47"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
@@ -74,12 +82,13 @@ IMPORT_STUDY_NAME = "WorldT20B5 w hurdles v4"  # "v2_20clu__2024_09_04_22_33_36"
 LAUNCH_SIMULATION_NAME = "acc_test"
 INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
+IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
-IMPORT_SIMULATION_NAME =  "20241008-0629eco-accurateUCM" # "20240905-0707eco-world_vOutages_accurateUCM"
+# IMPORT_SIMULATION_NAME =  "20241010-0740eco-accurate_test-2" # "20241008-0629eco-accurateUCM" # "20240905-0707eco-world_vOutages_accurateUCM"
 # IMPORT_SIMULATION_NAME = "20240905-0707eco-20240910-2240eco-renewabletest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = FALSE
+READ_RESULTS = TRUE
 # svp avancer sur export des résultats en tableau et sur division des CF par 100 en clusters
 
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
@@ -106,9 +115,16 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 
 # NODES = "eu-ita"
 # NODES = deane_europe_nodes_lst
-# NODES = deane_all_nodes_lst
+NODES = deane_all_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 # NODES = c("eu-che", "eu-deu", "eu-fra")
+
+# NODES = tolower(c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
+          # "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
+          # "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO"))
+# un bon échantillon de test pour maintenance rate, mais pour réajuster les histogrammes
+# il faudra tout mettre ! cf dernier CR
+
 
 # ptet faire un paramètre "catchExceptions" pour pouvoir genre.
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
@@ -124,12 +140,6 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # ah quoique ptet c juste long
 
 
-NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
-          "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
-          "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO")
-# un bon échantillon de test pour maintenance rate, mais pour réajuster les histogrammes
-# il faudra tout mettre ! cf dernier CR
-
 # NB : toutes les fonctions qui ré-appellent "NODES" en misant dessus / sans faire
 # jsp une intersection avec le jeu de données ou quoi, sont pas si robustes.
 # en effet si on a envie de faire tourner deux sessions R en même temps, on peut overwrite
@@ -142,11 +152,11 @@ NODES = c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", 
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = TRUE
-save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
+save_daily_production_stacks = FALSE
+save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
-save_load_monotones = TRUE
+save_load_monotones = FALSE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
 save_import_export = TRUE

@@ -1,0 +1,46 @@
+INFO [2024-10-11 11:41:16] [MAIN] - Initializing output folder...
+INFO [2024-10-11 11:41:19] [MAIN] - Creating WorldT20B5 UnifVoLL_hurdles v3 study...
+
+INFO [2024-10-11 11:41:19] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-10-11 11:41:19] [MAIN] - Adding nodes...
+
+INFO [2024-10-11 11:44:33] [MAIN] - Done adding nodes! (run time : 193.76s).
+
+INFO [2024-10-11 11:44:33] [MAIN] - Adding districts...
+
+INFO [2024-10-11 11:44:54] [MAIN] - Done adding districts! (run time : 20.63s).
+
+INFO [2024-10-11 11:44:54] [MAIN] - Adding load data...
+
+INFO [2024-10-11 11:49:23] [MAIN] - Done adding load data! (run time : 268.85s).
+
+INFO [2024-10-11 11:49:23] [MAIN] - Fetching wind data...
+
+INFO [2024-10-11 11:52:04] [WIND] - Saving aggregated wind data to output folder...
+INFO [2024-10-11 11:52:34] [WIND] - Done saving aggregated wind data to output folder!
+INFO [2024-10-11 11:52:34] [MAIN] - Done adding wind data! (run time : 191.23s).
+
+INFO [2024-10-11 11:52:34] [MAIN] - Fetching solar data...
+
+INFO [2024-10-11 11:55:17] [MAIN] - Done adding solar data! (run time : 163.05s).
+
+INFO [2024-10-11 11:55:17] [MAIN] - Beginning hydro implementation...
+INFO [2024-10-11 12:29:04] [MAIN] - Done adding hydro!
+INFO [2024-10-11 12:29:04] [MAIN] - Fetching thermal data...
+INFO [2024-10-11 14:35:59] [MAIN] - Done adding thermal data! (run time : 126.91min).
+
+INFO [2024-10-11 14:35:59] [MAIN] - Fetching battery data...
+
+INFO [2024-10-11 14:35:59] [MAIN] - Aggregating identical batteries...
+INFO [2024-10-11 14:35:59] [MAIN] - Running 5-clustering algorithm on batteries...
+INFO [2024-10-11 14:36:02] [MAIN] - Done running 5-clustering algorithm on batteries!
+
+INFO [2024-10-11 15:00:45] [MAIN] - Done adding battery data! (run time : 24.76min).
+
+INFO [2024-10-11 15:00:45] [MAIN] - Adding lines between areas...
+
+INFO [2024-10-11 15:10:57] [MAIN] - Done adding lines! (run time : 611.71s).
+
+INFO [2024-10-11 15:10:57] [MAIN] - Finished setting up Antares study! (run time : 209.63min).
+ 
+
