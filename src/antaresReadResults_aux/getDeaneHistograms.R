@@ -83,7 +83,21 @@ saveContinentalGenerationHistograms <- function(output_dir,
 ## WITH DEANE COMPARISON
 source(".\\src\\utils.R")
 
-deane_generation_values_twh <- tibble(
+benchmark_generation_values_twh <- tibble(
+  area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
+  `Bio and Waste` = c(2, 155, 205, 100, 4, 62),
+  Coal = c(255, 6547, 930, 1576, 160, 67),
+  Gas = c(285, 2746, 576, 1643, 59, 229),
+  Geothermal = c(4, 28, 12, 29, 8, 0),
+  Hydro = c(124, 1866, 609, 706, 39, 647),
+  Nuclear = c(12, 623, 971, 943, 0, 22),
+  Oil = c(81, 580, 64, 125, 7, 87),
+  Solar = c(3, 94, 110, 38, 6, 2),
+  Wind = c(8, 241, 306, 229, 14, 27)
+  # Other technologies...
+)
+
+plexos_generation_values_twh <- tibble(
   area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
   `Bio and Waste` = c(2, 138, 203, 100, 4, 60),
   Coal = c(255, 6551, 921, 1578, 161, 67),
@@ -101,7 +115,8 @@ deane_generation_values_twh <- tibble(
 
 saveGenerationDeaneComparison <- function(output_dir,
                                           timestep = "annual",
-                                          theoretical_values = deane_generation_values_twh
+                                          benchmark_values = benchmark_generation_values_twh,
+                                          plexos_values = plexos_generation_values_twh
 ) {
   
   # Get the observed data
@@ -133,25 +148,32 @@ saveGenerationDeaneComparison <- function(output_dir,
     select(area, new_deane_result_variables)
   
   # Reshape the observed data into long format
-  observed_long_tbl <- continental_tbl %>%
+  antares_long_tbl <- continental_tbl %>%
     pivot_longer(cols = all_of(new_deane_result_variables), 
                  names_to = "Technology", 
                  values_to = "Generation") %>%
     mutate(Type = "TWh Antares")
   
   # Reshape the theoretical data into long format
-  theoretical_long_tbl <- theoretical_values %>%
+  benchmark_long_tbl <- benchmark_values %>%
+    pivot_longer(cols = all_of(new_deane_result_variables), 
+                 names_to = "Technology", 
+                 values_to = "Generation") %>%
+    mutate(Type = "TWh Benchmark")
+  
+  plexos_long_tbl <- plexos_values %>%
     pivot_longer(cols = all_of(new_deane_result_variables), 
                  names_to = "Technology", 
                  values_to = "Generation") %>%
     mutate(Type = "TWh PLEXOS")
   
+  
   # # Combine observed and theoretical data
   # combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl)
   
   # Adjust the order of bars by modifying the 'Type' factor levels
-  combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
-    mutate(Type = factor(Type, levels = c("TWh PLEXOS", "TWh Antares")))
+  combined_long_tbl <- bind_rows(benchmark_long_tbl, plexos_long_tbl, antares_long_tbl) %>%
+    mutate(Type = factor(Type, levels = c("TWh Benchmark", "TWh PLEXOS", "TWh Antares")))
   
   # Plot generation histograms for each continent
   for (cont in continents) {
@@ -166,15 +188,19 @@ saveGenerationDeaneComparison <- function(output_dir,
       geom_text(aes(label = round(Generation, 0)), 
                 vjust = -0.5, 
                 color = "black", 
-                size = 3.5, 
+                size = 3, 
                 position = position_dodge(width = 0.9))+
       
-      scale_fill_manual(values = c("TWh Antares" = "#00B2FF", "TWh PLEXOS" = "#334D73")) +
+      scale_fill_manual(values = c("TWh Benchmark" = "#117C10", "TWh Antares" = "#00B2FF", "TWh PLEXOS" = "#334D73")) +
       labs(title = paste("Generation comparison", capitalize_words(cont), "(TWh)"),
            y = "TWh",
+           x = "",
            fill = "Type") +
       theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            panel.grid.major.x = element_blank(),  # Remove vertical grid lines
+            legend.position = "bottom",  # Position the legend at the bottom
+            legend.direction = "horizontal")  # Make the legend horizontal
     
     msg = paste("[DEANE] - Saving generation comparisons for", cont, "continent...")
     logFull(msg)
@@ -313,16 +339,19 @@ saveWorldGenerationDeaneComparison <- function(output_dir,
       geom_text(aes(label = round(Generation, 0)), 
                 vjust = -0.5, 
                 color = "black", 
-                size = 2.5, 
+                size = 3, 
                 position = position_dodge(width = 0.9))+
       
       scale_fill_manual(values = c("TWh Benchmark" = "#117C10", "TWh PLEXOS" = "#334D73", "TWh Antares" = "#00B2FF")) +
       labs(title = "Generation comparison (TWh)",
            y = "TWh",
+           x = "",
            fill = "Type") +
       theme_minimal() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
-            panel.grid.major.x = element_blank())  # Remove vertical grid lines
+            panel.grid.major.x = element_blank(),  # Remove vertical grid lines
+            legend.position = "bottom",  # Position the legend at the bottom
+            legend.direction = "horizontal")  # Make the legend horizontal
     
     msg = "[DEANE] - Saving generation comparisons for the world..."
     logFull(msg)
@@ -425,7 +454,15 @@ saveContinentalEmissionHistograms <- function(output_dir,
 
 source(".\\src\\antaresReadResults_aux\\getPollutionByFuel.R")
 
-deane_emissions_values_MtCO2 <- tibble(
+benchmark_emissions_values_MtCO2 <- tibble(
+  area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
+  Total = c(497, 8976, 1303, 2263, 197, 265),
+  Oil = c(87, 552, 55, 95, 5, 79),
+  Gas = c(134, 1578, 285, 692, 31, 113),
+  Coal = c(276, 6766, 962, 1476, 161, 73)
+)
+
+plexos_emissions_values_MtCO2 <- tibble(
   area = c("africa", "asia", "europe", "north america", "oceania", "south america"),
   Total = c(478, 8734, 1337, 2260, 200, 235),
   Oil = c(42, 474, 49, 95, 7, 53),
@@ -439,7 +476,12 @@ deane_emissions_values_MtCO2 <- tibble(
 # And what if I did... per capita
 # because these are hard to interpret with population differences....
 
-deane_emissions_values_MtCO2 <- deane_emissions_values_MtCO2 %>%
+benchmark_emissions_values_MtCO2 <- benchmark_emissions_values_MtCO2 %>%
+  pivot_longer(cols = c("Coal", "Gas", "Oil", "Total"), 
+               names_to = "fuel", 
+               values_to = "pollution_megatons")
+
+plexos_emissions_values_MtCO2 <- plexos_emissions_values_MtCO2 %>%
   pivot_longer(cols = c("Coal", "Gas", "Oil", "Total"), 
                names_to = "fuel", 
                values_to = "pollution_megatons")
@@ -448,7 +490,8 @@ deane_emissions_values_MtCO2 <- deane_emissions_values_MtCO2 %>%
 
 saveEmissionsDeaneComparison <- function(output_dir,
                                          timestep = "annual",
-                                         theoretical_values = deane_emissions_values_MtCO2
+                                         benchmark_values = benchmark_emissions_values_MtCO2,
+                                         plexos_values = plexos_emissions_values_MtCO2
 ) {
   
   # timestep = "annual"
@@ -481,11 +524,14 @@ saveEmissionsDeaneComparison <- function(output_dir,
   #   summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
   
   # Combine with theoretical data
-  observed_long_tbl <- continent_pollution_Mtons_tbl %>%
+  antares_long_tbl <- continent_pollution_Mtons_tbl %>%
     select(area, fuel, pollution_megatons) %>%
     mutate(Type = "CO2 Antares")
   
-  theoretical_long_tbl <- theoretical_values %>%
+  benchmark_long_tbl <- benchmark_values %>%
+    mutate(Type = "CO2 Benchmark")
+  
+  plexos_long_tbl <- plexos_values %>%
     # pivot_longer(cols = c("Coal", "Gas", "Oil", "Total"), 
     #              names_to = "fuel", 
     #              values_to = "pollution_megatons") %>%
@@ -493,9 +539,9 @@ saveEmissionsDeaneComparison <- function(output_dir,
     ## i mean, unless we wanna change that.
     mutate(Type = "CO2 PLEXOS")
   
-  combined_long_tbl <- bind_rows(observed_long_tbl, theoretical_long_tbl) %>%
+  combined_long_tbl <- bind_rows(benchmark_long_tbl, plexos_long_tbl, antares_long_tbl) %>%
     mutate(fuel = factor(fuel, levels = c("Total", "Oil", "Gas", "Coal")),
-           Type = factor(Type, levels = c("CO2 PLEXOS", "CO2 Antares"))
+           Type = factor(Type, levels = c("CO2 Benchmark", "CO2 PLEXOS", "CO2 Antares"))
     )
   
   folder_name <- graphs_folder_names_by_mode["continental"]
@@ -517,13 +563,16 @@ saveEmissionsDeaneComparison <- function(output_dir,
       geom_text(aes(label = round(pollution_megatons, 0)), 
                 vjust = -0.5, size = 3, color = "black", 
                 position = position_dodge(width = 0.9)) +
-      scale_fill_manual(values = c("CO2 Antares" = "#FFB800", "CO2 PLEXOS" = "#336F73")) +
+      scale_fill_manual(values = c("CO2 Benchmark" = "#B93333", "CO2 PLEXOS" = "#336F73", "CO2 Antares" = "#FFB800")) +
       labs(title = paste("Emissions comparison", capitalize_words(cont), "(CO2)"),
-           x = "Fuel",
            y = "MTon",
+           x = "",
            fill = "Type") +
       theme_minimal() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+            panel.grid.major.x = element_blank(),  # Remove vertical grid lines
+            legend.position = "bottom",  # Position the legend at the bottom
+            legend.direction = "horizontal")  # Make the legend horizontal
     
     msg = paste("[DEANE] - Saving emissions comparisons for", cont, "continent...")
     logFull(msg)
@@ -607,17 +656,20 @@ saveWorldEmissionsDeaneComparison <- function(output_dir,
     geom_text(aes(label = round(total_emissions_mtco2, 0)), 
               vjust = -0.5, 
               color = "black", 
-              size = 2.5, 
+              size = 3, 
               position = position_dodge(width = 0.9))+
     
     # "CO2 Antares" = "#FFB800", "CO2 PLEXOS" = "#336F73"
     scale_fill_manual(values = c("CO2 Benchmark" = "#B93333", "CO2 PLEXOS" = "#336F73", "CO2 Antares" = "#FFB800")) +
     labs(title = "Emissions comparison (CO2)",
          y = "Mton",
+         x = "",
          fill = "Type") +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          panel.grid.major.x = element_blank())  # Remove vertical grid lines
+          panel.grid.major.x = element_blank(),  # Remove vertical grid lines
+          legend.position = "bottom",  # Position the legend at the bottom
+          legend.direction = "horizontal")  # Make the legend horizontal
   
   
   msg = "[DEANE] - Saving emissions comparisons for the world..."

@@ -159,7 +159,7 @@ divide_stacks_by_hours = TRUE
 save_load_monotones = FALSE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
-save_import_export = TRUE
+save_import_export = FALSE
 
 # save_deane_histograms = FALSE # deprecated jcrois
 save_deane_comparisons = TRUE
