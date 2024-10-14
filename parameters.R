@@ -152,17 +152,17 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = FALSE
-save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
+save_daily_production_stacks = TRUE
+save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
-save_load_monotones = FALSE
+save_load_monotones = TRUE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
 
 save_import_export = FALSE
 
 # save_deane_histograms = FALSE # deprecated jcrois
-save_deane_comparisons = TRUE
+save_deane_comparisons = FALSE
 # devrait etre en 1er vu comment c'est rapide
 
 save_global_graphs = TRUE

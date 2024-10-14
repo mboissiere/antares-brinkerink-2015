@@ -22,6 +22,10 @@ saveGlobalProductionStack <- function(output_dir,
   }
   
   # global_unit = "TWh"
+  if (divide_stacks_by_hours) {
+    unit_legend <- paste0(substr(unit, 1, nchar(unit) - 1), "e")
+    # Changes TWh into TWe for the legend lmao
+  }
   
   stack_plot <- prodStack(
     x = global_data,
@@ -29,7 +33,7 @@ saveGlobalProductionStack <- function(output_dir,
     areas = "world",
     dateRange = c(start_date, end_date),
     timeStep = timestep,
-    main = paste(timestep, "2015 production stack for the world in", unit),
+    main = paste("Stack of the", timestep, "2015 production for the world in", unit_legend),
     unit = unit,
     interactive = FALSE
   )
@@ -72,6 +76,10 @@ saveContinentalProductionStacks <- function(output_dir,
   continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
   # It's probably still this way because of setsimPath... urgh
   
+  if (divide_stacks_by_hours) {
+    unit_legend <- paste0(substr(unit, 1, nchar(unit) - 1), "e")
+    # Changes TWh into TWe for the legend lmao
+  }
   
   for (cont in continents) {
     stack_plot <- prodStack(
@@ -80,7 +88,7 @@ saveContinentalProductionStacks <- function(output_dir,
       areas = cont,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste(timestep, "2015 production stack for", cont, "in", unit),
+      main = paste("Stack for the", timestep, "2015 production for", cont, "in", unit_legend),
       unit = unit,
       interactive = FALSE
     )
@@ -134,6 +142,11 @@ saveNationalProductionStacks <- function(output_dir,
   # ah, perhaps not. because antaresRead is just reading from setSimPath here.
   # so it doesn't take in account what we did. bit annoying that.
   
+  if (divide_stacks_by_hours) {
+    unit_legend <- paste0(substr(unit, 1, nchar(unit) - 1), "e")
+    # Changes TWh into TWe for the legend lmao
+  }
+  
   for (ctry in countries) {
     stack_plot <- prodStack(
       x = national_data,
@@ -141,7 +154,7 @@ saveNationalProductionStacks <- function(output_dir,
       areas = ctry,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste(timestep, "2015 production stack for", ctry, "in", unit),
+      main = paste("Stack for the", timestep, "2015 production for", ctry, "in", unit_legend),
       unit = unit,
       interactive = FALSE
     )
@@ -190,6 +203,11 @@ saveRegionalProductionStacks <- function(output_dir,
   
   regions <- getAreas(select = REGIONS, regexpSelect = FALSE)
   
+  if (divide_stacks_by_hours) {
+    unit_legend <- paste0(substr(unit, 1, nchar(unit) - 1), "e")
+    # Changes TWh into TWe for the legend lmao
+  }
+  
   for (regn in regions) {
     # se généralise en fait ok à partir du moment où on peut faire un for machin in trucs
     # et pour world, le trucs c'est juste "world". on peut l'appeler "planets" même mdr. earth.
@@ -200,7 +218,7 @@ saveRegionalProductionStacks <- function(output_dir,
       areas = regn,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste(timestep, "2015 production stack for", regn, "in", unit),
+      main = paste("Stack for the", timestep, "2015 production for", regn, "in", unit_legend),
       unit = unit,
       interactive = FALSE
     )

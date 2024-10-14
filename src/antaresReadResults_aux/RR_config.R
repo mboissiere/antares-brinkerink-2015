@@ -73,8 +73,8 @@ preferred_unit_by_mode <- c(
 
 # Une piste pour pouvoir faire des programmes qui généralisent, mais bon, c'est relou pour l'instant
 
-prodstack_height <- HEIGHT_4K
-prodstack_width <- 2 * HEIGHT_4K
+prodstack_height <- HEIGHT_HD
+prodstack_width <- 2 * HEIGHT_HD
 
 monotone_height = HEIGHT_HD
 monotone_width = 2 * HEIGHT_HD
