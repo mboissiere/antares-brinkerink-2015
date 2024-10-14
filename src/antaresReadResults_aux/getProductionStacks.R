@@ -33,7 +33,7 @@ saveGlobalProductionStack <- function(output_dir,
     areas = "world",
     dateRange = c(start_date, end_date),
     timeStep = timestep,
-    main = paste("Stack of the", timestep, "2015 production for the world in", unit_legend),
+    main = paste("Stack of the", timestep, "2015 production for the world in", unit_legend, "from", start_date, "to", end_date),
     unit = unit,
     interactive = FALSE
   )
@@ -81,14 +81,36 @@ saveContinentalProductionStacks <- function(output_dir,
     # Changes TWh into TWe for the legend lmao
   }
   
+  mutated_data <- continental_data %>%
+    #filter(area == "europe") %>%
+    mutate(PRODUCTION = NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL 
+           + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`)
+    #select(LOAD, PRODUCTION)
+  
+  # print(europe_max)
+  
+  max_load <- max(your_tibble$LOAD, na.rm = TRUE)
+  max_total_production <- max(your_tibble$TOTAL_PRODUCTION, na.rm = TRUE)
+  
+  yMax <- 1.1 * max(max_load, max_total_production)
+  
   for (cont in continents) {
+    cont_tbl <- mutated_data %>%
+      filter(area == cont)
+    
+    max_load <- max(cont_tbl$LOAD, na.rm = TRUE)
+    max_production <- max(cont_tbl$PRODUCTION, na.rm = TRUE)
+    
+    yMax_cont <- 1.1 * max(max_load, max_production)
+    
     stack_plot <- prodStack(
       x = continental_data,
       stack = stack_palette,
       areas = cont,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste("Stack for the", timestep, "2015 production for", cont, "in", unit_legend),
+      yMax = yMax_cont,
+      main = paste("Stack for the", timestep, "2015 production for", cont, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,
       interactive = FALSE
     )
@@ -154,7 +176,7 @@ saveNationalProductionStacks <- function(output_dir,
       areas = ctry,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste("Stack for the", timestep, "2015 production for", ctry, "in", unit_legend),
+      main = paste("Stack for the", timestep, "2015 production for", ctry, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,
       interactive = FALSE
     )
@@ -218,7 +240,7 @@ saveRegionalProductionStacks <- function(output_dir,
       areas = regn,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste("Stack for the", timestep, "2015 production for", regn, "in", unit_legend),
+      main = paste("Stack for the", timestep, "2015 production for", regn, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,
       interactive = FALSE
     )

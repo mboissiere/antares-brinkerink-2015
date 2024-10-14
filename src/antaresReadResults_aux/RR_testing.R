@@ -29,8 +29,6 @@ setSimulationPath(study_path, simulation_name)
 districts <- getDistricts()
 print(districts)
 
-#######################
-
 
 # library(dplyr)
 # library(tidyr)
@@ -248,30 +246,61 @@ summary_tbl <- continental_data %>%
 
 print(summary_tbl)
 
-## Deuxieme graphe pertinent : Prod v Prod par moyen à la maille monde
+# ## Deuxieme graphe pertinent : Prod v Prod par moyen à la maille monde
+# 
+# global_data <- getGlobalAntaresData("annual")
+# global_data <- as_tibble(global_data) 
+# # Moyens de Deane seulement
+# global_data <- global_data %>%
+#   rename(BIOENERGY = `MIX. FUEL`,
+#          GEOTHERMAL = `MISC. DTG`,
+#          HYDRO = `H. STOR`) %>%
+#   select(BIOENERGY, COAL, GAS, GEOTHERMAL, HYDRO, NUCLEAR, OIL, SOLAR, WIND)
+# 
+# # print(global_data)
+# 
+# 
+# #### Juste comme intro de mon rapport : mix en Europe
+# base_generators_properties_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/base_generators_properties_tbl.rds")
+# europe_electric_mix <- base_generators_properties_tbl %>%
+#   filter(continent == "europe") %>%
+#   group_by(node, plexos_fuel_type) %>%
+#   summarise(total_capacity = sum(nominal_capacity * nb_units, na.rm = TRUE)) %>%
+#   select(node, total_capacity, plexos_fuel_type) %>%
+#   pivot_wider(names_from = plexos_fuel_type, values_from = total_capacity, values_fill = 0) %>%
+#   rename(Geothermal = Other) %>%
+#   select(node, Solar, Wind, Hydro, Geothermal)
+# 
+# print(europe_electric_mix, n = 50)
 
-global_data <- getGlobalAntaresData("annual")
-global_data <- as_tibble(global_data) 
-# Moyens de Deane seulement
-global_data <- global_data %>%
-  rename(BIOENERGY = `MIX. FUEL`,
-         GEOTHERMAL = `MISC. DTG`,
-         HYDRO = `H. STOR`) %>%
-  select(BIOENERGY, COAL, GAS, GEOTHERMAL, HYDRO, NUCLEAR, OIL, SOLAR, WIND)
 
-# print(global_data)
+#######################
+
+# TEST : GRAPHES HORAIRES AVEC YMAX
+
+##########
 
 
-#### Juste comme intro de mon rapport : mix en Europe
-base_generators_properties_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/base_generators_properties_tbl.rds")
-europe_electric_mix <- base_generators_properties_tbl %>%
-  filter(continent == "europe") %>%
-  group_by(node, plexos_fuel_type) %>%
-  summarise(total_capacity = sum(nominal_capacity * nb_units, na.rm = TRUE)) %>%
-  select(node, total_capacity, plexos_fuel_type) %>%
-  pivot_wider(names_from = plexos_fuel_type, values_from = total_capacity, values_fill = 0) %>%
-  rename(Geothermal = Other) %>%
-  select(node, Solar, Wind, Hydro, Geothermal)
+continental_data <- getContinentalAntaresData("hourly")
+continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
 
-print(europe_electric_mix, n = 50)
+print(continental_data)
+print(continents)
+
+europe_max <- as_tibble(continental_data) %>%
+  filter(area == "europe") %>%
+  mutate(PRODUCTION = NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL 
+         + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`) %>%
+  select(LOAD, PRODUCTION)
+
+print(europe_max)
   
+max_load <- max(your_tibble$LOAD, na.rm = TRUE)
+max_total_production <- max(your_tibble$TOTAL_PRODUCTION, na.rm = TRUE)
+
+yMax <- 1.1 * max(max_load, max_total_production)
+
+print(europe_max)
+
+
+

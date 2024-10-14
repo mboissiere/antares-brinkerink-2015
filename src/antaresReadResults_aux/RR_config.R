@@ -76,8 +76,8 @@ preferred_unit_by_mode <- c(
 prodstack_height <- HEIGHT_HD
 prodstack_width <- 2 * HEIGHT_HD
 
-monotone_height = HEIGHT_HD
-monotone_width = 2 * HEIGHT_HD
+monotone_height = HEIGHT_720P
+monotone_width = 2 * HEIGHT_720P
 monotone_resolution = DPI_150
 
 importexport_height <- HEIGHT_4K

@@ -152,7 +152,7 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = TRUE
+save_daily_production_stacks = FALSE
 save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 

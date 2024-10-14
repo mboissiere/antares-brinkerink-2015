@@ -128,8 +128,8 @@ if (save_daily_production_stacks) {
 
 if (save_hourly_production_stacks) {
   
-  saveAllProductionStacks(output_dir, "hourly", "2015-01-05", "2015-01-12", color_palette)
-  saveAllProductionStacks(output_dir, "hourly", "2015-07-06", "2015-07-13", color_palette)
+  saveAllProductionStacks(output_dir, "hourly", "2015-01-05", "2015-01-11", color_palette)
+  saveAllProductionStacks(output_dir, "hourly", "2015-07-06", "2015-07-12", color_palette)
   
 }
 
