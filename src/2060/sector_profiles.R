@@ -34,13 +34,13 @@ getTableFromCastillo <- function(castillo_data_path) {
 }
 
 industry_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekday_SSP2.txt"
-industry_weekday_tbl <- getTableFromCastillo(industry_weekday_datapath, 2015)
+industry_weekday_tbl <- getTableFromCastillo(industry_weekday_datapath)
 # Wow c'est fou comment ça marche bien vs Excel
 
 print(industry_weekday_tbl)
 
 industry_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekend_SSP2.txt"
-industry_weekend_tbl <- getTableFromCastillo(industry_weekend_datapath, 2015)
+industry_weekend_tbl <- getTableFromCastillo(industry_weekend_datapath)
 # Wow c'est fou comment ça marche bien vs Excel
 
 print(industry_weekend_tbl)
@@ -71,7 +71,7 @@ days_per_month <- function(year) {
 
 generate_blank_hourly_tbl <- function(study_year) {
   days_lst <- days_per_month(study_year)
-  print(days_lst)
+  # print(days_lst)
   # hourly_ts <- tibble(timeID = NA, year = NA, month = NA, day = NA, hour = NA)
   timeId_ts = seq(1, 8760)
   # print(timeId_ts)
@@ -80,13 +80,20 @@ generate_blank_hourly_tbl <- function(study_year) {
   month_ts = c()
   day_ts = c()
   for (m in 1:12) {
+    # print(paste("m =", m))
     nb_days <- days_lst[m]
-    print(nb_days)
-    month_ts <- c(month_ts, rep(m, nb_days))
-    day_ts <- c(day_ts, seq(1, nb_days))
+    month_ts <- c(month_ts, rep(m, nb_days * 24))
+    for (d in 1:nb_days) {
+      day_ts <- c(day_ts, rep(d, 24))
+    }
+    # print(nb_days)
+    # month_ts <- c(month_ts, rep(rep(m, nb_days), 24))
+    # print(month_ts)
+    # day_ts <- c(day_ts, seq(1, nb_days))
+    # print(day_ts)
   }
-  print(month_ts)
-  print(day_ts)
+  # print(month_ts)
+  # print(day_ts)
   # Tant pis pour les leap year eh vazy
   hour_ts <- rep(seq(1,24), 365)
   # print(hour_ts)
@@ -99,9 +106,42 @@ generate_blank_hourly_tbl <- function(study_year) {
   return(hourly_tbl)
 }
 
+hourly_tbl <- generate_blank_hourly_tbl(2015)
+# print(hourly_tbl, n = 1500)
+# Big ça marche
 
-preprocessCastilloSector <- function(weekday_data_tbl,
-                                     weekend_data_tbl,
-                                     study_year) {
-  weekda
+# preprocessCastilloSector <- function(weekday_data_tbl,
+#                                      weekend_data_tbl,
+#                                      study_year) {
+#   weekda
+# }
+
+hourly_tbl_test <- generate_blank_hourly_tbl(2015) %>%
+  #mutate(is_weekday = isWeekday(year, month, day))
+  # un case_when !
+  # mutate(usa_industry = case_when(
+  #   isWeekday(year, month, day) ~ # faudrait un truc pour fetch rapidement valeur
+  #   # 
+  #   # grepl("Sto$", plexos_fuel_group) ~ "Other 2",
+  #   # grepl("Wav$", plexos_fuel_group) ~ "Other 3",
+  #   # grepl("Oth$", plexos_fuel_group) ~ "Other 4",
+  #   TRUE ~ NA_character_  # For unrelated child_object values (other)
+  # )) %>%
+print(hourly_tbl_test, n = 500)
+
+fetch_value <- function(demand_tbl, given_year, given_month, given_hour, region) {
+  request <- demand_tbl %>%
+    filter(year == given_year & Month == given_month & Hour == given_hour) %>%
+    pull(region)
+  
+  return(request)
 }
+fetch_test <- fetch_value(industry_weekday_tbl, 2015, 1, 1, "USA")
+print(fetch_test)
+fetch_test <- fetch_value(industry_weekend_tbl, 2015, 1, 1, "USA")
+print(fetch_test)
+
+industry_tbl_test <- industry_weekday_tbl %>% 
+  filter(year == 2015) %>%
+  select(year, Month, Hour, USA) # On va regarder USA là pour l'instant allez
+print(industry_tbl_test)
