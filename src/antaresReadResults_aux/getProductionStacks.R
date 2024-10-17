@@ -84,15 +84,27 @@ saveContinentalProductionStacks <- function(output_dir,
   mutated_data <- continental_data %>%
     #filter(area == "europe") %>%
     mutate(PRODUCTION = NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL 
-           + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`)
+           + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+           NEGATIVE = - PSP_closed_injection - Battery_injection - Other1_injection
+           - Other2_injection - Other3_injection - BALANCE -`SPIL. ENRG`)
+  
+  # `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+  # `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+  # `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+  # `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+  # `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+  # 
+  # `Imports/Exports` = -BALANCE,
+  # Defaillance = `UNSP. ENRG`,
+  # Ecretement = -`SPIL. ENRG`
     #select(LOAD, PRODUCTION)
   
   # print(europe_max)
-  
-  max_load <- max(your_tibble$LOAD, na.rm = TRUE)
-  max_total_production <- max(your_tibble$TOTAL_PRODUCTION, na.rm = TRUE)
-  
-  yMax <- 1.1 * max(max_load, max_total_production)
+  # 
+  # max_load <- max(mutated_data$LOAD, na.rm = TRUE)
+  # max_total_production <- max(mutated_data$TOTAL_PRODUCTION, na.rm = TRUE)
+  # 
+  # yMax <- 1.1 * max(max_load, max_total_production)
   
   for (cont in continents) {
     cont_tbl <- mutated_data %>%
@@ -101,7 +113,10 @@ saveContinentalProductionStacks <- function(output_dir,
     max_load <- max(cont_tbl$LOAD, na.rm = TRUE)
     max_production <- max(cont_tbl$PRODUCTION, na.rm = TRUE)
     
-    yMax_cont <- 1.1 * max(max_load, max_production)
+    min_negative <- min(cont_tbl$NEGATIVE, na.rm = TRUE)
+    
+    yMax_cont <- 1.05 * max(max_load, max_production) / 1000 # it's in GW...
+    yMin_cont <- 1.05 * min_negative / 1000 # it's in GW...
     
     stack_plot <- prodStack(
       x = continental_data,
@@ -109,6 +124,7 @@ saveContinentalProductionStacks <- function(output_dir,
       areas = cont,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
+      yMin = yMin_cont,
       yMax = yMax_cont,
       main = paste("Stack for the", timestep, "2015 production for", cont, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,

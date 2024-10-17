@@ -153,7 +153,7 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # print(NODES)
 
 save_daily_production_stacks = FALSE
-save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
+save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
 save_load_monotones = TRUE
@@ -165,10 +165,10 @@ save_import_export = FALSE
 save_deane_comparisons = FALSE
 # devrait etre en 1er vu comment c'est rapide
 
-save_global_graphs = TRUE
+save_global_graphs = FALSE
 save_continental_graphs = TRUE
-save_national_graphs = TRUE
-save_regional_graphs = TRUE
+save_national_graphs = FALSE
+save_regional_graphs = FALSE
 
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,

@@ -281,26 +281,65 @@ print(summary_tbl)
 ##########
 
 
-continental_data <- getContinentalAntaresData("hourly")
-continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+# continental_data <- getContinentalAntaresData("hourly")
+# continents <- getDistricts(select = CONTINENTS, regexpSelect = FALSE)
+# 
+# print(continental_data)
+# print(continents)
+# 
+# europe_max <- as_tibble(continental_data) %>%
+#   filter(area == "europe") %>%
+#   mutate(PRODUCTION = NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL 
+#          + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`) %>%
+#   select(LOAD, PRODUCTION)
+# 
+# print(europe_max)
+#   
+# max_load <- max(your_tibble$LOAD, na.rm = TRUE)
+# max_total_production <- max(your_tibble$TOTAL_PRODUCTION, na.rm = TRUE)
+# 
+# yMax <- 1.1 * max(max_load, max_total_production)
+# 
+# print(europe_max)
 
-print(continental_data)
-print(continents)
 
-europe_max <- as_tibble(continental_data) %>%
-  filter(area == "europe") %>%
-  mutate(PRODUCTION = NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL 
-         + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`) %>%
-  select(LOAD, PRODUCTION)
-
-print(europe_max)
-  
-max_load <- max(your_tibble$LOAD, na.rm = TRUE)
-max_total_production <- max(your_tibble$TOTAL_PRODUCTION, na.rm = TRUE)
-
-yMax <- 1.1 * max(max_load, max_total_production)
-
-print(europe_max)
+## TEST : sauvegarde de courbe conso monde dans un CSV
 
 
+global_annual_data <- getGlobalAntaresData("annual")
+global_hourly_data <- getGlobalAntaresData("hourly")
+global_daily_data <- getGlobalAntaresData("daily")
+
+print(global_annual_data)
+print(global_daily_data)
+print(global_hourly_data)
+
+csv_path = ".\\output\\RR_testing_csvs"
+
+write.table(global_annual_data,
+            file = file.path(csv_path, "global_annual_data.csv"),
+            sep = ",",
+            dec = ".",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+            )
+
+write.table(global_daily_data,
+            file = file.path(csv_path, "global_daily_data.csv"),
+            sep = ",",
+            dec = ".",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+)
+
+write.table(global_hourly_data,
+            file = file.path(csv_path, "global_hourly_data.csv"),
+            sep = ",",
+            dec = ".",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+            )
 

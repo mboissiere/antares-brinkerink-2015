@@ -6,7 +6,7 @@ source(".\\src\\antaresReadResults_aux\\colorPalettes.R")
 
 saveLoadMonotone <- function(output_dir,
                              mode, # "global", "continental", "national" or "regional"
-                             unit,
+                             unit = "MWh",
                              timestep = "hourly"
 ) {
   
@@ -15,7 +15,8 @@ saveLoadMonotone <- function(output_dir,
   # Argh c'est relou les modes en vraiiii
   antares_tbl <- as_tibble(antares_data)
   
-  convertAntaresMWhToUnit(antares_data, unit)
+  # convertAntaresMWhToUnit(antares_tbl, unit)
+  # nik, ça marche pas
   
   folder_name <- graphs_folder_names_by_mode[[mode]]
   
@@ -29,9 +30,9 @@ saveLoadMonotone <- function(output_dir,
   # print(data_to_iterate_by_mode)
   data_lst <- data_to_iterate_by_mode[[mode]]
   
-  antares_tbl <- antares_tbl %>%
-    filter(area %in% data_lst) %>%
-    filter(!grepl("^(as-|na-)", area)) # PROVISOIRE
+  # antares_tbl <- antares_tbl %>%
+  #   filter(area %in% data_lst) %>%
+  #   filter(!grepl("^(as-|na-)", area)) # PROVISOIRE
     # filter(area >= "as-isr") # PROVISOIRE
   # Ici mettre un truc provisoire pour skip Afrique que j'ai déjà
   # EN VRAI IMPLEMENTER UNE FONCTION POUR SELECTIONNER AREA
@@ -74,7 +75,8 @@ saveLoadMonotone <- function(output_dir,
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
       scale_fill_manual(values = eCO2MixFusion_lst) + # note : this should be
       # easily configurable
-      labs(x = "% of time", y = paste0("Production (", unit, ")"), fill = paste(item, "energy mix")) +
+      labs(x = "% of time", y = paste0("Production (MWh)"), fill = paste(item, "energy mix")) +
+      # avant il y avait unit ici mais c'était faux donc j'ai remis des bon vieux MWh hop
       # bcp de choses ici qui dépendent de unit, ce serait bien de le streamline...
       theme_minimal() +
       theme(
