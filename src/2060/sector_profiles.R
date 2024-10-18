@@ -193,12 +193,12 @@ generate_sector_hourly_ts <- function(study_year,
   # mais en vrai dur psk mutate() voudrait qu'on ait déjà le truc tout construit...
   return(hourly_ts)
 }
-industry_hourly_ts <- generate_sector_hourly_ts(2015,
-                                                "World",
-                                                industry_weekday_tbl,
-                                                industry_weekend_tbl
-                                                )
-print(industry_hourly_ts)
+# industry_hourly_ts <- generate_sector_hourly_ts(2015,
+#                                                 "World",
+#                                                 industry_weekday_tbl,
+#                                                 industry_weekend_tbl
+#                                                 )
+# print(industry_hourly_ts)
 
 #######################
 
@@ -207,29 +207,79 @@ industry_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekday_SSP
 industry_weekday_tbl <- getTableFromCastillo(industry_weekday_datapath)
 # Wow c'est fou comment ça marche bien vs Excel
 
-print(industry_weekday_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+# print(industry_weekday_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
 
 industry_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekend_SSP2.txt"
 industry_weekend_tbl <- getTableFromCastillo(industry_weekend_datapath)
 # Wow c'est fou comment ça marche bien vs Excel
 
-print(industry_weekend_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+# print(industry_weekend_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+
+
+## TRANSPORT ##
+transport_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Transport_total_weekday.txt"
+transport_weekday_tbl <- getTableFromCastillo(transport_weekday_datapath)
+# Wow c'est fou comment ça marche bien vs Excel
+
+# print(transport_weekday_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+
+transport_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Transport_total_weekend.txt"
+transport_weekend_tbl <- getTableFromCastillo(transport_weekend_datapath)
+
+# print(transport_weekend_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+
+
+## RESIDENTIAL ##
+residential_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Residential_total_weekday_SSP2.txt"
+residential_weekday_tbl <- getTableFromCastillo(residential_weekday_datapath)
+
+# print(residential_weekday_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+
+residential_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Residential_total_weekend_SSP2.txt"
+residential_weekend_tbl <- getTableFromCastillo(residential_weekend_datapath)
+
+
+## SERVICE ##
+service_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Service_total_weekday_SSP2.txt"
+service_weekday_tbl <- getTableFromCastillo(service_weekday_datapath)
+
+
+service_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Service_total_weekend_SSP2.txt"
+service_weekend_tbl <- getTableFromCastillo(service_weekend_datapath)
 
 ###### LETS GET IT
 
-generateSectorProfiles <- function(study_year = 2015,
-                                   region = "World") {
+getSectorCurves <- function(study_year = 2015,
+                            region = "World") {
   hourly_tbl <- generate_blank_hourly_tbl(study_year)
   
   ### INDUSTRY ###
   
-  industry_ts <- generate_sector_hourly_tbl(study_year,
-                                            region,
-                                            industry_weekday_tbl,
-                                            industry_weekend_tbl)
+  industry_ts <- generate_sector_hourly_ts(study_year,
+                                           region,
+                                           industry_weekday_tbl,
+                                           industry_weekend_tbl)
+  
+  transport_ts <- generate_sector_hourly_ts(study_year,
+                                           region,
+                                           transport_weekday_tbl,
+                                           transport_weekend_tbl)
+  
+  residential_ts <- generate_sector_hourly_ts(study_year,
+                                              region,
+                                              residential_weekday_tbl,
+                                              residential_weekend_tbl)
+  
+  service_ts <- generate_sector_hourly_ts(study_year,
+                                          region,
+                                          service_weekday_tbl,
+                                          service_weekend_tbl)
   
   hourly_tbl <- hourly_tbl %>%
-  mutate(industry = industry_ts)
+  mutate(industry = industry_ts,
+         transport = transport_ts,
+         residential = residential_ts,
+         service = service_ts)
 
   # hourly_tbl <- hourly_tbl %>%
   #   mutate(industry = ifelse(isWeekday(year, month, day),
@@ -246,7 +296,7 @@ generateSectorProfiles <- function(study_year = 2015,
   return(hourly_tbl)
 }
 
-sector_tbl <- generateSectorProfiles()
+sector_tbl <- getSectorCurves()
 print(sector_tbl, n = 300)
 
 # fetch_value(industry_weekday_tbl, 2015, 1, 1, "World")
@@ -265,3 +315,33 @@ print(sector_tbl, n = 300)
 #   
 #   
 # }
+
+# saveRDS(object = sector_tbl,
+#         file = ".\\src\\2060\\castillo_2015_load_tbl.rds")
+
+
+
+# print(world_load_ts)
+
+# flm de généraliser pour ajd
+generateSectorProfiles <- function() {
+  sector_curves_tbl <- readRDS(".\\src\\2060\\castillo_2015_load_tbl.rds")
+  
+  deane_2015_load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/deane_2015_load_tbl.rds")
+  nodes <- colnames(deane_2015_load_tbl)
+  
+  world_load_ts <- deane_2015_load_tbl %>%
+    mutate(World = rowSums(across(all_of(nodes)))) %>%
+    pull(World)
+  
+  sector_curves_tbl <- sector_curves_tbl %>%
+    mutate(total_deane = world_load_ts) %>%
+    mutate(balance = total_deane - industry - transport - residential - service)
+  
+  total_load = sum(world_load_ts)
+  
+  return(sector_curves_tbl)
+}
+
+sector_profiles_tbl <- generateSectorProfiles()
+print(sector_profiles_tbl, n = 300)
