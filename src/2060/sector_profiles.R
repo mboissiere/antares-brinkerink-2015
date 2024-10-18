@@ -120,9 +120,17 @@ generate_blank_hourly_tbl <- function(study_year) {
 # print(hourly_tbl_test, n = 500)
 
 fetch_value <- function(demand_tbl, given_year, given_month, given_hour, region) {
+  
+  #Hypothesis : value should be divided by nb of days in month, first
+  # days_lst <- days_per_month(study_year)
+  # nb_days <- days_lst[given_month]
+  # Correction de Nicolas : on s'en fiche, à la fin on prendra des profils de toute façon.
+  
   request <- demand_tbl %>%
     filter(year == given_year & Month == given_month & Hour == given_hour) %>%
     pull(region)
+  
+  # request <- request / nb_days
   
   return(request)
 }
@@ -249,7 +257,7 @@ service_weekend_tbl <- getTableFromCastillo(service_weekend_datapath)
 
 ###### LETS GET IT
 
-getSectorCurves <- function(study_year = 2015,
+getSectorProfiles <- function(study_year = 2015,
                             region = "World") {
   hourly_tbl <- generate_blank_hourly_tbl(study_year)
   
@@ -259,27 +267,31 @@ getSectorCurves <- function(study_year = 2015,
                                            region,
                                            industry_weekday_tbl,
                                            industry_weekend_tbl)
+  total_industry <- sum(industry_ts)
   
   transport_ts <- generate_sector_hourly_ts(study_year,
                                            region,
                                            transport_weekday_tbl,
                                            transport_weekend_tbl)
+  total_transport <- sum(transport_ts)
   
   residential_ts <- generate_sector_hourly_ts(study_year,
                                               region,
                                               residential_weekday_tbl,
                                               residential_weekend_tbl)
+  total_residential <- sum(residential_ts)
   
   service_ts <- generate_sector_hourly_ts(study_year,
                                           region,
                                           service_weekday_tbl,
                                           service_weekend_tbl)
+  total_service <- sum(service_ts)
   
   hourly_tbl <- hourly_tbl %>%
-  mutate(industry = industry_ts,
-         transport = transport_ts,
-         residential = residential_ts,
-         service = service_ts)
+  mutate(industry = industry_ts/total_industry,
+         transport = transport_ts/total_transport,
+         residential = residential_ts/total_residential,
+         service = service_ts/total_service)
 
   # hourly_tbl <- hourly_tbl %>%
   #   mutate(industry = ifelse(isWeekday(year, month, day),
@@ -296,8 +308,8 @@ getSectorCurves <- function(study_year = 2015,
   return(hourly_tbl)
 }
 
-sector_tbl <- getSectorCurves()
-print(sector_tbl, n = 300)
+sector_profiles_hourly_tbl <- getSectorProfiles()
+print(sector_profiles__hourly_tbl, n = 300)
 
 # fetch_value(industry_weekday_tbl, 2015, 1, 1, "World")
 
@@ -316,32 +328,159 @@ print(sector_tbl, n = 300)
 #   
 # }
 
-# saveRDS(object = sector_tbl,
-#         file = ".\\src\\2060\\castillo_2015_load_tbl.rds")
+saveRDS(object = sector_profiles_hourly_tbl,
+        file = ".\\src\\2060\\castillo_2015_profiles_tbl.rds")
 
+csv_path = ".\\output\\sector_profiles_csvs"
 
+write.table(sector_profiles_hourly_tbl,
+            file = file.path(csv_path, "castillo_2015_hourly_profiles.csv"),
+            sep = ";",
+            dec = ",",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+)
 
-# print(world_load_ts)
+# print(sector_profiles_hourly_tbl, n = 300)
 
-# flm de généraliser pour ajd
-generateSectorProfiles <- function() {
-  sector_curves_tbl <- readRDS(".\\src\\2060\\castillo_2015_load_tbl.rds")
-  
-  deane_2015_load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/deane_2015_load_tbl.rds")
+sector_profiles_daily_tbl <- sector_profiles_hourly_tbl %>%
+  group_by(year, month, day) %>%
+  summarise(across(c(industry, transport, residential, service), sum))
+
+# print(sector_profiles_daily_tbl)
+
+write.table(sector_profiles_daily_tbl,
+            file = file.path(csv_path, "castillo_2015_daily_profiles.csv"),
+            sep = ";",
+            dec = ",",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+)
+
+#######################
+
+load_path <- ".\\input\\all_demand_utc_2015_onlyplexos.txt"
+
+load_table <- read.table(
+  load_path,
+  header = TRUE,
+  sep = ";",
+  encoding = "UTF-8",
+  row.names = 1,
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+load_tbl <- as_tibble(load_table) %>%
+  rename_with(tolower)
+
+saveRDS(load_tbl, ".\\src\\2060\\plexos_2015_load_tbl.rds")
+
+# Ajout de volumes MATER
+
+# POUR L'INSTANT, PAS DE SECTEUR ETALON
+volumesMATER2015 = c(
+  industry = 756440746 + 964867785 + 206486176 
+  + 810017230 + 2097842974 + 958089158 + 231775314
+  + 3067154595 + 2124112513 + 1092711323,
+    # Agriculture + Aluminum primary production + Cement and clinker primary production 
+    # + Digital + Energy production + Infrastructure manufactury + Iron and steel primary production
+    # + Other industries + Other materials production + Textile
+  transport = 96139319 + 96695382,
+    # Passenger transport + Freight
+  residential = 6341838625,
+    # Residential buildings
+  service = 5581947974
+    # Tertiary buildings
+)
+
+sectors = c("industry", "transport", "residential", "service")
+
+add2015MATERVolumes <- function() {
+  sector_profiles_tbl <- readRDS(".\\src\\2060\\castillo_2015_profiles_tbl.rds")
+  # print(sector_profiles_tbl)
+  sector_curves_tbl <- sector_profiles_tbl %>%
+    mutate(industry = industry * volumesMATER2015["industry"],
+           transport = transport * volumesMATER2015["transport"],
+           residential = residential * volumesMATER2015["residential"],
+           service = service * volumesMATER2015["service"]
+           )
+  # sector_curves_tbl <- sector_profiles_tbl %>%
+  #   mutate(across(all_of(sectors), ~ . * volumesMATER2015[[.]]))
+  # for (sector in sectors) {
+  #   print(sector)
+  #   volume <- volumesMATER2015[[sector]]
+  #   print(volume)
+  #   sector_curves_tbl %>%
+  #     mutate(sector = sector * volume) #ah ptn "sector" en tant que variable _a marche pas
+  #   # ça va littéralement appeler sector juste
+  # }
+  deane_2015_load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/plexos_2015_load_tbl.rds")
   nodes <- colnames(deane_2015_load_tbl)
-  
+
   world_load_ts <- deane_2015_load_tbl %>%
     mutate(World = rowSums(across(all_of(nodes)))) %>%
     pull(World)
   
   sector_curves_tbl <- sector_curves_tbl %>%
     mutate(total_deane = world_load_ts) %>%
-    mutate(balance = total_deane - industry - transport - residential - service)
+    mutate(balance = total_deane - industry - transport - residential - service) %>%
+    select(timeId, year, month, day, hour, industry, transport, residential, service, balance, total_deane)
+  # Pour réordonner juste
   
-  total_load = sum(world_load_ts)
   
   return(sector_curves_tbl)
 }
 
-sector_profiles_tbl <- generateSectorProfiles()
-print(sector_profiles_tbl, n = 300)
+sector_hourly_curves_tbl <- add2015MATERVolumes()
+print(sector_hourly_curves_tbl, n = 300)
+
+write.table(sector_hourly_curves_tbl,
+            file = file.path(csv_path, "castillo_2015_hourly_curves.csv"),
+            sep = ";",
+            dec = ",",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+)
+
+sector_daily_curves_tbl <- sector_hourly_curves_tbl %>%
+  group_by(year, month, day) %>%
+  summarise(across(c(industry, transport, residential, service, balance, total_deane), sum))
+
+write.table(sector_daily_curves_tbl,
+            file = file.path(csv_path, "castillo_2015_daily_curves.csv"),
+            sep = ";",
+            dec = ",",
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = TRUE
+)
+
+
+# print(world_load_ts)
+
+# # flm de généraliser pour ajd
+# generateSectorProfiles <- function() {
+#   sector_curves_tbl <- readRDS(".\\src\\2060\\castillo_2015_load_tbl.rds")
+#   
+#   deane_2015_load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/deane_2015_load_tbl.rds")
+#   nodes <- colnames(deane_2015_load_tbl)
+#   
+#   world_load_ts <- deane_2015_load_tbl %>%
+#     mutate(World = rowSums(across(all_of(nodes)))) %>%
+#     pull(World)
+#   
+#   sector_curves_tbl <- sector_curves_tbl %>%
+#     mutate(total_deane = world_load_ts) %>%
+#     mutate(balance = total_deane - industry - transport - residential - service)
+#   
+#   total_load = sum(world_load_ts)
+#   
+#   return(sector_curves_tbl)
+# }
+# 
+# sector_profiles_tbl <- generateSectorProfiles()
+# print(sector_profiles_tbl, n = 300)
