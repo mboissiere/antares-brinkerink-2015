@@ -29,21 +29,11 @@ getTableFromCastillo <- function(castillo_data_path) {
   )
   tbl <- as_tibble(tbl)
   tbl <- tbl %>%
-    mutate(across(all_of(KWH_COLUMNS), ~ . / NB_KWH_IN_MWH))
+    mutate(across(all_of(KWH_COLUMNS), ~ . / NB_KWH_IN_MWH)) %>%
+    mutate(World = rowSums(across(KWH_COLUMNS)))
   return(tbl)
 }
 
-industry_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekday_SSP2.txt"
-industry_weekday_tbl <- getTableFromCastillo(industry_weekday_datapath)
-# Wow c'est fou comment ça marche bien vs Excel
-
-print(industry_weekday_tbl)
-
-industry_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekend_SSP2.txt"
-industry_weekend_tbl <- getTableFromCastillo(industry_weekend_datapath)
-# Wow c'est fou comment ça marche bien vs Excel
-
-print(industry_weekend_tbl)
 
 # faut un preprocessCastilloData qui mette les kWh en MWh, qui transforme les weekday machin en vraie année 2015
 
@@ -106,7 +96,7 @@ generate_blank_hourly_tbl <- function(study_year) {
   return(hourly_tbl)
 }
 
-hourly_tbl <- generate_blank_hourly_tbl(2015)
+# hourly_tbl <- generate_blank_hourly_tbl(2015)
 # print(hourly_tbl, n = 1500)
 # Big ça marche
 
@@ -116,8 +106,8 @@ hourly_tbl <- generate_blank_hourly_tbl(2015)
 #   weekda
 # }
 
-hourly_tbl_test <- generate_blank_hourly_tbl(2015) %>%
-  #mutate(is_weekday = isWeekday(year, month, day))
+# hourly_tbl_test <- generate_blank_hourly_tbl(2015) %>%
+#   mutate(is_weekday = isWeekday(year, month, day))
   # un case_when !
   # mutate(usa_industry = case_when(
   #   isWeekday(year, month, day) ~ # faudrait un truc pour fetch rapidement valeur
@@ -127,7 +117,7 @@ hourly_tbl_test <- generate_blank_hourly_tbl(2015) %>%
   #   # grepl("Oth$", plexos_fuel_group) ~ "Other 4",
   #   TRUE ~ NA_character_  # For unrelated child_object values (other)
   # )) %>%
-print(hourly_tbl_test, n = 500)
+# print(hourly_tbl_test, n = 500)
 
 fetch_value <- function(demand_tbl, given_year, given_month, given_hour, region) {
   request <- demand_tbl %>%
@@ -136,12 +126,142 @@ fetch_value <- function(demand_tbl, given_year, given_month, given_hour, region)
   
   return(request)
 }
-fetch_test <- fetch_value(industry_weekday_tbl, 2015, 1, 1, "USA")
-print(fetch_test)
-fetch_test <- fetch_value(industry_weekend_tbl, 2015, 1, 1, "USA")
-print(fetch_test)
+# fetch_test <- fetch_value(industry_weekday_tbl, 2015, 1, 1, "World")
+# print(fetch_test)
+# fetch_test <- fetch_value(industry_weekend_tbl, 2015, 1, 1, "World")
+# print(fetch_test)
 
-industry_tbl_test <- industry_weekday_tbl %>% 
-  filter(year == 2015) %>%
-  select(year, Month, Hour, USA) # On va regarder USA là pour l'instant allez
-print(industry_tbl_test)
+# industry_tbl_test <- industry_weekday_tbl %>% 
+#   filter(year == 2015) %>%
+#   select(year, Month, Hour, USA) # On va regarder USA là pour l'instant allez
+# print(industry_tbl_test)
+
+# getWorldTableFromCastillo <- function(castillo_data_path,
+#                                       study_year) {
+#   world_tbl <- getTableFromCastillo(castillo_data_path) %>%
+#     filter(year == study_year) %>%
+#     mutate(World = rowSums(across(KWH_COLUMNS))) %>%
+#     select(year, Month, Hour, World)
+#   return(world_tbl)
+# }
+# world_tbl <- getWorldTableFromCastillo(industry_weekday_datapath, 2015)
+# print(world_tbl)
+
+# preprocessCastilloSector <- function(weekday_data_tbl,
+#                                      weekend_data_tbl,
+#                                      study_year,
+#                                      region) {
+# }
+
+
+study_year = 2015
+generate_sector_hourly_ts <- function(study_year,
+                                      study_region,
+                                      weekday_tbl, 
+                                      weekend_tbl) {
+  blank_tbl <- generate_blank_hourly_tbl(study_year)
+  hourly_ts <- c()
+  for (k in 1:nrow(blank_tbl)) {
+    # bad lent mais je vois pas comment faire autrement vu que les
+    # opérations vectorielles vont m'embêter sur les dimensions
+    # print(blank_tbl[k,])
+    month <- blank_tbl[k,]$month
+    day <- blank_tbl[k,]$day
+    hour <- blank_tbl[k,]$hour
+    if (isWeekday(study_year, month, day)) {
+      demand_tbl <- weekday_tbl
+      # print("is weekday")
+      # MDR C'ETAIT MOI QUI AVAIT TORT PAS MON CODE
+    } else {
+      demand_tbl <- weekend_tbl
+    }
+    demand <- fetch_value(demand_tbl = demand_tbl,
+                          given_year = study_year,
+                          given_month = month,
+                          given_hour = hour,
+                          region = study_region)
+    # print(demand)
+    hourly_ts <- c(hourly_ts, demand)
+  }
+
+  # hourly_tbl <- tibble(sector_name = hourly_ts)
+  # je crois aussi que le "sector_name" ça marche pas ça va littéralement juste
+  # écrire sector_name
+
+  # autre approche : mettre cette boucle direct dans le programme final
+  # et changer le demand_tbl : à chaque fois dire hop je rajoute industry, etc..
+  # mais en vrai dur psk mutate() voudrait qu'on ait déjà le truc tout construit...
+  return(hourly_ts)
+}
+industry_hourly_ts <- generate_sector_hourly_ts(2015,
+                                                "World",
+                                                industry_weekday_tbl,
+                                                industry_weekend_tbl
+                                                )
+print(industry_hourly_ts)
+
+#######################
+
+## INDUSTRY ##
+industry_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekday_SSP2.txt"
+industry_weekday_tbl <- getTableFromCastillo(industry_weekday_datapath)
+# Wow c'est fou comment ça marche bien vs Excel
+
+print(industry_weekday_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+
+industry_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekend_SSP2.txt"
+industry_weekend_tbl <- getTableFromCastillo(industry_weekend_datapath)
+# Wow c'est fou comment ça marche bien vs Excel
+
+print(industry_weekend_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
+
+###### LETS GET IT
+
+generateSectorProfiles <- function(study_year = 2015,
+                                   region = "World") {
+  hourly_tbl <- generate_blank_hourly_tbl(study_year)
+  
+  ### INDUSTRY ###
+  
+  industry_ts <- generate_sector_hourly_tbl(study_year,
+                                            region,
+                                            industry_weekday_tbl,
+                                            industry_weekend_tbl)
+  
+  hourly_tbl <- hourly_tbl %>%
+  mutate(industry = industry_ts)
+
+  # hourly_tbl <- hourly_tbl %>%
+  #   mutate(industry = ifelse(isWeekday(year, month, day),
+  #                            fetch_value(industry_weekday_tbl, year, month, hour, region),
+  #                            fetch_value(industry_weekend_tbl, year, month, hour, region))
+  #   )
+  # mutate(industry = case_when(
+  #     isWeekday(year, month, day) ~ fetch_value(industry_weekday_tbl, year, month, hour, region),
+  #     !isWeekday(year, month, day) ~ fetch_value(industry_weekend_tbl, year, month, hour, region),
+  #     TRUE ~ NA_character_  # For unrelated child_object values (other)
+  #   ))
+  # NOOOO
+  
+  return(hourly_tbl)
+}
+
+sector_tbl <- generateSectorProfiles()
+print(sector_tbl, n = 300)
+
+# fetch_value(industry_weekday_tbl, 2015, 1, 1, "World")
+
+# hourly_tbl <- generate_blank_hourly_tbl(2015)
+# for (k in 1:nrow(hourly_tbl)) {
+#   print(hourly_tbl[k,])
+#   month <- hourly_tbl[k,]$month
+#   day <- hourly_tbl[k,]$day
+#   hour <- hourly_tbl[k,]$hour
+#   if (isWeekday(2015, month, day)) {
+#     print(fetch_value(industry_weekday_tbl, 2015, month, hour, "World"))
+#   } else {
+#     print(fetch_value(industry_weekend_tbl, 2015, month, hour, "World"))
+#   }
+#   
+#   
+# }
