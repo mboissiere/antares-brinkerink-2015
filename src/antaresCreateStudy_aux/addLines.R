@@ -91,10 +91,19 @@ addLinesToAntares <- function(nodes,
       ntc_direct = lines_tbl$direct_ntc[row]
       ntc_indirect = lines_tbl$indirect_ntc[row]
       
-      if (INCLUDE_HURDLE_COSTS) {
-        propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = TRUE)
+      #### Enorme abruti mdr cette redondance du booléen
+      # if (INCLUDE_HURDLE_COSTS) {
+      #   propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = TRUE)
+      # } else {
+      #   propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = FALSE)
+      # }
+      
+      if (INFINITE_NTC) {
+        propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = INCLUDE_HURDLE_COSTS,
+                                                    transmission_capacities = "infinite")
       } else {
-        propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = FALSE)
+        propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = INCLUDE_HURDLE_COSTS,
+                                                    transmission_capacities = "enabled")
       }
       
       if (!include_zero_ntc & ntc_direct == 0 & ntc_indirect == 0){

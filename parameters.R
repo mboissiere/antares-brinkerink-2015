@@ -11,7 +11,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "WorldT20B5 UnifVoLL_hurdles v3"
+study_basename <- "WorldT20B5 InfiniteNTC test"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -63,7 +63,7 @@ RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = FALSE
+CREATE_STUDY = TRUE
 # Faire un paramètre genre "duplicate to input" qui copie preset dans input
 # au lieu de le garder seulement dans antares
 # voire, réussir à ne plus passer par le dossier antares (mais j'y crois peu..)
@@ -88,7 +88,7 @@ IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
 # IMPORT_SIMULATION_NAME = "20240905-0707eco-20240910-2240eco-renewabletest"
 # Or what if I just want to skip it ?
 # IMPORT_SIMULATION_NAME = "20240731-1517eco-simulation__2024_07_31_15_17_31" # et là aussi on peut en faire
-READ_RESULTS = TRUE
+READ_RESULTS = FALSE
 # svp avancer sur export des résultats en tableau et sur division des CF par 100 en clusters
 
 # NB : ptet faire en sorte d'automatiquement copier une nouvelle étude (si launch siulation)
@@ -101,9 +101,10 @@ PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 #   dans le gitignore)
 # }
 EXPORT_TO_OUTPUT_FOLDER = TRUE
-INCLUDE_HURDLE_COSTS = TRUE
+INCLUDE_HURDLE_COSTS = FALSE
 HURDLE_COST = 0.1
-UNIFORM_VOLL = TRUE
+UNIFORM_VOLL = FALSE
+INFINITE_NTC = TRUE
 
 deane_all_nodes_lst <- readRDS(".\\src\\objects\\deane_all_nodes_lst.rds")
 deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
@@ -115,9 +116,9 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 
 # NODES = "eu-ita"
 # NODES = deane_europe_nodes_lst
-NODES = deane_all_nodes_lst
+# NODES = deane_all_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
-# NODES = c("eu-che", "eu-deu", "eu-fra")
+NODES = c("eu-che", "eu-deu", "eu-fra")
 
 # NODES = tolower(c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
           # "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
@@ -218,6 +219,7 @@ GENERATE_SOLAR_PV = TRUE
 # solar PV off (which i never do) then I wouldn't have CSP either.
 # But this is fiiiiiiiiiiiiine right.
 GENERATE_SOLAR_CSP = FALSE
+# ahhahaaaaahahahahaha on l'a pas fait hahaha on n'a pas mis le CSP hahahahahh
 # Avoir que le CSP ça fait crasher..
 # ou alors le CSP est mal mis ??
 
@@ -305,7 +307,7 @@ NB_CLUSTERS_BATTERIES = 5
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel")
 # THERMAL_TYPES = c("Hard Coal", "Gas", "Nuclear", "Mixed Fuel", "Oil")
 ADD_VOLL = TRUE
-INCLUDE_ZERO_NTC_LINES = FALSE
+INCLUDE_ZERO_NTC_LINES = TRUE
 
 PRINT_FULL_LOG_TO_CONSOLE = TRUE
 # bientôt le clustering log
