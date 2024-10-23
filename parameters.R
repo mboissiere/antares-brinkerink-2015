@@ -11,7 +11,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "WorldT20B5 InfiniteNTC test"
+study_basename <- "WorldT20B5 InfiniteNTC v2_test1"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -104,7 +104,9 @@ EXPORT_TO_OUTPUT_FOLDER = TRUE
 INCLUDE_HURDLE_COSTS = FALSE
 HURDLE_COST = 0.1
 UNIFORM_VOLL = FALSE
+
 INFINITE_NTC = TRUE
+GLOBAL_GRID = TRUE
 
 deane_all_nodes_lst <- readRDS(".\\src\\objects\\deane_all_nodes_lst.rds")
 deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
@@ -116,9 +118,9 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 
 # NODES = "eu-ita"
 # NODES = deane_europe_nodes_lst
-# NODES = deane_all_nodes_lst
+NODES = deane_all_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
-NODES = c("eu-che", "eu-deu", "eu-fra")
+# NODES = c("eu-che", "eu-deu", "eu-fra")
 
 # NODES = tolower(c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
           # "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
@@ -317,7 +319,7 @@ PRINT_FULL_LOG_TO_CONSOLE = TRUE
 # Like : addNodes parameters###
 ### Logging parameters ####
 #etc#
-DEFAULT_SCALING_FACTOR = 25
+DEFAULT_SCALING_FACTOR = 20
 
 
 

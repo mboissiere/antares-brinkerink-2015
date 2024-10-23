@@ -24,8 +24,8 @@ getAllLines <- function() {
   return(lines_tbl)
 }
 
-# lines_tbl <- getAllLines()
-# print(lines_tbl)
+lines_tbl <- getAllLines()
+saveRDS(object = lines_tbl, file = ".\\src\\objects\\deane_2015_lines_tbl.rds")
 
 getLinesFromNodes <- function(nodes) {
   lines_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%

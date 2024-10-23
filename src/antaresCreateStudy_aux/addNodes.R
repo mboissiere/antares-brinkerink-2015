@@ -201,7 +201,7 @@ addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
   for (row in 1:nrow(nodes_tbl)) {
     area_name = nodes_tbl$node[row]
     area_lat = nodes_tbl$lat[row]
-    area_lon = as.integer(nodes_tbl$lon[row])
+    area_lon = nodes_tbl$lon[row]
     area_color = nodes_tbl$antares_color[row]
     if (add_voll) {
       if (UNIFORM_VOLL) {
@@ -212,8 +212,8 @@ addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
       }
     }
     
-    x = as.integer(area_lon * scaling_factor)
-    y = as.integer(area_lat * scaling_factor)
+    x <- as.integer(area_lon * scaling_factor)
+    y <- as.integer(area_lat * scaling_factor)
     
     tryCatch({
       msg = paste("[NODES] - Adding", area_name, "node...")
