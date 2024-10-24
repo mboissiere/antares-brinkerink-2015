@@ -1,0 +1,19 @@
+INFO [2024-10-24 15:54:18] [MAIN] - Initializing output folder...
+INFO [2024-10-24 15:54:21] [MAIN] - Creating WorldT20B5_allLinks v2test1 study...
+
+INFO [2024-10-24 15:54:22] [MAIN] - Unit commitment mode : ACCURATE
+INFO [2024-10-24 15:54:22] [MAIN] - Adding nodes...
+
+INFO [2024-10-24 15:58:58] [MAIN] - Done adding nodes! (run time : 275.38s).
+
+INFO [2024-10-24 15:58:58] [MAIN] - Adding districts...
+
+INFO [2024-10-24 15:59:23] [MAIN] - Done adding districts! (run time : 25.52s).
+
+INFO [2024-10-24 15:59:23] [MAIN] - Adding lines between areas...
+
+INFO [2024-10-24 16:16:18] [MAIN] - Done adding lines! (run time : 1014.44s).
+
+INFO [2024-10-24 16:16:18] [MAIN] - Finished setting up Antares study! (run time : 21.94min).
+ 
+

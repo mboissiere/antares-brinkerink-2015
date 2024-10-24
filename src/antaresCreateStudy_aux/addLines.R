@@ -24,9 +24,6 @@ getAllLines <- function() {
   return(lines_tbl)
 }
 
-lines_tbl <- getAllLines()
-saveRDS(object = lines_tbl, file = ".\\src\\objects\\deane_2015_lines_tbl.rds")
-
 getLinesFromNodes <- function(nodes) {
   lines_tbl <- getTableFromPlexos(MEMBERSHIPS_PATH) %>%
     filter(parent_class == "Line") %>%
@@ -69,6 +66,10 @@ addNTCsToLines <- function(lines_tbl) {
   return(lines_tbl)
 }
 
+lines_tbl <- getAllLines()
+lines_tbl <- addNTCsToLines(lines_tbl)
+saveRDS(object = lines_tbl, file = ".\\src\\objects\\deane_2015_lines_tbl.rds")
+
 # lines_test <- addNTCsToLines(lines_test)
 # print(lines_test)
 #lines_tbl <-
@@ -76,6 +77,87 @@ addNTCsToLines <- function(lines_tbl) {
 # (est-ce qu'une astuce de fou furieux ca serait pas de filtrer selon node in nodes
 # dans... le node_from node_to avant même de faire le pivot_wider !
 # je crois bien du coup que mathématiquement il reste que du bon...)
+
+makeRandomGlobalGrid <- function(nodes) {
+  # Sélectionner un élément au hasard
+  set.seed(528491)  # Facultatif : pour la reproductibilité
+  center_node <- sample(nodes, 1)
+  msg = paste("[LINES] - Center node chosen for global grid:", center_node)
+  logFull(msg)
+  # Extraire le reste de la liste
+  other_nodes <- nodes[nodes != center_node]
+  
+  propertiesLink_lst <- propertiesLinkOptions(transmission_capacities = "infinite")
+  
+  for (other_node in other_nodes) {
+    tryCatch({
+      createLink(
+      from = center_node,
+      to = other_node,
+      propertiesLink = propertiesLink_lst
+    )
+      msg = paste("[LINES] - Adding", center_node, "to", other_node, "line...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[WARN] - Skipping", center_node, "to", other_node, "line (one of the nodes may not exist)")
+      logError(msg)
+  })
+  }
+}
+
+# Bon c'est casse pied... Uns eul noeud central ça peut créer des congestions à l'heure,
+# un full grid ça fait 2 parmi 258 liens ce qui fait 33153 fucking liens
+#... l'arbre couvrant minimal est le plus legit ?
+
+makeFullGlobalGrid <- function(nodes) {
+  propertiesLink_lst <- propertiesLinkOptions(transmission_capacities = "infinite")
+  nodes_to_study <- nodes
+  
+  for (node in nodes_to_study) {
+    node_other_nodes <- nodes_to_study[nodes_to_study != node]
+    for (node_other_node in node_other_nodes) {
+    tryCatch({
+      createLink(
+        from = node,
+        to = node_other_node,
+        propertiesLink = propertiesLink_lst
+      )
+      msg = paste("[LINES] - Adding", node, "to", node_other_node, "line...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[WARN] - Skipping", node, "to", node_other_node, "line (one of the nodes may not exist)")
+      logError(msg)
+    })
+    }
+    nodes_to_study  <- nodes_to_study[nodes_to_study != node]
+  }
+}
+
+makeMinimalGlobalGrid <- function(nodes) {
+  source(".\\src\\antaresCreateStudy_aux\\minimumSpanningTree.R")
+  propertiesLink_lst <- propertiesLinkOptions(transmission_capacities = "infinite")
+  
+  full_edge_tbl <- getMSTedges(nodes)
+  msg = "[LINES] - Computing minimum spanning tree for one world component..."
+  logFull(msg)s
+  for (k in 1:nrow(full_edge_tbl)) {
+    current_edge <- full_edge_tbl[k,]
+    from_node <- current_edge$node_from
+    to_node <- current_edge$node_to
+    tryCatch({
+      createLink(
+        from = from_node,
+        to = to_node,
+        propertiesLink = propertiesLink_lst
+      )
+      msg = paste("[LINES] - Adding", from_node, "to", to_node, "line...")
+      logFull(msg)
+    }, error = function(e) {
+      msg = paste("[WARN] - Skipping", from_node, "to", to_node, "line (one of the nodes may not exist)")
+      logError(msg)
+    })
+  }
+}
 
 addLinesToAntares <- function(nodes,
                               include_zero_ntc

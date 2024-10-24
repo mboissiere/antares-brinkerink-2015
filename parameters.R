@@ -11,7 +11,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "WorldT20B5 InfiniteNTC v2_test1"
+study_basename <- "WorldT20B5_allLinks v2"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -100,7 +100,7 @@ PLOT_TIMESTEP = "hourly" # not sure it's well integrated atm
 #   et éventuellement une duplication de presets & logs (de toute façon output est
 #   dans le gitignore)
 # }
-EXPORT_TO_OUTPUT_FOLDER = TRUE
+EXPORT_TO_OUTPUT_FOLDER = FALSE
 INCLUDE_HURDLE_COSTS = FALSE
 HURDLE_COST = 0.1
 UNIFORM_VOLL = FALSE
@@ -121,6 +121,7 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 NODES = deane_all_nodes_lst
 # NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 # NODES = c("eu-che", "eu-deu", "eu-fra")
+# NODES = c("eu-fra", "eu-gbr", "eu-deu", "eu-ita", "eu-esp", "af-mar", "af-dza", "af-tun")
 
 # NODES = tolower(c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
           # "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",

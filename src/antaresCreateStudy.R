@@ -179,11 +179,13 @@ if (GENERATE_WIND) {
   
   if (RENEWABLE_GENERATION_MODELLING == "aggregated") {
     addAggregatedWind(NODES, generators_tbl)
-    msg = "[WIND] - Saving aggregated wind data to output folder..."
-    logMain(msg)
-    saveAggregatedWindTable(NODES, study_folder)
-    msg = "[WIND] - Done saving aggregated wind data to output folder!"
-    logMain(msg)
+    if (EXPORT_TO_OUTPUT_FOLDER) {
+      msg = "[WIND] - Saving aggregated wind data to output folder..."
+      logFull(msg)
+      saveAggregatedWindTable(NODES, study_folder)
+      msg = "[WIND] - Done saving aggregated wind data to output folder!"
+      logFull(msg)
+    }
   } else if (RENEWABLE_GENERATION_MODELLING == "clusters") {
     # Il faudrait faire crasher plus tôt si jamais ni l'un ni l'autre ptet
     addWindClusters(NODES)
@@ -383,7 +385,13 @@ if (GENERATE_LINES) {
   
   addLines_file = file.path("src", "antaresCreateStudy_aux", "addLines.R")
   source(addLines_file)
-  addLinesToAntares(NODES, INCLUDE_ZERO_NTC_LINES)
+  if (GLOBAL_GRID) {
+    # makeRandomGlobalGrid(NODES)
+    # makeFullGlobalGrid(NODES)
+    makeMinimalGlobalGrid(NODES)
+  } else {
+    addLinesToAntares(NODES, INCLUDE_ZERO_NTC_LINES)
+  }
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
