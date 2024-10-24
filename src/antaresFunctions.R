@@ -39,6 +39,10 @@ updateAllSettings <- function() {
   updateOutputSettings(
     synthesis = generateSynthesis
   )
+  
+  updateOptimizationSettings(
+    include.exportmps = "true"
+  )
 }
 
 #print(getColor("EU-AUT"))

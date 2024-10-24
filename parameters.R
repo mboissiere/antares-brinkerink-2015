@@ -11,7 +11,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "WorldT20B5_allLinks v2"
+study_basename <- "WorldT20B5_allLinks v3"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
@@ -133,7 +133,7 @@ NODES = deane_all_nodes_lst
 # ptet faire un paramètre "catchExceptions" pour pouvoir genre.
 # activer/désactiver à souhait, l'un étant mieux pour bruteforce un programme et l'autre pour identifier source de pb ?
 
-
+EXPORT_MPS = TRUE
 REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # if false, will check if they exist, and only recreate them if they don't.
 # bug actuel : il regénère les objects genre 3 fois. j'ai 3 fois le "oui euh found duplicates"
