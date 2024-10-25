@@ -11,7 +11,7 @@
 
 
 # Nom servant de base pour la classification de l'étude
-study_basename <- "WorldT20B5_allLinks v3"
+study_basename <- "WorldT20B5_globGrid vf2"
   # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...

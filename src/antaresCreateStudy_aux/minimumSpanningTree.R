@@ -13,20 +13,32 @@ getMSTedges <- function(input_vertices = all_nodes
                         #input_edges = lines_tbl_short
                         ) {
   
+  # Bugge de fou si input_vertices != deane_all_nodes_lst. Tant pis.
+  
   lines_tbl_edges <- getLinesFromNodes(input_vertices) %>%
     select(node_from, node_to)
+  
+  # print(lines_tbl_edges)
   
   # Step 1: Convert tibble to an undirected graph
   lines_tbl_edges <- as.data.frame(lines_tbl_edges)
   
+  # print(lines_tbl_edges)
+  
   lines_graph <- graph_from_data_frame(lines_tbl_edges, directed = FALSE)
+  
+  # print(lines_graph)
   
   # Step 3: Ensure all nodes (from external list) are in the graph
   # Find nodes in all_nodes that are missing from lines_graph
   missing_nodes <- setdiff(input_vertices, V(lines_graph)$name)
   
+  # print(missing_nodes)
+  
   # Add missing (insular) nodes to the graph
   lines_graph <- add_vertices(lines_graph, length(missing_nodes), name = missing_nodes)
+  
+  # print(lines_graph)
   
   # Step 4: Find connected components
   components <- components(lines_graph)
@@ -35,32 +47,48 @@ getMSTedges <- function(input_vertices = all_nodes
   # Create a new empty graph for components
   component_graph <- make_empty_graph(directed = FALSE)
   
+  # print("component graph")
+  # print(component_graph)
+  
   # Find centroids of each component (arbitrarily choose a node from each)
   centroids <- sapply(1:length(components$csize), function(i) {
     V(lines_graph)$name[components$membership == i][1]
   })
   
+  # print("centroids")
+  # print(centroids)
+  
   # Add vertices for centroids to the component graph
   component_graph <- add_vertices(component_graph, length(centroids), name = centroids)
+  
+  # print("component graph")
+  # print(component_graph)
   
   # Add edges between centroids to connect them
   for (i in 1:(length(centroids) - 1)) {
     component_graph <- add_edges(component_graph, c(centroids[i], centroids[i + 1]))
   }
   
+  # print("component graph again")
+  # print(component_graph)
+  
   # Step 6: Merge the original graph and component graph using disjoint_union
   full_graph <- disjoint_union(lines_graph, component_graph)
+  
+  # print(full_graph)
   
   # Step 7: Convert the new full graph to a tibble
   final_edges_tbl <- igraph::as_data_frame(full_graph, what = "edges") %>%
     rename(node_from = from, node_to = to)
+  
+  # print(final_edges_tbl)
   
   final_edges_tbl <- as_tibble(final_edges_tbl)
   
   return(final_edges_tbl)
   
   # Print the resulting tibble
-  print(final_edges_tbl, n = 600)
+  # print(final_edges_tbl, n = 600)
 }
 
 # lines_tbl_edges <- as_tibble(lines_tbl_edges)

@@ -137,9 +137,10 @@ makeMinimalGlobalGrid <- function(nodes) {
   source(".\\src\\antaresCreateStudy_aux\\minimumSpanningTree.R")
   propertiesLink_lst <- propertiesLinkOptions(transmission_capacities = "infinite")
   
-  full_edge_tbl <- getMSTedges(nodes)
+  # full_edge_tbl <- getMSTedges(nodes)
+  full_edge_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/deane_global_grid_edges.rds")
   msg = "[LINES] - Computing minimum spanning tree for one world component..."
-  logFull(msg)s
+  logFull(msg)
   for (k in 1:nrow(full_edge_tbl)) {
     current_edge <- full_edge_tbl[k,]
     from_node <- current_edge$node_from

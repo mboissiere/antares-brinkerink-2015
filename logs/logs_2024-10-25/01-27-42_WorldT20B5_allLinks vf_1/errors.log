@@ -1,0 +1,262 @@
+ERROR [2024-10-25 01:34:37] [WARN] - Could not add load data to sa-bra-j1 node, skipping...
+ERROR [2024-10-25 01:34:37] [WARN] - Could not add load data to sa-bra-j2 node, skipping...
+ERROR [2024-10-25 01:34:37] [WARN] - Could not add load data to sa-bra-j3 node, skipping...
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-ago (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-bdi (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-ben (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-bfa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-bwa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-caf (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-civ (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-cmr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-cod (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:53] [WARN] - Skipped adding wind data for af-cog (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:54] [WARN] - Skipped adding wind data for af-dji (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:54] [WARN] - Skipped adding wind data for af-dza (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:55] [WARN] - Skipped adding wind data for af-eri (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:55] [WARN] - Skipped adding wind data for af-esh (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:57] [WARN] - Skipped adding wind data for af-gab (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:57] [WARN] - Skipped adding wind data for af-gha (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:57] [WARN] - Skipped adding wind data for af-gin (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:57] [WARN] - Skipped adding wind data for af-gmb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:57] [WARN] - Skipped adding wind data for af-gnb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:57] [WARN] - Skipped adding wind data for af-gnq (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:58] [WARN] - Skipped adding wind data for af-lbr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:58] [WARN] - Skipped adding wind data for af-lby (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:58] [WARN] - Skipped adding wind data for af-lso (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:59] [WARN] - Skipped adding wind data for af-mdg (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:59] [WARN] - Skipped adding wind data for af-mli (no generators found in PLEXOS).
+ERROR [2024-10-25 01:34:59] [WARN] - Skipped adding wind data for af-moz (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-mus (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-mwi (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-nam (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-ner (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-nga (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-rwa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-sdn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-sen (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-sle (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-swz (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:00] [WARN] - Skipped adding wind data for af-tgo (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:01] [WARN] - Skipped adding wind data for af-tza (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:01] [WARN] - Skipped adding wind data for af-uga (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for af-zmb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for af-zwe (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for as-afg (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for as-are (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for as-bgd (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for as-bhr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for as-brn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:03] [WARN] - Skipped adding wind data for as-btn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:04] [WARN] - Skipped adding wind data for as-chn-be (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:04] [WARN] - Skipped adding wind data for as-chn-ch (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:15] [WARN] - Skipped adding wind data for as-chn-hk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:22] [WARN] - Skipped adding wind data for as-chn-ma (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:30] [WARN] - Skipped adding wind data for as-chn-ti (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:35] [WARN] - Skipped adding wind data for as-idn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:35] [WARN] - Skipped adding wind data for as-ind-ea (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:35] [WARN] - Skipped adding wind data for as-ind-ne (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:39] [WARN] - Skipped adding wind data for as-irq (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:39] [WARN] - Skipped adding wind data for as-isr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:41] [WARN] - Skipped adding wind data for as-jpn-ho (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:41] [WARN] - Skipped adding wind data for as-jpn-ky (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:41] [WARN] - Skipped adding wind data for as-jpn-ok (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:44] [WARN] - Skipped adding wind data for as-kgz (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:44] [WARN] - Skipped adding wind data for as-khm (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:45] [WARN] - Skipped adding wind data for as-kwt (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:45] [WARN] - Skipped adding wind data for as-lao (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:45] [WARN] - Skipped adding wind data for as-lbn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:46] [WARN] - Skipped adding wind data for as-mmr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:47] [WARN] - Skipped adding wind data for as-mys (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:47] [WARN] - Skipped adding wind data for as-npl (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:47] [WARN] - Skipped adding wind data for as-omn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:49] [WARN] - Skipped adding wind data for as-prk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:49] [WARN] - Skipped adding wind data for as-qat (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:50] [WARN] - Skipped adding wind data for as-rus-fe (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:51] [WARN] - Skipped adding wind data for as-rus-nw (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:51] [WARN] - Skipped adding wind data for as-rus-si (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:51] [WARN] - Skipped adding wind data for as-rus-so (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:52] [WARN] - Skipped adding wind data for as-sau (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:52] [WARN] - Skipped adding wind data for as-sgp (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:52] [WARN] - Skipped adding wind data for as-syr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:53] [WARN] - Skipped adding wind data for as-tjk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:54] [WARN] - Skipped adding wind data for as-tkm (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:56] [WARN] - Skipped adding wind data for as-uzb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:57] [WARN] - Skipped adding wind data for as-yem (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:57] [WARN] - Skipped adding wind data for eu-alb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:57] [WARN] - Skipped adding wind data for eu-arm (no generators found in PLEXOS).
+ERROR [2024-10-25 01:35:58] [WARN] - Skipped adding wind data for eu-aze (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:00] [WARN] - Skipped adding wind data for eu-bih (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:00] [WARN] - Skipped adding wind data for eu-blr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:10] [WARN] - Skipped adding wind data for eu-geo (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:14] [WARN] - Skipped adding wind data for eu-isl (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:15] [WARN] - Skipped adding wind data for eu-kos (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:18] [WARN] - Skipped adding wind data for eu-mda (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:18] [WARN] - Skipped adding wind data for eu-mkd (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:18] [WARN] - Skipped adding wind data for eu-mne (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:24] [WARN] - Skipped adding wind data for eu-srb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:24] [WARN] - Skipped adding wind data for eu-svk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:24] [WARN] - Skipped adding wind data for eu-svn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:27] [WARN] - Skipped adding wind data for oc-aus-nt (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:35] [WARN] - Skipped adding wind data for oc-png (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:55] [WARN] - Skipped adding wind data for na-slv (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:55] [WARN] - Skipped adding wind data for na-tto (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:59] [WARN] - Skipped adding wind data for na-usa-fr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:36:59] [WARN] - Skipped adding wind data for na-usa-gu (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:11] [WARN] - Skipped adding wind data for na-usa-sa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:12] [WARN] - Skipped adding wind data for na-usa-se (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:14] [WARN] - Skipped adding wind data for na-usa-sv (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:16] [WARN] - Skipped adding wind data for sa-bol (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:16] [WARN] - Skipped adding wind data for sa-bra-cn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:16] [WARN] - Skipped adding wind data for sa-bra-cw (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:16] [WARN] - Skipped adding wind data for sa-bra-j1 (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:16] [WARN] - Skipped adding wind data for sa-bra-j2 (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:16] [WARN] - Skipped adding wind data for sa-bra-j3 (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:18] [WARN] - Skipped adding wind data for sa-bra-nw (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:20] [WARN] - Skipped adding wind data for sa-bra-we (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:23] [WARN] - Skipped adding wind data for sa-guf (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:25] [WARN] - Skipped adding wind data for sa-pry (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-bdi (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-ben (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-bfa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-bwa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-caf (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-civ (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-cmr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-cod (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:28] [WARN] - Skipped adding solar data for af-cog (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:29] [WARN] - Skipped adding solar data for af-dji (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:31] [WARN] - Skipped adding solar data for af-eri (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:31] [WARN] - Skipped adding solar data for af-esh (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:33] [WARN] - Skipped adding solar data for af-gab (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:33] [WARN] - Skipped adding solar data for af-gha (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:33] [WARN] - Skipped adding solar data for af-gin (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:33] [WARN] - Skipped adding solar data for af-gmb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:33] [WARN] - Skipped adding solar data for af-gnb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:33] [WARN] - Skipped adding solar data for af-gnq (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-lbr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-lby (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-lso (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-mar (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-mdg (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-mli (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:34] [WARN] - Skipped adding solar data for af-moz (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:36] [WARN] - Skipped adding solar data for af-mwi (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:37] [WARN] - Skipped adding solar data for af-ner (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:39] [WARN] - Skipped adding solar data for af-sdn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:40] [WARN] - Skipped adding solar data for af-sle (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:40] [WARN] - Skipped adding solar data for af-swz (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:40] [WARN] - Skipped adding solar data for af-tgo (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:42] [WARN] - Skipped adding solar data for af-tza (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:44] [WARN] - Skipped adding solar data for af-zmb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:44] [WARN] - Skipped adding solar data for af-zwe (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:44] [WARN] - Skipped adding solar data for as-afg (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:46] [WARN] - Skipped adding solar data for as-bhr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:46] [WARN] - Skipped adding solar data for as-brn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:46] [WARN] - Skipped adding solar data for as-btn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:48] [WARN] - Skipped adding solar data for as-chn-ch (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:48] [WARN] - Skipped adding solar data for as-chn-em (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:48] [WARN] - Skipped adding solar data for as-chn-fu (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:49] [WARN] - Skipped adding solar data for as-chn-gd (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:49] [WARN] - Skipped adding solar data for as-chn-gu (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:49] [WARN] - Skipped adding solar data for as-chn-gx (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:51] [WARN] - Skipped adding solar data for as-chn-he (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:53] [WARN] - Skipped adding solar data for as-chn-hk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:53] [WARN] - Skipped adding solar data for as-chn-hn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:54] [WARN] - Skipped adding solar data for as-chn-ji (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:55] [WARN] - Skipped adding solar data for as-chn-jx (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:55] [WARN] - Skipped adding solar data for as-chn-li (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:55] [WARN] - Skipped adding solar data for as-chn-ma (no generators found in PLEXOS).
+ERROR [2024-10-25 01:37:58] [WARN] - Skipped adding solar data for as-chn-sc (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:01] [WARN] - Skipped adding solar data for as-chn-sx (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:01] [WARN] - Skipped adding solar data for as-chn-ti (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:01] [WARN] - Skipped adding solar data for as-chn-tj (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:04] [WARN] - Skipped adding solar data for as-chn-zh (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:04] [WARN] - Skipped adding solar data for as-idn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:05] [WARN] - Skipped adding solar data for as-ind-ne (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:21] [WARN] - Skipped adding solar data for as-kgz (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:23] [WARN] - Skipped adding solar data for as-kwt (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:23] [WARN] - Skipped adding solar data for as-lao (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:23] [WARN] - Skipped adding solar data for as-lbn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:26] [WARN] - Skipped adding solar data for as-mng (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:28] [WARN] - Skipped adding solar data for as-omn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:31] [WARN] - Skipped adding solar data for as-prk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:31] [WARN] - Skipped adding solar data for as-qat (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:33] [WARN] - Skipped adding solar data for as-rus-mv (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:33] [WARN] - Skipped adding solar data for as-rus-nw (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:34] [WARN] - Skipped adding solar data for as-rus-so (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:38] [WARN] - Skipped adding solar data for as-syr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:40] [WARN] - Skipped adding solar data for as-tjk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:40] [WARN] - Skipped adding solar data for as-tkm (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:42] [WARN] - Skipped adding solar data for as-uzb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:42] [WARN] - Skipped adding solar data for as-vnm (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:43] [WARN] - Skipped adding solar data for eu-alb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:43] [WARN] - Skipped adding solar data for eu-arm (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:47] [WARN] - Skipped adding solar data for eu-bih (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:47] [WARN] - Skipped adding solar data for eu-blr (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:53] [WARN] - Skipped adding solar data for eu-est (no generators found in PLEXOS).
+ERROR [2024-10-25 01:38:57] [WARN] - Skipped adding solar data for eu-geo (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:01] [WARN] - Skipped adding solar data for eu-irl (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:01] [WARN] - Skipped adding solar data for eu-isl (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:02] [WARN] - Skipped adding solar data for eu-kos (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:04] [WARN] - Skipped adding solar data for eu-lva (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:04] [WARN] - Skipped adding solar data for eu-mda (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:05] [WARN] - Skipped adding solar data for eu-mne (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:17] [WARN] - Skipped adding solar data for oc-ata (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:21] [WARN] - Skipped adding solar data for oc-aus-ta (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:21] [WARN] - Skipped adding solar data for oc-aus-vi (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:23] [WARN] - Skipped adding solar data for oc-fji (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:24] [WARN] - Skipped adding solar data for oc-png (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:25] [WARN] - Skipped adding solar data for na-can-ar (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:26] [WARN] - Skipped adding solar data for na-can-mb (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:26] [WARN] - Skipped adding solar data for na-can-nl (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:26] [WARN] - Skipped adding solar data for na-can-no (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:27] [WARN] - Skipped adding solar data for na-can-qc (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:27] [WARN] - Skipped adding solar data for na-can-sk (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:27] [WARN] - Skipped adding solar data for na-cri (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:32] [WARN] - Skipped adding solar data for na-jam (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:33] [WARN] - Skipped adding solar data for na-nic (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:35] [WARN] - Skipped adding solar data for na-tto (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:35] [WARN] - Skipped adding solar data for na-usa-ak (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:49] [WARN] - Skipped adding solar data for na-usa-sa (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:56] [WARN] - Skipped adding solar data for sa-bra-cn (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:56] [WARN] - Skipped adding solar data for sa-bra-cw (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:56] [WARN] - Skipped adding solar data for sa-bra-j1 (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:56] [WARN] - Skipped adding solar data for sa-bra-j2 (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:56] [WARN] - Skipped adding solar data for sa-bra-j3 (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:57] [WARN] - Skipped adding solar data for sa-bra-nw (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:58] [WARN] - Skipped adding solar data for sa-bra-we (no generators found in PLEXOS).
+ERROR [2024-10-25 01:39:59] [WARN] - Skipped adding solar data for sa-col (no generators found in PLEXOS).
+ERROR [2024-10-25 01:40:01] [WARN] - Skipped adding solar data for sa-guy (no generators found in PLEXOS).
+ERROR [2024-10-25 01:40:02] [WARN] - Skipped adding solar data for sa-pry (no generators found in PLEXOS).
+ERROR [2024-10-25 01:40:03] [WARN] - Skipped adding solar data for sa-ven (no generators found in PLEXOS).
+ERROR [2024-10-25 04:49:54] [WARN] - Failed to add fin_oil_porvootolkkine8766 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:54] [WARN] - Failed to add fin_oil_vanajakt18811 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:54] [WARN] - Failed to add fin_oil_porvoo8765 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oil_kellosaari8688 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oil_forssakt8644 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oil_huutokoskikt8662 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oil_capacityscaler generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oth_loviisakt8725_naantalikt8740 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oth_olkiluotokt8746 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:55] [WARN] - Failed to add fin_oth_mertaniemi1ja8735 generator to eu-fin node, skipping...
+ERROR [2024-10-25 04:49:56] [WARN] - Failed to add fra_gas_gennevilliers19464 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:56] [WARN] - Failed to add fra_gas_pontsursambre10198 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:56] [WARN] - Failed to add fra_gas_croixdemetz9304 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:56] [WARN] - Failed to add fra_gas_combigolfe9114 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:56] [WARN] - Failed to add fra_gas_blenod58946 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:56] [WARN] - Failed to add fra_gas_emilehuchet9363 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_gas_bouchain78948 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_gas_martiguesponte9866 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_gas_capacityscaler generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_gas_dk69328 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_coa_lucy39603 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_coa_capacityscaler generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:57] [WARN] - Failed to add fra_coa_emilehuchet9364 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:58] [WARN] - Failed to add fra_coa_cordemais49116_havre49538 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:58] [WARN] - Failed to add fra_coa_provence510115 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:58] [WARN] - Failed to add fra_bio_couron9296_douchylesmine9352_latronche9660_lescar979 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:58] [WARN] - Failed to add fra_bio_aixenprovence8840_arpajonsurc8897_bayonne8976_cenon9 generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:58] [WARN] - Failed to add fra_bio_montech9977_noyellessousl10067_villefranchesu10775_a generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:49:58] [WARN] - Failed to add fra_bio_allemant8850_amanvillers8862_auch8917_bimont9017_bor generator to eu-fra node, skipping...
+ERROR [2024-10-25 04:50:00] [WARN] - Failed to add fra_bio_issylesmoulin9578 generator to eu-fra node, skipping...

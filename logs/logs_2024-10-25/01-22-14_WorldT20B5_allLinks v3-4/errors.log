@@ -1,0 +1,2 @@
+ERROR [2024-10-25 01:22:22] [WARN] - Skipped adding wind data for af-dza (no generators found in PLEXOS).
+ERROR [2024-10-25 01:22:22] [WARN] - Skipped adding solar data for af-mar (no generators found in PLEXOS).

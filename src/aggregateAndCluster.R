@@ -385,6 +385,7 @@ cluster_and_summarize_batteries <- function(df, k, node, antares_cluster_type, e
           collapse = "_"
         )
       ),
+      ## AAAH MAIS C'EST GENRE ARCHI FAUX ??? POURQUOI JE SOMME PAS JUSTE ?????
       max_power = mean(max_power), 
       capacity = mean(capacity), 
       units = sum(units), # attention qqfois units, qqfois nb_units...
