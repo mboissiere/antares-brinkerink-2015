@@ -309,7 +309,7 @@ getSectorProfiles <- function(study_year = 2015,
 }
 
 sector_profiles_hourly_tbl <- getSectorProfiles()
-print(sector_profiles__hourly_tbl, n = 300)
+print(sector_profiles_hourly_tbl, n = 300)
 
 # fetch_value(industry_weekday_tbl, 2015, 1, 1, "World")
 
