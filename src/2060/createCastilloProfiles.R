@@ -71,6 +71,20 @@ print(image_profiles, n = 50)
 
 saveRDS(image_profiles, ".\\src\\2060\\residential_2015_image_profiles.rds")
 
+
+image_profiles <- generateIMAGEprofiles(2015, transport_weekday_tbl, transport_weekend_tbl)
+print(image_profiles, n = 50)
+
+saveRDS(image_profiles, ".\\src\\2060\\transport_2015_image_profiles.rds")
+
+image_profiles <- generateIMAGEprofiles(2015, service_weekday_tbl, service_weekend_tbl)
+print(image_profiles, n = 50)
+
+saveRDS(image_profiles, ".\\src\\2060\\service_2015_image_profiles.rds")
+
+
+
+
 # 
 # # Function to shift the time series by a given timezone offset (in hours)
 # shift_time_series <- function(data, shift_hours) {

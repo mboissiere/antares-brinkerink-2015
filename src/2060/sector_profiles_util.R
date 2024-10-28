@@ -23,7 +23,7 @@ getTableFromCastillo <- function(castillo_data_path) {
   tbl <- as_tibble(tbl)
   tbl <- tbl %>%
     mutate(across(all_of(KWH_COLUMNS), ~ . / NB_KWH_IN_MWH)) %>%
-    mutate(World = rowSums(across(KWH_COLUMNS)))
+    # mutate(World = rowSums(across(all_of(KWH_COLUMNS))))
   return(tbl)
 }
 
