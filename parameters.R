@@ -2,6 +2,26 @@
 
 # Objets en snake_case, fonctions en camelCase
 
+GENERATE_2060 = TRUE
+GENERATE_2060_CSP = TRUE
+WORLD_NODE = FALSE
+IF_STUDY_NAME = "If S2 Economy v1.4 (avec CSP)"
+IF_SCENARIO = "S2"
+
+READ_2060 = FALSE
+
+IMPORT_STUDY_NAME = "If S1 Economy v1.2 (sans CSP)"
+IMPORT_SIMULATION_NAME = "20241030-1557eco-accurateUCM_10mcyears_v8.6"
+
+# IMPORT_STUDY_NAME = "If S2 v1 (sans CSP)"
+# IMPORT_SIMULATION_NAME = "20241030-0719adq-accurateUCM_10mcyears_v8.6"
+
+# IMPORT_STUDY_NAME = "If S3 Economy v1.2 (sans CSP)"
+# IMPORT_SIMULATION_NAME = "20241030-1648eco-S3_accurateUCM_10MCyears_v8.6"
+
+# IMPORT_STUDY_NAME = "If S4 v1 (sans CSP)"
+# IMPORT_SIMULATION_NAME = "20241030-0715adq-accurateUCM_10mcyears_v8.6"
+
 # UTILISER LES OBJECTS POUR FAIRE UNE COPIE DES PARAMETRES ET LE STOCKER ET
 # TRAVAILLER LA DESSUS. ON GOD.
 # PARCE QUE SINON IMPOSSIBILITE DE MODIF PARAMETRES POUR LANCER DEUX ETUDES DIFF
@@ -12,7 +32,7 @@
 
 # Nom servant de base pour la classification de l'étude
 study_basename <- "WorldT20B5_globGrid vf2"
-  # "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
+# "World20T5B w hurdle costs" # pourrait être corrélé à import_study_name en vrai
 INCLUDE_DATE_IN_STUDY = FALSE
 # Ptn j'vais péter un câble si c'est vrai mais jcrois que si jamais l'étude a le même nom bah...
 # ça overwrite déjà en fait. Tout seul.
@@ -63,16 +83,19 @@ RENEWABLE_GENERATION_MODELLING = "aggregated" # "aggregated" ou "clusters"
 # holy hell, we gotta parallelize some stuff though. like load monotones. that's just TOO LONG.
 
 # et ce serait sympa de mettre ces noms dans les logs aussi, c'est dommage de devoir les repérer par heures...
-CREATE_STUDY = TRUE
+CREATE_STUDY = FALSE
 # Faire un paramètre genre "duplicate to input" qui copie preset dans input
 # au lieu de le garder seulement dans antares
 # voire, réussir à ne plus passer par le dossier antares (mais j'y crois peu..)
 # une notice README pourrait préciser espace mémoire qu'il faut pour un dossier antares
 # continent/monde, d'abord vide puis avec une simulation....
 
+
+# IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36" # we've had a good run
+
 # IMPORT_STUDY_NAME = "Deane_testWorld_v1__2024_08_25_21_23_09"
 # IMPORT_STUDY_NAME = "WorldT20B5 UniformVoLL v3" # "WorldT20B5 w hurdles v4"  # 
-IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
+
 # IMPORT_STUDY_NAME = "EU_clutest__2024_09_10_21_29_47"
 # NB : dans l'implémentation actuelle de readResults c'est un peu omega chiant
 # genre il faut que je précise les nodes que j'étudie sans par défaut et du coup
@@ -82,7 +105,9 @@ IMPORT_STUDY_NAME = "v2_20clu__2024_09_04_22_33_36"
 LAUNCH_SIMULATION_NAME = "acc_test"
 INCLUDE_DATE_IN_SIMULATION = FALSE
 LAUNCH_SIMULATION = FALSE
-IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM"
+
+# IMPORT_SIMULATION_NAME = "20241029-1736adq-accurateUCM_10MCyears_v8.6"
+# IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM" # So long comrade
 # IMPORT_SIMULATION_NAME = "20240826-0706eco-fastUCM_worldDistrict" # -1 for latest
 # IMPORT_SIMULATION_NAME =  "20241010-0740eco-accurate_test-2" # "20241008-0629eco-accurateUCM" # "20240905-0707eco-world_vOutages_accurateUCM"
 # IMPORT_SIMULATION_NAME = "20240905-0707eco-20240910-2240eco-renewabletest"
@@ -124,8 +149,8 @@ NODES = deane_all_nodes_lst
 # NODES = c("eu-fra", "eu-gbr", "eu-deu", "eu-ita", "eu-esp", "af-mar", "af-dza", "af-tun")
 
 # NODES = tolower(c("EU-FRA", "EU-GBR", "EU-BEL", "EU-LUX", "EU-DEU", "EU-CHE", "EU-ITA", "EU-ESP",
-          # "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
-          # "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO"))
+# "SA-ARG", "SA-CHL", "SA-URY", "SA-PRY",
+# "AF-ZAF", "AF-NAM", "AF-BWA", "AF-ZWE", "AF-MOZ", "AF-SWZ", "AF-LSO"))
 # un bon échantillon de test pour maintenance rate, mais pour réajuster les histogrammes
 # il faudra tout mettre ! cf dernier CR
 
@@ -156,8 +181,8 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # NODES = c(north_america_nodes_lst, south_america_nodes_lst)
 # print(NODES)
 
-save_daily_production_stacks = FALSE
-save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
+save_daily_production_stacks = TRUE
+save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
 divide_stacks_by_hours = TRUE
 
 save_load_monotones = TRUE
@@ -166,11 +191,11 @@ save_load_monotones = TRUE
 save_import_export = FALSE
 
 # save_deane_histograms = FALSE # deprecated jcrois
-save_deane_comparisons = FALSE
+save_deane_comparisons = FALSE # seront totalement guez avec If mais tant pis c'est marrant
 # devrait etre en 1er vu comment c'est rapide
 
-save_global_graphs = FALSE
-save_continental_graphs = TRUE
+save_global_graphs = TRUE
+save_continental_graphs = FALSE
 save_national_graphs = FALSE
 save_regional_graphs = FALSE
 
