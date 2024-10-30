@@ -1,0 +1,36 @@
+INFO [2024-10-30 19:34:17] [MAIN] - Initializing output folder...
+INFO [2024-10-30 19:34:25] [MAIN] - Creating If S2 Economy v1.4 (avec CSP) study...
+INFO [2024-10-30 19:34:25] [MAIN] - Simulating If scenario~: S2 .
+
+INFO [2024-10-30 19:34:25] [MAIN] - Simulation mode : Economy
+INFO [2024-10-30 19:34:25] [MAIN] - Unit commitment mode : accurate
+INFO [2024-10-30 19:34:25] [MAIN] - Number of MC years : 10
+INFO [2024-10-30 19:34:25] [MAIN] - Generation of CSP : TRUE
+INFO [2024-10-30 19:34:25] [MAIN] - Adding nodes...
+
+INFO [2024-10-30 19:41:32] [MAIN] - Done adding nodes! (run time : 427s).
+
+INFO [2024-10-30 19:41:33] [MAIN] - Adding districts...
+
+INFO [2024-10-30 19:42:10] [MAIN] - Done adding districts! (run time : 37.68s).
+
+INFO [2024-10-30 19:54:42] [MAIN] - Fetching wind data...
+
+INFO [2024-10-30 20:06:53] [MAIN] - Done adding wind data! (run time : 731.35s).
+
+INFO [2024-10-30 20:06:53] [MAIN] - Fetching PV data...
+
+INFO [2024-10-30 20:14:49] [MAIN] - Done adding PV data! (run time : 475.4s).
+
+INFO [2024-10-30 20:14:49] [MAIN] - Fetching CSP data...
+
+INFO [2024-10-30 20:20:59] [MAIN] - Done adding CSP data! (run time : 370.68s).
+
+INFO [2024-10-30 20:20:59] [MAIN] - Fetching thermal data...
+INFO [2024-10-30 20:44:26] [MAIN] - Done adding thermal data! (run time : 23.45min).
+
+INFO [2024-10-30 20:44:26] [MAIN] - Adding lines between areas...
+
+INFO [2024-10-30 21:01:06] [MAIN] - Done adding lines! (run time : 999.78s).
+
+INFO [2024-10-30 21:01:06] [MAIN] - Beginning hydro implementation...
