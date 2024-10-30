@@ -126,7 +126,7 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   
   tryCatch({
     writeInputTS(
-      data = load_ts,
+      data = world_load_ts,
       type = "load",
       area = "World"
     )

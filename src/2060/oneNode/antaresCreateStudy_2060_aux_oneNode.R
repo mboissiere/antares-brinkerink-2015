@@ -2,6 +2,7 @@
 # test_scenario <- "S1"
 # if_generators_properties_tbl <- get2060ScenarioTable(test_scenario)
 
+base_generators_properties_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/base_generators_properties_tbl.rds")
 nodes <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/deane_all_nodes_lst.rds")
 wind_cf_ts_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/wind_cf_ts_tbl.rds")
 pv_cf_ts_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/solarpv_cf_ts_tbl.rds")
