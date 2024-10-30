@@ -1,0 +1,10 @@
+INFO [2024-10-30 22:33:12] [MAIN] - Initializing output folder...
+INFO [2024-10-30 22:33:17] [MAIN] - Creating If S1 Economy v2 (World w CSP) study...
+INFO [2024-10-30 22:33:17] [MAIN] - Simulating If scenario~: S1 .
+
+INFO [2024-10-30 22:33:17] [MAIN] - Simulation mode : Economy
+INFO [2024-10-30 22:33:17] [MAIN] - Unit commitment mode : accurate
+INFO [2024-10-30 22:33:17] [MAIN] - Number of MC years : 10
+INFO [2024-10-30 22:33:17] [MAIN] - Generation of CSP : TRUE
+INFO [2024-10-30 22:33:17] [MAIN] - Adding world node...
+

@@ -30,9 +30,9 @@ addDistrictsTo2060 <- function(nodes) {
 
 getAggregatedTSFrom2060 <- function(nodes, properties_tbl, timeseries_tbl) {
   
-  not_in_plexos_lst <- properties_tbl %>%
-    filter(is.na(nominal_capacity)) %>%
-    pull(generator_name)
+  # not_in_plexos_lst <- properties_tbl %>%
+  #   filter(is.na(nominal_capacity)) %>%
+  #   pull(generator_name)
   
   # msg = paste("[WARN] - The following generators have Ninja timeseries, but no PLEXOS properties:", paste(not_in_plexos_lst, collapse = ", "))
   # logError(msg)
@@ -247,10 +247,10 @@ add2060HydroToAntares <- function(generators_properties_tbl) {
   logMain(msg)
 }
 
-## TESTING HYDRO FOR A BIT
-if_generators_properties_tbl <- get2060ScenarioTable("S1")
-hydro_countries_2060_tbl <- getCountryTableFromHydro(if_generators_properties_tbl)
-print(hydro_countries_2060_tbl)
+# ## TESTING HYDRO FOR A BIT
+# if_generators_properties_tbl <- get2060ScenarioTable("S1")
+# hydro_countries_2060_tbl <- getCountryTableFromHydro(if_generators_properties_tbl)
+# print(hydro_countries_2060_tbl)
 
 # > print(hydro_countries_2060_tbl)
 # # A tibble: 220 x 14
@@ -359,7 +359,7 @@ print(hydro_countries_2060_tbl)
 # # print(solarcsp_cf_ts_tbl)
 # 
 # generators_scenarios_properties_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/generators_scenarios_properties_tbl.rds")
-# csp_if_properties_tbl <- generators_scenarios_properties_tbl %>% 
+# csp_if_properties_tbl <- generators_scenarios_properties_tbl %>%
 #   filter(if_technology_type == "CSP")
 # 
 # # Extract column names from solarpv_cf_ts_tbl
@@ -373,22 +373,22 @@ print(hydro_countries_2060_tbl)
 # # Display the matching generator names
 # print(matching_generators, n = 67)
 # 
-# pv_if_generators <- generators_scenarios_properties_tbl %>% 
+# pv_if_generators <- generators_scenarios_properties_tbl %>%
 #   filter(if_technology_type == "PV") %>%
 #   pull(generator_name)
 # 
 # # Filter and check presence of "_sol_capacity scaler" counterpart
 # filtered_generators <- matching_generators %>%
-########## En vrai je pourrais faire ceci avec n'importe quel _sol_, pas juste les capacity scaler.
+# ######### En vrai je pourrais faire ceci avec n'importe quel _sol_, pas juste les capacity scaler.
 # Peut etre que _sol_CentraleSolair était vraiment un PV (mais en pratique... non)
-#   filter(!str_detect(generator_name, "capacity scaler") | 
+#   filter(!str_detect(generator_name, "capacity scaler") |
 #            !str_replace(generator_name, "_csp_capacity scaler", "_sol_capacity scaler") %in% pv_if_generators) %>%
 #   pull(generator_name) %>% unique()
 # 
 # # Display the filtered generator names
 # print(filtered_generators)
 # 
-# new_csp_properties_tbl <- generators_scenarios_properties_tbl %>% 
+# new_csp_properties_tbl <- generators_scenarios_properties_tbl %>%
 #   filter(generator_name %in% filtered_generators)
 # 
 # print(new_csp_properties_tbl)

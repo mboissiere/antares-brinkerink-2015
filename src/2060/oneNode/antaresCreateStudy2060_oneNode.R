@@ -3,7 +3,7 @@ library(tidyr)
 library(antaresEditObject)
 
 # source(".\\src\\2060\\CapacityProratas.R")
-source(".\\src\\2060\\antaresCreateStudy_2060_aux.R")
+source(".\\src\\2060\\oneNode\\antaresCreateStudy_2060_aux_oneNode.R")
 
 # source("parameters.R")
 # source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
@@ -76,7 +76,9 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   
   ################################## SCENARIO IMPORT #################################
   
-  if_generators_properties_tbl <- get2060ScenarioTable(scenario_number)
+  # if_generators_properties_tbl <- get2060ScenarioTable(scenario_number)
+  source(".\\src\\2060\\oneNode\\newIfScenarioGenerator.R")
+  scenario_2060_property_tbl <- getScenarioPropertyTable(scenario_number)
   
   ################################# AREA CREATION ################################
   
@@ -86,7 +88,8 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   # addNodesToAntares()
   createArea(
     name = "World",
-    nodalOptimization = nodalOptimizationOptions(average_unsupplied_energy_cost = 200)
+    nodalOptimization = nodalOptimizationOptions(average_unsupplied_energy_cost = 200),
+    overwrite = TRUE
     # Hypothesis on VoLL, completely arbitrary but we won't look at costs, we just need it to be high.
   )
   
@@ -102,21 +105,24 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   ################################## LOAD IMPORT #################################
   # Ah ! Plus compliqué !
   if (scenario_number == "S1") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/true 2060/S1_2060_load_tbl.rds")
+    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S1_load_tbl.rds")
   } else if (scenario_number == "S2") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/true 2060/S2_2060_load_tbl.rds")
+    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S2_load_tbl.rds")
   } else if (scenario_number == "S3") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/true 2060/S3_2060_load_tbl.rds")
+    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S3_load_tbl.rds")
   } else if (scenario_number == "S4") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/true 2060/S4_2060_load_tbl.rds")
+    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S4_load_tbl.rds")
   }
   
-  world_load_tbl <- load_tbl %>%
-    mutate(World = rowSums(across(all_of(nodes)))) %>%
-    select(timeId, year, month, day, hour, # optionnels en vrai
-           World)
+  # world_load_tbl <- load_tbl %>%
+  #   mutate(World = rowSums(across(all_of(nodes)))) %>%
+  #   select(timeId, year, month, day, hour, # optionnels en vrai
+  #          World)
   
-  load_ts <- world_load_tbl[["World"]]
+  world_load_ts <- load_tbl %>% pull(World)
+  
+  # load_ts <- world_load_tbl[["World"]]
+  node = "World"
   
   tryCatch({
     writeInputTS(
@@ -279,30 +285,60 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   logMain(msg)
   start_time <- Sys.time()
   
-  wind_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, wind_cf_ts_tbl) %>%
+  # wind_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, wind_cf_ts_tbl) %>%
+  #   select(-datetime)
+  
+  wind_agg_tbl <- getAggregatedTSFrom2060(nodes, scenario_2060_property_tbl, wind_cf_ts_tbl) %>%
     select(-datetime)
   
-  for (node in nodes) {
-    wind_ts <- wind_agg_ts[[node]]
-    tryCatch({
-      createClusterRES(
-        area = node,
-        cluster_name = paste0(node, "_", "wind"),
-        group = "Wind Onshore",
-        time_series = wind_ts,
-        add_prefix = FALSE,
-        overwrite = FALSE,
-        ts_interpretation = "power-generation"
-      )
-      msg = paste("[WIND] - Adding", node, "wind data to Wind Onshore cluster...")
-      logFull(msg)
-    }, error = function(e) {
-      msg = paste("[WARN] - Skipped adding wind data for", node, "(no generators found in PLEXOS).")
-      logError(msg)
-    }
-    
+  nodes_with_wind <- colnames(wind_agg_tbl)
+  
+  wind_world_tbl <- wind_agg_tbl %>%
+    mutate(World = rowSums(across(all_of(nodes_with_wind))))
+  
+  wind_ts <- wind_world_tbl %>% pull(World)
+  # print(wind_ts)
+  
+  tryCatch({
+    createClusterRES(
+      area = "World",
+      cluster_name = "wind",
+      group = "Wind Onshore",
+      time_series = wind_ts,
+      add_prefix = FALSE,
+      overwrite = FALSE,
+      ts_interpretation = "power-generation"
     )
+    msg = paste("[WIND] - Adding", node, "wind data to Wind Onshore cluster...")
+    logFull(msg)
+  }, error = function(e) {
+    msg = paste("[WARN] - Skipped adding wind data for", node, "(no generators found in PLEXOS).")
+    logError(msg)
   }
+  
+  )
+  
+  # for (node in nodes) {
+    
+    # tryCatch({
+    #   createClusterRES(
+    #     area = node,
+    #     cluster_name = paste0(node, "_", "wind"),
+    #     group = "Wind Onshore",
+    #     time_series = wind_ts,
+    #     add_prefix = FALSE,
+    #     overwrite = FALSE,
+    #     ts_interpretation = "power-generation"
+    #   )
+    #   msg = paste("[WIND] - Adding", node, "wind data to Wind Onshore cluster...")
+    #   logFull(msg)
+    # }, error = function(e) {
+    #   msg = paste("[WARN] - Skipped adding wind data for", node, "(no generators found in PLEXOS).")
+    #   logError(msg)
+    # }
+    # 
+    # )
+  # }
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -317,30 +353,61 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   logMain(msg)
   start_time <- Sys.time()
   
-  pv_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, pv_cf_ts_tbl) %>%
+  
+  pv_agg_tbl <- getAggregatedTSFrom2060(nodes, scenario_2060_property_tbl, pv_cf_ts_tbl) %>%
     select(-datetime)
   
-  for (node in nodes) {
-    pv_ts <- pv_agg_ts[[node]]
-    tryCatch({
-      createClusterRES(
-        area = node,
-        cluster_name = paste0(node, "_", "pv"),
-        group = "Solar PV",
-        time_series = pv_ts,
-        add_prefix = FALSE,
-        overwrite = FALSE,
-        ts_interpretation = "power-generation"
-      )
-      msg = paste("[PV] - Adding", node, "PV data to Solar PV cluster...")
-      logFull(msg)
-    }, error = function(e) {
-      msg = paste("[WARN] - Skipped adding PV data for", node, "(no generators found in PLEXOS).")
-      logError(msg)
-    }
-    
+  nodes_with_pv <- colnames(pv_agg_tbl)
+  
+  pv_world_tbl <- pv_agg_tbl %>%
+    mutate(World = rowSums(across(all_of(nodes_with_pv))))
+  
+  pv_ts <- pv_world_tbl %>% pull(World)
+  # print(pv_ts)
+  
+  tryCatch({
+    createClusterRES(
+      area = "World",
+      cluster_name = "pv",
+      group = "Solar PV",
+      time_series = pv_ts,
+      add_prefix = FALSE,
+      overwrite = FALSE,
+      ts_interpretation = "power-generation"
     )
+    msg = paste("[PV] - Adding", node, "PV data to Solar PV cluster...")
+    logFull(msg)
+  }, error = function(e) {
+    msg = paste("[WARN] - Skipped adding PV data for", node, "(no generators found in PLEXOS).")
+    logError(msg)
   }
+  
+  )
+  
+  # pv_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, pv_cf_ts_tbl) %>%
+  #   select(-datetime)
+  # 
+  # for (node in nodes) {
+  #   pv_ts <- pv_agg_ts[[node]]
+  #   tryCatch({
+  #     createClusterRES(
+  #       area = node,
+  #       cluster_name = paste0(node, "_", "pv"),
+  #       group = "Solar PV",
+  #       time_series = pv_ts,
+  #       add_prefix = FALSE,
+  #       overwrite = FALSE,
+  #       ts_interpretation = "power-generation"
+  #     )
+  #     msg = paste("[PV] - Adding", node, "PV data to Solar PV cluster...")
+  #     logFull(msg)
+  #   }, error = function(e) {
+  #     msg = paste("[WARN] - Skipped adding PV data for", node, "(no generators found in PLEXOS).")
+  #     logError(msg)
+  #   }
+  #   
+  #   )
+  # }
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -354,30 +421,62 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   logMain(msg)
   start_time <- Sys.time()
   
-  csp_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, csp_cf_ts_tbl) %>%
+  csp_cf_ts_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/truecsp_cf_ts_tbl.rds")
+  
+  csp_agg_tbl <- getAggregatedTSFrom2060(nodes, scenario_2060_property_tbl, csp_cf_ts_tbl) %>%
     select(-datetime)
   
-  for (node in nodes) {
-    csp_ts <- csp_agg_ts[[node]]
-    tryCatch({
-      createClusterRES(
-        area = node,
-        cluster_name = paste0(node, "_", "csp"),
-        group = "Solar Thermal",
-        time_series = csp_ts,
-        add_prefix = FALSE,
-        overwrite = FALSE,
-        ts_interpretation = "power-generation"
-      )
-      msg = paste("[PV] - Adding", node, "CSP data to Solar Thermal cluster...")
-      logFull(msg)
-    }, error = function(e) {
-      msg = paste("[WARN] - Skipped adding CSP data for", node, "(no generators found in PLEXOS).")
-      logError(msg)
-    }
-    
+  nodes_with_csp <- colnames(csp_agg_tbl)
+  
+  csp_world_tbl <- csp_agg_tbl %>%
+    mutate(World = rowSums(across(all_of(nodes_with_csp))))
+  
+  csp_ts <- csp_world_tbl %>% pull(World)
+  # print(csp_ts)
+  
+  tryCatch({
+    createClusterRES(
+      area = "World",
+      cluster_name = "csp",
+      group = "Solar Thermal",
+      time_series = csp_ts,
+      add_prefix = FALSE,
+      overwrite = FALSE,
+      ts_interpretation = "power-generation"
     )
+    msg = paste("[CSP] - Adding", node, "CSP data to Solar Thermal cluster...")
+    logFull(msg)
+  }, error = function(e) {
+    msg = paste("[WARN] - Skipped adding CSP data for", node, "(no generators found in PLEXOS).")
+    logError(msg)
   }
+  
+  )
+  
+  # csp_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, csp_cf_ts_tbl) %>%
+  #   select(-datetime)
+  # 
+  # for (node in nodes) {
+  #   csp_ts <- csp_agg_ts[[node]]
+  #   tryCatch({
+  #     createClusterRES(
+  #       area = node,
+  #       cluster_name = paste0(node, "_", "csp"),
+  #       group = "Solar Thermal",
+  #       time_series = csp_ts,
+  #       add_prefix = FALSE,
+  #       overwrite = FALSE,
+  #       ts_interpretation = "power-generation"
+  #     )
+  #     msg = paste("[PV] - Adding", node, "CSP data to Solar Thermal cluster...")
+  #     logFull(msg)
+  #   }, error = function(e) {
+  #     msg = paste("[WARN] - Skipped adding CSP data for", node, "(no generators found in PLEXOS).")
+  #     logError(msg)
+  #   }
+  #   
+  #   )
+  # }
   
   end_time <- Sys.time()
   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
@@ -392,9 +491,65 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   # ou bien je prends capacité nominale totale * 8760 pour avoir le stock en MWh (...not sure if engagé)
   # et je fais une heuristique reservoir management
   
-  if (GENERATE_HYDRO) {
-    add2060HydroToAntares(if_generators_properties_tbl)
-  }
+  # add2060HydroToAntares(scenario_2060_property_tbl)
+  hydro_agg_tbl <- getCountryTableFromHydro(scenario_2060_property_tbl)
+  
+  hydro_world_tbl <- hydro_agg_tbl %>%
+    summarize(across(where(is.numeric), sum, na.rm = TRUE))
+  
+  # print(hydro_world_tbl)
+  
+  node_info <- hydro_world_tbl[1,]
+  
+  # node <- node_info$node
+  
+  hydro_capacity <- node_info$total_nominal_capacity
+  max_power_matrix = as.data.table(matrix(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE))
+  list_params = list("inter-daily-breakdown" = 2)
+  tryCatch({
+    writeIniHydro(area = "World",
+                  params = list_params
+    )
+    msg = paste("[HYDRO] - Initializing", node, "hydro parameters...")
+    logFull(msg)
+  }, error = function(e) {
+    msg = paste("[HYDRO] - Couldn't initialize", node, "hydro parameters, skipping...")
+    logError(msg)
+  })
+  tryCatch({
+    writeHydroValues(
+      area = node,
+      type = "maxpower",
+      data = max_power_matrix,
+      overwrite = TRUE
+    )
+    msg = paste("[HYDRO] - Adding", node, "max power timeseries...")
+    logFull(msg)
+  }, error = function(e) {
+    msg = paste("[HYDRO] - Couldn't add", node, "max power timeseries, skipping...")
+    logError(msg)
+  })
+  
+  monthly_tbl <- node_info %>%
+    select(starts_with("M"))
+  
+  # Extract the values into a simple vector
+  monthly_ts <- unlist(monthly_tbl, use.names = FALSE)
+  
+  daily_ts <- monthly_to_daily(monthly_ts, 2015)
+  tryCatch({
+    writeInputTS(
+      daily_ts,
+      type = "hydroSTOR",
+      area = node
+    )
+    msg = paste("[HYDRO] - Adding", node, "hydro profiles...")
+    logFull(msg)
+  }, error = function(e) {
+    msg = paste("[HYDRO] - Couldn't add", node, "hydro profiles, skipping...")
+    logError(msg)
+  })
+  
   
   total_end_time <- Sys.time()
   duration <- round(difftime(total_end_time, total_start_time, units = "mins"), 2)

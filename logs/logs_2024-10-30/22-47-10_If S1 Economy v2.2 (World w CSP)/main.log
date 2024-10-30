@@ -1,0 +1,17 @@
+INFO [2024-10-30 22:47:10] [MAIN] - Initializing output folder...
+INFO [2024-10-30 22:47:15] [MAIN] - Creating If S1 Economy v2.2 (World w CSP) study...
+INFO [2024-10-30 22:47:15] [MAIN] - Simulating If scenario~: S1 .
+
+INFO [2024-10-30 22:47:15] [MAIN] - Simulation mode : Economy
+INFO [2024-10-30 22:47:15] [MAIN] - Unit commitment mode : accurate
+INFO [2024-10-30 22:47:15] [MAIN] - Number of MC years : 10
+INFO [2024-10-30 22:47:15] [MAIN] - Generation of CSP : TRUE
+INFO [2024-10-30 22:47:16] [MAIN] - Adding world node...
+
+INFO [2024-10-30 22:47:16] [MAIN] - Done adding world node! (run time : 0.16s).
+
+INFO [2024-10-30 22:47:16] [MAIN] - Fetching thermal data...
+INFO [2024-10-30 22:47:16] [MAIN] - Done adding thermal data! (run time : 0.01min).
+
+INFO [2024-10-30 22:47:16] [MAIN] - Fetching wind data...
+

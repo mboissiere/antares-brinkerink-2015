@@ -25,6 +25,18 @@ eCO2MixFusion_lst = c("GEOTHERMAL" = "springgreen", "OTHER" = "lavender",
                       "HYDROGEN STOR" = "magenta", "COMPRESSED AIR STOR" = "salmon",
                       "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
 
+eCO2MixFusion_noStorage_lst = c("GEOTHERMAL" = "springgreen",
+                      "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "SOLAR" = "#D66B0D",
+                      "HYDRO" = "#2672B0", "BIO AND WASTE" = "darkgreen", "GAS" = "#F20809",
+                      "COAL" = "darkred", "OIL" = "#80549F",
+                      "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
+
+eCO2MixFusion_noStorage_withCSP_lst = c("GEOTHERMAL" = "springgreen",
+                                "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "PV" = "#D66B0D", "CSP" = "lightgoldenrod",
+                                "HYDRO" = "#2672B0", "BIO AND WASTE" = "darkgreen", "GAS" = "#F20809",
+                                "COAL" = "darkred", "OIL" = "#80549F",
+                                "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
+
 # Finalement, darkgreen et tout, c'était pas si mal.....
 # Notamment darkred pour le charbon, quand y a que du charbon je me dis que ça
 # ressemble au jaune du nucléaire en vrai
@@ -259,6 +271,69 @@ setProdStackAlias(
   ),
   lines = alist(
     Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    Consommation = LOAD
+  ),
+  lineColors = c("violetred", "black")
+  # lineColors = c("black", "#FFB800")
+)
+
+setProdStackAlias(
+  name = "eCO2MixFusionStack_noStorage_noOther",
+  variables = alist(
+    Geothermique = `MISC. DTG`,
+    # Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    Nucleaire = NUCLEAR,
+    Eolien = WIND,
+    Solaire = SOLAR,
+    `Hydro lacs` = `H. STOR`,
+    
+    `Bio et dechets` = `MIX. FUEL`,
+    Gaz = GAS,
+    Charbon = COAL,
+    Fioul = OIL,
+    
+    `Imports/Exports` = -BALANCE,
+    Defaillance = `UNSP. ENRG`,
+    Ecretement = -`SPIL. ENRG`
+  ),
+  colors = c("springgreen", "#E4A701", "#72CBB7", "#D66B0D", "#2672B0", 
+             "darkgreen", "#F20809", "darkred", "#80549F",
+             "#969696", "gray25", "gray25"
+  ),
+  lines = alist(
+    Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG`,
+    Consommation = LOAD
+  ),
+  lineColors = c("violetred", "black")
+  # lineColors = c("black", "#FFB800")
+)
+
+setProdStackAlias(
+  name = "eCO2MixFusionStack_noStorage_withCSP",
+  variables = alist(
+    Geothermique = `MISC. DTG`,
+    # Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+    Nucleaire = NUCLEAR,
+    Eolien = `WIND ONSHORE`,
+    PV = `SOLAR PV`,
+    CSP = `SOLAR THERMAL`,
+    `Hydro lacs` = `H. STOR`,
+    
+    `Bio et dechets` = `MIX. FUEL`,
+    Gaz = GAS,
+    Charbon = COAL,
+    Fioul = OIL,
+    
+    `Imports/Exports` = -BALANCE,
+    Defaillance = `UNSP. ENRG`,
+    Ecretement = -`SPIL. ENRG`
+  ),
+  colors = c("springgreen", "#E4A701", "#72CBB7", "#D66B0D", "lightgoldenrod", "#2672B0", 
+             "darkgreen", "#F20809", "darkred", "#80549F",
+             "#969696", "gray25", "gray25"
+  ),
+  lines = alist(
+    Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG`,
     Consommation = LOAD
   ),
   lineColors = c("violetred", "black")

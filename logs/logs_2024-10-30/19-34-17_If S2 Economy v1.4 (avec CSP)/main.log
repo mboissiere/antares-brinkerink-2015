@@ -34,3 +34,7 @@ INFO [2024-10-30 20:44:26] [MAIN] - Adding lines between areas...
 INFO [2024-10-30 21:01:06] [MAIN] - Done adding lines! (run time : 999.78s).
 
 INFO [2024-10-30 21:01:06] [MAIN] - Beginning hydro implementation...
+INFO [2024-10-30 21:18:20] [MAIN] - Done adding hydro!
+INFO [2024-10-30 21:18:20] [MAIN] - Finished setting up Antares study! (run time : 103.92min).
+ 
+

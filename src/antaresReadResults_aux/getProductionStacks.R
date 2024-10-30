@@ -5,7 +5,8 @@ saveGlobalProductionStack <- function(output_dir,
                                       start_date = "2015-01-01",
                                       end_date = "2015-12-31",
                                       stack_palette = "productionStackWithBatteryContributions",
-                                      unit = "TWh"
+                                      unit = "TWh",
+                                      year = 2060
 ) {
   global_data <- getGlobalAntaresData(timestep)
   
@@ -33,7 +34,7 @@ saveGlobalProductionStack <- function(output_dir,
     areas = "world",
     dateRange = c(start_date, end_date),
     timeStep = timestep,
-    main = paste("Stack of the", timestep, "2015 production for the world in", unit_legend, "from", start_date, "to", end_date),
+    main = paste("Stack of the", timestep, year, "production for the world in", unit_legend, "from", start_date, "to", end_date),
     unit = unit,
     interactive = FALSE
   )
@@ -54,7 +55,8 @@ saveContinentalProductionStacks <- function(output_dir,
                                             start_date = "2015-01-01",
                                             end_date = "2015-12-31",
                                             stack_palette = "productionStackWithBatteryContributions",
-                                            unit = "GWh"
+                                            unit = "GWh",
+                                            year = 2060
                                             # pour le colorblind check, faire un "colorblindify" pour aperçus
 ) {
   
@@ -126,7 +128,7 @@ saveContinentalProductionStacks <- function(output_dir,
       timeStep = timestep,
       yMin = yMin_cont,
       yMax = yMax_cont,
-      main = paste("Stack for the", timestep, "2015 production for", cont, "in", unit_legend, "from", start_date, "to", end_date),
+      main = paste("Stack for the", timestep, year, "production for", cont, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,
       interactive = FALSE
     )
@@ -153,7 +155,8 @@ saveNationalProductionStacks <- function(output_dir,
                                          start_date = "2015-01-01",
                                          end_date = "2015-12-31",
                                          stack_palette = "productionStackWithBatteryContributions",
-                                         unit = "MWh"
+                                         unit = "MWh",
+                                         year = 2060
 ) {
   national_data <- getNationalAntaresData(timestep)
   
@@ -192,7 +195,7 @@ saveNationalProductionStacks <- function(output_dir,
       areas = ctry,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste("Stack for the", timestep, "2015 production for", ctry, "in", unit_legend, "from", start_date, "to", end_date),
+      main = paste("Stack for the", timestep, year, "production for", ctry, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,
       interactive = FALSE
     )
@@ -223,7 +226,8 @@ saveRegionalProductionStacks <- function(output_dir,
                                          start_date = "2015-01-01",
                                          end_date = "2015-12-31",
                                          stack_palette = "productionStackWithBatteryContributions",
-                                         unit = "MWh"
+                                         unit = "MWh",
+                                         year = 2060
 ) {
   regional_data <- getRegionalAntaresData(timestep)
   
@@ -256,7 +260,7 @@ saveRegionalProductionStacks <- function(output_dir,
       areas = regn,
       dateRange = c(start_date, end_date),
       timeStep = timestep,
-      main = paste("Stack for the", timestep, "2015 production for", regn, "in", unit_legend, "from", start_date, "to", end_date),
+      main = paste("Stack for the", timestep, year, "production for", regn, "in", unit_legend, "from", start_date, "to", end_date),
       unit = unit,
       interactive = FALSE
     )

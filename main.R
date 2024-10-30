@@ -90,6 +90,7 @@ study_folder <- file.path(output_folder, STUDY_DATA_FOLDER_NAME)
 ################################# CREATE STUDY #################################
 
 if (GENERATE_2060 & WORLD_NODE) {
+  # print("yeah")
   antaresCreateStudy2060_module = file.path("src", "2060", "oneNode", "antaresCreateStudy2060_oneNode.R",
                                             fsep = .Platform$file.sep)
   source(antaresCreateStudy2060_module)

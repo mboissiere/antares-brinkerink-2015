@@ -1,11 +1,11 @@
-source(".\\src\\2060\\CapacityProratas.R")
+# source(".\\src\\2060\\CapacityProratas.R")
 # test_scenario <- "S1"
 # if_generators_properties_tbl <- get2060ScenarioTable(test_scenario)
 
 nodes <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/deane_all_nodes_lst.rds")
 wind_cf_ts_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/wind_cf_ts_tbl.rds")
 pv_cf_ts_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/solarpv_cf_ts_tbl.rds")
-all_scenarios_generators_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/generators_scenarios_properties_tbl.rds")
+# all_scenarios_generators_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/generators_scenarios_properties_tbl.rds")
 
 ################################################################################
 
@@ -27,12 +27,13 @@ addDistrictsTo2060 <- function(nodes) {
 
 ################################################################################
 
+source(".\\src\\2060\\oneNode\\newIfScenarioGenerator.R")
 
 getAggregatedTSFrom2060 <- function(nodes, properties_tbl, timeseries_tbl) {
-  
-  not_in_plexos_lst <- properties_tbl %>%
-    filter(is.na(nominal_capacity)) %>%
-    pull(generator_name)
+  # 
+  # not_in_plexos_lst <- properties_tbl %>%
+  #   filter(is.na(nominal_capacity)) %>%
+  #   pull(generator_name)
   
   properties_tbl <- properties_tbl %>%
     mutate(nominal_capacity = nominal_capacity * nb_units) %>%
@@ -177,11 +178,11 @@ add2060HydroToAntares <- function(generators_properties_tbl) {
   logMain(msg)
 }
 
-## TESTING HYDRO FOR A BIT
-if_generators_properties_tbl <- get2060ScenarioTable("S1")
-print(if_generators_properties_tbl)
-hydro_countries_2060_tbl <- getCountryTableFromHydro(if_generators_properties_tbl)
-print(hydro_countries_2060_tbl)
+# ## TESTING HYDRO FOR A BIT
+# if_generators_properties_tbl <- get2060ScenarioTable("S1")
+# print(if_generators_properties_tbl)
+# hydro_countries_2060_tbl <- getCountryTableFromHydro(if_generators_properties_tbl)
+# print(hydro_countries_2060_tbl)
 
 # Petit échec tout de même :
 
@@ -324,8 +325,8 @@ if_2060_capacities_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/one
 
 generateThermalAllScenarios <- function() {
   thermal_tbl <- tibble(
-    if_technology_type = c("Bioenergy", "Coal", "Gas", "Geothermal", "Nuclear", "Oil"),
-    antares_cluster_type = c("Mixed Fuel", "Hard Coal", "Gas", "Other", "Nuclear", "Oil")
+    if_technology_type = c("Bioenergy", "Coal", "Gas", "Geothermal", "Nuclear", "Oil", "Geothermal"),
+    antares_cluster_type = c("Mixed Fuel", "Hard Coal", "Gas", "Other", "Nuclear", "Oil", "Other")
   ) %>%
   left_join(if_2060_capacities_tbl, by = "if_technology_type")
     # filter(scenario == scenario_number)
@@ -339,6 +340,8 @@ generateThermalAllScenarios <- function() {
             if_technology_type == "Gas" ~ 400,
             if_technology_type == "Nuclear" ~ 600,
             if_technology_type == "Oil" ~ 300,
+            if_technology_type == "Geothermal" ~ 70, # valeur moyenne à partir de ce qui est dans PLEXOS.
+            # pas dans papier de base
             )
            ) %>%
     mutate(min_stable_factor = case_when(
@@ -347,6 +350,7 @@ generateThermalAllScenarios <- function() {
       if_technology_type == "Gas" ~ 40,
       if_technology_type == "Nuclear" ~ 60,
       if_technology_type == "Oil" ~ 50,
+      if_technology_type == "Geothermal" ~ 0,
     )
     ) %>%
     mutate(nb_units = ceiling(total_capacity_2060 / standard_capacity),
@@ -359,6 +363,7 @@ generateThermalAllScenarios <- function() {
         if_technology_type == "Gas" ~ 2e-6,
         if_technology_type == "Nuclear" ~ 5e-8,
         if_technology_type == "Oil" ~ 8e-5,
+        if_technology_type == "Geothermal" ~ 0, # On va juste prendre 0 psk tout gratoui
       ),
       HRe = case_when(
         if_technology_type == "Bioenergy" ~ -0.0392,
@@ -366,6 +371,7 @@ generateThermalAllScenarios <- function() {
         if_technology_type == "Gas" ~ 0.0025,
         if_technology_type == "Nuclear" ~ -0.0004,
         if_technology_type == "Oil" ~ -0.0235,
+        if_technology_type == "Geothermal" ~ 0,
       ),
       HRf = case_when(
         if_technology_type == "Bioenergy" ~ 14.432,
@@ -373,6 +379,7 @@ generateThermalAllScenarios <- function() {
         if_technology_type == "Gas" ~ 8.307,
         if_technology_type == "Nuclear" ~ 4.0717,
         if_technology_type == "Oil" ~ 11.516,
+        if_technology_type == "Geothermal" ~ 0,
       ),
       heat_rate = HRd * capacity_per_unit^2 + HRe * capacity_per_unit + HRf
     ) %>%
@@ -383,6 +390,7 @@ generateThermalAllScenarios <- function() {
         if_technology_type == "Gas" ~ 251.5,
         if_technology_type == "Nuclear" ~ 143.55,
         if_technology_type == "Oil" ~ 91.525,
+        if_technology_type == "Geothermal" ~ 0,
       ),
       SCb = case_when(
         if_technology_type == "Bioenergy" ~ 1412.6,
@@ -390,6 +398,7 @@ generateThermalAllScenarios <- function() {
         if_technology_type == "Gas" ~ -9875,
         if_technology_type == "Nuclear" ~ 87091,
         if_technology_type == "Oil" ~ -186.44,
+        if_technology_type == "Geothermal" ~ 0,
       ),
       computed_sc = SCa * capacity_per_unit + SCb
     ) %>%
@@ -408,6 +417,7 @@ generateThermalAllScenarios <- function() {
       if_technology_type == "Gas" ~ mean(c(9.2, 6.8, 6.8, 6.8, 6.7, 2.5)),
       if_technology_type == "Nuclear" ~ mean(c(2, 2, 2, 2, 2, 2)),
       if_technology_type == "Oil" ~ mean(c(3, 3, 3, 3, 3, 3)),
+      if_technology_type == "Geothermal" ~ 0,
       # On a pris _Pet et pas country level oil, fuck that
       # Je VIENS de me rendre compte aussi que Cog c'était avec un min stable factor de 0
       # donc du coup bof bof l'inclure dans le schmilblick
@@ -419,6 +429,7 @@ generateThermalAllScenarios <- function() {
       if_technology_type == "Gas" ~ mean(c(61.7, 57.9, 53.8, 53.6, 50.9, 46)),
       if_technology_type == "Nuclear" ~ mean(c(0, 0, 0, 0, 0, 0)),
       if_technology_type == "Oil" ~ mean(c(106.7, 106.7, 106.7, 106.7, 106.7, 106.7)),
+      if_technology_type == "Geothermal" ~ 0,
       # On a pris _Pet et pas country level oil, fuck that
       # Je VIENS de me rendre compte aussi que Cog c'était avec un min stable factor de 0
       # donc du coup bof bof l'inclure dans le schmilblick
@@ -434,24 +445,33 @@ generateThermalAllScenarios <- function() {
   return(thermal_averaged_fuels_tbl)
 }
 
-thermal_all_scenarios_tbl <- generateThermalAllScenarios()
-# print(thermal_tbl)
-saveRDS(thermal_all_scenarios_tbl, ".\\src\\2060\\oneNode\\thermal_all_scenarios_tbl.rds")
+# thermal_all_scenarios_tbl <- generateThermalAllScenarios()
+# # print(thermal_all_scenarios_tbl, n = 30)
+# saveRDS(thermal_all_scenarios_tbl, ".\\src\\2060\\oneNode\\thermal_all_scenarios_tbl.rds")
+
+##############################
+##### Who knew Wind and PV would end up being the hardest ?
 
 
 
-volumesMATERcapacity2060_S1 = c(
-  Bioenergy = 297200,
-  CSP = 179979, 
-  Coal = 66800,
-  Gas = 190000,
-  Geothermal = 51737,
-  Hydro = 1079880,
-  Nuclear = 334000,
-  Oil = 0,
-  PV = 8197926,
-  Wind = 3080168
-)
+# wind_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, wind_cf_ts_tbl) %>%
+#   select(-datetime)
+
+
+
+# 
+# volumesMATERcapacity2060_S1 = c(
+#   Bioenergy = 297200,
+#   CSP = 179979, 
+#   Coal = 66800,
+#   Gas = 190000,
+#   Geothermal = 51737,
+#   Hydro = 1079880,
+#   Nuclear = 334000,
+#   Oil = 0,
+#   PV = 8197926,
+#   Wind = 3080168
+# )
 
 # thermal_properties_2015_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/thermal_properties_2015_tbl.rds")
 # all_scenarios_generators_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/generators_scenarios_properties_tbl.rds")
