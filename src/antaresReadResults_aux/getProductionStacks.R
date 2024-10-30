@@ -8,7 +8,12 @@ saveGlobalProductionStack <- function(output_dir,
                                       unit = "TWh",
                                       year = 2060
 ) {
-  global_data <- getGlobalAntaresData(timestep)
+  if (READ_2060) {
+    global_data <- getGlobalAntaresData(timestep, FALSE)
+  } else {
+    global_data <- getGlobalAntaresData(timestep)
+  }
+  
   
   if (divide_stacks_by_hours) {
     global_data <- divideAntaresDataByHours(global_data, timestep)

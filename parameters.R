@@ -2,16 +2,16 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-GENERATE_2060 = TRUE
+GENERATE_2060 = FALSE
 GENERATE_2060_CSP = TRUE
 WORLD_NODE = TRUE
 IF_STUDY_NAME = "If S1 Economy v2.4 (World w CSP)"
 IF_SCENARIO = "S1"
 
-READ_2060 = FALSE
+READ_2060 = TRUE
 
-IMPORT_STUDY_NAME = "If S1 Economy v1.2 (sans CSP)"
-IMPORT_SIMULATION_NAME = "20241030-1557eco-accurateUCM_10mcyears_v8.6"
+IMPORT_STUDY_NAME = "If S1 Economy v2.4 (World w CSP)"
+IMPORT_SIMULATION_NAME = "20241030-2159eco-life_could_be_a_dream"
 
 # IMPORT_STUDY_NAME = "If S2 v1 (sans CSP)"
 # IMPORT_SIMULATION_NAME = "20241030-0719adq-accurateUCM_10mcyears_v8.6"

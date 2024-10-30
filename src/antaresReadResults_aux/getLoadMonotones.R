@@ -7,13 +7,19 @@ source(".\\src\\antaresReadResults_aux\\colorPalettes.R")
 saveLoadMonotone <- function(output_dir,
                              mode, # "global", "continental", "national" or "regional"
                              unit = "MWh",
-                             timestep = "hourly"
+                             timestep = "hourly",
+                             monotone_palette_lst = eCO2MixFusion_lst
 ) {
   
-  antares_data <- getAntaresDataByMode(timestep, mode)
+  if (READ_2060) {
+    antares_tbl <- getGlobalAntaresData("hourly", FALSE)
+  } else {
+    antares_data <- getAntaresDataByMode(timestep, mode)
+    
+    # Argh c'est relou les modes en vraiiii
+    antares_tbl <- as_tibble(antares_data)
+  }
   
-  # Argh c'est relou les modes en vraiiii
-  antares_tbl <- as_tibble(antares_data)
   
   # convertAntaresMWhToUnit(antares_tbl, unit)
   # nik, ça marche pas
@@ -73,7 +79,7 @@ saveLoadMonotone <- function(output_dir,
     p <- ggplot(item_tbl_long, aes(x = percent_time)) +
       geom_area(aes(y = production, fill = energy_source), position = "stack") +
       geom_step(aes(y = LOAD, group = 1), color = "black", linewidth = 0.5) +
-      scale_fill_manual(values = eCO2MixFusion_lst) + # note : this should be
+      scale_fill_manual(values = monotone_palette_lst) + # note : this should be
       # easily configurable
       labs(x = "% of time", y = paste0("Production (MWh)"), fill = paste(item, "energy mix")) +
       # avant il y avait unit ici mais c'était faux donc j'ai remis des bon vieux MWh hop

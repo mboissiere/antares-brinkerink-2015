@@ -21,24 +21,39 @@ REGIONS <- readRDS(".\\src\\objects\\deane_regions_lst.rds")
 color_palette = "eCO2MixFusionStack"
 # NB : the palette list for load monotones isn't in config atm
 
+if (READ_2060) {
+  variables_of_interest_areas <- c("WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.", 
+                                   "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
+                                   "LOAD",
+                                   "H. STOR",
+                                   "BALANCE",
+                                   "MISC. DTG",
+                                   "UNSP. ENRG", "SPIL. ENRG",
+                                   
+                                   "CO2 EMIS."
+                                   
+                                   # (mais j'aimerais grave importer des trucs de links !!)
+  )
+} else {
+  variables_of_interest_areas <- c("SOLAR", "WIND",
+                                   "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
+                                   "LOAD",
+                                   "H. STOR",
+                                   "BALANCE",
+                                   "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                                   "UNSP. ENRG", "SPIL. ENRG",
+                                   "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
+                                   "Battery_injection", "Battery_withdrawal", "Battery_level",
+                                   "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
+                                   "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
+                                   "Other3_injection", "Other3_withdrawal", "Other3_level", # Rappel : CAE
+                                   
+                                   "CO2 EMIS."
+                                   
+                                   # (mais j'aimerais grave importer des trucs de links !!)
+  )
+}
 
-variables_of_interest_areas <- c("SOLAR", "WIND",
-                                 "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
-                                 "LOAD",
-                                 "H. STOR",
-                                 "BALANCE",
-                                 "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                                 "UNSP. ENRG", "SPIL. ENRG",
-                                 "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
-                                 "Battery_injection", "Battery_withdrawal", "Battery_level",
-                                 "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
-                                 "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
-                                 "Other3_injection", "Other3_withdrawal", "Other3_level", # Rappel : CAE
-                                 
-                                 "CO2 EMIS."
-                                 
-                                 # (mais j'aimerais grave importer des trucs de links !!)
-)
 
 
 graphs_folder_names_by_mode <- c(
@@ -109,57 +124,99 @@ NB_MWH_IN_UNIT <- c(
 # (because yes, I'll have to comment this code one day)
 # Columns as of Antares v8.8 that are expressed in MWh.
 # For facilitating conversion in GWh and the like.
-MWH_COLUMNS = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", "WIND", "SOLAR",
-                "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
-                "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                "H. STOR", "H. PUMP", "H. INFL", 
-                "PSP_open_level", "PSP_closed_level", "Pondage_level", "Battery_level", 
-                "Other1_level", "Other2_level", "Other3_level", "Other4_level", "Other5_level",
-                "UNSP. ENRG", "SPIL. ENRG", "AVL DTG", "DTG MRG", "MAX MRG",
-                
-                "PSP_open_injection", "PSP_closed_injection", "Pondage_injection", "Battery_injection", 
-                "Other1_injection", "Other2_injection", "Other3_injection", "Other4_injection", "Other5_injection",
-                "PSP_open_withdrawal", "PSP_closed_withdrawal", "Pondage_withdrawal", "Battery_withdrawal", 
-                "Other1_withdrawal", "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal", "Other5_withdrawal")
+if (READ_2060) {
+  MWH_COLUMNS = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", 
+                  "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.",
+                  "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
+                  "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                  "H. STOR", "H. PUMP", "H. INFL", 
+                  "PSP_open_level", "PSP_closed_level", "Pondage_level", "Battery_level", 
+                  "Other1_level", "Other2_level", "Other3_level", "Other4_level", "Other5_level",
+                  "UNSP. ENRG", "SPIL. ENRG", "AVL DTG", "DTG MRG", "MAX MRG",
+                  
+                  "PSP_open_injection", "PSP_closed_injection", "Pondage_injection", "Battery_injection", 
+                  "Other1_injection", "Other2_injection", "Other3_injection", "Other4_injection", "Other5_injection",
+                  "PSP_open_withdrawal", "PSP_closed_withdrawal", "Pondage_withdrawal", "Battery_withdrawal", 
+                  "Other1_withdrawal", "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal", "Other5_withdrawal")
+  
+} else {
+  MWH_COLUMNS = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", "WIND", "SOLAR",
+                  "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
+                  "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                  "H. STOR", "H. PUMP", "H. INFL", 
+                  "PSP_open_level", "PSP_closed_level", "Pondage_level", "Battery_level", 
+                  "Other1_level", "Other2_level", "Other3_level", "Other4_level", "Other5_level",
+                  "UNSP. ENRG", "SPIL. ENRG", "AVL DTG", "DTG MRG", "MAX MRG",
+                  
+                  "PSP_open_injection", "PSP_closed_injection", "Pondage_injection", "Battery_injection", 
+                  "Other1_injection", "Other2_injection", "Other3_injection", "Other4_injection", "Other5_injection",
+                  "PSP_open_withdrawal", "PSP_closed_withdrawal", "Pondage_withdrawal", "Battery_withdrawal", 
+                  "Other1_withdrawal", "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal", "Other5_withdrawal")
+  
+}
 
 # Et ce n'est pas précisé dans les sorties Antares que l'injection/soutirage des batteries ce sont des MWh,
 # c'est écrit "MW", mais... ce serait incohérent dans nos graphes sinon.
 
 # A noter que le "diviser par 24" machin ca devrait etre un parametre !!
 # reglable et tout pour avoir des MWh si on veut et des MW si on veut aussi !!!
+if (READ_2060) {
+  COMMON_COLUMNS <- c("WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.",
+                      "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
+                      "LOAD",
+                      "H. STOR",
+                      "BALANCE",
+                      "MISC. DTG",
+                      "UNSP. ENRG", "SPIL. ENRG",
+                      
+                      "CO2 EMIS."
+  )
+} else {
+  COMMON_COLUMNS <- c("SOLAR", "WIND",
+                      "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
+                      "LOAD",
+                      "H. STOR",
+                      "BALANCE",
+                      "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                      "UNSP. ENRG", "SPIL. ENRG",
+                      "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
+                      "Battery_injection", "Battery_withdrawal", "Battery_level",
+                      "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
+                      "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
+                      "Other3_injection", "Other3_withdrawal", "Other3_level", # Rappel : CAE
+                      
+                      "CO2 EMIS."
+  )
+}
+
+
+if (READ_2060) {
+  ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.", "H. STOR",
+                             "MIX. FUEL", "GAS", "COAL", "OIL",
+                             "BALANCE", "UNSP. ENRG", "SPIL. ENRG")
   
-COMMON_COLUMNS <- c("SOLAR", "WIND",
-                    "GAS", "COAL", "NUCLEAR", "MIX. FUEL", "OIL",
-                    "LOAD",
-                    "H. STOR",
-                    "BALANCE",
-                    "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                    "UNSP. ENRG", "SPIL. ENRG",
-                    "PSP_closed_injection", "PSP_closed_withdrawal", "PSP_closed_level",
-                    "Battery_injection", "Battery_withdrawal", "Battery_level",
-                    "Other1_injection", "Other1_withdrawal", "Other1_level", # Rappel : thermal
-                    "Other2_injection", "Other2_withdrawal", "Other2_level", # Rappel : hydrogen
-                    "Other3_injection", "Other3_withdrawal", "Other3_level", # Rappel : CAE
-                    
-                    "CO2 EMIS."
-)
+  RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "PV", "CSP", "HYDRO",
+                                     "BIO AND WASTE", "GAS", "COAL", "OIL",
+                                     "IMPORTS", "UNSUPPLIED", "SPILLAGE")
+} else {
+  ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND", "SOLAR", "H. STOR",
+                             "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                             
+                             "PSP_closed_injection", "PSP_closed_withdrawal",
+                             "Battery_injection", "Battery_withdrawal",
+                             "Other1_injection", "Other1_withdrawal",
+                             "Other2_injection", "Other2_withdrawal",
+                             "Other3_injection", "Other3_withdrawal",
+                             
+                             "BALANCE", "UNSP. ENRG", "SPIL. ENRG")
+  RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "SOLAR", "HYDRO",
+                                     "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
+                                     "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
+                                     "IMPORTS", "UNSUPPLIED", "SPILLAGE")
+}
 
 
-ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND", "SOLAR", "H. STOR",
-                           "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
-                           
-                           "PSP_closed_injection", "PSP_closed_withdrawal",
-                           "Battery_injection", "Battery_withdrawal",
-                           "Other1_injection", "Other1_withdrawal",
-                           "Other2_injection", "Other2_withdrawal",
-                           "Other3_injection", "Other3_withdrawal",
-                           
-                           "BALANCE", "UNSP. ENRG", "SPIL. ENRG")
 
-RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "SOLAR", "HYDRO",
-                                   "BIO AND WASTE", "GAS", "COAL", "OIL", "OTHER",
-                                   "PSP STOR", "CHEMICAL STOR", "THERMAL STOR", "HYDROGEN STOR", "COMPRESSED AIR STOR", # à comprendre comme une injection
-                                   "IMPORTS", "UNSUPPLIED", "SPILLAGE")
 
 emissions_data <- readRDS(".\\src\\objects\\emissions_by_continent_fuel.rds")
 

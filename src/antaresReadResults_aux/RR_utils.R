@@ -26,26 +26,42 @@ convertAntaresMWhToUnit <- function(antares_data,
 }
 
 adaptAntaresVariables <- function(antares_data_tbl) {
+  if (READ_2060) {
+    renamed_tbl <- antares_data_tbl %>%
+      mutate(IMPORTS = -BALANCE,
+             SPILLAGE = -`SPIL. ENRG`
+      ) %>%
+      rename(
+        GEOTHERMAL = `MISC. DTG`,
+        HYDRO = `H. STOR`,
+        `BIO AND WASTE` = `MIX. FUEL`,
+        UNSUPPLIED = `UNSP. ENRG`,
+        PV = `SOLAR PV`,
+        CSP = `SOLAR CONCRT.`,
+        WIND = `WIND ONSHORE`,
+      )
+  } else {
+    renamed_tbl <- antares_data_tbl %>%
+      mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+             
+             `PSP STOR` = PSP_closed_withdrawal - PSP_closed_injection,
+             `CHEMICAL STOR` = Battery_withdrawal - Battery_injection,
+             `THERMAL STOR` = Other1_withdrawal - Other1_injection,
+             `HYDROGEN STOR` = Other2_withdrawal - Other2_injection,
+             `COMPRESSED AIR STOR` = Other3_withdrawal - Other3_injection,
+             
+             IMPORTS = -BALANCE,
+             SPILLAGE = -`SPIL. ENRG`
+      ) %>%
+      select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
+      rename(
+        GEOTHERMAL = `MISC. DTG`,
+        HYDRO = `H. STOR`,
+        `BIO AND WASTE` = `MIX. FUEL`,
+        UNSUPPLIED = `UNSP. ENRG`,
+      )
+  }
   
-  renamed_tbl <- antares_data_tbl %>%
-    mutate(OTHER = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-           
-           `PSP STOR` = PSP_closed_withdrawal - PSP_closed_injection,
-           `CHEMICAL STOR` = Battery_withdrawal - Battery_injection,
-           `THERMAL STOR` = Other1_withdrawal - Other1_injection,
-           `HYDROGEN STOR` = Other2_withdrawal - Other2_injection,
-           `COMPRESSED AIR STOR` = Other3_withdrawal - Other3_injection,
-           
-           IMPORTS = -BALANCE,
-           SPILLAGE = -`SPIL. ENRG`
-           ) %>%
-    select(-`MISC. DTG 2`, -`MISC. DTG 3`, -`MISC. DTG 4`) %>%
-    rename(
-      GEOTHERMAL = `MISC. DTG`,
-      HYDRO = `H. STOR`,
-      `BIO AND WASTE` = `MIX. FUEL`,
-      UNSUPPLIED = `UNSP. ENRG`,
-    )
   
   return(renamed_tbl)
 }

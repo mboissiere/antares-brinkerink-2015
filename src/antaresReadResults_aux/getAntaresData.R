@@ -1,25 +1,36 @@
 #################################### GLOBAL ####################################
 
 getGlobalAntaresData <- function(timestep, 
-                                 variables = COMMON_COLUMNS#,
+                                 WORLD_DISTRICT = TRUE,
+                                 variables = COMMON_COLUMNS
+                                 #,
                                  #divide_by_hours = TRUE
 ) {
-  global_data <- readAntares(areas = NULL,
-                             districts = "world", # ça pourrait être une variable etc etc
-                             mcYears = NULL,
-                             select = variables,
-                             timeStep = timestep,
-                             simplify = TRUE
-  )
-  # if (divide_by_hours) {
-  #   divideAntaresDataByHours(global_data, variables, timestep)
-  # }
+  if (WORLD_DISTRICT) {
+    global_data <- readAntares(areas = NULL,
+                               districts = "world", # ça pourrait être une variable etc etc
+                               mcYears = NULL,
+                               select = variables,
+                               timeStep = timestep,
+                               simplify = TRUE
+    )
+    # if (divide_by_hours) {
+    #   divideAntaresDataByHours(global_data, variables, timestep)
+    # }
+    
+    global_tbl <- as_tibble(global_data)
+    global_tbl <- global_tbl %>%
+      rename(area = district)
+    # This is to facilitate picking an "area" later on.
+    global_data <- as.antaresDataTable(global_tbl, synthesis = TRUE, timeStep = timestep, type = "areas")
+  } else {
+    global_data <- readAntares(areas = "world",
+                               mcYears = NULL,
+                               select = variables,
+                               timeStep = timestep,
+                               simplify = TRUE)
+  }
   
-  global_tbl <- as_tibble(global_data)
-  global_tbl <- global_tbl %>%
-    rename(area = district)
-  # This is to facilitate picking an "area" later on.
-  global_data <- as.antaresDataTable(global_tbl, synthesis = TRUE, timeStep = timestep, type = "areas")
   return(global_data)
 }
 

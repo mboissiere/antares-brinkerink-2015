@@ -32,7 +32,7 @@ eCO2MixFusion_noStorage_lst = c("GEOTHERMAL" = "springgreen",
                       "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
 
 eCO2MixFusion_noStorage_withCSP_lst = c("GEOTHERMAL" = "springgreen",
-                                "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "PV" = "#D66B0D", "CSP" = "lightgoldenrod",
+                                "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "PV" = "#D66B0D", "CSP" = "#EEDD82",
                                 "HYDRO" = "#2672B0", "BIO AND WASTE" = "darkgreen", "GAS" = "#F20809",
                                 "COAL" = "darkred", "OIL" = "#80549F",
                                 "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
@@ -146,7 +146,7 @@ setProdStackAlias(
     # `Contrib. Air comprimé` = -(Other3_injection - Other3_withdrawal)
   ),
   colors = c("darkblue", "darkgreen", "darkgoldenrod", "darkgray", "darksalmon",
-             "lightblue", "lightgreen", "lightgoldenrod", "lightgray", "lightsalmon"),
+             "lightblue", "lightgreen", "#EEDD82", "lightgray", "lightsalmon"),
   # colors = c("blue", "yellow", "orange", "cyan", "red"),
   lines = alist(
     `Niveau STEP` = PSP_closed_level - PSP_closed_level[1], # ça marche ça ? pour prendre le niveau initial ?
@@ -316,7 +316,7 @@ setProdStackAlias(
     Nucleaire = NUCLEAR,
     Eolien = `WIND ONSHORE`,
     PV = `SOLAR PV`,
-    CSP = `SOLAR THERMAL`,
+    CSP = `SOLAR CONCRT.`,
     `Hydro lacs` = `H. STOR`,
     
     `Bio et dechets` = `MIX. FUEL`,
@@ -328,12 +328,12 @@ setProdStackAlias(
     Defaillance = `UNSP. ENRG`,
     Ecretement = -`SPIL. ENRG`
   ),
-  colors = c("springgreen", "#E4A701", "#72CBB7", "#D66B0D", "lightgoldenrod", "#2672B0", 
+  colors = c("springgreen", "#E4A701", "#72CBB7", "#D66B0D", "#EEDD82", "#2672B0", # rip lightgoldenrod
              "darkgreen", "#F20809", "darkred", "#80549F",
              "#969696", "gray25", "gray25"
   ),
   lines = alist(
-    Production =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG`,
+    Production =  NUCLEAR + `WIND ONSHORE` + `SOLAR PV` + `SOLAR CONCRT.` + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG`,
     Consommation = LOAD
   ),
   lineColors = c("violetred", "black")
