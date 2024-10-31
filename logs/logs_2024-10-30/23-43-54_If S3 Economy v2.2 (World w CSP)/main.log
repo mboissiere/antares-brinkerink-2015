@@ -1,0 +1,30 @@
+INFO [2024-10-30 23:43:54] [MAIN] - Initializing output folder...
+INFO [2024-10-30 23:44:02] [MAIN] - Creating If S3 Economy v2.2 (World w CSP) study...
+INFO [2024-10-30 23:44:02] [MAIN] - Simulating If scenario~: S3 .
+
+INFO [2024-10-30 23:44:02] [MAIN] - Simulation mode : Economy
+INFO [2024-10-30 23:44:02] [MAIN] - Unit commitment mode : accurate
+INFO [2024-10-30 23:44:02] [MAIN] - Number of MC years : 1
+INFO [2024-10-30 23:44:02] [MAIN] - Generation of CSP : TRUE
+INFO [2024-10-30 23:44:03] [MAIN] - Adding world node...
+
+INFO [2024-10-30 23:44:03] [MAIN] - Done adding world node! (run time : 0.25s).
+
+INFO [2024-10-30 23:44:03] [MAIN] - Fetching thermal data...
+INFO [2024-10-30 23:44:04] [MAIN] - Done adding thermal data! (run time : 0.02min).
+
+INFO [2024-10-30 23:44:04] [MAIN] - Fetching wind data...
+
+INFO [2024-10-30 23:44:58] [MAIN] - Done adding wind data! (run time : 53.24s).
+
+INFO [2024-10-30 23:44:58] [MAIN] - Fetching PV data...
+
+INFO [2024-10-30 23:46:09] [MAIN] - Done adding PV data! (run time : 71.45s).
+
+INFO [2024-10-30 23:46:09] [MAIN] - Fetching CSP data...
+
+INFO [2024-10-30 23:46:10] [MAIN] - Done adding CSP data! (run time : 1.35s).
+
+INFO [2024-10-30 23:46:15] [MAIN] - Finished setting up Antares study! (run time : 2.21min).
+ 
+

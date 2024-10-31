@@ -12,7 +12,8 @@ source(".\\src\\2060\\oneNode\\antaresCreateStudy_2060_aux_oneNode.R")
 
 ## PARAMETERS
 
-mc_years = 10
+mc_years = 1 # there's no randomness here actually.. not really...
+# there could be if we had maintenances, but we don't.
 unit_commitment = "accurate"
 simulation_mode = "Economy"
 # nodes <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/deane_all_nodes_lst.rds")
@@ -82,15 +83,19 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   
   ################################# AREA CREATION ################################
   
+  node = "World"
+  
   msg = "[MAIN] - Adding world node...\n"
   logMain(msg)
   start_time <- Sys.time()
   # addNodesToAntares()
   createArea(
     name = "World",
-    nodalOptimization = nodalOptimizationOptions(average_unsupplied_energy_cost = 200),
+    nodalOptimization = nodalOptimizationOptions(average_unsupplied_energy_cost = 200,
+                                                 average_spilled_energy_cost = 200),
     overwrite = TRUE
     # Hypothesis on VoLL, completely arbitrary but we won't look at costs, we just need it to be high.
+    # Same for spillage if we want to prevent it..
   )
   
   end_time <- Sys.time()
@@ -104,25 +109,42 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   
   ################################## LOAD IMPORT #################################
   # Ah ! Plus compliqué !
-  if (scenario_number == "S1") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S1_load_tbl.rds")
-  } else if (scenario_number == "S2") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S2_load_tbl.rds")
-  } else if (scenario_number == "S3") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S3_load_tbl.rds")
-  } else if (scenario_number == "S4") {
-    load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S4_load_tbl.rds")
+  
+  if (LOAD_PROFILES == "Castillo") {
+    if (scenario_number == "S1") {
+      load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S1_load_tbl.rds")
+    } else if (scenario_number == "S2") {
+      load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S2_load_tbl.rds")
+    } else if (scenario_number == "S3") {
+      load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S3_load_tbl.rds")
+    } else if (scenario_number == "S4") {
+      load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/hourly_S4_load_tbl.rds")
+    }
+    
+    # world_load_tbl <- load_tbl %>%
+    #   mutate(World = rowSums(across(all_of(nodes)))) %>%
+    #   select(timeId, year, month, day, hour, # optionnels en vrai
+    #          World)
+    
+    world_load_ts <- load_tbl %>% pull(World)
+  } else if (LOAD_PROFILES == "Deane") {
+    load_capacity_ratios_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/load_capacity_ratios_tbl.rds")
+    scenario_load_capacity_ratio <- load_capacity_ratios_tbl %>%
+      filter(scenario == scenario_number) %>%
+      pull(load_capacity_ratio)
+    
+    deane_2015_load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/deane_2015_load_tbl.rds") 
+    
+    deane_2015_world_ts <- deane_2015_load_tbl %>%
+      mutate(World = rowSums(across(all_of(colnames(deane_2015_load_tbl))))) %>%
+      pull(World)
+    
+    world_load_ts <- deane_2015_world_ts * scenario_load_capacity_ratio
   }
   
-  # world_load_tbl <- load_tbl %>%
-  #   mutate(World = rowSums(across(all_of(nodes)))) %>%
-  #   select(timeId, year, month, day, hour, # optionnels en vrai
-  #          World)
-  
-  world_load_ts <- load_tbl %>% pull(World)
   
   # load_ts <- world_load_tbl[["World"]]
-  node = "World"
+  
   
   tryCatch({
     writeInputTS(

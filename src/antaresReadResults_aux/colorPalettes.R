@@ -31,8 +31,8 @@ eCO2MixFusion_noStorage_lst = c("GEOTHERMAL" = "springgreen",
                       "COAL" = "darkred", "OIL" = "#80549F",
                       "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
 
-eCO2MixFusion_noStorage_withCSP_lst = c("GEOTHERMAL" = "springgreen",
-                                "NUCLEAR" = "#E4A701", "WIND" = "#72CBB7", "PV" = "#D66B0D", "CSP" = "#EEDD82",
+eCO2MixFusion_noStorage_withCSP_lst = c("GEOTHERMAL" = "springgreen", "NUCLEAR" = "#E4A701", 
+                                "WIND" = "#72CBB7", "PV" = "#D66B0D", "CSP" = "#EEDD82",
                                 "HYDRO" = "#2672B0", "BIO AND WASTE" = "darkgreen", "GAS" = "#F20809",
                                 "COAL" = "darkred", "OIL" = "#80549F",
                                 "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
@@ -312,12 +312,13 @@ setProdStackAlias(
   name = "eCO2MixFusionStack_noStorage_withCSP",
   variables = alist(
     Geothermique = `MISC. DTG`,
-    # Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     Nucleaire = NUCLEAR,
+    # Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
     Eolien = `WIND ONSHORE`,
     PV = `SOLAR PV`,
     CSP = `SOLAR CONCRT.`,
     `Hydro lacs` = `H. STOR`,
+    
     
     `Bio et dechets` = `MIX. FUEL`,
     Gaz = GAS,
