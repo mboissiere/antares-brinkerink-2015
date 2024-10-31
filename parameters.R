@@ -5,8 +5,8 @@
 GENERATE_2060 = TRUE
 GENERATE_2060_CSP = TRUE
 WORLD_NODE = TRUE
-IF_STUDY_NAME = "If S1 Economy v3 (Deane load)"
-IF_SCENARIO = "S1"
+IF_STUDY_NAME = "If S2 Economy v3 (Deane load)"
+IF_SCENARIO = "S2"
 LOAD_PROFILES = "Deane" # can be "Castillo" or "Deane"
 
 READ_2060 = FALSE

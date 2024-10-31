@@ -1,0 +1,17 @@
+INFO [2024-10-31 13:43:21] [MAIN] - Initializing output folder...
+INFO [2024-10-31 13:43:31] [MAIN] - Creating If S1 Economy v3 (Deane load) study...
+INFO [2024-10-31 13:43:31] [MAIN] - Simulating If scenario~: S1 .
+
+INFO [2024-10-31 13:43:31] [MAIN] - Simulation mode : Economy
+INFO [2024-10-31 13:43:31] [MAIN] - Unit commitment mode : accurate
+INFO [2024-10-31 13:43:31] [MAIN] - Number of MC years : 1
+INFO [2024-10-31 13:43:31] [MAIN] - Generation of CSP : TRUE
+INFO [2024-10-31 13:43:31] [MAIN] - Adding world node...
+
+INFO [2024-10-31 13:43:32] [MAIN] - Done adding world node! (run time : 0.17s).
+
+INFO [2024-10-31 13:43:32] [MAIN] - Fetching thermal data...
+INFO [2024-10-31 13:43:32] [MAIN] - Done adding thermal data! (run time : 0.01min).
+
+INFO [2024-10-31 13:43:32] [MAIN] - Fetching wind data...
+

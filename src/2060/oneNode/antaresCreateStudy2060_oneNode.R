@@ -145,13 +145,16 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   
   # load_ts <- world_load_tbl[["World"]]
   
-  
+  msg = paste("[LOAD] - Adding", node, "load data...")
+  logFull(msg)
   tryCatch({
     writeInputTS(
       data = world_load_ts,
       type = "load",
       area = "World"
     )
+    msg = paste("[LOAD] - Successfully added", node, "load data!")
+    #   logFull(msg)
   }, error = function(e) {
     msg = paste("[WARN] - Could not add load data to", node, "node, skipping...")
     logError(msg)
@@ -303,6 +306,16 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   ##############################################################################
   ################################## WIND IMPORT ###############################
   
+  if_capacity_ratios_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/oneNode/if_capacity_ratios_tbl.rds")
+  scenario_2060_capacities_tbl <- if_capacity_ratios_tbl %>%
+    filter(scenario == scenario_number) %>%
+    select(if_technology_type, total_capacity_2060)
+  
+  wind_total_capacity <- scenario_2060_capacities_tbl %>%
+    filter(if_technology_type == "Wind") %>%
+    pull(total_capacity_2060)
+  # print(wind_total_capacity)
+  
   msg = "[MAIN] - Fetching wind data...\n"
   logMain(msg)
   start_time <- Sys.time()
@@ -329,7 +342,9 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
       time_series = wind_ts,
       add_prefix = FALSE,
       overwrite = FALSE,
-      ts_interpretation = "power-generation"
+      ts_interpretation = "power-generation",
+      nominalcapacity = wind_total_capacity,
+      unitcount = as.integer(1)
     )
     msg = paste("[WIND] - Adding", node, "wind data to Wind Onshore cluster...")
     logFull(msg)
@@ -375,6 +390,10 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   logMain(msg)
   start_time <- Sys.time()
   
+  pv_total_capacity <- scenario_2060_capacities_tbl %>%
+    filter(if_technology_type == "PV") %>%
+    pull(total_capacity_2060)
+  
   
   pv_agg_tbl <- getAggregatedTSFrom2060(nodes, scenario_2060_property_tbl, pv_cf_ts_tbl) %>%
     select(-datetime)
@@ -395,7 +414,9 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
       time_series = pv_ts,
       add_prefix = FALSE,
       overwrite = FALSE,
-      ts_interpretation = "power-generation"
+      ts_interpretation = "power-generation",
+      nominalcapacity = pv_total_capacity,
+      unitcount = as.integer(1)
     )
     msg = paste("[PV] - Adding", node, "PV data to Solar PV cluster...")
     logFull(msg)
@@ -439,6 +460,10 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   ################################################################################
   ################################## CSP IMPORT #################################
   
+  csp_total_capacity <- scenario_2060_capacities_tbl %>%
+    filter(if_technology_type == "CSP") %>%
+    pull(total_capacity_2060)
+  
   msg = "[MAIN] - Fetching CSP data...\n"
   logMain(msg)
   start_time <- Sys.time()
@@ -464,7 +489,9 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
       time_series = csp_ts,
       add_prefix = FALSE,
       overwrite = FALSE,
-      ts_interpretation = "power-generation"
+      ts_interpretation = "power-generation",
+      nominalcapacity = csp_total_capacity,
+      unitcount = as.integer(1)
     )
     msg = paste("[CSP] - Adding", node, "CSP data to Solar Thermal cluster...")
     logFull(msg)
@@ -514,6 +541,9 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   # et je fais une heuristique reservoir management
   
   # add2060HydroToAntares(scenario_2060_property_tbl)
+  
+  msg = paste("[HYDRO] - Fetching", node, "hydro data...")
+  logFull(msg)
   hydro_agg_tbl <- getCountryTableFromHydro(scenario_2060_property_tbl)
   
   hydro_world_tbl <- hydro_agg_tbl %>%
@@ -571,7 +601,8 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
     msg = paste("[HYDRO] - Couldn't add", node, "hydro profiles, skipping...")
     logError(msg)
   })
-  
+  msg = paste("[HYDRO] - Successfully added", node, "hydro data!")
+  logFull(msg)
   
   total_end_time <- Sys.time()
   duration <- round(difftime(total_end_time, total_start_time, units = "mins"), 2)
