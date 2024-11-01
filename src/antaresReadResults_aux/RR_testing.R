@@ -21,7 +21,8 @@ study_name = "v2_20clu__2024_09_04_22_33_36"
 # study_name = "EU_full_agg__2024_09_12_15_06_18"
 study_path = file.path("input", "antares_presets", study_name,
                         fsep = .Platform$file.sep)
-simulation_name = IMPORT_SIMULATION_NAME
+IMPORT_SIMULATION_NAME = "20240905-0707eco-world_vOutages_accurateUCM" # So long comrade
+# simulation_name = IMPORT_SIMULATION_NAME
 # simulation_name = "20240910-2240eco-renewabletest"
 # simulation_name = "20240912-1508eco-accrate_test"
 setSimulationPath(study_path, simulation_name)
@@ -305,41 +306,106 @@ print(summary_tbl)
 
 ## TEST : sauvegarde de courbe conso monde dans un CSV
 
+# 
+# global_annual_data <- getGlobalAntaresData("annual")
+# global_hourly_data <- getGlobalAntaresData("hourly")
+# global_daily_data <- getGlobalAntaresData("daily")
+# 
+# print(global_annual_data)
+# print(global_daily_data)
+# print(global_hourly_data)
+# 
+# csv_path = ".\\output\\RR_testing_csvs"
+# 
+# write.table(global_annual_data,
+#             file = file.path(csv_path, "global_annual_data.csv"),
+#             sep = ",",
+#             dec = ".",
+#             quote = FALSE,
+#             row.names = FALSE,
+#             col.names = TRUE
+#             )
+# 
+# write.table(global_daily_data,
+#             file = file.path(csv_path, "global_daily_data.csv"),
+#             sep = ",",
+#             dec = ".",
+#             quote = FALSE,
+#             row.names = FALSE,
+#             col.names = TRUE
+# )
+# 
+# write.table(global_hourly_data,
+#             file = file.path(csv_path, "global_hourly_data.csv"),
+#             sep = ",",
+#             dec = ".",
+#             quote = FALSE,
+#             row.names = FALSE,
+#             col.names = TRUE
+#             )
 
-global_annual_data <- getGlobalAntaresData("annual")
-global_hourly_data <- getGlobalAntaresData("hourly")
-global_daily_data <- getGlobalAntaresData("daily")
 
-print(global_annual_data)
-print(global_daily_data)
-print(global_hourly_data)
+##############################
+source(".\\src\\antaresReadResults_aux\\RR_init.R")
 
-csv_path = ".\\output\\RR_testing_csvs"
+# if (READ_2060) {
+#   global_data <- getGlobalAntaresData(timestep, FALSE)
+# } else {
+  global_data <- getGlobalAntaresData(timestep)
+# }
 
-write.table(global_annual_data,
-            file = file.path(csv_path, "global_annual_data.csv"),
-            sep = ",",
-            dec = ".",
-            quote = FALSE,
-            row.names = FALSE,
-            col.names = TRUE
-            )
 
-write.table(global_daily_data,
-            file = file.path(csv_path, "global_daily_data.csv"),
-            sep = ",",
-            dec = ".",
-            quote = FALSE,
-            row.names = FALSE,
-            col.names = TRUE
-)
+if (divide_stacks_by_hours) {
+  global_data <- divideAntaresDataByHours(global_data, timestep)
+}
+# if (READ_2060) {
+#   global_dir <- output_dir
+# } else {
+  global_dir <- file.path(output_dir, "Graphs", "1 - Global-level graphs")
+# }
 
-write.table(global_hourly_data,
-            file = file.path(csv_path, "global_hourly_data.csv"),
-            sep = ",",
-            dec = ".",
-            quote = FALSE,
-            row.names = FALSE,
-            col.names = TRUE
-            )
+
+prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
+prod_stack_dir <- file.path(global_dir, prod_stack_folder)
+if (!dir.exists(prod_stack_dir)) {
+  dir.create(prod_stack_dir)
+}
+
+# global_unit = "TWh"
+if (divide_stacks_by_hours) {
+  unit_legend <- paste0(substr(unit, 1, nchar(unit) - 1), "e")
+  # Changes TWh into TWe for the legend lmao
+}
+# if (READ_2060) {
+#   y_Max <- 12
+#   stack_plot <- prodStack(
+#     x = global_data,
+#     stack = stack_palette,
+#     areas = "world",
+#     dateRange = c(start_date, end_date),
+#     timeStep = timestep,
+#     # yMin = yMin_cont,
+#     yMax = y_Max,
+#     main = paste("Stack of the", timestep, year, "production for the world in", unit_legend, "from", start_date, "to", end_date),
+#     unit = unit,
+#     interactive = FALSE
+#   )
+# } else {
+  yMax = 8
+  stack_plot <- prodStack(
+    x = global_data,
+    stack = stack_palette,
+    areas = "world",
+    dateRange = c(start_date, end_date),
+    timeStep = timestep,
+    main = paste("Stack of the", timestep, year, "production for the world in", unit_legend, "from", start_date, "to", end_date),
+    unit = unit,
+    interactive = FALSE
+  )
+# }
+
+png_path = file.path(prod_stack_dir, "world.png")
+savePlotAsPng(stack_plot, file = png_path,
+              width = prodstack_width,
+              height = prodstack_height)
 

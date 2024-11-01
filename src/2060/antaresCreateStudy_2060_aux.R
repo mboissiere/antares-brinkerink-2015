@@ -582,7 +582,7 @@ csp_cf_ts_tbl <- readRDS(".\\src\\objects\\trueCSP_cf_ts_tbl.rds")
 
 # print(thermal_if_properties_tbl %>% select(generator_name, brinkerink_fuel_type, if_technology_type, min_stable_factor, standard_capacity), n = 50)
 
-# thermal_properties_raw_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/thermal_properties_raw_tbl.rds") 
+# thermal_properties_raw_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/thermal_properties_raw_tbl.rds")
 # 
 # gas_types_tbl <- thermal_properties_raw_tbl %>%
 #   filter(property == "Min Stable Factor" & value %in% c(20, 40)) %>%

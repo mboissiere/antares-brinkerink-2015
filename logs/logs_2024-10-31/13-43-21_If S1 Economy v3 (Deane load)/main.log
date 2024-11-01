@@ -15,3 +15,16 @@ INFO [2024-10-31 13:43:32] [MAIN] - Done adding thermal data! (run time : 0.01mi
 
 INFO [2024-10-31 13:43:32] [MAIN] - Fetching wind data...
 
+INFO [2024-10-31 13:44:18] [MAIN] - Done adding wind data! (run time : 45.5s).
+
+INFO [2024-10-31 13:44:18] [MAIN] - Fetching PV data...
+
+INFO [2024-10-31 13:45:17] [MAIN] - Done adding PV data! (run time : 59.01s).
+
+INFO [2024-10-31 13:45:17] [MAIN] - Fetching CSP data...
+
+INFO [2024-10-31 13:45:19] [MAIN] - Done adding CSP data! (run time : 2.36s).
+
+INFO [2024-10-31 13:45:23] [MAIN] - Finished setting up Antares study! (run time : 1.87min).
+ 
+

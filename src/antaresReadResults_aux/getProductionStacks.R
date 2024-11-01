@@ -18,8 +18,12 @@ saveGlobalProductionStack <- function(output_dir,
   if (divide_stacks_by_hours) {
     global_data <- divideAntaresDataByHours(global_data, timestep)
   }
+  if (READ_2060) {
+    global_dir <- output_dir
+  } else {
+    global_dir <- file.path(output_dir, "Graphs", "1 - Global-level graphs")
+  }
   
-  global_dir <- file.path(output_dir, "Graphs", "1 - Global-level graphs")
   
   prod_stack_folder <- paste("Production stacks", "-", timestep, "from", start_date, "to", end_date)
   prod_stack_dir <- file.path(global_dir, prod_stack_folder)
@@ -32,17 +36,75 @@ saveGlobalProductionStack <- function(output_dir,
     unit_legend <- paste0(substr(unit, 1, nchar(unit) - 1), "e")
     # Changes TWh into TWe for the legend lmao
   }
+  if (READ_2060) {
+    
   
+  # mutated_data <- global_data %>%
+  #   #filter(area == "europe") %>%
+  #   # mutate(PRODUCTION = NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL 
+  #   #        + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
+  #   #        NEGATIVE = - PSP_closed_injection - Battery_injection - Other1_injection
+  #   #        - Other2_injection - Other3_injection - BALANCE -`SPIL. ENRG`)
+  #   mutate(PRODUCTION = NUCLEAR + `WIND ONSHORE` + `SOLAR PV` + `SOLAR CONCRT.` + `H. STOR` 
+  #          + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `UNSP. ENRG`,
+  #          NEGATIVE = -`SPIL. ENRG`)
+  # 
+  # max_load <- max(mutated_data$LOAD, na.rm = TRUE)
+  # max_total_production <- max(mutated_data$TOTAL_PRODUCTION, na.rm = TRUE)
+  # 
+  # # yMax <- 1.1 * max(max_load, max_total_production)
+  # 
+  # max_load <- max(mutated_data$LOAD, na.rm = TRUE)
+  # max_production <- max(mutated_data$PRODUCTION, na.rm = TRUE)
+  # 
+  # min_negative <- min(mutated_data$NEGATIVE, na.rm = TRUE)
+  # 
+  # yMax_cont <- 1.05 * max(max_load, max_production) / 1000000 # it's in TW...
+  # yMin_cont <- 1.05 * min_negative / 1000000 # it's in TW...
+    y_Max <- 12
   stack_plot <- prodStack(
     x = global_data,
     stack = stack_palette,
     areas = "world",
     dateRange = c(start_date, end_date),
     timeStep = timestep,
+    # yMin = yMin_cont,
+    yMax = y_Max,
     main = paste("Stack of the", timestep, year, "production for the world in", unit_legend, "from", start_date, "to", end_date),
     unit = unit,
     interactive = FALSE
   )
+  } else {
+    yMax = 8
+    stack_plot <- prodStack(
+      x = global_data,
+      stack = stack_palette,
+      areas = "world",
+      dateRange = c(start_date, end_date),
+      timeStep = timestep,
+      main = paste("Stack of the", timestep, year, "production for the world in", unit_legend, "from", start_date, "to", end_date),
+      unit = unit,
+      interactive = FALSE
+    )
+  }
+  
+  # `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
+  # `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
+  # `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
+  # `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
+  # `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
+  # 
+  # `Imports/Exports` = -BALANCE,
+  # Defaillance = `UNSP. ENRG`,
+  # Ecretement = -`SPIL. ENRG`
+  # select(LOAD, PRODUCTION)
+  
+  # print(europe_max)
+  # 
+  # max_load <- max(mutated_data$LOAD, na.rm = TRUE)
+  # max_total_production <- max(mutated_data$TOTAL_PRODUCTION, na.rm = TRUE)
+  # 
+  # yMax <- 1.1 * max(max_load, max_total_production)
   
   png_path = file.path(prod_stack_dir, "world.png")
   savePlotAsPng(stack_plot, file = png_path,

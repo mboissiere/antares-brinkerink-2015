@@ -492,3 +492,30 @@ activateThermalTS <- function() { # this would be better in LaunchSimulation i t
 # op3 = 0.0
 # op4 = 0.0
 # op5 = 0.0
+
+# ######## QUICK TESTING
+# base_generators_properties_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/base_generators_properties_tbl.rds")
+# thermal_generators_tbl <- filterClusters(base_generators_properties_tbl, THERMAL_TYPES)
+# thermal_properties_tbl <- getThermalPropertiesTable(thermal_generators_tbl)
+# 
+# gas_properties_tbl <- thermal_properties_tbl %>%
+#   filter(antares_cluster_type == "Gas") %>%
+#   mutate(
+#     brinkerink_type = case_when(
+#     min_stable_power >= 0.3*nominal_capacity ~ "CCGT",
+#     min_stable_power < 0.3*nominal_capacity ~ "OCGT",
+#     TRUE ~ "Other"
+#   )) %>%
+#   select(generator_name, nominal_capacity, nb_units, min_stable_power, brinkerink_type)
+# 
+# print(gas_properties_tbl)
+# 
+# sum_tbl <- gas_properties_tbl %>% 
+#   mutate(total_capacity = nominal_capacity * nb_units) %>%
+#   group_by(brinkerink_type) %>%
+#   summarise(total_capacity = sum(total_capacity),
+#             nb_units = sum(nb_units),
+#             nominal_capacity = sum(nominal_capacity)
+#   )
+# 
+# print(sum_tbl)

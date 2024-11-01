@@ -40,37 +40,59 @@ initializeOutputFolderSimulation <- function(study_name = IMPORT_STUDY_NAME,
                                    simulation_name = IMPORT_SIMULATION_NAME, 
                                    color_palette = "productionStackWithBatteryContributions"
 ) {
-  output_folder_dir <- initializeOutputFolderStudy(study_name)
-  # woah mais du coup on le ré-initialise ? nan c'est chaud faut juste que je
-  # stocke ça comme variable qqpart fin
-  simus_folder_dir <- file.path(output_folder_dir, SIMUS_DATA_FOLDER_NAME)
-  
-  sim_folder_name <- paste0("sim-",
-                      simulation_name,
-                      "-palette-",
-                      color_palette
-  )
-  sim_folder_name <- truncateString(sim_folder_name, 25)
-  sim_dir <- file.path(simus_folder_dir, sim_folder_name)
-  
-  if (!dir.exists(sim_dir)) {
-    dir.create(sim_dir)
+  if (READ_2060) {
+    output_folder_dir <- initializeOutputFolderStudy(study_name)
+    # woah mais du coup on le ré-initialise ? nan c'est chaud faut juste que je
+    # stocke ça comme variable qqpart fin
+    # simus_folder_dir <- file.path(output_folder_dir, SIMUS_DATA_FOLDER_NAME)
+    simus_folder_dir <- output_folder_dir
+    
+    sim_folder_name <- paste0("sim-",
+                              simulation_name,
+                              "-palette-",
+                              color_palette
+    )
+    sim_folder_name <- truncateString(sim_folder_name, 35)
+    sim_dir <- file.path(simus_folder_dir, sim_folder_name)
+    
+    if (!dir.exists(sim_dir)) {
+      dir.create(sim_dir)
+    }
+  } else {
+    output_folder_dir <- initializeOutputFolderStudy(study_name)
+    # woah mais du coup on le ré-initialise ? nan c'est chaud faut juste que je
+    # stocke ça comme variable qqpart fin
+    simus_folder_dir <- file.path(output_folder_dir, SIMUS_DATA_FOLDER_NAME)
+    
+    sim_folder_name <- paste0("sim-",
+                              simulation_name,
+                              "-palette-",
+                              color_palette
+    )
+    sim_folder_name <- truncateString(sim_folder_name, 25)
+    sim_dir <- file.path(simus_folder_dir, sim_folder_name)
+    
+    if (!dir.exists(sim_dir)) {
+      dir.create(sim_dir)
+    }
+    
+    
+    graphs_dir <- file.path(sim_dir, "Graphs")
+    if (!dir.exists(graphs_dir)) {
+      dir.create(graphs_dir)
+    }
+    
+    datasheets_dir <- file.path(sim_dir, "Datasheets (EMPTY)")
+    if (!dir.exists(datasheets_dir)) {
+      dir.create(datasheets_dir)
+    }
+    
+    rawdata_dir <- file.path(sim_dir, "Raw data (EMPTY)")
+    if (!dir.exists(rawdata_dir)) {
+      dir.create(rawdata_dir)
+    }
   }
   
-  graphs_dir <- file.path(sim_dir, "Graphs")
-  if (!dir.exists(graphs_dir)) {
-    dir.create(graphs_dir)
-  }
-  
-  datasheets_dir <- file.path(sim_dir, "Datasheets (EMPTY)")
-  if (!dir.exists(datasheets_dir)) {
-    dir.create(datasheets_dir)
-  }
-  
-  rawdata_dir <- file.path(sim_dir, "Raw data (EMPTY)")
-  if (!dir.exists(rawdata_dir)) {
-    dir.create(rawdata_dir)
-  }
   
   # Graphs
   ## mais au final je crois qu'on s'en cogne et qu'on le crée petit à petit

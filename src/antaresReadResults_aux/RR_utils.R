@@ -28,7 +28,8 @@ convertAntaresMWhToUnit <- function(antares_data,
 adaptAntaresVariables <- function(antares_data_tbl) {
   if (READ_2060) {
     renamed_tbl <- antares_data_tbl %>%
-      mutate(IMPORTS = -BALANCE,
+      mutate(
+        #IMPORTS = -BALANCE,
              SPILLAGE = -`SPIL. ENRG`
       ) %>%
       rename(

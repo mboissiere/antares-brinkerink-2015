@@ -1,0 +1,30 @@
+INFO [2024-10-31 13:47:11] [MAIN] - Initializing output folder...
+INFO [2024-10-31 13:47:15] [MAIN] - Creating If S4 Economy v3 (Deane load) study...
+INFO [2024-10-31 13:47:15] [MAIN] - Simulating If scenario~: S4 .
+
+INFO [2024-10-31 13:47:16] [MAIN] - Simulation mode : Economy
+INFO [2024-10-31 13:47:16] [MAIN] - Unit commitment mode : accurate
+INFO [2024-10-31 13:47:16] [MAIN] - Number of MC years : 1
+INFO [2024-10-31 13:47:16] [MAIN] - Generation of CSP : TRUE
+INFO [2024-10-31 13:47:16] [MAIN] - Adding world node...
+
+INFO [2024-10-31 13:47:16] [MAIN] - Done adding world node! (run time : 0.13s).
+
+INFO [2024-10-31 13:47:16] [MAIN] - Fetching thermal data...
+INFO [2024-10-31 13:47:16] [MAIN] - Done adding thermal data! (run time : 0.01min).
+
+INFO [2024-10-31 13:47:16] [MAIN] - Fetching wind data...
+
+INFO [2024-10-31 13:47:55] [MAIN] - Done adding wind data! (run time : 38.64s).
+
+INFO [2024-10-31 13:47:55] [MAIN] - Fetching PV data...
+
+INFO [2024-10-31 13:48:18] [MAIN] - Done adding PV data! (run time : 22.97s).
+
+INFO [2024-10-31 13:48:18] [MAIN] - Fetching CSP data...
+
+INFO [2024-10-31 13:48:19] [MAIN] - Done adding CSP data! (run time : 0.92s).
+
+INFO [2024-10-31 13:48:22] [MAIN] - Finished setting up Antares study! (run time : 1.11min).
+ 
+

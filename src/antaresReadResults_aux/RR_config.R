@@ -89,9 +89,19 @@ preferred_unit_by_mode <- c(
 # Une piste pour pouvoir faire des programmes qui généralisent, mais bon, c'est relou pour l'instant
 
 prodstack_height <- HEIGHT_HD
-prodstack_width <- 2 * HEIGHT_HD
+if (READ_2060) {
+  prodstack_width <- 1.4 * HEIGHT_HD
+} else {
+  prodstack_width <- 2 * HEIGHT_HD
+}
+
 
 monotone_height = HEIGHT_720P
+if (READ_2060) {
+  monotone_width <- 1.82 * HEIGHT_720P
+} else {
+  monotone_width <- 2 * HEIGHT_720P
+}
 monotone_width = 2 * HEIGHT_720P
 monotone_resolution = DPI_150
 
@@ -124,7 +134,7 @@ NB_MWH_IN_UNIT <- c(
 # (because yes, I'll have to comment this code one day)
 # Columns as of Antares v8.8 that are expressed in MWh.
 # For facilitating conversion in GWh and the like.
-if (READ_2060) {
+if (READ_2060 & THERMAL_BELOW) {
   MWH_COLUMNS = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", 
                   "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.",
                   "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
@@ -138,7 +148,23 @@ if (READ_2060) {
                   "Other1_injection", "Other2_injection", "Other3_injection", "Other4_injection", "Other5_injection",
                   "PSP_open_withdrawal", "PSP_closed_withdrawal", "Pondage_withdrawal", "Battery_withdrawal", 
                   "Other1_withdrawal", "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal", "Other5_withdrawal")
+
   
+} else if (READ_2060 & !THERMAL_BELOW) {
+  MWH_COLUMNS = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", 
+                  "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.",
+                  "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
+                  "MISC. DTG", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",
+                  "H. STOR", "H. PUMP", "H. INFL", 
+                  "PSP_open_level", "PSP_closed_level", "Pondage_level", "Battery_level", 
+                  "Other1_level", "Other2_level", "Other3_level", "Other4_level", "Other5_level",
+                  "UNSP. ENRG", "SPIL. ENRG", "AVL DTG", "DTG MRG", "MAX MRG",
+                  
+                  "PSP_open_injection", "PSP_closed_injection", "Pondage_injection", "Battery_injection", 
+                  "Other1_injection", "Other2_injection", "Other3_injection", "Other4_injection", "Other5_injection",
+                  "PSP_open_withdrawal", "PSP_closed_withdrawal", "Pondage_withdrawal", "Battery_withdrawal", 
+                  "Other1_withdrawal", "Other2_withdrawal", "Other3_withdrawal", "Other4_withdrawal", "Other5_withdrawal")
+    
 } else {
   MWH_COLUMNS = c("BALANCE", "ROW BAL.", "PSP", "MISC. NDG", "LOAD", "H. ROR", "WIND", "SOLAR",
                   "NUCLEAR", "LIGNITE", "COAL", "GAS", "OIL", "MIX. FUEL",
@@ -189,15 +215,23 @@ if (READ_2060) {
   )
 }
 
-
-if (READ_2060) {
+if (READ_2060 & THERMAL_BELOW) {
+  ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "MIX. FUEL", "COAL", "GAS", "OIL", 
+                             "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.", "H. STOR", 
+                             "UNSP. ENRG", "SPIL. ENRG")
+  
+  RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "BIO AND WASTE", "COAL", "GAS", "OIL",
+                                     "WIND", "PV", "CSP", "HYDRO",
+                                     "UNSUPPLIED", "SPILLAGE")
+  
+} else if (READ_2060 & !THERMAL_BELOW) {
   ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.", "H. STOR",
                              "MIX. FUEL", "GAS", "COAL", "OIL",
-                             "BALANCE", "UNSP. ENRG", "SPIL. ENRG")
+                             "UNSP. ENRG", "SPIL. ENRG")
   
   RENAMED_ENERGY_SOURCE_COLUMNS <- c("GEOTHERMAL", "NUCLEAR", "WIND", "PV", "CSP", "HYDRO",
                                      "BIO AND WASTE", "GAS", "COAL", "OIL",
-                                     "IMPORTS", "UNSUPPLIED", "SPILLAGE")
+                                     "UNSUPPLIED", "SPILLAGE")
 } else {
   ENERGY_SOURCE_COLUMNS <- c("MISC. DTG", "NUCLEAR", "WIND", "SOLAR", "H. STOR",
                              "MIX. FUEL", "GAS", "COAL", "OIL", "MISC. DTG 2", "MISC. DTG 3", "MISC. DTG 4",

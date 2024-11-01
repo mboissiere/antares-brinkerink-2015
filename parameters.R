@@ -2,26 +2,28 @@
 
 # Objets en snake_case, fonctions en camelCase
 
-GENERATE_2060 = TRUE
+GENERATE_2060 = FALSE
 GENERATE_2060_CSP = TRUE
 WORLD_NODE = TRUE
-IF_STUDY_NAME = "If S2 Economy v3 (Deane load)"
-IF_SCENARIO = "S2"
-LOAD_PROFILES = "Deane" # can be "Castillo" or "Deane"
+IF_STUDY_NAME = "If S4 Economy v3 (Castillo load)"
+IF_SCENARIO = "S1"
+LOAD_PROFILES = "Castillo" # can be "Castillo" or "Deane"
 
-READ_2060 = FALSE
+READ_2060 = TRUE
+THERMAL_BELOW = TRUE
+save_co2_emissions = FALSE
 
-# IMPORT_STUDY_NAME = "If S1 Economy v2.2 (World w CSP)"
-# IMPORT_SIMULATION_NAME = "20241030-2252eco-S1_World_1MC_accurateUCM_v8.6"
+IMPORT_STUDY_NAME = "If S1 Economy v3 (Deane load)"
+IMPORT_SIMULATION_NAME = "20241031-1357eco-S1_defaillance50k"
 
-IMPORT_STUDY_NAME = "If S2 Economy v2.2 (World w CSP)"
-IMPORT_SIMULATION_NAME = "20241030-2253eco-S2_World_1MC_accurateUCM_v8.6"
+# IMPORT_STUDY_NAME = "If S2 Economy v3 (Deane load)"
+# IMPORT_SIMULATION_NAME = "20241031-1357eco-S2_defaillance50k"
 
-# IMPORT_STUDY_NAME = "If S3 Economy v2.2 (World w CSP)"
-# IMPORT_SIMULATION_NAME = "20241030-2253eco-S3_World_1MC_accurateUCM_v8.6"
+# IMPORT_STUDY_NAME = "If S3 Economy v3 (Deane load)"
+# IMPORT_SIMULATION_NAME = "20241031-1357eco-S3_defaillance50k"
 
-# IMPORT_STUDY_NAME = "If S4 Economy v2.2 (World w CSP)"
-# IMPORT_SIMULATION_NAME = "20241030-2253eco-S4_World_1MC_accurateUCM_v8.6"
+# IMPORT_STUDY_NAME = "If S4 Economy v3 (Deane load)"
+# IMPORT_SIMULATION_NAME = "20241031-1357eco-S4_defaillance50k"
 
 # UTILISER LES OBJECTS POUR FAIRE UNE COPIE DES PARAMETRES ET LE STOCKER ET
 # TRAVAILLER LA DESSUS. ON GOD.
@@ -183,11 +185,12 @@ REGENERATE_OBJECTS = FALSE # if true, will recreate all R objects.
 # print(NODES)
 
 save_daily_production_stacks = TRUE
-save_hourly_production_stacks = TRUE # with start and end dates somewhere in config...
-divide_stacks_by_hours = TRUE
+save_hourly_production_stacks = FALSE # with start and end dates somewhere in config...
+divide_stacks_by_hours = FALSE
 
-save_load_monotones = TRUE
+save_load_monotones = FALSE
 # divide_monotones_by_hours = TRUE # n'a aucun sens, c'est hourly par nature
+
 
 save_import_export = FALSE
 
@@ -199,6 +202,7 @@ save_global_graphs = TRUE
 save_continental_graphs = FALSE
 save_national_graphs = FALSE
 save_regional_graphs = FALSE
+save_co2_emissions = TRUE
 
 
 # Ah, un truc qu'on a pas encore mis, mais qui rendraient pertinentes les années Monte-Carlo,
