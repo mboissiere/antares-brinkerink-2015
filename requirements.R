@@ -6,7 +6,6 @@
 packages = c("antaresRead", "antaresEditObject", "dplyr", "tidyr",
              "futile.logger",
              "antaresViz")
-# AntaresViz c'est plus discutable mais vazy
 
 ## Now load or install&load all
 package.check <- lapply(

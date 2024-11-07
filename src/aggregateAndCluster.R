@@ -1,7 +1,7 @@
 # Load necessary libraries
 library(dplyr)
 library(tidyr)
-library(purrr) # vérifier si c'est utile ça et pourquoi
+library(purrr)
 
 source(".\\src\\utils.R")
 source("parameters.R")
@@ -10,21 +10,14 @@ source("parameters.R")
 # que le nb optimal de cluster est trouvé... on peut le stocker dans un rds !
 
 
-# batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
-# print(batteries_tbl)
-# print(batteries_tbl, n = 200)
-
-
 aggregateEquivalentGenerators <- function(generators_tbl) {
-  # print("generators_tbl :")
-  # print(generators_tbl)
+  
   aggregated_generators_tbl <- generators_tbl %>%
     # group_by(node, cluster_type, nominal_capacity, min_stable_power, co2_emission) %>%
     group_by(node, antares_cluster_type, nominal_capacity, min_stable_power) %>%
-    # waitwaitwait. aggregateEquivalent is for generators who are FUNCTIONALLY THE SAME.
-    # or is it, uh... well we aggregate on nominal capacity and we want bugs to not be there
-    # and we aggregate everything nominal capacity or that depends on it. but. uh.
-    # bit confusing innit. 
+    # aggregateEquivalent is for generators who are FUNCTIONALLY THE SAME.
+    # well we aggregate on nominal capacity and we want bugs to not be there
+    
   summarize(
     total_units = sum(nb_units),
     combined_names = paste0(
@@ -41,8 +34,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     avg_fo_duration = mean(fo_duration),
     .groups = 'drop'
   ) 
-  # print("aggregated_generators_tbl :")
-  # print(aggregated_generators_tbl)
+  
   
   aggregated_generators_tbl <- aggregated_generators_tbl %>%
     mutate(generator_name = truncateStringVec(combined_names, CLUSTER_NAME_LIMIT),
@@ -56,56 +48,20 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
     ) %>%
     select(generator_name, node, antares_cluster_type, nominal_capacity, nb_units, min_stable_power, 
            co2_emission, variable_cost, start_cost, fo_rate, fo_duration)
-  # print("aggregated_generators_tbl :")
-  # print(aggregated_generators_tbl)
   
-  # msg = paste("[CLUSTERING] - Aggregated the functionally similar generators", 
-  #             combined_names, 
-  #             "into one generator :", 
-  #             generator_name)
-  # C'est vraiment, vraiment pas aussi simple que ça vu qu'on fait du vectoriel....
-  # Il est pas impossible que cette feature on dise tant pis pour le aggregated.
-  # Et sur le clustered à la rigueur pk pas.
+  
+  
   
   msg = "[CLUSTERING] - Aggregated functionally identical generators (same nominal capacity) together!"
   logFull(msg)
-  # Faire un log "aggregated functionally similar" ET "clustered into"
+  
   
   return(aggregated_generators_tbl)
 }
-
-#######
-# # Redoing aggregation because it didn't have variable cost in current RDS
-# thermal_properties <- readRDS(".\\src\\objects\\thermal_generators_properties_tbl.rds")
-# print(thermal_properties %>% filter(node == "NA-CAN-ON"), n = 25)
-# print(thermal_properties, n = 50)
-# 
-# aggregated_thermal <- aggregateEquivalentGenerators(thermal_properties)
-# 
-# saveRDS(aggregated_thermal, ".\\src\\objects\\thermal_aggregated_tbl.rds")
-# aggregated_thermal <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-# print(aggregated_thermal %>% filter(node == "NA-CAN-ON"), n = 25)
-# print(aggregated_thermal, n = 50)
-# # New aggregation results : from 11,692 total thermal to 7,532
-
-
-# Equivalent batteries are a different kind of beast...
-# Is the goal of aggregate to fuse two objects which are functionally the same (eg exact same properties)
-# or to make it easier to clusterize later on by removing all duplicates of the property we clusterize on (eg same nominal capapacity)
-# it's quite complicated here, because batteries can have same max_power but very different capacity, and vice versa.....
-
-# perhaps we should be freed of Deane's aggregation by multiplying capacity and max_power with units, obtaining effective numbers,
-# and forcing nb_units back to 1 for everything. then, each battery truly represents the battery. that's kinda what the true aggregation is
-# honestly.
-# this helps because if there are max_power duplicates, we can sum capacities (and not have to watch out for units*capacity everytime)
-
-# (i might want to keep track of what's the maximum level of disaggregation though...
-# but that's already the case, with no aggregation and importing straight from Deane...)
-
 # i reckon "cluster", "aggregate" and "import units seperately" are actually THREE different operations
 # and might deserve three variables in config (or three modes : clustered, aggregated, disaggregated)
 # (ah but what about the combinations ! you can have clustered disaggregated, aggregated not dissaggregated/seperate.. only thing you can't have is clustered not aggregated)
-# yeah this is confusing as hell uhhhh
+# yeah this is confusing as hell
 
 # a better name for this function would be aggregateBatteriesOnNominalCapacity
 # and the same goes for equivalent generators
@@ -114,7 +70,7 @@ aggregateEquivalentGenerators <- function(generators_tbl) {
 
 
 aggregateEquivalentBatteries <- function(batteries_tbl) {
-  # Aggregating and adjusting values
+  
   aggregated_batteries_tbl <- batteries_tbl %>%
     mutate(
       capacity = capacity *  units,
@@ -122,17 +78,12 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
       units = 1
     )
   
-  # print(aggregated_batteries_tbl, n = 50)
   
   aggregated_batteries_tbl <- aggregated_batteries_tbl %>%
     group_by(node, antares_cluster_type, continent, battery_group, max_power, efficiency, capacity) %>% 
     # efficiency should be redundant with cluster type
     # and so is continent, battery group... technically this function isn't very robust because it's not even sure these columns exist
     # (again, i lose some levels of abstraction by preprocessing data then saving it to objects then reading it...)
-    
-    # aah !! i summed units for batteries that aren't functionally the same !! this is really bad i can't believe i almost let this slide
-    # but what can i do... a mean of capacity perhaps ???
-    # this is really weird if there's like 1 huge dam and 1 small dam...
     
     # going to keep this logic of only aggregating FUNCTIONALLY SIMILAR BATTERIES
     # in a way that is ONLY A PREPROCESSING OF K-MEANS CLUSTERING so it doesnt mess up later
@@ -160,11 +111,6 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
   return(aggregated_batteries_tbl)
 }
 
-# batteries_tbl <- readRDS(".\\src\\objects\\full_2015_batteries_tbl.rds")
-# print(batteries_tbl, n = 50)
-# 
-# aggregated_batteries_tbl <- aggregateEquivalentBatteries(batteries_tbl)
-# saveRDS(aggregated_batteries_tbl, ".\\src\\objects\\batteries_aggregated_tbl.rds")
 # aggregated_batteries_tbl <- readRDS(".\\src\\objects\\batteries_aggregated_tbl.rds")
 # print(aggregated_batteries_tbl, n  = 50)
 # print(aggregated_batteries_tbl %>% select(-battery_group, -initial_state, -continent), n  = 50)
@@ -209,7 +155,8 @@ aggregateEquivalentBatteries <- function(batteries_tbl) {
 
 ######################
 
-cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) { # je pourrais ici, si je veux,
+cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) { 
+  # je pourrais ici, si je veux,
   # filtrer tout ce sur quoi je fais pas du clustering (donc co2_emission...)
   # pour le remettre plus tard
   # attention pas min_stable_power car min_stable_power peut changer avec la capacity.
@@ -266,12 +213,7 @@ cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) 
       # for accessing node and cluster type within the nested df, and aggregate
       antares_cluster_type = antares_cluster_type
     )
-  # ERROR [2024-08-21 00:42:08] [WARN] - Failed to add DEU_OIL_BRUNSBTTEL11000_WILMERSDORF11818_CAPACITY  generator to EU-DEU node, skipping...
-  # à chaque fois il faut faire gaffe à l'espace à la fin, c'est putain de sûr
-  # notons que ça veut dire que ptet le clustering a plusieurs choix et que mon algo est non-déterministe...
-  # genre regarder si j'ai eu ça en oil la dernière fois.
-  # print("summary:")
-  # print(summary)
+  
   
   combined_names_lst <- summary %>% pull(combined_names)
   # print(combined_names_lst)
@@ -297,9 +239,6 @@ cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) 
     }
   }
   
-  # if (initial_number > k) {
-    
-  # }
   
   return(summary %>% select(-node, -antares_cluster_type, -combined_names))  
 }
@@ -314,9 +253,6 @@ cluster_and_summarize_generators <- function(df, k, node, antares_cluster_type) 
 
 clusteringForGenerators <- function(thermal_aggregated_tbl, 
                                     max_clusters
-                                    # nodes # useful when you only want a subset of nodes, which is common
-                                    # # in createStudy and testing...
-                                    # # wait, the problem was simply a discrepancy between argument name and variable used in program lmao
                                     ) {
   # Apply clustering and summarization
   # print(thermal_aggregated_tbl)
@@ -333,25 +269,6 @@ clusteringForGenerators <- function(thermal_aggregated_tbl,
   return(thermal_clusters_tbl)
 }
 
-#############
-# 
-# # Test on generators
-# thermal_aggregated_tbl <- readRDS(".\\src\\objects\\thermal_aggregated_tbl.rds")
-# print("Thermal aggregated table :")
-# print(thermal_aggregated_tbl)
-# 
-# max_clusters = 15
-# thermal_clusters_tbl <- clusteringForGenerators(thermal_aggregated_tbl, max_clusters)
-# print(paste0(max_clusters,"-clustering for dataset:"))
-# print(thermal_clusters_tbl, n = 100)
-# saveRDS(object = thermal_clusters_tbl, file = paste0(".\\src\\objects\\thermal_",max_clusters,"-clustering_tbl.rds"))
-
-# # View the result
-# # print(clustering_test, n = 200)
-# 
-# saveRDS(object = clustering_test, file = ".\\src\\objects\\thermal_20clustering_tbl.rds")
-# clustering_test <- readRDS(".\\src\\objects\\thermal_20clustering_tbl.rds")
-# print(clustering_test, n = 200)
 
 #######################
 
@@ -385,7 +302,7 @@ cluster_and_summarize_batteries <- function(df, k, node, antares_cluster_type, e
           collapse = "_"
         )
       ),
-      ## AAAH MAIS C'EST GENRE ARCHI FAUX ??? POURQUOI JE SOMME PAS JUSTE ?????
+      ## AAAH MAIS C'EST GENRE POSSIBLEMENT FAUX ??? POURQUOI J'AI PAS SOMME U*C JUSTE ?????
       max_power = mean(max_power), 
       capacity = mean(capacity), 
       units = sum(units), # attention qqfois units, qqfois nb_units...
@@ -427,21 +344,12 @@ cluster_and_summarize_batteries <- function(df, k, node, antares_cluster_type, e
 }
 
 clusteringForBatteries <- function(batteries_aggregated_tbl, max_clusters) {
-  # Note : slight incoherence because aggregation of batteries before clustering seems necessary here in argument
-  # But, user can select to disable it..
-  
   # Apply clustering and summarization
   
   # Note : for batteries, you ALWAYS gotta check that the units are 1 first.
   # because in the above method
   # remember : aggregation put units to 1, but then it summed capacities 
-  # wait.......
-  # i might have double counted if i sum power and capacity but don't sum units.
-  # no ! first i sum power and capacity and put units to 1.
-  # THEN i aggregate batteries IF THEY ARE FUNCTIONALLY THE SAME
-  # let's hope i did a groupby max_power AND capacity and not just max_power, else there is double counting
-  #
-  #....
+ 
   batteries_clusters_tbl <- batteries_aggregated_tbl %>%
     group_by(node, antares_cluster_type, efficiency) %>%
     nest() %>%
@@ -450,7 +358,6 @@ clusteringForBatteries <- function(batteries_aggregated_tbl, max_clusters) {
     ) %>%
     unnest(clustered_data) %>%
     select(battery_name, node, antares_cluster_type, units, capacity, max_power, efficiency, initial_state)
-  # print(batteries_clusters_tbl)
   return(batteries_clusters_tbl)
 }
 

@@ -7,20 +7,7 @@ if (!CREATE_STUDY) {
   logMain(msg)
   setSimulationPath(preset, "input")
 }
-# A cleaner thing to do would be to pass the study name as argument of a function
-# and to do the CREATE_STUDY check in main.
 
-# Truc un peu relou : tout ça ne sauvegardera pas dans /output mais dans
-# input/antares_presets/nom_etude/output
-# donc y a un... input dans l'output ce qui casse un peu le truc
-# à la rigueur faire des gitignore mais bon
-
-# si j'arrive à faire un truc qui prend le .gitignore et qui écrit dedans
-# pour enlever les /output sur tous les presets c'est fort mdr
-
-# après, en soi, on s'en fout d'après le remettre dans Antares
-# la lecture sur Antares Web est inintéressante au possible, c'est des tableurs
-# donc juste prendre le machin et le AntaresVizer
 
 source("parameters.R")
 
@@ -48,9 +35,8 @@ runSimulation(
   parallel = TRUE,
   #opts = antaresRead::setSimulationPath(simulation_path)
 )
-#msg = paste0("[MAIN] - Successfully saved simulation in output/", simulation_name, " folder...")
-#logMain(msg)
-# En vérité c'est 20240731-1517eco-simulation__2024_07_31_15_17_31, à modifier
+
+
 
 simulation_end_time <- Sys.time()
 duration <- round(difftime(simulation_end_time, simulation_start_time, units = "mins"), 2)

@@ -21,9 +21,7 @@ updateAllSettings <- function() {
     leapyear = is_leap_year(horizon),
     year.by.year = year_by_year,
     
-    generate = c("thermal"),# en vrai ce truc devrait être dans
-    # la partie generate thermal, c bizarre siy a pas
-    # bon ça devrait pas non plus bugger qd mm
+    generate = c("thermal"),
     # nbtimeseriesload = 1,
     # nbtimeserieshydro = 1,
     # nbtimeserieswind = 1,
@@ -33,7 +31,7 @@ updateAllSettings <- function() {
   
   updateOptimizationSettings(
     renewable.generation.modelling = RENEWABLE_GENERATION_MODELLING,
-    unit.commitment.mode = UNIT_COMMITMENT_MODE # not sure what this means but yea
+    unit.commitment.mode = UNIT_COMMITMENT_MODE
   )
   
   updateOutputSettings(
@@ -44,11 +42,3 @@ updateAllSettings <- function() {
     include.exportmps = "true"
   )
 }
-
-#print(getColor("EU-AUT"))
-
-
-
-# Idée : faire un dossier "data" et un dossier "antares"
-# En fait à terme il faudrait ptet faire un fichier genre parametres.txt avec
-# ce qui peut amener à changer souvent, et ce qui sera très peu amené à changer

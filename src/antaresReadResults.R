@@ -4,9 +4,7 @@
 library(antaresViz)
 
 source(".\\src\\logging.R")
-# IMPORTANT !!! LOGS ARENT ACTUALLY BEING SAVED RN
-# there are no logs from after 25/08 despite testing through 30/08
-# I guess non-study-creating runs aren't important enough... We should fix this.
+
 
 source(".\\src\\antaresReadResults_aux\\colorPalettes.R")
 source(".\\src\\antaresReadResults_aux\\RR_init.R")
@@ -14,12 +12,7 @@ source(".\\src\\antaresReadResults_aux\\RR_config.R")
 source(".\\src\\antaresReadResults_aux\\RR_utils.R")
 source(".\\src\\antaresReadResults_aux\\getAntaresData.R")
 
-# ERREUR CRUCIALE :
-# la création d'objets et entre autres d'output folder est dans saveObjects que j'ai foutu dans createStudy je crois
-# donc, l'output folder ne se crée pas si on a uniquement configuré un readResults parce que
-# la simu a déjà existé ailleurs..
-# EDIT : à peu près fix mais y a quand même un Graphs séparé alors que ça devrait être
-# une dichotomie Study data / Simulations data
+
 
 setRam(16)
 
@@ -32,34 +25,6 @@ output_dir <- initializeOutputFolderSimulation(study_name, simulation_name, colo
 
 ################################################################################
 ############################### DEANE HISTOGRAMS ###############################
-
-# if (save_deane_histograms) {
-#   
-#   source(".\\src\\antaresReadResults_aux\\getDeaneHistograms.R")
-#   
-#   msg = "[MAIN] - Preparing to save continental generation histograms..."
-#   logMain(msg)
-#   start_time <- Sys.time()
-#   
-#   saveContinentalGenerationHistograms(output_dir)
-#   
-#   end_time <- Sys.time()
-#   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-#   msg = paste("[MAIN] - Done saving continental generation histograms! (run time :", duration,"s).\n")
-#   logMain(msg)
-#   
-#   msg = "[MAIN] - Preparing to save continental emissions histograms..."
-#   logMain(msg)
-#   start_time <- Sys.time()
-#   
-#   saveContinentalEmissionHistograms(output_dir)
-#   
-#   end_time <- Sys.time()
-#   duration <- round(difftime(end_time, start_time, units = "secs"), 2)
-#   msg = paste("[MAIN] - Done saving continental emissions histograms! (run time :", duration,"s).\n")
-#   logMain(msg)
-#   
-# }
 
 if (save_deane_comparisons) {
   
@@ -164,19 +129,3 @@ if (save_load_monotones) {
   }
   
 }
-
-# Une recommendation possiblement intéressante de GPT : faire du calcul parallèle
-# pour pouvoir aller plus vite
-
-# # Use parallel processing to save multiple plots concurrently
-# cl <- makeCluster(detectCores() - 1) # Use one less than available cores
-# clusterExport(cl, varlist = c("antares_tbl", "load_monot_dir", "monotone_width", 
-#                               "monotone_height", "monotone_resolution", "unit", 
-#                               "max_value", "min_value", "max_index", "min_index", 
-#                               "renamedProdStackWithBatteries_lst", "data_lst"))
-# 
-# parLapply(cl, data_lst, function(item) { ...
-
-# detectCores()
-# [1] 8
-# (!!)

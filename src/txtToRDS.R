@@ -3,28 +3,15 @@ source(".\\src\\data\\preprocessNinjaData.R")
 source(".\\src\\data\\addNodes.R")
 # source(".\\src\\data\\importWind.R")
 # source(".\\src\\data\\importSolar.R")
-# J'ai mm pas la fonction pour importCSP alors que c'est un peu débile
-# puisque c'est toujours le même principe mdr oups
-# en vrai non ça vient de prepreprocessninja
-
 
 # On pourrait également sauvegarder ici les properties tables
 # au lieu de repasser à chaque fois par GetWindPropertiesTable etc
 # parce que pour l'aggregated ok mais pour les clusters ? ça peut aller plus vite
 # également par rapport à refaire le pivot_wider à chaque fois etc
 
-
-# ah c'est aggregated pas aggregated bref
-# bon le CSP je l'ai pas encore parce que c'est complique c'est des objets storage
-# > csp_clusters <- readRDS(csp_clusters_file)
-# > print(csp_clusters)
-# # A tibble: 8,760 x 0
-# # i Use `print(n = ...)` to see more rows
-# mais à tout moment ça part
-
 nodes_file = ".\\src\\objects\\all_deane_nodes_lst.rds"
 generators_file = ".\\src\\objects\\full_2015_generators_tbl.rds"
-# avoir full ninja et aggregated ninja selon si clusters ou agg tsai
+# avoir full ninja et aggregated ninja selon si clusters ou agg
 
 wind_clusters_file = ".\\src\\objects\\wind_clusters_ninja_tbl.rds"
 solar_clusters_file = ".\\src\\objects\\solar_clusters_ninja_tbl.rds"
@@ -63,13 +50,7 @@ if (!file.exists(wind_clusters_file)) {
 
 wind_clusters <- readRDS(wind_clusters_file)
 print(wind_clusters)
-# C'est vrai qu'à Deane il faudra remonter trucs usuels (eg what the hell voll)
-# mais aussi les coquilles ("hihi j'ai remarqué une mauvaise date là")
 
-# On est quand même sur une masterclass d'économie de temps si je réussis mon coup
-# en plus les wind tbl passent en dessous des 100 MB, ça veut dire je peux même
-# les push !! que la vie est belle
-# manque plus que voir ce que feraient les presets de studies en format h5
 if (!file.exists(solar_clusters_file)) {
   solar_ninja_tbl <- getTableFromNinja(PV_DATA_PATH)
   saveRDS(solar_ninja_tbl, file = solar_clusters_file)
@@ -77,14 +58,6 @@ if (!file.exists(solar_clusters_file)) {
 
 solar_clusters <- readRDS(solar_clusters_file)
 print(solar_clusters)
-
-# if (!file.exists(csp_clusters_file)) {
-#   csp_ninja_tbl <- getTableFromNinja(CSP_DATA_PATH)
-#   saveRDS(csp_ninja_tbl, file = csp_clusters_file)
-# }
-# 
-# csp_clusters <- readRDS(csp_clusters_file)
-# print(csp_clusters)
 
 source(".\\src\\data\\importWind.R")
 

@@ -9,11 +9,6 @@
 base_path <- file.path("antares", "examples", "studies", 
                        fsep = .Platform$file.sep
                        )
-# zut, je pensais que le but était de s'en affranchir, mais peut-être pas...
-# Idée : faire une variable globale "file path seperator" qui change tout d'un coup,
-# en cas de problème à la noix
-
-# Oh, quoique, la doc R me recommande file.path(…, fsep = .Platform$file.sep)
 
 # Version d'Antares utilisée
 antares_version = "8.6.0"
