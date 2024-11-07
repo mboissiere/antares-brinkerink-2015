@@ -129,11 +129,17 @@ HEIGHT_HD <- 1080
 
 
 ##Counting unsupplied hours
-# tbl <- as_tibble(readAntares("world", timeStep = "hourly"))
+tbl <- as_tibble(readAntares("world", timeStep = "hourly"))
 # unsupplied_hours_tbl <- tbl %>% filter(`UNSP. ENRG` != 0)
 # unsupplied_hours_tbl
-# spillage_hours_tbl <- tbl %>% filter(`SPIL. ENRG` != 0)
-# spillage_hours_tbl
+spillage_hours_tbl <- tbl %>% filter(`SPIL. ENRG` != 0)
+spillage_hours_tbl
+
+## Pour facteurs de charge
+tbl <- as_tibble(readAntares("world", timeStep = "annual",
+                             select =c("COAL", "GAS", "NUCLEAR", "MISC. DTG", "OIL", 
+                                       "WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.")))
+# print(sum(tbl %>% pull("MISC. DTG")) / (51737*8736))
 # En S1 : 8389 h
 # En S2 : 7441 h
 # En S3 : 0 h
