@@ -4,7 +4,7 @@ source("parameters.R")
 importAntaresData <- function(#study_name = IMPORT_STUDY_NAME,
                               #simulation_name = IMPORT_SIMULATION_NAME
   ) {
-  # euha aaaha je fais quoi après pour initializer le dossier
+  
   if (!CREATE_STUDY) {
     study_name = IMPORT_STUDY_NAME
     study_path = file.path("input", "antares_presets", study_name,
@@ -33,8 +33,7 @@ importAntaresData <- function(#study_name = IMPORT_STUDY_NAME,
 
 ################
 
-source(".\\src\\antaresCreateStudy_aux\\saveObjects.R") # un peu ghetto comme architecture là
-# on va dire que c'est provisoire..
+source(".\\src\\antaresCreateStudy_aux\\saveObjects.R")
 
 initializeOutputFolderSimulation <- function(study_name = IMPORT_STUDY_NAME, 
                                    simulation_name = IMPORT_SIMULATION_NAME, 
@@ -42,9 +41,7 @@ initializeOutputFolderSimulation <- function(study_name = IMPORT_STUDY_NAME,
 ) {
   if (READ_2060) {
     output_folder_dir <- initializeOutputFolderStudy(study_name)
-    # woah mais du coup on le ré-initialise ? nan c'est chaud faut juste que je
-    # stocke ça comme variable qqpart fin
-    # simus_folder_dir <- file.path(output_folder_dir, SIMUS_DATA_FOLDER_NAME)
+    
     simus_folder_dir <- output_folder_dir
     
     sim_folder_name <- paste0("sim-",
@@ -95,7 +92,7 @@ initializeOutputFolderSimulation <- function(study_name = IMPORT_STUDY_NAME,
   
   
   # Graphs
-  ## mais au final je crois qu'on s'en cogne et qu'on le crée petit à petit
+  ## mais au final je crois qu'on oublie et qu'on le crée petit à petit
   # dans les fonctions ?
   
   # global_dir <- file.path(graphs_dir, "1 - Global-level graphs")

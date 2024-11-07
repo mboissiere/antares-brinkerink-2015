@@ -70,8 +70,6 @@ HEIGHT_HD <- 1080
 # pic est 08/01/2015 13:00
 # bas est 04/10/2015 06:00
 
-# et en vrai ici... osef les batteries hein
-
 # En fait si pour déterminer min et max !
 # tbl <- as_tibble(readAntares("world", timeStep = "weekly"))
 # Importing areas

@@ -8,22 +8,6 @@ source(".\\src\\data\\preprocessPlexosData.R")
 source(".\\src\\data\\preprocessNinjaData.R")
 source(".\\src\\objects\\r_objects.R")
 
-# print(full_2015_generators_tbl)
-
-# csp_timeseries <- getTableFromNinja(CSP_DATA_PATH)
-# saveRDS(object = csp_timeseries, file = ".\\src\\objects\\csp_clusters_ninja_tbl.rds")
-
-# print(csp_timeseries)
-
-# applyFilterForCSP <- function(properties_tbl) %>%
-#   rows_to_remove <- properties_tbl %>%
-#   filter(scenario == "{Object}Exclude CSP") %>%
-#   pull(child_object) %>%
-#   unique() %>%
-#   toupper()
-# 
-# generators_tbl <- generators_tbl %>%
-#   filter(!generator_name %in% generator_names_to_remove)
 
 
 getPropertiesCSP <- function() {
@@ -36,18 +20,13 @@ getPropertiesCSP <- function() {
   generator_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Generators") %>%
     mutate(generator_name = toupper(child_object)) %>%
-    # not yet pivot_table, we got some funky scenarios to filter
-    # or, i can preprocess that exclude csp stuff in preprocessPlexosData along with 2015 filters...
+    
     filter(scenario != "{Object}Exclude CSP") %>%
     select(generator_name, property, value)
   
   # print(generator_properties_tbl)
     # Obligé de select avant le pivot_wider, sinon les différences dans certaines colonnes
     # comme scenario etc cassent le truc en deux et forcent à faire deux entries
-    
-    # also de filtrer par la technologie qu'on veut sinon y a des max capacity month de l'hydro qui viennent dire coucou
-    # ou whatever autre duplicata d'un scénario qu'on aurait pas filtré, bref relou
-    # le left_join avant !! le left_join avant !!
     
   csp_generators_tbl <- csp_generators_tbl %>%
     left_join(generator_properties_tbl, by = "generator_name") %>%
@@ -72,9 +51,6 @@ getPropertiesCSP <- function() {
     mutate(storage_name = toupper(name),
            continent = category) %>%
     select(storage_name, continent)
-  # continent is useless actually oop
-  
-# y a des propriétés en sah relou mais ouais
 
   storage_properties_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Storages") %>%
@@ -126,10 +102,10 @@ getCSPFromNodes <- function(nodes) {
 
 # print(getCSPFromNodes("EU-ESP"))
 
-# Relou, faut refaire la fonction aggregateGeneratorTimeSeries parce que ça parse
+# Dur, faut refaire la fonction aggregateGeneratorTimeSeries parce que ça parse
 # la colonne storage_name et pas generator_name
 # si j'étais chaud je ferais une sorte de fonction fils là qui se décline
-# mais flemme pour l'instant
+# mais pas pour l'instant
 
 aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
   # objectif : nodes donne champ d'étude, properties_tbl est un objet global avec tout,
@@ -192,13 +168,13 @@ aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
 
 ### Plein de ressources pour implémenter CSP proprement avec stockage + timeseries apports
 # mais pour l'instant... hm..
-# Ptn la timeseries Ninja c'est des entiers et les apports sur Antares sont limités aux entiers mdr
-# c'est quoi ce truc de fou furieux
+# Wow la timeseries Ninja c'est des entiers et les apports sur Antares sont limités aux entiers 
+# la chance
 
 # Est-ce que par exemple vu le fonctionnement on peut prendre "max_volume" en stock,
 # et nominal_capacity en injection, mais pas en soutirage ? Vu que ça dépend du soleil
 # et c'est que les apports qui... apportent
-# Bon allez on va dire que c'est Other4 les CSP haha
+# Bon allez on va dire que c'est Other4 les CSP peut etre
 
 
 # aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
@@ -206,10 +182,7 @@ aggregateStorageTimeSeries <- function(nodes, properties_tbl, timeseries_tbl) {
 
 library(data.table)
 
-addCSPToAntares <- function(nodes 
-  #étrangeté aussi : les nodes n'ont pas le fra
-  # alors certes y a pas de Csp mais ça devrait tt de même avoir de la conso etc
-                            #all_csp_tbl = csp
+addCSPToAntares <- function(nodes
                             ) {
   # A l'ordre 1, donc, on va juste l'ajouter au PV.  
   # Je pense que pour une v2 il faudra un peu faire ça plus proprement.
@@ -307,107 +280,9 @@ addCSPToAntares <- function(nodes
       msg = paste("[WARN] - Failed to add", storage_name, "CSP generator to", node, "node, skipping...")
       logError(msg)
     })
-#     INFO [2024-08-08 11:32:27] [MAIN] - Fetching solar CSP data...
-#     
-#     Error in fwrite(x = get(name), row.names = FALSE, col.names = FALSE, sep = "\t",  : 
-#                       is.list(x) n'est pas TRUE
+  }
+}
     
     # Erreur incompréhensible.... time to regarder le code source !
     # https://github.com/rte-antares-rpackage/antaresEditObject/blob/c9adc8e13bc2ec238b4a8d7f57afb3531219bbd4/R/createClusterST.R#L77
     
-    # il reste un 2: No cluster description available.
-    # ce qui me rassure pas sur le fait que ptet 1 bugge encore mais bon
-    
-# De plus : Warning messages:
-# 1: Parameter 'horizon' is missing or inconsistent with 'january.1st' and 'leapyear'. Assume correct year is 2018.
-# To avoid this warning message in future simulations, open the study with Antares and go to the simulation tab, put a valid year number in the cell 'horizon' and use consistent values for parameters 'Leap year' and '1st january'. 
-# 2: No cluster description available.
-  }
-}
-
-
-# aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
-# 
-# tryCatch({
-#   aggregated_csp_tbl <- readRDS(".\\src\\objects\\csp_aggregated_ninja_tbl.rds")
-#   
-#   for (node in nodes) {
-#     csp_ts <- aggregated[[node]]
-#     tryCatch({
-#       writeInputTS(
-#         data = solar_ts,
-#         type = "solar",
-#         area = node
-#       )
-#       msg = paste("[SOLAR] - Adding", node, "aggregated solar data...")
-#       logFull(msg)
-#     }, error = function(e) {
-#       msg = paste("[WARN] - Skipped adding solar data for", node, "(no generators found in PLEXOS).")
-#       logError(msg)
-#     }
-#     
-#     )
-#   }
-# }, error = function(e){
-#   msg = paste("[WARN] - Skipped adding solar PV data for all nodes (no generators found in PLEXOS).")
-#   logError(msg)
-# }
-# )
-
-  
-  # for (row in 1:nrow(csp_tbl)) {
-  #   csp_tbl <- getCSPFromNodes(nodes)
-  #   node = csp_tbl$node[row]
-  #   cluster_type = "Other4"
-  #   max_storage_capacity = csp_tbl$max_volume[row]
-    
-    ## cf discussions riches avec jean yves et nicolas sur teams :
-    ## comment modéliser tous ces aspects des CSP ?
-    
-    ## et euh faire une petite enquête sur le solaire : que représentent les
-    # TS Ninja CSP, les TS Ninja qu'on a vu dans le PV mais qu'on a reconnu comme CSP ?
-    # sont-elles corrélées ? y a-t-il du double comptage ? (pas sur mon code en tout cas)
-    
-    # peut-être que les PV produisent à l'instant comme dans le ninja PV
-    # (et dans ce cas là j'ai bien fait de récupérer la capacité nominale
-    # (même s'il y aura écrit Sol et pas Csp dans la ligne trop rleou)
-    # ET le Storage repérsente bah le stock
-    
-    # max_power = batteries_tbl$max_power[row]
-    # initial_state = 0
-
-### NEXT STEP : actually model it as a storage with inputs ?
-### And seperate onshore, offshore etc into clusters
-
-# tbl <- read.table(CSP_DATA_PATH,
-#                   header = TRUE,
-#                   sep = ",",
-#                   stringsAsFactors = FALSE,
-#                   encoding = "UTF-8",
-#                   check.names = FALSE
-# )
-# 
-# print(tbl)
-# 
-# names(tbl) <- toupper(names(tbl))
-# 
-# print(tbl)
-# 
-# duplicate_columns <- which(duplicated(names(tbl)))
-# print(duplicate_columns)
-# tbl <- tbl[ , -duplicate_columns]
-# 
-# tbl <- tbl[ , -duplicate_columns]
-# 
-# Since duplicate_columns is an empty vector, -duplicate_columns also results in an empty vector. 
-# Subsetting tbl with an empty vector of columns (tbl[ , ]) returns a data frame with no columns 
-# but retains the original number of rows.
-# 
-# ah ouais la sournoiserie de fou
-# print(tbl)
-# tbl <- as_tibble(tbl)
-# 
-# print(tbl)
-
-# A chaque fois je m'embete avec une fonction qui va chercher les properties...
-# Alors oui quand c'est unique c'est pertinent mais bon.

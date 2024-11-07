@@ -409,6 +409,9 @@ generateThermalAllScenarios <- function() {
   ### QUE JE DESAGREGEAIS...
   # Bon bah ça va partir sur une valeur moyenne
   
+  ### OH NO je viens de relire ceci avant de laisser le code à Nicolas (nous sommes jeudi 7)
+  ### et je me rends compte que j'en ai pas parlé dans mon mémoire.... bon
+  
   thermal_averaged_fuels_tbl <- thermal_brinkerink_tbl %>%
     mutate(
       fuel_price = case_when(
@@ -419,7 +422,7 @@ generateThermalAllScenarios <- function() {
       if_technology_type == "Nuclear" ~ mean(c(2, 2, 2, 2, 2, 2)),
       if_technology_type == "Oil" ~ mean(c(3, 3, 3, 3, 3, 3)),
       if_technology_type == "Geothermal" ~ 0,
-      # On a pris _Pet et pas country level oil, fuck that
+      # On a pris _Pet et pas country level oil, tant pis c'est trop horrible d'aller les chercher là
       # Je VIENS de me rendre compte aussi que Cog c'était avec un min stable factor de 0
       # donc du coup bof bof l'inclure dans le schmilblick
     ),
@@ -431,33 +434,21 @@ generateThermalAllScenarios <- function() {
       if_technology_type == "Nuclear" ~ mean(c(0, 0, 0, 0, 0, 0)),
       if_technology_type == "Oil" ~ mean(c(106.7, 106.7, 106.7, 106.7, 106.7, 106.7)),
       if_technology_type == "Geothermal" ~ 0,
-      # On a pris _Pet et pas country level oil, fuck that
-      # Je VIENS de me rendre compte aussi que Cog c'était avec un min stable factor de 0
-      # donc du coup bof bof l'inclure dans le schmilblick
     )
     ) %>%
     mutate(variable_cost = fuel_price * heat_rate,
     co2_emission_t = co2_production_rate * heat_rate / 1000)
-  
-  
   
   # ...demander si If ils ont un coût non monétaire de ces machins ?
   
   return(thermal_averaged_fuels_tbl)
 }
 
-# thermal_all_scenarios_tbl <- generateThermalAllScenarios()
-# # print(thermal_all_scenarios_tbl, n = 30)
-# saveRDS(thermal_all_scenarios_tbl, ".\\src\\2060\\oneNode\\thermal_all_scenarios_tbl.rds")
-
 ##############################
 ##### Who knew Wind and PV would end up being the hardest ?
 
-
-
 # wind_agg_ts <- getAggregatedTSFrom2060(nodes, if_generators_properties_tbl, wind_cf_ts_tbl) %>%
 #   select(-datetime)
-
 
 
 # 

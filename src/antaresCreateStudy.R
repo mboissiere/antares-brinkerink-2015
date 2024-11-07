@@ -36,18 +36,6 @@ study_folder <- file.path(output_folder, STUDY_DATA_FOLDER_NAME)
 
 
 
-# et vu que maintenant on a un output folder... ne serait-il pas temps d'y mettre
-# les logs ?
-# à terme, peut-être un dossier "config" qui regroupera des logging.R, des initialisations de dossier,
-# et peut-être même des variables un peu biscornues ??
-# NB : chaque nouveau "main" devra recréer un nouveau dossier de logs pour le RUN
-# mais ça peut atterrir dans un même dossier study si jamais on ne fait que lancer/lire
-# des simulations et que CREATE_STUDY est false
-# Un dossier "Antares logs" oh comme c'est alphabétique et entre input et output !
-# On pourrait nommer le dossier master "study-" au lieu de "results" mais détail
-# D'ailleurs pour une meilleur organisation du dossier output, ne faudrait-il pas mettre
-# le datetime avant le nom de l'étude ?
-
 msg = paste("[MAIN] - Unit commitment mode :", toupper(UNIT_COMMITMENT_MODE))
 logMain(msg)
 
@@ -278,10 +266,6 @@ if (GENERATE_BATTERIES) {
 ################################################################################
 ################################### CSP IMPORT #################################
 
-
-
-# # Welp, I've laid the groundwork for interesting stuff, but I don't think we're
-# # gonna use it right now.
 # if (GENERATE_SOLAR_CSP) {
 #   msg = "[MAIN] - Fetching solar CSP data...\n"
 #   logMain(msg)

@@ -159,7 +159,6 @@ if (REGENERATE_OBJECTS | !file.exists(wind_2015_properties_path)) {
 getAggregatedTSFromClusters <- function(nodes, properties_tbl, timeseries_tbl) {
   # Mais il serait bien de mettre tout de même qqch comme :
   # "were not in PLEXOS : ..."
-  # au lieu de tout crouncher
   # nodes <- deane_europe_nodes_lst
   # properties_tbl <- wind_2015_properties_tbl
   # timeseries_tbl <- wind_cf_ts_tbl

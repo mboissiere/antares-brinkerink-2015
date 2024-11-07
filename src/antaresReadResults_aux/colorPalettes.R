@@ -43,9 +43,7 @@ eCO2MixFusion_noStorage_withCSP_thermalBelow_lst = c("GEOTHERMAL" = "springgreen
                                                      "WIND" = "#72CBB7", "PV" = "#D66B0D", "CSP" = "#EEDD82", "HYDRO" = "#2672B0",
                                                      "IMPORTS" = "#969696", "UNSUPPLIED" = "grey25", "SPILLAGE" = "grey25")
 
-# Finalement, darkgreen et tout, c'était pas si mal.....
-# Notamment darkred pour le charbon, quand y a que du charbon je me dis que ça
-# ressemble au jaune du nucléaire en vrai
+
 
 deane_technology_colors <- c(
   "Bio and Waste" = "darkgreen",
@@ -90,9 +88,7 @@ setProdStackAlias(
   lines = alist(
     LOAD = LOAD,
     TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
-    # on ne compte pas du coup les batteries ? ouais voilà mdr ce que j'avais déjà dit en fait
-    # pour moi c'est ni dans production mais après on peut faire un graphe batteries
-    # est-ce que les psp injection des batteries machin faut le mettre ? ou c'est du double comptage ?
+
   ),
   lineColors = c("black", "violetred")#"green")
 )
@@ -117,15 +113,12 @@ setProdStackAlias(
   colors = c("yellow", "turquoise", "orange", "springgreen", "blue", 
              "darkgreen", "red", "darkred", "darkslategray", "lavender",
              "gray", "gray25"),
-  # NB : je crois que gray75 est plus sombre qu'annoncé
   lines = alist(
     LOAD = LOAD,
     TOTAL_PRODUCTION =  NUCLEAR + WIND + SOLAR + `H. STOR` + GAS + COAL + OIL + `MIX. FUEL` + `MISC. DTG` + `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`
   ),
   lineColors = c("black", "violetred")
 )
-# If I try to do that, the light gray balance just transforms into dark grey unsupplied
-# and I have no fucking idea why.
 
 # So, looking at the graphs with no unsp energy but still gaps between production and load...
 # "how much batteries help" is pretty much load - total production right ?
@@ -468,105 +461,6 @@ setProdStackAlias(
              "gray", "gray25"
   )
 )
-
-
-##########################################
-
-# Ok ici on va essayer de faire comme le précédent mais en dynamique,
-# en excluant les trucs nuls
-
-#### OK BAH C'EST HORRIBLE et si je continue à forcer je vais câbler si jamais Nicolas trouve mieux
-# en un claquement de doigts
-# 
-# all_variables <- alist(
-#   Nucleaire = NUCLEAR,
-#   Eolien = WIND,
-#   Solaire = SOLAR,
-#   Geothermique = `MISC. DTG`,
-#   `Hydro lacs` = `H. STOR`,
-#   `Bio et déchets` = `MIX. FUEL`,
-#   Gaz = GAS,
-#   Charbon = COAL,
-#   Fioul = OIL,
-#   Autres = `MISC. DTG 2` + `MISC. DTG 3` + `MISC. DTG 4`,
-#   `Contrib. STEP` = PSP_closed_withdrawal - PSP_closed_injection,
-#   `Contrib. Batteries` = Battery_withdrawal - Battery_injection,
-#   `Contrib. Thermique` = Other1_withdrawal - Other1_injection,
-#   `Contrib. Hydrogene` = Other2_withdrawal - Other2_injection,
-#   `Contrib. Air comprime` = Other3_withdrawal - Other3_injection,
-#   `Import/Export` = -BALANCE,
-#   Defaillance = `UNSP. ENRG`
-# )
-# 
-# all_colors <- c("yellow", "turquoise", "orange", "springgreen", "blue", 
-#                 "darkgreen", "red", "darkred", "darkslategray", "lavender",
-#                 "darkblue", "goldenrod", "burlywood", "darkmagenta", "salmon",
-#                 "gray", "gray25"
-# )
-# 
-# # # Subset of variables contributing to "Production"
-# # production_subset <- alist(NUCLEAR, WIND, SOLAR, `H. STOR`, GAS, COAL, OIL, `MIX. FUEL`, `MISC. DTG`, `MISC. DTG 2`, `MISC. DTG 3`, `MISC. DTG 4`)
-# 
-# 
-# # # Define production subset (non-null variables for production)
-# # production_subset <- c("NUCLEAR", "WIND", "SOLAR", "`H. STOR`", "GAS", "COAL", "OIL", "`MIX. FUEL`", "`MISC. DTG`", "`MISC. DTG 2`", "`MISC. DTG 3`", "`MISC. DTG 4`")
-# 
-# 
-# createFilteredStack <- function(stack_name, null_variables) {
-#   # Initialize empty alist for variables
-#   variables_list <- alist()
-#   
-#   # Initialize empty alist for lines
-#   lines_list <- alist()
-#   
-#   # Add non-null variables to the variables_list
-#   for (var in names(all_variables)) {
-#     if (!(deparse(all_variables[[var]]) %in% null_variables)) {
-#       variables_list[[var]] <- all_variables[[var]]
-#     }
-#   }
-#   print(variables_list)
-#   
-#   # Filter colors
-#   filtered_colors <- all_colors[names(all_variables) %in% names(variables_list)]
-#   print(filtered_colors)
-#   
-#   # Add lines
-#   lines_list$Consommation <- quote(LOAD)
-#   
-#   ####### SCREW THIS
-#   # # Filter out non-null variables from the production subset
-#   # filtered_production <- production_subset[!(production_subset %in% null_variables)]
-#   # 
-#   # # Build the Production expression dynamically
-#   # production_expr <- as.call(
-#   #   c(
-#   #     quote(`+`), 
-#   #     lapply(filtered_production, function(var) {
-#   #       # Safely convert string to an expression
-#   #       eval(parse(text = var))
-#   #     })
-#   #   )
-#   # )
-#   # 
-#   # # Add production line to the lines_list
-#   # lines_list$Production <- production_expr
-#   
-#   # Creating the `setProdStackAlias` dynamically
-#   do.call(setProdStackAlias, list(
-#     name = stack_name,
-#     variables = variables_list,
-#     colors = filtered_colors,
-#     lines = lines_list,
-#     lineColors = c("black", "violetred")
-#   ))
-#   
-# }
-
-
-
-
-
 
 ##########################################
 

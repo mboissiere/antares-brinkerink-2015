@@ -69,24 +69,11 @@ addHydroStorageToAntares <- function(nodes) {
     
     hydro_capacity <- node_info$total_nominal_capacity
     max_power_matrix = as.data.table(matrix(c(hydro_capacity, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE))
-    # mdr, quand je mets data.table enlève le warning chiant "x being coerced from class: matrix to data.table"
-    #... mais ça marche pas
-    # ah prendre une matrice puis faire as.data.table ça marche
-    # oui en fait jsuis con sûrement que ça prenait pas les mm arguments
     
     #max_power_matrix = matrix(c(10000, 24, 0, 24), ncol = 4, nrow = 365, byrow = TRUE)
     #print(max_power_matrix)
     list_params = list("inter-daily-breakdown" = 2)
-    # mais jpp ça s'appelle juste breakdown et pas modulation oh là là
-    #"intra-daily-modulation" = 24, # va savoir pk
-    # va savoir pk
-    # Let's assume that by default the rest is ok
-    #"reservoir" = TRUE, # except I kinda need to toggle reservoir management if i have capacity
-    #"reservoir" = FALSE, # except no actually i was wrong
-    #"use heuristic" = FALSE # i don't really get it but nicolas !!
-    #)
-    #"reservoir capacity" = reservoir_capacity) # Apparently needs to be an integer ? Will see if it's ok
-    # faire un trycatch en vrai etc etc
+    
     tryCatch({
       writeIniHydro(area = node,
                     params = list_params
@@ -174,23 +161,5 @@ addHydroStorageToAntares <- function(nodes) {
 # Et puis lire les monthly de Ninja en en faisant de l'horaire.
 # Il faudrait d'ailleurs demander aux auteurs de Deane : dans les simus qui
 # ont donné leurs graphiques, ont-ils utilisé 2015 ou 15 year average pour l'hydro.
-
-
-
-# # Nota bene : vu comment marchent les Generators Hydro pour lesquels il y a
-# # une timeseries mensuelle, je pense qu'on peut juste faire bourrinnement pour chaque centrale
-# # décharge = max capacity x units x facteur de charge, sans séparer par centrale (pilotabilité des 5 units etc)
-# # juste, du fait qu'on le met dans le run of river sur Antares (et même qu'on va tout accumuler en fait ??)
-# # alors que les STEP on les modélise comme des Battery donc c'est Stockages dans Antares
-# # donc faudra sûrement faire genre un (for k in nb_units) {créer une battery qui s'appelle battery_k}
-
-# Bon, c'est pas clair ce que Nicolas veut que je fasse vu qu'il y a un onglet Hydro pour
-# chaque noeud, donc pour chaque pays, alors que là j'ai des chroniques de FdC mensuelles
-# par centrale.....
-
-# Possible piste de mini-désobéissance : faire une modélisation Generator -> RoR
-# et Battery -> Stockage, même si c'est moche, au moins j'aurai des graphes à montrer
-# à Deane en envoyant un mail salé.
-
 
 

@@ -78,7 +78,7 @@ getNationalAntaresData <- function(timestep,
   )
   
   # print(antares_data)
-  # En fait ce procédé peut etre un peu ghetto :
+  # En fait ce procédé peut etre un peu bizarre :
   # antaresdatatable est un truc à deux entrées (areas et districts) si y a des districts
   # mais sinon c'est un seul tbl et il comprends pas il dit que c'est null.
   areas_data <- antares_data$areas

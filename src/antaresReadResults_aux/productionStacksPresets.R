@@ -60,11 +60,9 @@ setProdStackAlias(
   ),
   lineColors = c("black", "violetred")
 )
-# If I try to do that, the light gray balance just transforms into dark grey unsupplied
-# and I have no fucking idea why.
 
 # So, looking at the graphs with no unsp energy but still gaps between production and load...
-# "how much batteries help" is pretty much load - total production right ?
+# "how much batteries help" is pretty much load - total production right ? maybe ??
 
 setProdStackAlias(
   name = "contributionsBatteries",
@@ -181,9 +179,7 @@ setProdStackAlias(
 
 setProdStackAlias(
   name = "productionStackForAnnual",
-  # Les tracés noir load et violet production gênent un peu
-  # Et peut-être pour les graphes nationaux il faudrait comparer pays de chaque continent ?
-  # Jsp bref
+  
   variables = alist(
     Nucleaire = NUCLEAR,
     Eolien = WIND,
@@ -221,6 +217,8 @@ setProdStackAlias(
 
 #### OK BAH C'EST HORRIBLE et si je continue à forcer je vais câbler si jamais Nicolas trouve mieux
 # en un claquement de doigts
+# c'est pas vrai Nicolas si tu lis ceci j'aime beaucoup quand tu trouves mieux en un claquement de doigts
+# c'est très fort et admirable et je suis toujours heureux d'en apprendre plus
 # 
 # all_variables <- alist(
 #   Nucleaire = NUCLEAR,

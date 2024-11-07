@@ -71,12 +71,6 @@ lines_tbl <- addNTCsToLines(lines_tbl)
 saveRDS(object = lines_tbl, file = ".\\src\\objects\\deane_2015_lines_tbl.rds")
 
 # lines_test <- addNTCsToLines(lines_test)
-# print(lines_test)
-#lines_tbl <-
-# ah, mais ne faudrait-il donc pas filtrer selon les nodes là ?
-# (est-ce qu'une astuce de fou furieux ca serait pas de filtrer selon node in nodes
-# dans... le node_from node_to avant même de faire le pivot_wider !
-# je crois bien du coup que mathématiquement il reste que du bon...)
 
 makeRandomGlobalGrid <- function(nodes) {
   # Sélectionner un élément au hasard
@@ -105,8 +99,8 @@ makeRandomGlobalGrid <- function(nodes) {
   }
 }
 
-# Bon c'est casse pied... Uns eul noeud central ça peut créer des congestions à l'heure,
-# un full grid ça fait 2 parmi 258 liens ce qui fait 33153 fucking liens
+# Bon c'est casse pied... Un seul noeud central ça peut créer des congestions à l'heure,
+# un full grid ça fait 2 parmi 258 liens ce qui fait 33153 liens (!!!)
 #... l'arbre couvrant minimal est le plus legit ?
 
 makeFullGlobalGrid <- function(nodes) {
@@ -173,13 +167,7 @@ addLinesToAntares <- function(nodes,
       to_node = lines_tbl$node_to[row]
       ntc_direct = lines_tbl$direct_ntc[row]
       ntc_indirect = lines_tbl$indirect_ntc[row]
-      
-      #### Enorme abruti mdr cette redondance du booléen
-      # if (INCLUDE_HURDLE_COSTS) {
-      #   propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = TRUE)
-      # } else {
-      #   propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = FALSE)
-      # }
+    
       
       if (INFINITE_NTC) {
         propertiesLink_lst <- propertiesLinkOptions(hurdles_cost = INCLUDE_HURDLE_COSTS,
@@ -194,8 +182,6 @@ addLinesToAntares <- function(nodes,
         logFull(msg)
       } else {
         ts_link <- data.frame(rep(ntc_direct, 8760), rep(ntc_indirect, 8760))
-        # d'après l'architecture TiTAN là je devrais faire un fichier avec genre NB_HRS_IN_YEAR = 8760 mdr
-        
         # Sous-opti car crée de la mémoire (les TS hurdle costs) quand on les utilise pas
         # mais en même temps pour l'instant nous empêche de bug si dataLink_df n'existe pas
         hurdle_cost_direct_ts = rep(HURDLE_COST, 8760)

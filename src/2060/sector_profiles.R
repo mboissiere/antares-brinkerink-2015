@@ -178,8 +178,7 @@ generate_sector_hourly_ts <- function(study_year,
     hour <- blank_tbl[k,]$hour
     if (isWeekday(study_year, month, day)) {
       demand_tbl <- weekday_tbl
-      # print("is weekday")
-      # MDR C'ETAIT MOI QUI AVAIT TORT PAS MON CODE
+      
     } else {
       demand_tbl <- weekend_tbl
     }
@@ -191,14 +190,7 @@ generate_sector_hourly_ts <- function(study_year,
     # print(demand)
     hourly_ts <- c(hourly_ts, demand)
   }
-
-  # hourly_tbl <- tibble(sector_name = hourly_ts)
-  # je crois aussi que le "sector_name" ça marche pas ça va littéralement juste
-  # écrire sector_name
-
-  # autre approche : mettre cette boucle direct dans le programme final
-  # et changer le demand_tbl : à chaque fois dire hop je rajoute industry, etc..
-  # mais en vrai dur psk mutate() voudrait qu'on ait déjà le truc tout construit...
+  
   return(hourly_ts)
 }
 # industry_hourly_ts <- generate_sector_hourly_ts(2015,
@@ -219,16 +211,11 @@ industry_weekday_tbl <- getTableFromCastillo(industry_weekday_datapath)
 
 industry_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Industry_total_weekend_SSP2.txt"
 industry_weekend_tbl <- getTableFromCastillo(industry_weekend_datapath)
-# Wow c'est fou comment ça marche bien vs Excel
-
-# print(industry_weekend_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
 
 
 ## TRANSPORT ##
 transport_weekday_datapath <- ".\\input\\pmd2dchk44-1\\Transport_total_weekday.txt"
 transport_weekday_tbl <- getTableFromCastillo(transport_weekday_datapath)
-# Wow c'est fou comment ça marche bien vs Excel
-
 # print(transport_weekday_tbl %>% filter(year == 2015) %>% select(year, Month, Hour, World), n = 300)
 
 transport_weekend_datapath <- ".\\input\\pmd2dchk44-1\\Transport_total_weekend.txt"
@@ -414,7 +401,7 @@ add2015MATERVolumes <- function() {
   #   volume <- volumesMATER2015[[sector]]
   #   print(volume)
   #   sector_curves_tbl %>%
-  #     mutate(sector = sector * volume) #ah ptn "sector" en tant que variable _a marche pas
+  #     mutate(sector = sector * volume) #ah "sector" en tant que variable ça marche pas
   #   # ça va littéralement appeler sector juste
   # }
   deane_2015_load_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/2060/plexos_2015_load_tbl.rds")

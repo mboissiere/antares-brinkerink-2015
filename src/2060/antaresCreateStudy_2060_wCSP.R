@@ -41,10 +41,6 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   msg = paste("[MAIN] - Simulating If scenario~:", scenario_number, ".\n")
   logMain(msg)
   
-  ##### déjà dans main.R ackshually
-  # # Bon allez je laisse ça (saveObjects)
-  # output_folder <- initializeOutputFolderStudy(study_name)
-  # study_folder <- file.path(output_folder, "Antares input - Study data")
   
   ### UPDATING SETTINGS ###
   
@@ -57,11 +53,10 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
     january.1st = "Thursday",
     first.month.in.year = "january",
     first.weekday = "Monday",
-    #leapyear = FALSE, # Techniquement faux pour 2060, mais relou de s'y pencher (faudrait faire TS > 8760)
-    leapyear = TRUE, # Espérons que les chroniques de 8760 restent acceptées..
+    leapyear = TRUE,
     year.by.year = TRUE,
     generate = c("thermal"),
-    nbtimeseriesthermal = mc_years, # est-ce obligé ?
+    nbtimeseriesthermal = mc_years,
   )
   updateOptimizationSettings(
     renewable.generation.modelling = renewable_modelling,
@@ -89,8 +84,6 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   
   ################################# AREA CREATION ################################
   
-  
-  # LE COUT DE LA DEFAILLANCE !!! on va le supposer comme avant hein
   msg = "[MAIN] - Adding nodes...\n"
   logMain(msg)
   start_time <- Sys.time()
@@ -286,7 +279,7 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   ################################################################################
   ################################# THERMAL IMPORT ###############################
   
-  # mais en fait... si j'agrège tout au final... qu'est-ce que je m'EMMERDE à
+  # mais en fait... si j'agrège tout au final... qu'est-ce que je m'EMBETE à
   # faire des capacity ratio machin. je peux juste prendre la capacité mater et le
   # standard capacity et. plop. après y a la question de la répartition entre les pays mais genre.
   # déjà le problème de la pilotabilité est réglé.
@@ -298,7 +291,7 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
     # Il nous suffirait ici de sommer ce qu'on produit dans les agg_tbl côté PV+CSP+Eolien.
     # Côté thermiques, c'est bon on n'a même plus besoin de redistribuer.
     
-    # Côté hydro un peu pareil (TIENS, J'AI PAS MIS A DEUX L'INTER DAILY BREAKDOWN.....)
+    # Côté hydro un peu pareil
   
     
   # source(".\\src\\aggregateAndCluster.R")
@@ -457,16 +450,11 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
     # importHydro_file = file.path("src", "antaresCreateStudy_aux", "importHydro.R")
     # source(importHydro_file)
     add2060HydroToAntares(if_generators_properties_tbl)
-    # Oh dip, and should I start caring about these fast/accurate modes ?
   }
   
   
   ################################################################################
-  ## RAPPEL : IL FAUDRA RAJOUTER LE CSP (et la conso)
-  
-  # AAAAH VU QUE PAR NATURE JE FAIS TOUS NOEUDS... PAS POSSIBLE DE TEST RAPIDEMENT......;
-  # obligé de le run en parallèle de mon mémoire oooh nooon...
-  # (bon mais c'est une pratique idiote que j'ai fait enft qd mm)
+
   
   
   # if (GENERATE_LOAD) {
@@ -493,9 +481,3 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
 }
 
 ################################################################################
-
-# ptet tout ce bazar c'est genre. mieux de l'isoler. fin jsp. entre if et deane y a diff.
-
-# en vrai faire from scratch. parce que y a plein de conneries qui change. l'année 2060. c'est pas bissextile
-# AH PUTAIN DU COUP MES PROFILS 2015-INSPIRED ILS SONT TEUBES. MERDE.
-# NON C OK MDRR JEUDIII LETSGOOO

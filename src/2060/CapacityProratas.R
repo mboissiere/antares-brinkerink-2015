@@ -17,7 +17,7 @@ volumesMATERcapacity2015 = c(
   Wind = 331843
 )
 
-# le graphe comparatif qu'on avait fait sur excel assure qu'on dise pas trop de conneries
+# le graphe comparatif qu'on avait fait sur excel assure qu'on dise pas trop de bêtises
 # mais c'est vrai que dans l'absolu... il faudrait plutôt... prendre des capas PLEXOS... partout..
 # puisqu'on fait x... capacity_ratio sur, bah, ça.
 
@@ -318,34 +318,6 @@ generators_if_properties_2060 <- bind_rows(if_2060_S1_tbl, if_2060_S2_tbl,
 # Risque effectivement de sous estimer technologie prometteuse genre littéralement le possible développement
 # du marémoteur n'est pas modélisé. on peut supposer que c'est acceptable vu que c'est pas non plus
 # la technologie qui va sauver le monde en terme de viabilité technique et économique.
-
-# ##### Generalization attempt via ChatGPT
-# # Calculate capacity ratios for each type automatically
-# capacity_ratios <- base_generators_properties_tbl %>%
-#   filter(active_in_2015) %>%
-#   group_by(plexos_fuel_type) %>%
-#   summarize(
-#     total_capacity_2015 = sum(nb_units * nominal_capacity)
-#   ) %>%
-#   ungroup() %>%
-#   mutate(
-#     capacity_ratio = volumesMATERcapacity2060_S1[plexos_fuel_type] / total_capacity_2015
-#   ) %>%
-#   select(plexos_fuel_type, capacity_ratio) %>%
-#   deframe()  # Convert to named vector for easy access by type
-# 
-# # Apply the capacity ratios and modify the table
-# modified_generators_tbl <- base_generators_properties_tbl %>%
-#   filter(active_in_2015) %>%
-#   group_by(plexos_fuel_type) %>%
-#   mutate(
-#     total_capacity = nb_units * nominal_capacity,
-#     total_capacity = total_capacity * capacity_ratios[plexos_fuel_type],
-#     nominal_capacity = total_capacity / nb_units
-#   ) %>%
-#   ungroup()
-# 
-# print(modified_generators_tbl)
 
 get2060ScenarioTable <- function(scenario_number) {
   # base_generators_properties_tbl <- readRDS("~/GitHub/antares-brinkerink-2015/src/objects/base_generators_properties_tbl.rds")

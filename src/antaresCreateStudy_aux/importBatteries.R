@@ -10,7 +10,7 @@ library(tidyr)
 # print(full_2015_batteries_tbl)
 
 generateBatteriesTable <- function(nodes = deane_all_nodes_lst) {
-  batteries_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>% # bordel celui là encore
+  batteries_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>%
     # Initialization of batteries table with only generator names and continent of origin
     filter(class == "Battery") %>%
     select(name, category) %>%
@@ -26,7 +26,6 @@ generateBatteriesTable <- function(nodes = deane_all_nodes_lst) {
            node = child_object) %>%
     mutate(node = tolower(node)) %>%
     left_join(batteries_tbl, by = "battery_name")
-  
   
   # No need for mutating the battery names to uppercase, because no Ninja dataset.
   
@@ -61,6 +60,7 @@ generateBatteriesTable <- function(nodes = deane_all_nodes_lst) {
     )
   # In supplementary material, capacity is actually written to be in GWh !
   # Though I should try to produce a document to double check.
+  # Edit : no, not in PLEXOS documentation.
   
   full_2015_batteries_tbl <- batteries_tbl
   # print(full_2015_batteries_tbl)
@@ -85,8 +85,7 @@ generateBatteriesTable <- function(nodes = deane_all_nodes_lst) {
     )) %>%
     select(battery_name, continent, node, battery_group, units, capacity, max_power, initial_state, efficiency)
   
-  # This is the part where we add Antares cluster types and it sucks
-  # because it's just gonna be "Other" a bunch
+  # This is the part where we add Antares cluster types and it's just gonna be "Other" a bunch
   # Also, we have no way of getting intakes, so all "open-loop" PHS
   # will just be taken as closed-loop
   full_2015_batteries_tbl <- full_2015_batteries_tbl %>%
@@ -156,8 +155,6 @@ addBatteriesToAntares <- function(batteries_tbl) {
       # print(as.data.table(as.matrix(storage_parameters_list)))
       
       tryCatch({
-        # suppressWarnings(as.data.table(matrix_data)) # c'est dangereux, 
-        # mais je vois pas comment enlever ces warnings étranges autrement
         createClusterST(
           area = node,
           #cluster_name = battery_name,
@@ -170,17 +167,8 @@ addBatteriesToAntares <- function(batteries_tbl) {
           inflows = hourly_zeros_datatable,
           lower_rule_curve = hourly_zeros_datatable,
           upper_rule_curve = hourly_ones_datatable,
-          # hell yeah c'était ça et ça a marché
           overwrite = TRUE,
           
-          # là le warning x being coerced from class: matrix to data.table
-          # est réellement mystérieux parce que y a mm pas de matrices ici
-          
-          # blabla pmax inflows rule curve on n'a rien a priori
-          # Nicolas : "Pour les STEP, on les modélise comme des stockages "court-terme" 
-          # (donc des STEP closed-loop) avec un rendement de 75% et les données de 
-          # puissance et de capa du fichier de Deane."
-          # est-ce que ça veut dire qu'on peut ajouter des trucs ? eh je le lis pas comme ça
           add_prefix = FALSE
         )
         msg = paste("[BATTERY] - Adding", battery_name, "battery to", node, "node...")
@@ -190,22 +178,10 @@ addBatteriesToAntares <- function(batteries_tbl) {
         # Tiens, possible qu'à des endroit j'ai mis WARN et d'autres THERMAL/etc
         logError(msg)
       })
-      # Pour plus de robustesse faudrait mettre le try catch "no batteery at all" en principe mais fleeeeeemme
+     
     }
   }
 }
-
-# La deuxième fonction est très proche
-# et j'suis sûr qu'on peut cleanup le code mais euh ouais
-
-# NOTE : it has been found that current categorization of batteries is actually incomplete.
-# In CHE, there are different systems, see the Germany example :
-# Charge efficiency 75 (Flow Battery, Electro-chemical, Vanadium Redox Flow Battery, 
-# Electro-chemical Capacitor, Nickel based Battery, Advanced Lead-acid Battery)
-# Charge efficiency 80 (Lead-acid Battery, Sodium based Battery, Valve Regulated Lead-acid Battery, Sodium-sulfur Battery)
-# Charge efficiency 90 (Lithium-ion Battery, Lithium Ion Titanate Battery)
-# Perhaps a clustering v2 could consider them differently...
-# perhaps try to find prefixes in Objects/description of PLEXOS, considered as a Regex, for a finer "battery type"
 
 addBatteriesToAntaresAggregated <- function(batteries_tbl) {
   
@@ -213,8 +189,6 @@ addBatteriesToAntaresAggregated <- function(batteries_tbl) {
     battery_name = batteries_tbl$battery_name[row]
     node = batteries_tbl$node[row]
     cluster_type = batteries_tbl$antares_cluster_type[row]
-    # Ah oui j'ai oublié de changer antares_cluster_type ici parce que ya
-    # DEUX FONCTIONS QUI SONT QUASI IDENTIQUES
     
     units = batteries_tbl$units[row]
     max_power = batteries_tbl$max_power[row]
@@ -266,8 +240,7 @@ addBatteriesToAntaresAggregated <- function(batteries_tbl) {
 # [2024-08-08 13:55:33][solver][warns] I/O error: Maximum path length limitation (> 256 characters)
 # [2024-08-08 13:55:33][solver][warns] I/O error: Maximum path length limitation (> 256 characters)
 # 
-# lmao what why do i have some new shit now
-
+# lmao what
 
 
 # 
@@ -277,7 +250,7 @@ addBatteriesToAntaresAggregated <- function(batteries_tbl) {
 #                          Group: 'PSP Closed' is not a valid name recognized by Antares, you should be using one of: PSP_open, PSP_closed, Pondage, Battery, Other1, Other2, Other3, Other4, Other5
 #                        19: No cluster description available.
 #                        
-# bruh décidez vous mdr
+# maaais décidez vous mdr
 
 # Et failed to add les batteries Battery aussi zut
 

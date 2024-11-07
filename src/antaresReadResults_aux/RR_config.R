@@ -19,7 +19,6 @@ REGIONS <- readRDS(".\\src\\objects\\deane_regions_lst.rds")
 
 # color_palette = "productionStackWithBatteryContributions"
 color_palette = "eCO2MixFusionStack"
-# NB : the palette list for load monotones isn't in config atm
 
 if (READ_2060) {
   variables_of_interest_areas <- c("WIND ONSHORE", "SOLAR PV", "SOLAR CONCRT.", 
@@ -31,8 +30,6 @@ if (READ_2060) {
                                    "UNSP. ENRG", "SPIL. ENRG",
                                    
                                    "CO2 EMIS."
-                                   
-                                   # (mais j'aimerais grave importer des trucs de links !!)
   )
 } else {
   variables_of_interest_areas <- c("SOLAR", "WIND",
@@ -49,8 +46,6 @@ if (READ_2060) {
                                    "Other3_injection", "Other3_withdrawal", "Other3_level", # Rappel : CAE
                                    
                                    "CO2 EMIS."
-                                   
-                                   # (mais j'aimerais grave importer des trucs de links !!)
   )
 }
 
@@ -132,6 +127,11 @@ NB_MWH_IN_UNIT <- c(
 
 # Comment
 # (because yes, I'll have to comment this code one day)
+
+## Bonjour Mattéo du passé c'est actuellement Mattéo du futur.
+## Nous sommes actuellement le 7 novembre et non tu n'auras absolument pas le temps de commenter ça.
+## En plus Trump a été réélu c'est vraiment pas le top de la forme en ce moment.
+
 # Columns as of Antares v8.8 that are expressed in MWh.
 # For facilitating conversion in GWh and the like.
 if (READ_2060 & THERMAL_BELOW) {

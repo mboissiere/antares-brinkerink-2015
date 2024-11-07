@@ -61,7 +61,6 @@ deane_europe_nodes_lst <- readRDS(".\\src\\objects\\deane_europe_nodes_lst.rds")
 # NODES = "eu-ita"
 # NODES = deane_europe_nodes_lst
 NODES = deane_all_nodes_lst
-# NODES = c("EU-CHE", "EU-DEU", "EU-FRA")
 # NODES = c("eu-che", "eu-deu", "eu-fra")
 # NODES = c("eu-fra", "eu-gbr", "eu-deu", "eu-ita", "eu-esp", "af-mar", "af-dza", "af-tun")
 

@@ -56,19 +56,6 @@ getAllNodes <- function() {
   return(nodes_lst)
 }
 
-# print(getAllNodes())
-
-# generateNodesString <- function(deane_vector) {
-#   str <- "c("
-#   for (node in deane_vector) {
-#     str <- paste0(str, "'", node, "', ")
-#   }
-#   str <- paste0(str, ")")
-#   return(str)
-# }
-
-# getNodes, addAttributes, addColor ?
-
 getNodesTable <- function(nodes) {
   nodes_tbl <- getTableFromPlexos(PLEXOS_OBJECTS_PATH) %>%
     filter(class == "Node") %>%
@@ -160,15 +147,10 @@ addAntaresColorToNodes <- function(nodes_tbl) {
 addVoLLToNodes <- function(nodes_tbl) {
   voll_tbl <- getTableFromPlexos(PROPERTIES_PATH) %>%
     filter(collection == "Regions" & property == "VoLL") %>%
-    # NOTA BENE :
-    # Je vais faire l'hypothèse que le value of lost load il faut faire x1000
-    # parce que des valeurs comme "131" désolé mais je trouve ça tellement peu
-    # et c'est vraiment un truc à demander à Deane
-    # Quoique non c'est pas fidèle au fait de faire Comme Deane(TM) au début.
-    # ....mais bon.....
+    
     mutate(
       continent = tolower(child_object),
-      voll = value #* 1000 # Nicolas a dit on évite de multiplier !
+      voll = value
     ) %>%
     select(continent, voll)
   
@@ -177,15 +159,6 @@ addVoLLToNodes <- function(nodes_tbl) {
     return(nodes_tbl)
 }
 
-# Eventuellement une facon de séparer les tâches si vraiment on veut :
-# # Write some economic options for areas a, b and c
-# writeEconomicOptions(data.frame(
-#   area = c("a", "b", "c"),
-#   dispatchable_hydro_power = c(TRUE, FALSE, FALSE),
-#   spread_unsupplied_energy_cost = c(0.03, 0.024, 0.01),
-#   average_spilled_energy_cost = c(10, 8, 8),
-#   stringsAsFactors = FALSE
-# ))
 
 addNodesToAntares <- function(nodes = DEANE_NODES_ALL,
                               add_voll = TRUE,

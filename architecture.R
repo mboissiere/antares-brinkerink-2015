@@ -1,8 +1,5 @@
 OBJECTS_PATH = file.path("~", "GitHub", "antares-brinkerink-2015", "src", "objects",
                          fsep = .Platform$file.sep)
-# Ptet qu'il faudra faire des paths globaux pour éviter pb de "ah on est dans un autre repertoire
-# psk on l'a appelé depuis antaresCreateStudy" ou jsp
-# print(OBJECTS_PATH)
 
 CREATESTUDY_AUX_PATH = file.path("src", "antaresCreateStudy_aux",
                                  fsep = .Platform$file.sep)

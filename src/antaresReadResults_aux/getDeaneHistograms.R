@@ -1,7 +1,6 @@
 #####################
 ## GENERATION
 
-# ah oui y a ça psk jsuis un schlag et je le fais localement
 library(ggplot2)
 
 saveContinentalGenerationHistograms <- function(output_dir,
@@ -510,18 +509,6 @@ saveEmissionsDeaneComparison <- function(output_dir,
     select(area, fuel, pollution_megatons)
   
   # print(continent_pollution_Mtons_tbl)
-  
-  # continental_long_tbl <- continental_tbl %>%
-  #   pivot_longer(cols = c("COAL", "GAS", "OIL"), 
-  #                names_to = "fuel_column", 
-  #                values_to = "pollution_tons")
-  # # Calculs de pollution : tout est à refaire.
-  
-  # pollution_tbl <- continental_long_tbl %>%
-  #   left_join(emissions_tbl, by = c("area" = "continent", "fuel_column")) %>%
-  #   mutate(pollution_megatons = pollution_tons / TONS_IN_MEGATON) %>%
-  #   group_by(area, timeId, time, fuel_column) %>%
-  #   summarise(pollution_megatons = sum(pollution_megatons, na.rm = TRUE), .groups = 'drop')
   
   # Combine with theoretical data
   antares_long_tbl <- continent_pollution_Mtons_tbl %>%

@@ -58,6 +58,7 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
     first.weekday = "Monday",
     #leapyear = FALSE, # Techniquement faux pour 2060, mais relou de s'y pencher (faudrait faire TS > 8760)
     leapyear = TRUE, # Espérons que les chroniques de 8760 restent acceptées..
+    # Elles le sont !
     year.by.year = TRUE,
     generate = c("thermal"),
     nbtimeseriesthermal = mc_years, # est-ce obligé ?
@@ -429,8 +430,6 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
   ## RAPPEL : IL FAUDRA RAJOUTER LE CSP (et la conso)
   
   # AAAAH VU QUE PAR NATURE JE FAIS TOUS NOEUDS... PAS POSSIBLE DE TEST RAPIDEMENT......;
-  # obligé de le run en parallèle de mon mémoire oooh nooon...
-  # (bon mais c'est une pratique idiote que j'ai fait enft qd mm)
   
   
   # if (GENERATE_LOAD) {
@@ -458,8 +457,3 @@ createAntaresStudyFromIfScenario <- function(study_name, scenario_number) {
 
 ################################################################################
 
-# ptet tout ce bazar c'est genre. mieux de l'isoler. fin jsp. entre if et deane y a diff.
-
-# en vrai faire from scratch. parce que y a plein de conneries qui change. l'année 2060. c'est pas bissextile
-# AH PUTAIN DU COUP MES PROFILS 2015-INSPIRED ILS SONT TEUBES. MERDE.
-# NON C OK MDRR JEUDIII LETSGOOO

@@ -40,14 +40,6 @@ source(".\\src\\antaresCreateStudy_aux\\generateObjects.R") # Provisoire pour le
 
 wind_2015_properties_tbl <- readRDS(wind_2015_properties_path)
 wind_cf_ts_tbl <- readRDS(wind_cf_ts_path)
-# print(wind_2015_properties_tbl)
-# print(wind_cf_ts_tbl)
-# # ah mais faut filtrer pour les trucs qui pop ici...
-# # sinon y a énoooormément de colonnes inutiles
-# solarpv_2015_properties_tbl <- readRDS(solarpv_2015_properties_path)
-# solarpv_cf_ts_tbl <- readRDS(solarpv_cf_ts_path)
-# print(solarpv_2015_properties_tbl)
-# print(solarpv_cf_ts_tbl)
 # Avec cette histoire de filtrer dans la boucle pour garder les NA, on perd un peu
 # la vérification exacte de vraiment prendre Le Tableau Qui Va Etre Parsé Dans La Fonction
 # ce qui peut poser des problèmes si on ne surveille pas de près cette fonction plus tard... Attention.

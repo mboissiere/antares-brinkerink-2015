@@ -12,9 +12,6 @@ PROPERTIES_PATH = file.path(PLEXOS_PATH, "Properties.txt")
 
 ########## FUNCTIONS ##########
 
-# preprocessPLexosData était censé être général et j'y ait mis ma tambouille de generators...
-# Bon, pas très grave
-
 getTableFromPlexos <- function(plexos_data_path) {
   tbl <- read.table(plexos_data_path,
                     header = TRUE,
@@ -42,9 +39,6 @@ apply2015ConstructionFilter <- function(generators_tbl) {
 
 apply2015NuclearFilter <- function(generators_tbl) {
   generator_names_to_remove <- getTableFromPlexos(PROPERTIES_PATH) %>%
-    # filter(scenario == "{Object}Exclude 2016-2019 Generators") %>%
-    # lmao theres no way im actually this fucking stupid
-    # filter(scenario == "{Object}Exclude 2016-2019 Generators") %>%
     filter(memo == "With the exception of JPN_Nuc_Sendai13837 no active nuclear generators in Japan by 2015 due to Fukushima accident. https://en.wikipedia.org/wiki/Nuclear_power_in_Japan") %>%
     pull(child_object) %>%
     unique() %>%
@@ -54,69 +48,6 @@ apply2015NuclearFilter <- function(generators_tbl) {
     filter(!generator_name %in% generator_names_to_remove)
   return(generators_tbl)
 }
-
-# filterGeneratorsByNodes <- function(generators_tbl, nodes) {
-#   generators_tbl <- generators_tbl %>%
-#     filter(node %in% nodes)
-#   
-#   return(generators_tbl)
-# }
-
-########## OBJECTS ###########
-
-#' A small table linking fuel groups with fuel types
-#' (e.g. : Europe_Win and Europe_Wof, representing respectively
-#' European Onshore Wind and European Offshore Wind, are of type "Wind")
-#' @examples
-#' > print(fuels_tbl, n= 5)
-#' # A tibble: 209 x 2
-#' fuel_group fuel_type
-#' <chr>      <chr>    
-#'   1 Africa_Cog Gas      
-#' 2 Africa_Gas Gas      
-#' 3 Asia_Cog   Gas      
-#' 4 Asia_Gas   Gas      
-#' 5 Europe_Cog Gas      
-#' # i 204 more rows
-#' # i Use `print(n = ...)` to see more rows
-
-
-# print(fuels_tbl)
-
-
-
-# # Ah c'est de tidyr que vient pivot_wider
-# library(tidyr)
-# 
-# getNodesAttributes <- function(nodes) {
-#   attributes_tbl <- getTableFromPlexos(ATTRIBUTES_PATH) %>%
-#     filter(class == "Node") %>%
-#     filter(name %in% nodes) %>%
-#     pivot_wider(names_from = attribute, values_from = value) %>%
-#     rename(
-#       node = name,
-#       latitude = Latitude,
-#       longitude = Longitude) %>%
-#     select(node, latitude, longitude)
-#   
-#   return(attributes_tbl)
-# }
-# 
-# print(getNodesAttributes(getAllNodes()))
-# print(getNodesAttributes(c("EU-CHE", "EU-DEU", "EU-FRA")))
-
-#####################
-
-
-
-#####################
-
-
-# En vrai faire des trucs genre addNodes, addGenerators avec
-# getGeneratorsTable, filterGeneratorFromNodes, addProperties
-# donc logique soit d'initialization, soit d'ajout via jointures, soit de filtres
-# et de même aec nodes : getNodesTable, filter, addAttributes
-
 
 
 getGeneratorsFromNodes <- function(nodes) {
@@ -148,10 +79,6 @@ getGeneratorsFromNodes <- function(nodes) {
   
   return(generators_tbl)
 }
-# 
-# example <- getGeneratorsFromNodes(c("EU-CHE", "EU-DEU", "EU-FRA"))
-# print(example)
-
 filterFor2015 <- function(generators_tbl) {
   # This should be a parameter !!
   # Optional for 2015: removing data for generators built after 2015
@@ -178,7 +105,7 @@ addGeneralFuelInfo <- function(generators_tbl) {
            plexos_fuel_type = category)
   
   # Une mission à faire je pense : refactorer le code pour qu'il fasse genre.
-  # Je prends les trucs. Je fous les wind dans un objet R. Et j'importe que ça.
+  # Je prends les trucs. Je mets les wind dans un objet R. Et j'importe que ça.
   # et ça minimise le temps de calcul. et je teste sur l'Europe.
   # peut-être que je fais déjà ça ? je sais pas. je sais plus.
   
@@ -289,23 +216,6 @@ getBaseGeneratorData <- function(generators_tbl) {
     left_join(properties_tbl, by = "generator_name") %>%
     select(generator_name, continent, node, nominal_capacity, nb_units, commission_date, active_in_2015, antares_cluster_type, plexos_fuel_type, plexos_fuel_group)
   
-  # generators_tbl <- generators_tbl %>%
-  #   filter(!generator_name %in% generator_names_to_remove)
-  
-  # %>% # Maybe scenario ? eh
-    # filter(`Units` != 0) %>% # faudrait filtrer avec scénarios en sah
-    # pivot_wider(names_from = property, values_from = value)
-    # #mutate(generator_name = tolower(child_object))
-  
-  # properties_tbl <- properties_tbl %>%
-  #   mutate()
-
-# 
-#   print(properties_tbl$scenario %>% unique())
-#   print(properties_tbl$memo %>% unique())
-#   print(properties_tbl, n = 100)
-# 
-
   return(generators_tbl)
 }
 

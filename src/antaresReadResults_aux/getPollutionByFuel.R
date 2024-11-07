@@ -1,8 +1,4 @@
 
-# geography_tbl <- readRDS(".\\src\\objects\\geography_tbl.rds")
-# print(geography_tbl)
-# 
-# continents_nodes <- geography_tbl %>%
 
 source(".\\src\\antaresCreateStudy_aux\\addNodes.R")
 
@@ -25,26 +21,12 @@ getPollution <- function() {
   clusters_prod_tbl <- as_tibble(clusters_prod)
   # print(clusters_prod_tbl)
   
-  # Deux possibilités ici :
-  # # A tibble: 4,897 x 13
-  # area   group unitcount nominalcapacity min.stable.power marginal.cost startup.cost market.bid.cost cluster                     co2 timeId  time production
-  # <chr>  <chr>     <int>           <dbl>            <dbl>         <dbl>        <dbl>           <dbl> <fct>                     <dbl>  <int> <dbl>      <int>
-  #   1 af-ago Gas           1             12               2.4          76.8         883             76.8 ago_gas_namibe59         0.0509      1  2015          0
-  # faire confiance à co2 (sachant que POUR L'INSTANT je l'ai mal importé, il fallait faire Production Rate x Heat Rate) et juste le sommer (x production)
-  # ou, faire production x heat rate x production rate
-  
-  # de toute façon, je corrigerai bien un jour l'implémentation de co2, autant le faire...
-  
-  
   clusters_tbl <- clusters_info_tbl %>%
     left_join(clusters_prod_tbl, by = c("area", "cluster")) %>%
     left_join(nodes_tbl, by = "area") %>%
     select(continent, area, cluster, group, production, co2)
   
   # print(clusters_tbl)
-  
-  # Gods, I really should just put EVERYTHING in tolower() and it would be soooo much easier.
-  
   clusters_pollution_tbl <- clusters_tbl %>%
     mutate(pollution = production * co2)
   

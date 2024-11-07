@@ -41,12 +41,7 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
                                ) {
   solarpv_2015_properties_tbl <- readRDS(solarpv_2015_properties_path)
   solarpv_cf_ts_tbl <- readRDS(solarpv_cf_ts_path)
-  # ACKSHUALLY filter should be applied here. there should be "filter nodes" etc before
-  # fusing the Ninja and PLEXOS stuff and keeping NA.
-  # else, putting a "node in nodes" here would erase the NA and we would lose juicy data
-  # (of course, we want to lose it, but still, the logs are better documentation now.)
   
-  # print(solarpv_2015_properties_tbl)
   for (k in 1:nrow(solarpv_2015_properties_tbl)) {
     row <- solarpv_2015_properties_tbl[k,]
     # print(row)
@@ -73,8 +68,7 @@ addSolarPVClusters <- function(nodes = all_deane_nodes_lst#,
             logError(msg)
           } else {
             tryCatch({
-              # msg <- paste("[SOLAR] - Adding", generator_name, "generator to", node, "area...")
-              # logFull(msg)
+              
               createClusterRES(
                 area = node,
                 cluster_name = generator_name,
@@ -113,14 +107,12 @@ addAggregatedSolar <- function(nodes,
     
     solar_aggregated_file <- ".\\src\\objects\\solarpv_2015_aggregated_tbl.rds"
     solar_aggregated_TS <- readRDS(solar_aggregated_file)
-    # print(solar_aggregated_TS) # ok phew its the production, if it was capacity factors i woulda died
     
-    # add_csp = TRUE
-    # 
+    
     if (add_csp) {
       csp_aggregated_file <- ".\\src\\objects\\csp_aggregated_ninja_tbl.rds"
       csp_aggregated_TS <- readRDS(csp_aggregated_file)
-      # print(csp_aggregated_TS)
+      
       
       # Ensure that the column names in both tibbles are identical except for DATETIME
       csp_columns <- setdiff(colnames(csp_aggregated_TS), "DATETIME")
@@ -135,7 +127,6 @@ addAggregatedSolar <- function(nodes,
       # Iterate over each column in CSP and add it to the corresponding column in Solar
       for (col in csp_columns) {
         # msgTest = paste("Now working on column:", col)
-        # # Crazy how I always have spicy stuff
         # print(msgTest)
         # # Add CSP column to the corresponding Solar column
         # all_solar_ts = solar_aggregated_TS[[col]] + csp_aggregated_TS[[col]]
@@ -144,10 +135,6 @@ addAggregatedSolar <- function(nodes,
         # msgTest = paste("All good for column", col)
         # # Oh it's AF-MAR. Yeah there isn't PV in AF-MAR oops.
         # # Was sloppy of me to not include an existence check anyway.
-        # # I remember I was much more rigid back in the day lmao
-        # msgTest = paste("Now working on column:", col)
-        # # Crazy how I always have spicy stuff
-        # print(msgTest)
         if (col %in% colnames(solar_aggregated_TS)) {
           # If column exists in solar_aggregated_TS, add the values
           solar_aggregated_TS[[col]] <- solar_aggregated_TS[[col]] + csp_aggregated_TS[[col]]
